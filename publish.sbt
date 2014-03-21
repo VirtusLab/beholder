@@ -6,35 +6,22 @@ publishTo := {
     Some("releases" at nexus + "service/local/staging/deploy/maven2")
 }
 
-publishMavenStyle := true
+val artifactory = "http://migotek.virtuslab.com:8081/artifactory"
 
-publishArtifact in Test := false
+val localSnapshots = s"$artifactory/simple/libs-snapshot-local/"
 
-pomIncludeRepository := { _ => false }
+val localReleases = s"$artifactory/simple/libs-release-local/"
 
-pomExtra := (
-  <url>https://github.com/VirtusLab/beholder</url>
-  <licenses>
-    <license>
-      <name>Apache-style</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
-  <scm>
-    <url>https://github.com/VirtusLab/beholder.git</url>
-    <connection>scm:git:git@github.com:VirtusLab/beholder.git</connection>
-  </scm>
-  <developers>
-    <developer>
-      <id>VirtusLab</id>
-      <name>VirtusLab</name>
-      <url>http://www.virtuslab.com/</url>
-    </developer>
-    <developer>
-      <id>JerzyMuller</id>
-      <name>Jerzy Müller</name>
-      <url>https://github.com/Kwestor</url>
-    </developer>
-  </developers>
-)
+resolvers += "Local Snapshots" at localSnapshots
+
+resolvers += "Local Releases" at localReleases
+
+credentials += Credentials(Path.userHome / ".ivy2" / ".credentials")
+
+publishTo := {
+  if (version.value.contains("SNAPSHOT")) {
+    Some("Artifactory Realm" at localSnapshots)
+  } else {
+    Some("Artifactory Realm" at localReleases)
+  }
+}
