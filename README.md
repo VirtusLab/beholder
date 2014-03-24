@@ -65,3 +65,24 @@ val UsersMachineView = FilterableViews.createView(name = "USERS_MACHINE_VIEW",
           "cores" -> machine.cores)
     }
 ```
+
+Defining filter
+-----------------
+
+```scala
+val UsersMachineFilter =  new FiltersGenerator[UserMachineView].create(view,
+      inText,
+      inText,
+      inIntField
+    )
+```
+
+Do the filtering from request
+-----------------
+
+```scala
+UsersMachineFilter.filterForm.bindFromRequest().fold(
+	errors => handleError(),
+	filterData => showResult(UsersMachineFilter.filter(filterData))
+)
+```
