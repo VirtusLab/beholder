@@ -1,30 +1,26 @@
 Scala Slick type-safe ids
 =========================
 
-Slick (the Scala Language-Integrated Connection Kit) is a framework for type-safe, composable data access in Scala. This library adds tools to use type-safe IDs for your classes so you can no longer join on bad id field or mess up order of fields in mappings. It also provides a way to create service layer with methods (like querying all, querying by id, saving or deleting) for all classes with such IDs in just 4 lines of code.
+Slick (the Scala Language-Integrated Connection Kit) is a framework for type-safe, composable data access in Scala. This library adds tools to create views that can be easly used. Users needs only to declare how view and filter should like and Beholder provides methods for filtering data.
 
-Idea for type-safe ids was derived from Slick creator's [presentation on ScalaDays 2013](http://www.parleys.com/play/51c2e20de4b0d38b54f46243/chapter63/about).
-
-This library is used in [Advanced play-slick Typesafe Activator template](https://github.com/VirtusLab/activator-play-advanced-slick).
 
 Contributors
 ------------
 Authors:
-* [Jerzy Müller](https://github.com/Kwestor)
 * [Krzysztof Romanowski](https://github.com/romanowski)
 
 Feel free to use it, test it and to contribute!
 
-Getting unicorn
+Getting beholder
 ---------------
 
 For latest version (Scala 2.10.x compatible) use:
 
 ```scala
-libraryDependencies += "org.virtuslab" %% "unicorn" % "0.4.3"
+libraryDependencies += "org.virtuslab" %% "beholder" % "0.1.2"
 ```
 
-Or see [Maven repository](http://maven-repository.com/artifact/org.virtuslab/unicorn_2.10).
+Or see [Maven repository](http://maven-repository.com/artifact/org.virtuslab/beholder_2.10).
 
 Examples
 ========
