@@ -10,30 +10,7 @@ import scala.slick.jdbc.StaticQuery
 /**
  * Author: Krzysztof Romanowski
  */
-class ManyToManyView extends AppTest {
-
-  case class UserMachineView(email: String,
-                             system: String,
-                             cores: Int)
-
-
-  def createUsersMachineView = {
-    val usersMachinesQuery = for {
-      user <- Users
-      userMachine <- UserMachines if user.id === userMachine.userId
-      machine <- Machines if machine.id === userMachine.machineId
-    } yield (user, machine)
-
-    FilterableViews.createView("USERS_MACHINE_VIEW",
-      UserMachineView.apply _,
-      UserMachineView.unapply _,
-      usersMachinesQuery) {
-      case (user, machine) =>
-        ("email" -> user.email,
-          "system" -> machine.system,
-          "cores" -> machine.cores)
-    }
-  }
+class ManyToManyView extends AppTest with UserMachinesView {
 
 
   "views rows" should "queried from view" in rollbackWithModel {

@@ -28,14 +28,14 @@ case class ViewDDL(table: BaseView[_, _]) extends DDL {
  */
 abstract class BaseView[I, A](viewName: String) extends BaseTable[A](viewName) {
 
-  protected val columns: Map[String, BaseTable[A] => Column[_]]
+  protected val columns: Map[String, this.type => Column[_]]
 
   /**
    * find column by name
    * @param name
    * @return
    */
-  def columnByName(table: BaseTable[A])(name: String): Option[Column[_]] =
+  def columnByName(table: this.type)(name: String): Option[Column[_]] =
     columns.get(name).map(_.apply(table))
 
   /**

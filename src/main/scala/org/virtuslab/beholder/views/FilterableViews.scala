@@ -5,6 +5,7 @@ import play.api.db.slick.Config.driver.simple._
 import org.virtuslab.unicorn.ids.BaseTable
 import org.virtuslab.beholder.utils
 import org.virtuslab.beholder.utils.CodeGenerationUtils._
+import scala.slick.lifted.Column
 
 /**
  * @author krzysiek
@@ -27,7 +28,7 @@ object FilterableViews extends App with FilterableViewsGenerateCode {
         val finalTuple = fill("name" +)
         val matchParameters = fill(nr => s"(name$nr, c$nr)")
         val mapping = fill("c" +, " ~ ")
-        val columnsMap = fill(nr => s" columnNames(${nr - 1}) -> ((t: BaseTable[T]) => t.asInstanceOf[this.type].c$nr)", ",\n")
+        val columnsMap = fill(nr => s" columnNames(${nr - 1}) -> (_.c$nr)", ",\n")
         val columnsFunctions = fill(nr => s"def c$nr = column[A$nr](columnNames(${nr - 1}))", "\n")
 
         s"""def createView[T, E, $aTypesWithTypeMappers](name: String,
@@ -68,7 +69,7 @@ object FilterableViews extends App with FilterableViewsGenerateCode {
           |
           |     override def id = c1
           |
-          |     override protected val columns = Map(
+          |     override protected val columns: Map[String, this.type => Column[_]] = Map(
           |         $columnsMap)
           |     def * = $mapping <> (apply, unapply)
           |}""".stripMargin
@@ -102,7 +103,7 @@ object FilterableViews extends App with FilterableViewsGenerateCode {
           mappings(t) match {
             case ((name1, c1), (name2, c2)) =>
               columnsNames = Seq(name1, name2)
-              c1 ~ c2 <> (apply, unapply)
+              c1 ~ c2 <>(apply, unapply)
           }
       }
 
@@ -137,11 +138,11 @@ object FilterableViews extends App with FilterableViewsGenerateCode {
 
     override def id = c1
 
-    override protected val columns = Map(
-      columnNames(0) -> ((t: BaseTable[T]) => t.asInstanceOf[this.type].c1),
-      columnNames(1) -> ((t: BaseTable[T]) => t.asInstanceOf[this.type].c1))
+    override protected val columns: Map[String, this.type => Column[_]] = Map(
+      columnNames(0) -> (_.c1),
+      columnNames(1) -> (_.c2))
 
-    def * = c1 ~ c2 <> (apply, unapply)
+    def * = c1 ~ c2 <>(apply, unapply)
   }
 
   //for code genration

@@ -1,10 +1,10 @@
 package org.virtuslab.beholder.filters
 
 import play.api.data.Forms._
-import play.api.data.{ Form, Mapping }
+import play.api.data.{Form, Mapping}
 import scala.language.postfixOps
 import play.api.db.slick.Config.driver.simple._
-import scala.slick.lifted.{ Query, Column, TypeMapper }
+import scala.slick.lifted.{Query, Column, TypeMapper}
 import org.virtuslab.beholder.views.{FilterableViews, BaseView}
 import FilterableViews.BaseView2
 import org.virtuslab.beholder.views.BaseView
@@ -35,7 +35,7 @@ case class BaseFilterEntity[D](take: Option[Int],
  * @tparam M filter data type (usually tuple with data)
  * @author krzysiek
  */
-abstract class BaseFilter[I, E, T <: BaseView[I, E], M](table: T) {
+abstract class BaseFilter[I, E, T <: BaseView[I, E], M](val table: T) {
 
   /**
    * mapping for this filter
@@ -45,14 +45,6 @@ abstract class BaseFilter[I, E, T <: BaseView[I, E], M](table: T) {
 
   protected def emptyFilterDataInner: M
 
-  def emptyFilterData = BaseFilterEntity(None, None, None, asc = true, emptyFilterDataInner)
-
-  /**
-   * form for this filter
-   * @return
-   */
-  def filterForm = Form(filterMapping)
-
   /**
    * applies filter data into query where clauses
    * @param data
@@ -61,8 +53,14 @@ abstract class BaseFilter[I, E, T <: BaseView[I, E], M](table: T) {
    */
   protected def filters(data: M)(table: T): Column[Option[Boolean]]
 
-  //ordering
-  private def order(data: BaseFilterEntity[M])(table: T) = data.orderBy.flatMap(table.columnByName(table))
+  def emptyFilterData = BaseFilterEntity(None, None, None, asc = true, emptyFilterDataInner)
+
+  /**
+   * form for this filter
+   * @return
+   */
+  def filterForm = Form(filterMapping)
+
 
   /**
    * filter and sort all entities with given data
@@ -83,11 +81,17 @@ abstract class BaseFilter[I, E, T <: BaseView[I, E], M](table: T) {
         new scala.slick.lifted.Ordered(globalColumns ++ inQueryTable.id.asc.columns)
     }
 
+    val fromBase = base.list()
+
     val afterTake = data.take.map(base.take).getOrElse(base)
     val afterSkip = data.skip.map(afterTake.drop).getOrElse(afterTake)
 
     afterSkip.list()
   }
+
+  //ordering
+  private def order(data: BaseFilterEntity[M])(table: T): Option[Column[_]] = data.orderBy.flatMap(table.columnByName(table))
+
 }
 
 object FiltersGenerator extends App {
@@ -162,8 +166,8 @@ class FiltersGenerator[E] extends FiltersGeneratedCode[E] {
             c1.map(c1Mapping.filterOnColumn(table.c1)),
             c2.map(c2Mapping.filterOnColumn(table.c2))
           ).flatten.foldLeft(ConstColumn(Some(true)): Column[Option[Boolean]]) {
-              _ && _
-            }
+            _ && _
+          }
       }
     }
   }

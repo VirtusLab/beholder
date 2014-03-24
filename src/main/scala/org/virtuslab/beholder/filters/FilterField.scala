@@ -1,7 +1,7 @@
 package org.virtuslab.beholder.filters
 
-import scala.slick.lifted.{ BaseTypeMapper, Column, TypeMapper }
-import play.api.data.{ FormError, Mapping }
+import scala.slick.lifted.{BaseTypeMapper, Column, TypeMapper}
+import play.api.data.{FormError, Mapping}
 import play.api.db.slick.Config.driver.simple._
 import play.api.data.Forms._
 import play.api.data.validation.Constraint
@@ -63,6 +63,7 @@ object FilterField {
     override def filterOnColumn(column: Column[String])(data: String): Column[Option[Boolean]] = column ilike s"%${escape(data)}%"
   }
 
+
   /**
    * search in text (ilike) for optional fields
    * @return
@@ -70,6 +71,24 @@ object FilterField {
   def inOptionText: FilterField[Option[String], String] = new FilterField[Option[String], String](text) {
     override def filterOnColumn(column: Column[Option[String]])(data: String): Column[Option[Boolean]] = column ilike s"%${escape(data)}%"
   }
+
+  /**
+   * search in text (ilike)
+   * @return
+   */
+  def inIntField: FilterField[Int, Int] = new FilterField[Int, Int](number) {
+    override def filterOnColumn(column: Column[Int])(data: Int): Column[Option[Boolean]] = column === data
+  }
+
+
+  /*  /**
+     * search in text (ilike) for optional fields
+     * @return
+     */
+    def inOptionIntegerField: FilterField[Option[String], String] = new FilterField[Option[String], String](text) {
+      override def filterOnColumn(column: Column[Option[String]])(data: String): Column[Option[Boolean]] = column ilike s"%${escape(data)}%"
+    }*/
+
 
   /**
    * simple check boolean
@@ -93,9 +112,9 @@ object FilterField {
     new FilterField[T, (Option[T], Option[T])](rangeMapping[T]) {
       override def filterOnColumn(column: Column[T])(value: (Option[T], Option[T])): Column[Option[Boolean]] = value match {
         case (Some(from), Some(to)) => column >= from && column <= to
-        case (None, Some(to))       => column <= to
-        case (Some(from), None)     => column >= from
-        case _                      => ConstColumn(Some(true))
+        case (None, Some(to)) => column <= to
+        case (Some(from), None) => column >= from
+        case _ => ConstColumn(Some(true))
       }
     }
 
@@ -110,9 +129,9 @@ object FilterField {
     new FilterField[Option[T], (Option[T], Option[T])](rangeMapping[T]) {
       override def filterOnColumn(column: Column[Option[T]])(value: (Option[T], Option[T])): Column[Option[Boolean]] = value match {
         case (Some(from), Some(to)) => column >= from && column <= to
-        case (None, Some(to))       => column <= to
-        case (Some(from), None)     => column >= from
-        case _                      => ConstColumn(Some(true))
+        case (None, Some(to)) => column <= to
+        case (Some(from), None) => column >= from
+        case _ => ConstColumn(Some(true))
       }
     }
 
