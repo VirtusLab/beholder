@@ -3,6 +3,7 @@ package org.virtuslab.beholder.utils
 import scala.language.postfixOps
 
 /**
+ * Utils for code generation - not used in production code
  * @author krzysiek
  */
 object CodeGenerationUtils {

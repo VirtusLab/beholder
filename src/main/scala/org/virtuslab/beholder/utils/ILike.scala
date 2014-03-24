@@ -29,7 +29,6 @@ object ILikeExtension {
 
 /**
  * adds ilkie operator to slick
- * @author krzysiek
  */
 class ILikeExtension[K](val c: Column[K]) extends AnyVal with ExtensionMethods[K, K] {
 

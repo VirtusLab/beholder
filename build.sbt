@@ -2,7 +2,7 @@ organization := "org.virtuslab"
 
 name := "beholder"
 
-version := "0.1.2-SNAPSHOT"
+version := "0.1.2"
 
 scalaVersion := "2.10.3"
 
@@ -18,3 +18,5 @@ libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play-test" % "2.2.0" % "test",
   "com.h2database" % "h2" % "1.3.174" % "test"
 )
+
+parallelExecution in Test := false

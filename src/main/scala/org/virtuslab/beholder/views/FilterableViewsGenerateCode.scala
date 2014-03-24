@@ -1151,7 +1151,6 @@ trait FilterableViewsGenerateCode {
           }
       }
 
-
       for {
         u <- Parameters[Unit]
         a <- mappedQuery

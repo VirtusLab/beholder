@@ -8,7 +8,7 @@ import org.virtuslab.beholder.utils.CodeGenerationUtils._
 import scala.slick.lifted.Column
 
 /**
- * @author krzysiek
+ * generates code for file FilterableViewsGeneratedCode
  */
 object FilterableViews extends App with FilterableViewsGenerateCode {
 

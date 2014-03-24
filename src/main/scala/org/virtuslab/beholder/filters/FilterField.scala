@@ -16,11 +16,11 @@ import org.virtuslab.beholder.utils.ILikeExtension._
 /**
  * filter field - there is information how read parameters from form data (mapping)
  * and how create sql's where statement(filter on column) for it
- * @param mapping mapping for B - data for filer
- * @tparam A field type
- * @tparam B filter form data type
+ * @param mapping mapping for B - data for filter
+ * @tparam A field type in database
+ * @tparam B field type in filter form
  */
-case class FilterField[A: TypeMapper, B](mapping: Mapping[B]) {
+abstract class FilterField[A: TypeMapper, B](val mapping: Mapping[B]) {
 
   /**
    * filter on column - apply filter form data into sql - default returns true
@@ -28,7 +28,7 @@ case class FilterField[A: TypeMapper, B](mapping: Mapping[B]) {
    * @param value
    * @return
    */
-  def filterOnColumn(column: Column[A])(value: B): Column[Option[Boolean]] = ConstColumn(Some(true))
+  def filterOnColumn(column: Column[A])(value: B): Column[Option[Boolean]]
 
 }
 
@@ -57,18 +57,16 @@ object FilterField {
 
   /**
    * search in text (ilike)
-   * @return
    */
-  def inText: FilterField[String, String] = new FilterField[String, String](text) {
+  object inText extends FilterField[String, String](text) {
     override def filterOnColumn(column: Column[String])(data: String): Column[Option[Boolean]] = column ilike s"%${escape(data)}%"
   }
 
 
   /**
    * search in text (ilike) for optional fields
-   * @return
    */
-  def inOptionText: FilterField[Option[String], String] = new FilterField[Option[String], String](text) {
+  object inOptionText extends FilterField[Option[String], String](text) {
     override def filterOnColumn(column: Column[Option[String]])(data: String): Column[Option[Boolean]] = column ilike s"%${escape(data)}%"
   }
 
@@ -76,25 +74,16 @@ object FilterField {
    * search in text (ilike)
    * @return
    */
-  def inIntField: FilterField[Int, Int] = new FilterField[Int, Int](number) {
+  object inIntField extends FilterField[Int, Int](number) {
     override def filterOnColumn(column: Column[Int])(data: Int): Column[Option[Boolean]] = column === data
   }
-
-
-  /*  /**
-     * search in text (ilike) for optional fields
-     * @return
-     */
-    def inOptionIntegerField: FilterField[Option[String], String] = new FilterField[Option[String], String](text) {
-      override def filterOnColumn(column: Column[Option[String]])(data: String): Column[Option[Boolean]] = column ilike s"%${escape(data)}%"
-    }*/
 
 
   /**
    * simple check boolean
    * @return
    */
-  def inBoolean: FilterField[Boolean, Boolean] = new FilterField[Boolean, Boolean](boolean) {
+  object inBoolean extends FilterField[Boolean, Boolean](boolean) {
     override def filterOnColumn(column: Column[Boolean])(data: Boolean): Column[Option[Boolean]] = column === data
   }
 
@@ -140,5 +129,7 @@ object FilterField {
    * @tparam T
    * @return
    */
-  def ignore[T: TypeMapper]: FilterField[T, T] = new FilterField[T, T](ignoreMapping[T])
+  def ignore[T: TypeMapper]: FilterField[T, T] = new FilterField[T, T](ignoreMapping[T]) {
+    override def filterOnColumn(column: Column[T])(value: T): Column[Option[Boolean]] = ConstColumn(Some(true))
+  }
 }

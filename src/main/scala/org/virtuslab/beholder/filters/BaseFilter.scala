@@ -11,14 +11,13 @@ import org.virtuslab.beholder.views.BaseView
 
 /**
  * base class that is mapped to form
- * it contain all common and specific (d field of genric type D) filter data
+ * it contain all common and specific (data field of genric type D) filter data
  * @param take
  * @param skip
  * @param orderBy
  * @param asc
  * @param data
  * @tparam D type of filter data
- * @author krzysiek
  */
 case class BaseFilterEntity[D](take: Option[Int],
                                skip: Option[Int],
@@ -27,22 +26,24 @@ case class BaseFilterEntity[D](take: Option[Int],
                                data: D)
 
 /**
- * base filter class
+ * base filter class - it contains public operations for all filters instances
  * @param table table to filter on
  * @tparam I table id
  * @tparam E table entity
  * @tparam T table class (usually View.type)
  * @tparam M filter data type (usually tuple with data)
- * @author krzysiek
  */
 abstract class BaseFilter[I, E, T <: BaseView[I, E], M](val table: T) {
 
   /**
-   * mapping for this filter
+   * from mapping for this filter
    * @return
    */
   protected def filterMapping: Mapping[BaseFilterEntity[M]]
 
+  /**
+   * Empty data for filter representing empty filter (all fields in tuple (type M) are filled with Empty)
+   */
   protected def emptyFilterDataInner: M
 
   /**
@@ -53,13 +54,16 @@ abstract class BaseFilter[I, E, T <: BaseView[I, E], M](val table: T) {
    */
   protected def filters(data: M)(table: T): Column[Option[Boolean]]
 
-  def emptyFilterData = BaseFilterEntity(None, None, None, asc = true, emptyFilterDataInner)
+  /**
+   * @return data representing empty filter - query for all entities in table
+   */
+  final def emptyFilterData = BaseFilterEntity(None, None, None, asc = true, emptyFilterDataInner)
 
   /**
    * form for this filter
    * @return
    */
-  def filterForm = Form(filterMapping)
+  final def filterForm = Form(filterMapping)
 
 
   /**
@@ -68,7 +72,7 @@ abstract class BaseFilter[I, E, T <: BaseView[I, E], M](val table: T) {
    * @param session
    * @return
    */
-  def filter(data: BaseFilterEntity[M])(implicit session: Session): Seq[E] = {
+  final def filter(data: BaseFilterEntity[M])(implicit session: Session): Seq[E] = {
     val base = Query(table).filter(filters(data.data)).sortBy {
       inQueryTable =>
         val globalColumns =
@@ -91,11 +95,13 @@ abstract class BaseFilter[I, E, T <: BaseView[I, E], M](val table: T) {
 
   //ordering
   private def order(data: BaseFilterEntity[M])(table: T): Option[Column[_]] = data.orderBy.flatMap(table.columnByName(table))
-
 }
 
+/**
+ * genereates inners of FiltersGeneratedCode class
+ */
 object FiltersGenerator extends App {
-  def generateCode = {
+  final def generateCode = {
     (3 to 18).map {
       implicit nr =>
         import org.virtuslab.beholder.utils.CodeGenerationUtils._
@@ -138,6 +144,7 @@ class FiltersGenerator[E] extends FiltersGeneratedCode[E] {
 
   /**
    * create filter for 2 fields view
+   * All other create method are base on this one
    * @param table view for filter on
    * @param c1Mapping mapping for first field
    * @param c2Mapping mapping for sec field
@@ -148,7 +155,7 @@ class FiltersGenerator[E] extends FiltersGeneratedCode[E] {
    * @tparam B2 filter data types for sec field
    * @return
    */
-  def create[A1: TypeMapper, A2: TypeMapper, T <: BaseView2[E, A1, A2], B1, B2](table: T,
+  final def create[A1: TypeMapper, A2: TypeMapper, T <: BaseView2[E, A1, A2], B1, B2](table: T,
                                                                                 c1Mapping: FilterField[A1, B1],
                                                                                 c2Mapping: FilterField[A2, B2]): BaseFilter[A1, E, T, (Option[B1], Option[B2])] = {
 

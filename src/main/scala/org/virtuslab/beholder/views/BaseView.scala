@@ -1,16 +1,18 @@
 package org.virtuslab.beholder.views
 
-import scala.slick.lifted._
+import scala.slick.lifted.DDL
 import scala.slick.driver.BasicQueryTemplate
 import scala.language.existentials
 import org.virtuslab.unicorn.ids.BaseTable
+import play.api.db.slick.Config.driver.simple._
+import org.virtuslab.beholder.utils.QueryUtils
 
 case class ViewDDL(table: BaseView[_, _]) extends DDL {
   protected def createPhase1: Iterable[String] =
     s"""create view ${table.tableName} (${
       table.create_*.map(c => '"' + c.name + '"').mkString(", ")
     }) \n\t as ${
-      table.query.selectStatement
+      QueryUtils.selectStatements(table.query)
     };""".stripMargin :: Nil
 
   protected def createPhase2: Iterable[String] = Nil
@@ -28,6 +30,9 @@ case class ViewDDL(table: BaseView[_, _]) extends DDL {
  */
 abstract class BaseView[I, A](viewName: String) extends BaseTable[A](viewName) {
 
+  /**
+   *
+   */
   protected val columns: Map[String, this.type => Column[_]]
 
   /**
