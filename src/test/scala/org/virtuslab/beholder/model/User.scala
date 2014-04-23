@@ -1,8 +1,10 @@
 package org.virtuslab.beholder.model
 
 
-import scala.slick.session.Session
 import org.virtuslab.unicorn.ids._
+import scala.slick.lifted.Tag
+import play.api.db.slick.Config.driver.simple._
+
 
 /** Id class for type-safe joins and queries. */
 case class UserId(id: Long) extends AnyVal with BaseId
@@ -25,7 +27,7 @@ case class User(id: Option[UserId],
                 lastName: String) extends WithId[UserId]
 
 /** Table definition for users. */
-object Users extends IdTable[UserId, User]("USERS") {
+class Users(tag: Tag) extends IdTable[UserId, User](tag, "USERS") {
 
   def email = column[String]("email", O.NotNull)
 
@@ -33,10 +35,5 @@ object Users extends IdTable[UserId, User]("USERS") {
 
   def lastName = column[String]("last_name", O.NotNull)
 
-  def base = email ~ firstName ~ lastName
-
-  override def * = id.? ~: base <> (User.apply _, User.unapply _)
-
-  override def insertOne(elem: User)(implicit session: Session): UserId =
-    saveBase(base, User.unapply _)(elem)
+  override def * = (id.?, email, firstName, lastName) <> (User.tupled, User.unapply _)
 }

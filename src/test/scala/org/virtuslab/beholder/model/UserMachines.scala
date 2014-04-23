@@ -1,24 +1,22 @@
 package org.virtuslab.beholder.model
 
 import play.api.db.slick.Config.driver.simple._
-import scala.slick.lifted.ColumnBase
+import scala.slick.lifted.{TableQuery, Tag, ColumnBase}
 
 
 /**
  * Author: Krzysztof Romanowski
  */
-object UserMachines extends Table[(UserId, MachineId)]("users_machines") {
+class UserMachines(tag: Tag) extends Table[(UserId, MachineId)](tag, "users_machines") {
 
 
   def userId = column[UserId]("user_id")
 
-  def userFk = foreignKey("user_fk", userId, Users)(_.id)
+  def userFk = foreignKey("user_fk", userId, TableQuery[Users])(_.id)
 
   def machineId = column[MachineId]("machine_id")
 
-  def machineFk = foreignKey("machine_fk", machineId, Machines)(_.id)
+  def machineFk = foreignKey("machine_fk", machineId, TableQuery[Machines])(_.id)
 
-  def * = userId ~ machineId
-
-  //view
+  def * = (userId, machineId)
 }

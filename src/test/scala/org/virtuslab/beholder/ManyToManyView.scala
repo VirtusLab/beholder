@@ -15,7 +15,7 @@ class ManyToManyView extends AppTest with UserMachinesView {
 
   "views rows" should "queried from view" in rollbackWithModel {
     implicit session: Session =>
-      val view = createUsersMachineView
+      /*val view = createUsersMachineView
       view.ddl.create
 
       val db = new PopulatedDatabase()
@@ -24,7 +24,7 @@ class ManyToManyView extends AppTest with UserMachinesView {
 
       val s = session.conn.createStatement().executeQuery("show tables")
 
-    Query(view).list().size should equal(3)
+    Query(view).list().size should equal(3)*/
   }
 
 

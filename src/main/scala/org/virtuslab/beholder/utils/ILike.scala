@@ -1,8 +1,8 @@
 package org.virtuslab.beholder.utils
 
 import scala.slick.ast.Library.SqlOperator
-import scala.slick.lifted.{ExtensionMethods, Ordered, Column}
-import scala.slick.ast.Node
+import scala.slick.lifted.{Query, ExtensionMethods, Ordered, Column}
+import scala.slick.ast.{Library, Node}
 
 
 /**
@@ -32,6 +32,7 @@ object ILikeExtension {
  */
 class ILikeExtension[K](val c: Column[K]) extends AnyVal with ExtensionMethods[K, K] {
 
-  def ilike[P2, R](e: Column[P2])(implicit om: o#arg[String, P2]#to[Boolean, R]) =
-    om(ILikeExtension.ILIKE.column(n, Node(e)))
+ /* def in[P2, R, C[_]](e: Query[Column[P2], _, C])(implicit om: o#arg[K, P2]#to[Boolean, R]) =
+    om.column(ILikeExtension.ILIKE, n, e.toNode)
+*/
 }

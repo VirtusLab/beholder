@@ -4,10 +4,11 @@ import play.api.data.Forms._
 import play.api.data.{Form, Mapping}
 import scala.language.postfixOps
 import play.api.db.slick.Config.driver.simple._
-import scala.slick.lifted.{Query, Column, TypeMapper}
+import scala.slick.lifted.{Query, Column}
 import org.virtuslab.beholder.views.{FilterableViews, BaseView}
 import FilterableViews.BaseView2
 import org.virtuslab.beholder.views.BaseView
+/*
 
 /**
  * base class that is mapped to form
@@ -179,3 +180,4 @@ class FiltersGenerator[E] extends FiltersGeneratedCode[E] {
     }
   }
 }
+*/

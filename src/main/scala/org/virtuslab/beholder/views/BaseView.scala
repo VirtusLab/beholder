@@ -1,26 +1,13 @@
 package org.virtuslab.beholder.views
 
-import scala.slick.lifted.DDL
-import scala.slick.driver.BasicQueryTemplate
+
 import scala.language.existentials
 import org.virtuslab.unicorn.ids.BaseTable
 import play.api.db.slick.Config.driver.simple._
+import play.api.db.slick.Config.driver.DDL
 import org.virtuslab.beholder.utils.QueryUtils
+import scala.slick.lifted.{TableQuery, Tag}
 
-case class ViewDDL(table: BaseView[_, _]) extends DDL {
-  protected def createPhase1: Iterable[String] =
-    s"""create view ${table.tableName} (${
-      table.create_*.map(c => '"' + c.name + '"').mkString(", ")
-    }) \n\t as ${
-      QueryUtils.selectStatements(table.query)
-    };""".stripMargin :: Nil
-
-  protected def createPhase2: Iterable[String] = Nil
-
-  protected def dropPhase1: Iterable[String] = s"DROP VIEW ${table.tableName};" :: Nil
-
-  protected def dropPhase2: Iterable[String] = Nil
-}
 
 /**
  *
@@ -28,7 +15,7 @@ case class ViewDDL(table: BaseView[_, _]) extends DDL {
  * @tparam I entity id - not in a sence of lemma id cos there is no constraints on type
  * @tparam A entity
  */
-abstract class BaseView[I, A](viewName: String) extends BaseTable[A](viewName) {
+abstract class BaseView[I, A](tag: Tag, val viewName: String) extends BaseTable[A](tag, viewName) {
 
   /**
    *
@@ -53,11 +40,31 @@ abstract class BaseView[I, A](viewName: String) extends BaseTable[A](viewName) {
    * query that build this view
    * @return
    */
-  def query: BasicQueryTemplate[_, A]
+  def query: Query[_, A, Seq]
 
-  /**
-   * modified ddl for view
-   * @return
-   */
-  override def ddl: DDL = ViewDDL(this)
+}
+
+object BaseView {
+
+
+  implicit class WithViewDDL(val query: TableQuery[_ <: BaseView[_, _]]) extends AnyVal {
+    def viewDDL = ViewDDL(query.asInstanceOf[TableQuery[_ <: BaseView[Any, Any]]].shaped.value)
+  }
+
+  case class ViewDDL(table: BaseView[Any, Any]) extends DDL {
+    protected def createPhase1: Iterable[String] = {
+      val viewName = table.viewName
+      val fields = table.columns.keys.map(name => '"' + name + '"').mkString(", ")
+      val query = QueryUtils.selectStatements(table.query)
+
+      s"create view $viewName ($fields) \n\t as $query" :: Nil
+    }
+
+    protected def createPhase2: Iterable[String] = Nil
+
+    protected def dropPhase1: Iterable[String] = s"DROP VIEW ${table.viewName};" :: Nil
+
+    protected def dropPhase2: Iterable[String] = Nil
+  }
+
 }

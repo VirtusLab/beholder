@@ -6,22 +6,50 @@ import play.api.db.slick.DB
 import play.api.test.FakeApplication
 import org.virtuslab.beholder.model._
 import play.api.db.slick.Config.driver.simple._
-import org.virtuslab.beholder.services._
-import scala.slick.session.Session
+import org.virtuslab.beholder.repositories._
+import org.virtuslab.beholder.model.User
+import org.virtuslab.beholder.model.Machine
+import play.api.test.FakeApplication
+import scala.Some
+import org.virtuslab.beholder.model.User
+import org.virtuslab.beholder.model.Machine
+import play.api.test.FakeApplication
+import scala.Some
+import org.virtuslab.beholder.model.User
+import org.virtuslab.beholder.model.Machine
+import play.api.test.FakeApplication
+import scala.Some
+import org.virtuslab.beholder.model.User
+import org.virtuslab.beholder.model.Machine
+import play.api.test.FakeApplication
+import scala.Some
+import org.virtuslab.beholder.model.User
+import org.virtuslab.beholder.model.Machine
+import play.api.test.FakeApplication
+import scala.Some
+import org.virtuslab.beholder.model.User
+import org.virtuslab.beholder.model.Machine
+import play.api.test.FakeApplication
+import scala.Some
+import scala.slick.lifted.TableQuery
 
 trait BaseTest extends FlatSpecLike with Matchers
 
-trait ModelIncuded {
+trait ModelIncluded {
   self: AppTest =>
-  val UsersService = new UsersService {}
+  lazy val UsersRepository = new UsersRepository {}
 
-  val MachinesService = new MachinesService {}
+  lazy val MachineRepository = new MachineRepository {}
+
+  lazy val userMachineQuery = TableQuery[UserMachines]
+
 
   def rollbackWithModel[A](func: Session => A): A = rollback {
     implicit session: Session =>
-      Users.ddl.create
-      Machines.ddl.create
-      UserMachines.ddl.create
+      User
+      UsersRepository.query.ddl.create
+      MachineRepository.query.ddl.create
+      userMachineQuery.ddl.create
       func(session)
   }
 
@@ -30,17 +58,17 @@ trait ModelIncuded {
     val users = Seq(
       User(None, "a@a.pl", "Ala", "maKota"),
       User(None, "o@a.pl", "Ola", "maPsa")
-    ).map(user => user.copy(id = Some(UsersService.save(user))))
+    ).map(user => user.copy(id = Some(UsersRepository.save(user))))
 
     val machines = Seq(
       Machine(None, "a@a.pl", "Ubuntu", 4),
       Machine(None, "o@a.pl", "Fedora", 1)
-    ).map(machine => machine.copy(id = Some(MachinesService.save(machine))))
+    ).map(machine => machine.copy(id = Some(MachineRepository.save(machine))))
 
     val Seq(user1, user2) = users
     val Seq(machine1, machine2) = machines
 
-    UserMachines.insertAll(
+    userMachineQuery.insertAll(
       (user1.id.get, machine1.id.get),
       (user2.id.get, machine1.id.get),
       (user2.id.get, machine2.id.get)
@@ -49,26 +77,22 @@ trait ModelIncuded {
 
 }
 
-trait AppTest extends BaseTest with BeforeAndAfterEach with ModelIncuded {
+trait AppTest extends BaseTest with BeforeAndAfterEach with ModelIncluded {
 
   private val testDb = Map(
     "db.default.driver" -> "org.h2.Driver",
-    "db.default.url" -> "jdbc:h2:mem:unicorn",
+    "db.default.url" -> "jdbc:h2:mem:beholder",
     "db.default.user" -> "sa",
     "db.default.password" -> ""
   )
 
-  implicit var app: FakeApplication = _
 
-  override protected def beforeEach(data: TestData): Unit = {
-    app = new FakeApplication(additionalConfiguration = testDb)
+  def withApp[A](func: FakeApplication => A): A = {
+    val app = new FakeApplication(additionalConfiguration = testDb)
     Play.start(app)
-    super.beforeEach()
-  }
-
-  override protected def afterEach(data: TestData): Unit = {
+    val ret = func(app)
     Play.stop()
-    super.afterEach()
+    ret
   }
 
   /**
@@ -78,10 +102,13 @@ trait AppTest extends BaseTest with BeforeAndAfterEach with ModelIncuded {
    * @tparam A type returned by `f`
    * @return value returned from `f`
    */
-  def rollback[A](func: Session => A): A = DB.withTransaction {
-    session: Session =>
-      val out = func(session)
-      session.rollback()
-      out
+  def rollback[A](func: Session => A): A = withApp {
+    implicit app =>
+      DB.withTransaction {
+        session: Session =>
+          val out = func(session)
+          session.rollback()
+          out
+      }
   }
 }

@@ -1,11 +1,12 @@
 package org.virtuslab.beholder.filters
-
+/*
 import scala.slick.lifted.{ Query, Column, TypeMapper }
 import play.api.data.Mapping
 import play.api.db.slick.Config.driver.simple._
 import play.api.data.Forms._
 import org.virtuslab.beholder.views.FilterableViews
 import FilterableViews._
+
 
 /**
  * @author krzysiek
@@ -19,7 +20,7 @@ trait FiltersGeneratedCode[E] {
     "asc" -> boolean,
     "data" -> dataMapping
   )(BaseFilterEntity.apply)(BaseFilterEntity.unapply)
-
+/*
   def create[A1: TypeMapper, A2: TypeMapper, A3: TypeMapper, B1, B2, B3, T <: BaseView3[E, A1, A2, A3]](table: T,
                                                                                                         c1Mapping: FilterField[A1, B1],
                                                                                                         c2Mapping: FilterField[A2, B2],
@@ -810,5 +811,6 @@ trait FiltersGeneratedCode[E] {
             }
       }
     }
-  }
+  }*/
 }
+*/

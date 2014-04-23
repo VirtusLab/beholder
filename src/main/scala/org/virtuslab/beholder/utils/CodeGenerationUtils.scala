@@ -35,7 +35,7 @@ object CodeGenerationUtils {
    * @param nr
    * @return
    */
-  def aTypesWithTypeMappers(implicit nr: Int) = fill(nr => s"A$nr:TypeMapper")(nr)
+  def aTypesWithTypedType(implicit nr: Int) = fill(nr => s"A$nr:TypedType")(nr)
 
   /**
    * create B1:Formatter, B2:Formatter, etc

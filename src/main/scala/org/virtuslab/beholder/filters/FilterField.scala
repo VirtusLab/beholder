@@ -1,4 +1,5 @@
 package org.virtuslab.beholder.filters
+/*
 
 import scala.slick.lifted.{BaseTypeMapper, Column, TypeMapper}
 import play.api.data.{FormError, Mapping}
@@ -133,3 +134,4 @@ object FilterField {
     override def filterOnColumn(column: Column[T])(value: T): Column[Option[Boolean]] = ConstColumn(Some(true))
   }
 }
+*/
