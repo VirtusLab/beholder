@@ -1,5 +1,5 @@
 package org.virtuslab.beholder
-/*
+
 import org.virtuslab.beholder.filters._
 import org.virtuslab.beholder.filters.FilterField._
 import play.api.db.slick.Config.driver.simple._
@@ -13,9 +13,7 @@ class FiltersTest extends AppTest with UserMachinesView {
 
 
   def userMachineFilter()(implicit session: Session) = {
-    val view = createUsersMachineView()
-    view.ddl.create
-
+    val view = createUsersMachineView
 
     new FiltersGenerator[UserMachineView].create(view,
       inText,
@@ -35,7 +33,7 @@ class FiltersTest extends AppTest with UserMachinesView {
     val baseFilter = filter.emptyFilterData
     val baseFilterData = baseFilter.data
 
-    val allFromDb = Query(filter.table).list()
+    val allFromDb = filter.table.list
   }
 
 
@@ -68,7 +66,7 @@ class FiltersTest extends AppTest with UserMachinesView {
       orderByCoreDesc should contain theSameElementsInOrderAs (fromDbOrderedByCoresDesc)
   }
 
-  /*"filter"*/ ignore should "take correctly" in baseFilterTest {
+  "filter" should "take correctly" in baseFilterTest {
     data =>
       import data._
       val orderByCoreDesc = filter.filter(baseFilter.copy(orderBy = Some("cores"), asc = false, take = Some(2)))
@@ -77,7 +75,7 @@ class FiltersTest extends AppTest with UserMachinesView {
       orderByCoreDesc should contain theSameElementsInOrderAs (fromDbOrderedByCoresDesc.take(2))
   }
 
-  /*"filter" */ ignore should "skip correctly" in baseFilterTest {
+  "filter"  should "skip correctly" in baseFilterTest {
     data =>
       import data._
       val orderByCoreDesc = filter.filter(baseFilter.copy(orderBy = Some("cores"), asc = false, skip = Some(1)))
@@ -86,4 +84,3 @@ class FiltersTest extends AppTest with UserMachinesView {
       orderByCoreDesc should contain theSameElementsInOrderAs (fromDbOrderedByCoresDesc.drop(1))
   }
 }
-*/

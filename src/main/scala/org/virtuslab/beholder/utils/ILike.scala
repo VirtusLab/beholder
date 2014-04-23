@@ -1,8 +1,10 @@
 package org.virtuslab.beholder.utils
 
+import scala.language.{implicitConversions, higherKinds}
 import scala.slick.ast.Library.SqlOperator
-import scala.slick.lifted.{Query, ExtensionMethods, Ordered, Column}
-import scala.slick.ast.{Library, Node}
+import scala.slick.ast._
+import scala.slick.lifted._
+import scala.slick.ast.ScalaBaseType.booleanType
 
 
 /**
@@ -19,20 +21,21 @@ object ILikeExtension {
    */
   def escape(text: String) = text.replace("%", "\\%").replace("_", "\\_")
 
-  implicit def iLikeExtension(c: Column[String]): ILikeExtension[String] = new ILikeExtension(c)
+  implicit def iLikeExtension(c: Column[String]) = new ILikeExtension(c)
 
-  implicit def iLikeOptionExtension(c: Column[Option[String]]): ILikeExtension[Option[String]] = new ILikeExtension(c)
+  implicit def iLikeOptionExtension(c: Column[Option[String]]) = new ILikeExtension(c)
 
   implicit def seq2Ordered[T <% Ordered](t: Seq[T]) = new Ordered(t.flatMap(_.columns))
 
 }
 
+
 /**
  * adds ilkie operator to slick
  */
-class ILikeExtension[K](val c: Column[K]) extends AnyVal with ExtensionMethods[K, K] {
+class ILikeExtension[B](val c: Column[B]) extends AnyVal with ExtensionMethods[String, B] {
 
- /* def in[P2, R, C[_]](e: Query[Column[P2], _, C])(implicit om: o#arg[K, P2]#to[Boolean, R]) =
-    om.column(ILikeExtension.ILIKE, n, e.toNode)
-*/
+  def ilike[R](e: String)(implicit om: o#arg[String, String]#to[Boolean, R]) =
+    om.column(ILikeExtension.ILIKE, n, LiteralNode(e))
+
 }
