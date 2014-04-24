@@ -48,10 +48,10 @@ object BaseView {
 
 
   implicit class WithViewDDL(val query: TableQuery[_ <: BaseView[_, _]]) extends AnyVal {
-    def viewDDL = ViewDDL(query.asInstanceOf[TableQuery[_ <: BaseView[Any, Any]]].shaped.value)
+    def viewDDL = ViewDDL(query.shaped.value)
   }
 
-  case class ViewDDL(table: BaseView[Any, Any]) extends DDL {
+  case class ViewDDL(table: BaseView[_, _]) extends DDL {
     protected def createPhase1: Iterable[String] = {
       val viewName = table.viewName
       val fields = table.columns.keys.map(name => '"' + name + '"').mkString(", ")

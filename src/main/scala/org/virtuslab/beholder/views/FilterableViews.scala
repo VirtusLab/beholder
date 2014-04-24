@@ -15,6 +15,7 @@ object FilterableViews extends App with FilterableViewsGenerateCode {
   import language.postfixOps
 
 
+  /** create code for single "create view method" */
   private def generateSingle(nr: Int) = {
     import utils.CodeGenerationUtils._
 

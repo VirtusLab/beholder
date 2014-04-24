@@ -103,7 +103,7 @@ abstract class BaseFilter[I, E, T <: BaseView[I, E], M](val table: TableQuery[T]
 }
 
 /**
- * genereates inners of FiltersGeneratedCode class
+ * Generates inners of FiltersGeneratedCode class
  */
 object FiltersGenerator extends App {
   final def generateCode = {
