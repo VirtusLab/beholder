@@ -1,9 +1,6 @@
 package org.virtuslab.beholder
 
-import scala.slick.lifted.Query
 import play.api.db.slick.Config.driver.simple._
-import java.sql.Connection
-
 
 class ViewsTest extends AppTest with UserMachinesView {
 
@@ -17,7 +14,6 @@ class ViewsTest extends AppTest with UserMachinesView {
       val query = for {
         a <- view
       } yield a
-
 
       val all = query.list
 

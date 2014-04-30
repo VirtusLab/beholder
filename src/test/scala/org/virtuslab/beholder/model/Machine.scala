@@ -1,8 +1,8 @@
 package org.virtuslab.beholder.model
 
 import org.virtuslab.unicorn.ids._
-import scala.slick.lifted.Tag
 import play.api.db.slick.Config.driver.simple._
+import scala.slick.lifted.Tag
 
 /** Id class for type-safe joins and queries. */
 case class MachineId(id: Long) extends AnyVal with BaseId
@@ -33,5 +33,5 @@ class Machines(tag: Tag) extends IdTable[MachineId, Machine](tag, "MACHINES") {
 
   def cores = column[Int]("cores", O.NotNull)
 
-  override def * = (id.?, url, system, cores) <>(Machine.tupled, Machine.unapply _)
+  override def * = (id.?, url, system, cores) <>(Machine.tupled, Machine.unapply)
 }

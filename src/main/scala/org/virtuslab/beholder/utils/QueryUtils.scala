@@ -3,8 +3,6 @@ package org.virtuslab.beholder.utils
 import play.api.db.slick.Config.driver.simple._
 import play.api.db.slick.Config.driver.QueryExecutor
 
-
-
 object QueryUtils {
   /**
    * util to print select query sql

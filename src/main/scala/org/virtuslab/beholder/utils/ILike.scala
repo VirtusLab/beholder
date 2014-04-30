@@ -1,11 +1,10 @@
 package org.virtuslab.beholder.utils
 
-import scala.language.{implicitConversions, higherKinds}
+import scala.language.implicitConversions
 import scala.slick.ast.Library.SqlOperator
+import scala.slick.ast.ScalaBaseType.booleanType
 import scala.slick.ast._
 import scala.slick.lifted._
-import scala.slick.ast.ScalaBaseType.booleanType
-
 
 /**
  * companion object for ILikeExtension
@@ -26,12 +25,10 @@ object ILikeExtension {
   implicit def iLikeOptionExtension(c: Column[Option[String]]) = new ILikeExtension(c)
 
   implicit def seq2Ordered[T <% Ordered](t: Seq[T]) = new Ordered(t.flatMap(_.columns))
-
 }
 
-
 /**
- * adds ilkie operator to slick
+ * Adds ilike operator to slick.
  */
 class ILikeExtension[B](val c: Column[B]) extends AnyVal with ExtensionMethods[String, B] {
 

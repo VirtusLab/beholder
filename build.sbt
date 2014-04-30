@@ -22,3 +22,13 @@ libraryDependencies ++= Seq(
 )
 
 parallelExecution in Test := false
+
+incOptions := incOptions.value.withNameHashing(true)
+
+scalacOptions ++= Seq(
+  "-deprecation",
+  "-unchecked",
+  "-feature",
+  "-Xlint",
+  "-Ywarn-all"
+)

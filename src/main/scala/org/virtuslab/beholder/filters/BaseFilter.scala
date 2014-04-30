@@ -1,19 +1,14 @@
 package org.virtuslab.beholder.filters
 
-import play.api.data.Forms._
-import play.api.data.{Form, Mapping}
 import scala.language.postfixOps
-import scala.slick.lifted.ConstColumn
-import scala.slick.lifted.TableQuery
-import play.api.db.slick.Config.driver.simple._
-import org.virtuslab.beholder.views.{FilterableViews, BaseView}
-import FilterableViews.BaseView2
-import org.virtuslab.beholder.views.BaseView
 import scala.slick.ast.TypedType
-import scala.slick.lifted.LiteralColumn
+import scala.slick.lifted.{LiteralColumn, TableQuery}
+
+import org.virtuslab.beholder.views.BaseView
+import org.virtuslab.beholder.views.FilterableViews.BaseView2
+import play.api.data.{Form, Mapping}
+import play.api.data.Forms._
 import play.api.db.slick.Config.driver.simple._
-
-
 
 /**
  * base class that is mapped to form
@@ -23,33 +18,34 @@ import play.api.db.slick.Config.driver.simple._
  * @param orderBy
  * @param asc
  * @param data
- * @tparam D type of filter data
+ * @tparam Data type of filter data
  */
-case class BaseFilterEntity[D](take: Option[Int],
-                               skip: Option[Int],
-                               orderBy: Option[String],
-                               asc: Boolean,
-                               data: D)
+case class BaseFilterEntity[Data](take: Option[Int],
+                                  skip: Option[Int],
+                                  orderBy: Option[String],
+                                  asc: Boolean,
+                                  data: Data)
 
 /**
  * base filter class - it contains public operations for all filters instances
  * @param table table to filter on
- * @tparam I table id
- * @tparam E table entity
- * @tparam T table class (usually View.type)
- * @tparam M filter data type (usually tuple with data)
+ * @tparam Id table id
+ * @tparam Entity table entity
+ * @tparam Table table class (usually View.type)
+ * @tparam FilteredData filter data type (usually tuple with data)
  */
-abstract class BaseFilter[I, E, T <: BaseView[I, E], M](val table: TableQuery[T]) {
+abstract class BaseFilter[Id, Entity, Table <: BaseView[Id, Entity], FilteredData](val table: TableQuery[Table]) {
+
   /**
    * from mapping for this filter
    * @return
    */
-  protected def filterMapping: Mapping[BaseFilterEntity[M]]
+  protected def filterMapping: Mapping[BaseFilterEntity[FilteredData]]
 
   /**
    * Empty data for filter representing empty filter (all fields in tuple (type M) are filled with Empty)
    */
-  protected def emptyFilterDataInner: M
+  protected def emptyFilterDataInner: FilteredData
 
   /**
    * applies filter data into query where clauses
@@ -57,7 +53,7 @@ abstract class BaseFilter[I, E, T <: BaseView[I, E], M](val table: TableQuery[T]
    * @param table
    * @return
    */
-  protected def filters(data: M)(table: T): Column[Option[Boolean]]
+  protected def filters(data: FilteredData)(table: Table): Column[Option[Boolean]]
 
   /**
    * @return data representing empty filter - query for all entities in table
@@ -77,29 +73,25 @@ abstract class BaseFilter[I, E, T <: BaseView[I, E], M](val table: TableQuery[T]
    * @param session
    * @return
    */
-  final def filter(data: BaseFilterEntity[M])(implicit session: Session): Seq[E] = {
+  final def filter(data: BaseFilterEntity[FilteredData])(implicit session: Session): Seq[Entity] = {
     val base = table.filter(filters(data.data)).sortBy {
       inQueryTable =>
         val globalColumns =
           order(data)(inQueryTable).map(c =>
-            if (data.asc)
-              c.asc
-            else
-              c.desc
+            if (data.asc) c.asc else c.desc
           ).toSeq.flatMap(_.columns)
         new scala.slick.lifted.Ordered(globalColumns ++ inQueryTable.id.asc.columns)
     }
 
-    val fromBase = base.list
-
-    val afterTake = data.take.map(base.take).getOrElse(base)
-    val afterSkip = data.skip.map(afterTake.drop).getOrElse(afterTake)
+    val afterTake = data.take.fold(base)(base.take)
+    val afterSkip = data.skip.fold(afterTake)(afterTake.drop)
 
     afterSkip.list
   }
 
   //ordering
-  private def order(data: BaseFilterEntity[M])(table: T): Option[Column[_]] = data.orderBy.flatMap(table.columnByName(table))
+  private def order(data: BaseFilterEntity[FilteredData])(table: Table): Option[Column[_]] =
+    data.orderBy.flatMap(table.columnByName(table))
 }
 
 /**
@@ -118,13 +110,13 @@ object FiltersGenerator extends App {
         val queryFilters = fill(nr => s"c$nr.map(c${nr}Mapping.filterOnColumn(realTable.c$nr))", ",\n")
         val nones = fill(nr => "None")
         s"""
-          |def create[$aTypesWithTypedType, $bTypes, T <: BaseView$nr[E, $aTypes]](table: TableQuery[T],
+          |def create[$aTypesWithTypedType, $bTypes, T <: BaseView$nr[Entity, $aTypes]](table: TableQuery[T],
           |                                                                   $fieldFilters
-          | ): BaseFilter[A1, E, T, ($options)] = {
+          | ): BaseFilter[A1, Entity, T, ($options)] = {
           |
           |    def obtainRealTable = table.shaped.value
           |
-          |    new BaseFilter[A1, E, T, ($options)](table) {
+          |    new BaseFilter[A1, Entity, T, ($options)](table) {
           |
           |      private val realTable = obtainRealTable
           |
@@ -150,7 +142,7 @@ object FiltersGenerator extends App {
   println(generateCode.mkString("\n"))
 }
 
-class FiltersGenerator[E] extends FiltersGeneratedCode[E] {
+class FiltersGenerator[Entity] extends FiltersGeneratedCode[Entity] {
 
   /**
    * create filter for 2 fields view
@@ -165,13 +157,13 @@ class FiltersGenerator[E] extends FiltersGeneratedCode[E] {
    * @tparam B2 filter data types for sec field
    * @return
    */
-  final def create[A1: TypedType, A2: TypedType, T <: BaseView2[E, A1, A2], B1, B2](table: TableQuery[T],
-                                                                                c1Mapping: FilterField[A1, B1],
-                                                                                c2Mapping: FilterField[A2, B2]): BaseFilter[A1, E, T, (Option[B1], Option[B2])] = {
+  final def create[A1: TypedType, A2: TypedType, T <: BaseView2[Entity, A1, A2], B1, B2](table: TableQuery[T],
+                                                                                         c1Mapping: FilterField[A1, B1],
+                                                                                         c2Mapping: FilterField[A2, B2]): BaseFilter[A1, Entity, T, (Option[B1], Option[B2])] = {
 
     def obtainRealTable = table.shaped.value
 
-    new BaseFilter[A1, E, T, (Option[B1], Option[B2])](table) {
+    new BaseFilter[A1, Entity, T, (Option[B1], Option[B2])](table) {
       private val realTable = obtainRealTable
 
       def filterMapping: Mapping[BaseFilterEntity[(Option[B1], Option[B2])]] = baseFilterEntityMapping(tuple(

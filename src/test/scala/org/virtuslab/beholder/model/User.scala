@@ -1,10 +1,8 @@
 package org.virtuslab.beholder.model
 
-
 import org.virtuslab.unicorn.ids._
-import scala.slick.lifted.Tag
 import play.api.db.slick.Config.driver.simple._
-
+import scala.slick.lifted.Tag
 
 /** Id class for type-safe joins and queries. */
 case class UserId(id: Long) extends AnyVal with BaseId
@@ -35,5 +33,5 @@ class Users(tag: Tag) extends IdTable[UserId, User](tag, "USERS") {
 
   def lastName = column[String]("last_name", O.NotNull)
 
-  override def * = (id.?, email, firstName, lastName) <> (User.tupled, User.unapply _)
+  override def * = (id.?, email, firstName, lastName) <> (User.tupled, User.unapply)
 }

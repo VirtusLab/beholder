@@ -1,21 +1,20 @@
 package org.virtuslab.beholder.views
 
-
-import scala.language.existentials
+import org.virtuslab.beholder.utils.QueryUtils
 import org.virtuslab.unicorn.ids.BaseTable
 import play.api.db.slick.Config.driver.simple._
 import play.api.db.slick.Config.driver.DDL
-import org.virtuslab.beholder.utils.QueryUtils
 import scala.slick.lifted.{TableQuery, Tag}
 
+import scala.language.existentials
 
 /**
  *
  * @param viewName name of view
- * @tparam I entity id - not in a sence of lemma id cos there is no constraints on type
- * @tparam A entity
+ * @tparam Id entity id - not in a sence of lemma id cos there is no constraints on type
+ * @tparam Entity entity
  */
-abstract class BaseView[I, A](tag: Tag, val viewName: String) extends BaseTable[A](tag, viewName) {
+abstract class BaseView[Id, Entity](tag: Tag, val viewName: String) extends BaseTable[Entity](tag, viewName) {
 
   /**
    *
@@ -34,18 +33,17 @@ abstract class BaseView[I, A](tag: Tag, val viewName: String) extends BaseTable[
    * column that is tread as view 'id' - it is use eg. for default sort
    * @return
    */
-  def id: Column[I]
+  def id: Column[Id]
 
   /**
    * query that build this view
    * @return
    */
-  def query: Query[_, A, Seq]
+  def query: Query[_, Entity, Seq]
 
 }
 
 object BaseView {
-
 
   implicit class WithViewDDL(val query: TableQuery[_ <: BaseView[_, _]]) extends AnyVal {
     def viewDDL = ViewDDL(query.shaped.value)
@@ -57,7 +55,7 @@ object BaseView {
       val fields = table.columns.keys.map(name => '"' + name + '"').mkString(", ")
       val query = QueryUtils.selectStatements(table.query)
 
-      s"create view $viewName ($fields) \n\t as $query" :: Nil
+      s"CREATE VIEW $viewName ($fields) \n\t AS $query" :: Nil
     }
 
     protected def createPhase2: Iterable[String] = Nil

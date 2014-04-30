@@ -2,7 +2,6 @@ package org.virtuslab.beholder.views
 
 import play.api.db.slick.Config.driver.simple._
 import org.virtuslab.beholder.utils
-import org.virtuslab.beholder.utils.CodeGenerationUtils._
 import scala.slick.lifted.{TableQuery, Tag, Column}
 import scala.slick.ast.TypedType
 import scala.reflect.ClassTag
@@ -12,9 +11,6 @@ import scala.reflect.ClassTag
  */
 object FilterableViews extends App with FilterableViewsGenerateCode {
 
-  import language.postfixOps
-
-
   /** create code for single "create view method" */
   private def generateSingle(nr: Int) = {
     import utils.CodeGenerationUtils._
@@ -23,12 +19,11 @@ object FilterableViews extends App with FilterableViewsGenerateCode {
 
     val columns = fill(nr => s"\n    (String, Column[A$nr])")(nr)
 
-    val finalTuple = fill("name" +)
+    val finalTuple = fill("name" + _)
     val matchParameters = fill(nr => s"(name$nr, c$nr)")
-    val mapping = fill("c" +)
+    val mapping = fill("c" + _)
     val columnsMap = fill(nr => s" columnNames(${nr - 1}) -> (_.c$nr)", ",\n")
     val columnsFunctions = fill(nr => s"    def c$nr = column[A$nr](columnNames(${nr - 1}))", "\n")
-
 
     s"""
       |def createView[T: ClassTag, E, $aTypesWithTypedType](name: String,
@@ -82,9 +77,7 @@ object FilterableViews extends App with FilterableViewsGenerateCode {
    * generate code for [db.FilterableViewsGenerateCode]
    * @return
    */
-  def generate = {
-    (3 to 18).map(generateSingle)
-  }
+  def generate = (3 to 18).map(generateSingle)
 
   /**
    * create view with 2 fields

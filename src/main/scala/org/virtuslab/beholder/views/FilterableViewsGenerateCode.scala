@@ -8,18 +8,17 @@ import scala.slick.ast.TypedType
 import scala.reflect.ClassTag
 
 /**
- * @author krzysiek
+ * Generated code for filterable views.
  */
 trait FilterableViewsGenerateCode {
-  def createView[T: ClassTag, E, A1:TypedType, A2:TypedType, A3:TypedType](name: String,
-                                                                           apply: (A1, A2, A3) => T,
-                                                                           unapply: T => Option[(A1, A2, A3)],
-                                                                           baseQuery: Query[E, _, Seq])(
-                                                                            mappings: E => (
-                                                                              (String, Column[A1]),
-                                                                                (String, Column[A2]),
-                                                                                (String, Column[A3]))): TableQuery[BaseView3[T, A1, A2, A3]] = {
-
+  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType](name: String,
+                                                                              apply: (A1, A2, A3) => T,
+                                                                              unapply: T => Option[(A1, A2, A3)],
+                                                                              baseQuery: Query[E, _, Seq])(
+                                                                               mappings: E => (
+                                                                                 (String, Column[A1]),
+                                                                                   (String, Column[A2]),
+                                                                                   (String, Column[A3]))): TableQuery[BaseView3[T, A1, A2, A3]] = {
 
     var columnsNames = Seq[String]()
 
@@ -42,14 +41,16 @@ trait FilterableViewsGenerateCode {
   }
 
 
-  class BaseView3[T: ClassTag, A1:TypedType, A2:TypedType, A3:TypedType](tag: Tag,
-                                                                         name: String,
-                                                                         val columnNames: Seq[String],
-                                                                         apply: (A1, A2, A3) => T,
-                                                                         unapply: T => Option[(A1, A2, A3)],
-                                                                         val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
+  class BaseView3[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType](tag: Tag,
+                                                                            name: String,
+                                                                            val columnNames: Seq[String],
+                                                                            apply: (A1, A2, A3) => T,
+                                                                            unapply: T => Option[(A1, A2, A3)],
+                                                                            val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
+
     def c2 = column[A2](columnNames(1))
+
     def c3 = column[A3](columnNames(2))
 
     override def id = c1
@@ -63,16 +64,15 @@ trait FilterableViewsGenerateCode {
   }
 
 
-
-  def createView[T: ClassTag, E, A1:TypedType, A2:TypedType, A3:TypedType, A4:TypedType](name: String,
-                                                                                         apply: (A1, A2, A3, A4) => T,
-                                                                                         unapply: T => Option[(A1, A2, A3, A4)],
-                                                                                         baseQuery: Query[E, _, Seq])(
-                                                                                          mappings: E => (
-                                                                                            (String, Column[A1]),
-                                                                                              (String, Column[A2]),
-                                                                                              (String, Column[A3]),
-                                                                                              (String, Column[A4]))): TableQuery[BaseView4[T, A1, A2, A3, A4]] = {
+  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType](name: String,
+                                                                                             apply: (A1, A2, A3, A4) => T,
+                                                                                             unapply: T => Option[(A1, A2, A3, A4)],
+                                                                                             baseQuery: Query[E, _, Seq])(
+                                                                                              mappings: E => (
+                                                                                                (String, Column[A1]),
+                                                                                                  (String, Column[A2]),
+                                                                                                  (String, Column[A3]),
+                                                                                                  (String, Column[A4]))): TableQuery[BaseView4[T, A1, A2, A3, A4]] = {
 
 
     var columnsNames = Seq[String]()
@@ -96,15 +96,18 @@ trait FilterableViewsGenerateCode {
   }
 
 
-  class BaseView4[T: ClassTag, A1:TypedType, A2:TypedType, A3:TypedType, A4:TypedType](tag: Tag,
-                                                                                       name: String,
-                                                                                       val columnNames: Seq[String],
-                                                                                       apply: (A1, A2, A3, A4) => T,
-                                                                                       unapply: T => Option[(A1, A2, A3, A4)],
-                                                                                       val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
+  class BaseView4[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType](tag: Tag,
+                                                                                           name: String,
+                                                                                           val columnNames: Seq[String],
+                                                                                           apply: (A1, A2, A3, A4) => T,
+                                                                                           unapply: T => Option[(A1, A2, A3, A4)],
+                                                                                           val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
+
     def c2 = column[A2](columnNames(1))
+
     def c3 = column[A3](columnNames(2))
+
     def c4 = column[A4](columnNames(3))
 
     override def id = c1
@@ -119,17 +122,16 @@ trait FilterableViewsGenerateCode {
   }
 
 
-
-  def createView[T: ClassTag, E, A1:TypedType, A2:TypedType, A3:TypedType, A4:TypedType, A5:TypedType](name: String,
-                                                                                                       apply: (A1, A2, A3, A4, A5) => T,
-                                                                                                       unapply: T => Option[(A1, A2, A3, A4, A5)],
-                                                                                                       baseQuery: Query[E, _, Seq])(
-                                                                                                        mappings: E => (
-                                                                                                          (String, Column[A1]),
-                                                                                                            (String, Column[A2]),
-                                                                                                            (String, Column[A3]),
-                                                                                                            (String, Column[A4]),
-                                                                                                            (String, Column[A5]))): TableQuery[BaseView5[T, A1, A2, A3, A4, A5]] = {
+  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType](name: String,
+                                                                                                            apply: (A1, A2, A3, A4, A5) => T,
+                                                                                                            unapply: T => Option[(A1, A2, A3, A4, A5)],
+                                                                                                            baseQuery: Query[E, _, Seq])(
+                                                                                                             mappings: E => (
+                                                                                                               (String, Column[A1]),
+                                                                                                                 (String, Column[A2]),
+                                                                                                                 (String, Column[A3]),
+                                                                                                                 (String, Column[A4]),
+                                                                                                                 (String, Column[A5]))): TableQuery[BaseView5[T, A1, A2, A3, A4, A5]] = {
 
 
     var columnsNames = Seq[String]()
@@ -153,16 +155,20 @@ trait FilterableViewsGenerateCode {
   }
 
 
-  class BaseView5[T: ClassTag, A1:TypedType, A2:TypedType, A3:TypedType, A4:TypedType, A5:TypedType](tag: Tag,
-                                                                                                     name: String,
-                                                                                                     val columnNames: Seq[String],
-                                                                                                     apply: (A1, A2, A3, A4, A5) => T,
-                                                                                                     unapply: T => Option[(A1, A2, A3, A4, A5)],
-                                                                                                     val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
+  class BaseView5[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType](tag: Tag,
+                                                                                                          name: String,
+                                                                                                          val columnNames: Seq[String],
+                                                                                                          apply: (A1, A2, A3, A4, A5) => T,
+                                                                                                          unapply: T => Option[(A1, A2, A3, A4, A5)],
+                                                                                                          val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
+
     def c2 = column[A2](columnNames(1))
+
     def c3 = column[A3](columnNames(2))
+
     def c4 = column[A4](columnNames(3))
+
     def c5 = column[A5](columnNames(4))
 
     override def id = c1
@@ -178,18 +184,17 @@ trait FilterableViewsGenerateCode {
   }
 
 
-
-  def createView[T: ClassTag, E, A1:TypedType, A2:TypedType, A3:TypedType, A4:TypedType, A5:TypedType, A6:TypedType](name: String,
-                                                                                                                     apply: (A1, A2, A3, A4, A5, A6) => T,
-                                                                                                                     unapply: T => Option[(A1, A2, A3, A4, A5, A6)],
-                                                                                                                     baseQuery: Query[E, _, Seq])(
-                                                                                                                      mappings: E => (
-                                                                                                                        (String, Column[A1]),
-                                                                                                                          (String, Column[A2]),
-                                                                                                                          (String, Column[A3]),
-                                                                                                                          (String, Column[A4]),
-                                                                                                                          (String, Column[A5]),
-                                                                                                                          (String, Column[A6]))): TableQuery[BaseView6[T, A1, A2, A3, A4, A5, A6]] = {
+  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType](name: String,
+                                                                                                                           apply: (A1, A2, A3, A4, A5, A6) => T,
+                                                                                                                           unapply: T => Option[(A1, A2, A3, A4, A5, A6)],
+                                                                                                                           baseQuery: Query[E, _, Seq])(
+                                                                                                                            mappings: E => (
+                                                                                                                              (String, Column[A1]),
+                                                                                                                                (String, Column[A2]),
+                                                                                                                                (String, Column[A3]),
+                                                                                                                                (String, Column[A4]),
+                                                                                                                                (String, Column[A5]),
+                                                                                                                                (String, Column[A6]))): TableQuery[BaseView6[T, A1, A2, A3, A4, A5, A6]] = {
 
 
     var columnsNames = Seq[String]()
@@ -213,17 +218,22 @@ trait FilterableViewsGenerateCode {
   }
 
 
-  class BaseView6[T: ClassTag, A1:TypedType, A2:TypedType, A3:TypedType, A4:TypedType, A5:TypedType, A6:TypedType](tag: Tag,
-                                                                                                                   name: String,
-                                                                                                                   val columnNames: Seq[String],
-                                                                                                                   apply: (A1, A2, A3, A4, A5, A6) => T,
-                                                                                                                   unapply: T => Option[(A1, A2, A3, A4, A5, A6)],
-                                                                                                                   val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
+  class BaseView6[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType](tag: Tag,
+                                                                                                                         name: String,
+                                                                                                                         val columnNames: Seq[String],
+                                                                                                                         apply: (A1, A2, A3, A4, A5, A6) => T,
+                                                                                                                         unapply: T => Option[(A1, A2, A3, A4, A5, A6)],
+                                                                                                                         val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
+
     def c2 = column[A2](columnNames(1))
+
     def c3 = column[A3](columnNames(2))
+
     def c4 = column[A4](columnNames(3))
+
     def c5 = column[A5](columnNames(4))
+
     def c6 = column[A6](columnNames(5))
 
     override def id = c1
@@ -240,19 +250,18 @@ trait FilterableViewsGenerateCode {
   }
 
 
-
-  def createView[T: ClassTag, E, A1:TypedType, A2:TypedType, A3:TypedType, A4:TypedType, A5:TypedType, A6:TypedType, A7:TypedType](name: String,
-                                                                                                                                   apply: (A1, A2, A3, A4, A5, A6, A7) => T,
-                                                                                                                                   unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7)],
-                                                                                                                                   baseQuery: Query[E, _, Seq])(
-                                                                                                                                    mappings: E => (
-                                                                                                                                      (String, Column[A1]),
-                                                                                                                                        (String, Column[A2]),
-                                                                                                                                        (String, Column[A3]),
-                                                                                                                                        (String, Column[A4]),
-                                                                                                                                        (String, Column[A5]),
-                                                                                                                                        (String, Column[A6]),
-                                                                                                                                        (String, Column[A7]))): TableQuery[BaseView7[T, A1, A2, A3, A4, A5, A6, A7]] = {
+  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType](name: String,
+                                                                                                                                          apply: (A1, A2, A3, A4, A5, A6, A7) => T,
+                                                                                                                                          unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7)],
+                                                                                                                                          baseQuery: Query[E, _, Seq])(
+                                                                                                                                           mappings: E => (
+                                                                                                                                             (String, Column[A1]),
+                                                                                                                                               (String, Column[A2]),
+                                                                                                                                               (String, Column[A3]),
+                                                                                                                                               (String, Column[A4]),
+                                                                                                                                               (String, Column[A5]),
+                                                                                                                                               (String, Column[A6]),
+                                                                                                                                               (String, Column[A7]))): TableQuery[BaseView7[T, A1, A2, A3, A4, A5, A6, A7]] = {
 
 
     var columnsNames = Seq[String]()
@@ -276,18 +285,24 @@ trait FilterableViewsGenerateCode {
   }
 
 
-  class BaseView7[T: ClassTag, A1:TypedType, A2:TypedType, A3:TypedType, A4:TypedType, A5:TypedType, A6:TypedType, A7:TypedType](tag: Tag,
-                                                                                                                                 name: String,
-                                                                                                                                 val columnNames: Seq[String],
-                                                                                                                                 apply: (A1, A2, A3, A4, A5, A6, A7) => T,
-                                                                                                                                 unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7)],
-                                                                                                                                 val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
+  class BaseView7[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType](tag: Tag,
+                                                                                                                                        name: String,
+                                                                                                                                        val columnNames: Seq[String],
+                                                                                                                                        apply: (A1, A2, A3, A4, A5, A6, A7) => T,
+                                                                                                                                        unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7)],
+                                                                                                                                        val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
+
     def c2 = column[A2](columnNames(1))
+
     def c3 = column[A3](columnNames(2))
+
     def c4 = column[A4](columnNames(3))
+
     def c5 = column[A5](columnNames(4))
+
     def c6 = column[A6](columnNames(5))
+
     def c7 = column[A7](columnNames(6))
 
     override def id = c1
@@ -305,20 +320,19 @@ trait FilterableViewsGenerateCode {
   }
 
 
-
-  def createView[T: ClassTag, E, A1:TypedType, A2:TypedType, A3:TypedType, A4:TypedType, A5:TypedType, A6:TypedType, A7:TypedType, A8:TypedType](name: String,
-                                                                                                                                                 apply: (A1, A2, A3, A4, A5, A6, A7, A8) => T,
-                                                                                                                                                 unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8)],
-                                                                                                                                                 baseQuery: Query[E, _, Seq])(
-                                                                                                                                                  mappings: E => (
-                                                                                                                                                    (String, Column[A1]),
-                                                                                                                                                      (String, Column[A2]),
-                                                                                                                                                      (String, Column[A3]),
-                                                                                                                                                      (String, Column[A4]),
-                                                                                                                                                      (String, Column[A5]),
-                                                                                                                                                      (String, Column[A6]),
-                                                                                                                                                      (String, Column[A7]),
-                                                                                                                                                      (String, Column[A8]))): TableQuery[BaseView8[T, A1, A2, A3, A4, A5, A6, A7, A8]] = {
+  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType](name: String,
+                                                                                                                                                         apply: (A1, A2, A3, A4, A5, A6, A7, A8) => T,
+                                                                                                                                                         unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8)],
+                                                                                                                                                         baseQuery: Query[E, _, Seq])(
+                                                                                                                                                          mappings: E => (
+                                                                                                                                                            (String, Column[A1]),
+                                                                                                                                                              (String, Column[A2]),
+                                                                                                                                                              (String, Column[A3]),
+                                                                                                                                                              (String, Column[A4]),
+                                                                                                                                                              (String, Column[A5]),
+                                                                                                                                                              (String, Column[A6]),
+                                                                                                                                                              (String, Column[A7]),
+                                                                                                                                                              (String, Column[A8]))): TableQuery[BaseView8[T, A1, A2, A3, A4, A5, A6, A7, A8]] = {
 
 
     var columnsNames = Seq[String]()
@@ -342,19 +356,26 @@ trait FilterableViewsGenerateCode {
   }
 
 
-  class BaseView8[T: ClassTag, A1:TypedType, A2:TypedType, A3:TypedType, A4:TypedType, A5:TypedType, A6:TypedType, A7:TypedType, A8:TypedType](tag: Tag,
-                                                                                                                                               name: String,
-                                                                                                                                               val columnNames: Seq[String],
-                                                                                                                                               apply: (A1, A2, A3, A4, A5, A6, A7, A8) => T,
-                                                                                                                                               unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8)],
-                                                                                                                                               val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
+  class BaseView8[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType](tag: Tag,
+                                                                                                                                                       name: String,
+                                                                                                                                                       val columnNames: Seq[String],
+                                                                                                                                                       apply: (A1, A2, A3, A4, A5, A6, A7, A8) => T,
+                                                                                                                                                       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8)],
+                                                                                                                                                       val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
+
     def c2 = column[A2](columnNames(1))
+
     def c3 = column[A3](columnNames(2))
+
     def c4 = column[A4](columnNames(3))
+
     def c5 = column[A5](columnNames(4))
+
     def c6 = column[A6](columnNames(5))
+
     def c7 = column[A7](columnNames(6))
+
     def c8 = column[A8](columnNames(7))
 
     override def id = c1
@@ -373,21 +394,20 @@ trait FilterableViewsGenerateCode {
   }
 
 
-
-  def createView[T: ClassTag, E, A1:TypedType, A2:TypedType, A3:TypedType, A4:TypedType, A5:TypedType, A6:TypedType, A7:TypedType, A8:TypedType, A9:TypedType](name: String,
-                                                                                                                                                               apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9) => T,
-                                                                                                                                                               unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9)],
-                                                                                                                                                               baseQuery: Query[E, _, Seq])(
-                                                                                                                                                                mappings: E => (
-                                                                                                                                                                  (String, Column[A1]),
-                                                                                                                                                                    (String, Column[A2]),
-                                                                                                                                                                    (String, Column[A3]),
-                                                                                                                                                                    (String, Column[A4]),
-                                                                                                                                                                    (String, Column[A5]),
-                                                                                                                                                                    (String, Column[A6]),
-                                                                                                                                                                    (String, Column[A7]),
-                                                                                                                                                                    (String, Column[A8]),
-                                                                                                                                                                    (String, Column[A9]))): TableQuery[BaseView9[T, A1, A2, A3, A4, A5, A6, A7, A8, A9]] = {
+  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType](name: String,
+                                                                                                                                                                        apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9) => T,
+                                                                                                                                                                        unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9)],
+                                                                                                                                                                        baseQuery: Query[E, _, Seq])(
+                                                                                                                                                                         mappings: E => (
+                                                                                                                                                                           (String, Column[A1]),
+                                                                                                                                                                             (String, Column[A2]),
+                                                                                                                                                                             (String, Column[A3]),
+                                                                                                                                                                             (String, Column[A4]),
+                                                                                                                                                                             (String, Column[A5]),
+                                                                                                                                                                             (String, Column[A6]),
+                                                                                                                                                                             (String, Column[A7]),
+                                                                                                                                                                             (String, Column[A8]),
+                                                                                                                                                                             (String, Column[A9]))): TableQuery[BaseView9[T, A1, A2, A3, A4, A5, A6, A7, A8, A9]] = {
 
 
     var columnsNames = Seq[String]()
@@ -411,20 +431,28 @@ trait FilterableViewsGenerateCode {
   }
 
 
-  class BaseView9[T: ClassTag, A1:TypedType, A2:TypedType, A3:TypedType, A4:TypedType, A5:TypedType, A6:TypedType, A7:TypedType, A8:TypedType, A9:TypedType](tag: Tag,
-                                                                                                                                                             name: String,
-                                                                                                                                                             val columnNames: Seq[String],
-                                                                                                                                                             apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9) => T,
-                                                                                                                                                             unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9)],
-                                                                                                                                                             val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
+  class BaseView9[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType](tag: Tag,
+                                                                                                                                                                      name: String,
+                                                                                                                                                                      val columnNames: Seq[String],
+                                                                                                                                                                      apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9) => T,
+                                                                                                                                                                      unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9)],
+                                                                                                                                                                      val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
+
     def c2 = column[A2](columnNames(1))
+
     def c3 = column[A3](columnNames(2))
+
     def c4 = column[A4](columnNames(3))
+
     def c5 = column[A5](columnNames(4))
+
     def c6 = column[A6](columnNames(5))
+
     def c7 = column[A7](columnNames(6))
+
     def c8 = column[A8](columnNames(7))
+
     def c9 = column[A9](columnNames(8))
 
     override def id = c1
@@ -444,22 +472,21 @@ trait FilterableViewsGenerateCode {
   }
 
 
-
-  def createView[T: ClassTag, E, A1:TypedType, A2:TypedType, A3:TypedType, A4:TypedType, A5:TypedType, A6:TypedType, A7:TypedType, A8:TypedType, A9:TypedType, A10:TypedType](name: String,
-                                                                                                                                                                              apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10) => T,
-                                                                                                                                                                              unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10)],
-                                                                                                                                                                              baseQuery: Query[E, _, Seq])(
-                                                                                                                                                                               mappings: E => (
-                                                                                                                                                                                 (String, Column[A1]),
-                                                                                                                                                                                   (String, Column[A2]),
-                                                                                                                                                                                   (String, Column[A3]),
-                                                                                                                                                                                   (String, Column[A4]),
-                                                                                                                                                                                   (String, Column[A5]),
-                                                                                                                                                                                   (String, Column[A6]),
-                                                                                                                                                                                   (String, Column[A7]),
-                                                                                                                                                                                   (String, Column[A8]),
-                                                                                                                                                                                   (String, Column[A9]),
-                                                                                                                                                                                   (String, Column[A10]))): TableQuery[BaseView10[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10]] = {
+  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType](name: String,
+                                                                                                                                                                                        apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10) => T,
+                                                                                                                                                                                        unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10)],
+                                                                                                                                                                                        baseQuery: Query[E, _, Seq])(
+                                                                                                                                                                                         mappings: E => (
+                                                                                                                                                                                           (String, Column[A1]),
+                                                                                                                                                                                             (String, Column[A2]),
+                                                                                                                                                                                             (String, Column[A3]),
+                                                                                                                                                                                             (String, Column[A4]),
+                                                                                                                                                                                             (String, Column[A5]),
+                                                                                                                                                                                             (String, Column[A6]),
+                                                                                                                                                                                             (String, Column[A7]),
+                                                                                                                                                                                             (String, Column[A8]),
+                                                                                                                                                                                             (String, Column[A9]),
+                                                                                                                                                                                             (String, Column[A10]))): TableQuery[BaseView10[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10]] = {
 
 
     var columnsNames = Seq[String]()
@@ -483,21 +510,30 @@ trait FilterableViewsGenerateCode {
   }
 
 
-  class BaseView10[T: ClassTag, A1:TypedType, A2:TypedType, A3:TypedType, A4:TypedType, A5:TypedType, A6:TypedType, A7:TypedType, A8:TypedType, A9:TypedType, A10:TypedType](tag: Tag,
-                                                                                                                                                                             name: String,
-                                                                                                                                                                             val columnNames: Seq[String],
-                                                                                                                                                                             apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10) => T,
-                                                                                                                                                                             unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10)],
-                                                                                                                                                                             val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
+  class BaseView10[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType](tag: Tag,
+                                                                                                                                                                                       name: String,
+                                                                                                                                                                                       val columnNames: Seq[String],
+                                                                                                                                                                                       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10) => T,
+                                                                                                                                                                                       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10)],
+                                                                                                                                                                                       val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
+
     def c2 = column[A2](columnNames(1))
+
     def c3 = column[A3](columnNames(2))
+
     def c4 = column[A4](columnNames(3))
+
     def c5 = column[A5](columnNames(4))
+
     def c6 = column[A6](columnNames(5))
+
     def c7 = column[A7](columnNames(6))
+
     def c8 = column[A8](columnNames(7))
+
     def c9 = column[A9](columnNames(8))
+
     def c10 = column[A10](columnNames(9))
 
     override def id = c1
@@ -518,23 +554,22 @@ trait FilterableViewsGenerateCode {
   }
 
 
-
-  def createView[T: ClassTag, E, A1:TypedType, A2:TypedType, A3:TypedType, A4:TypedType, A5:TypedType, A6:TypedType, A7:TypedType, A8:TypedType, A9:TypedType, A10:TypedType, A11:TypedType](name: String,
-                                                                                                                                                                                             apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11) => T,
-                                                                                                                                                                                             unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11)],
-                                                                                                                                                                                             baseQuery: Query[E, _, Seq])(
-                                                                                                                                                                                              mappings: E => (
-                                                                                                                                                                                                (String, Column[A1]),
-                                                                                                                                                                                                  (String, Column[A2]),
-                                                                                                                                                                                                  (String, Column[A3]),
-                                                                                                                                                                                                  (String, Column[A4]),
-                                                                                                                                                                                                  (String, Column[A5]),
-                                                                                                                                                                                                  (String, Column[A6]),
-                                                                                                                                                                                                  (String, Column[A7]),
-                                                                                                                                                                                                  (String, Column[A8]),
-                                                                                                                                                                                                  (String, Column[A9]),
-                                                                                                                                                                                                  (String, Column[A10]),
-                                                                                                                                                                                                  (String, Column[A11]))): TableQuery[BaseView11[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11]] = {
+  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType](name: String,
+                                                                                                                                                                                                        apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11) => T,
+                                                                                                                                                                                                        unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11)],
+                                                                                                                                                                                                        baseQuery: Query[E, _, Seq])(
+                                                                                                                                                                                                         mappings: E => (
+                                                                                                                                                                                                           (String, Column[A1]),
+                                                                                                                                                                                                             (String, Column[A2]),
+                                                                                                                                                                                                             (String, Column[A3]),
+                                                                                                                                                                                                             (String, Column[A4]),
+                                                                                                                                                                                                             (String, Column[A5]),
+                                                                                                                                                                                                             (String, Column[A6]),
+                                                                                                                                                                                                             (String, Column[A7]),
+                                                                                                                                                                                                             (String, Column[A8]),
+                                                                                                                                                                                                             (String, Column[A9]),
+                                                                                                                                                                                                             (String, Column[A10]),
+                                                                                                                                                                                                             (String, Column[A11]))): TableQuery[BaseView11[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11]] = {
 
 
     var columnsNames = Seq[String]()
@@ -558,22 +593,32 @@ trait FilterableViewsGenerateCode {
   }
 
 
-  class BaseView11[T: ClassTag, A1:TypedType, A2:TypedType, A3:TypedType, A4:TypedType, A5:TypedType, A6:TypedType, A7:TypedType, A8:TypedType, A9:TypedType, A10:TypedType, A11:TypedType](tag: Tag,
-                                                                                                                                                                                            name: String,
-                                                                                                                                                                                            val columnNames: Seq[String],
-                                                                                                                                                                                            apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11) => T,
-                                                                                                                                                                                            unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11)],
-                                                                                                                                                                                            val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
+  class BaseView11[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType](tag: Tag,
+                                                                                                                                                                                                       name: String,
+                                                                                                                                                                                                       val columnNames: Seq[String],
+                                                                                                                                                                                                       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11) => T,
+                                                                                                                                                                                                       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11)],
+                                                                                                                                                                                                       val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
+
     def c2 = column[A2](columnNames(1))
+
     def c3 = column[A3](columnNames(2))
+
     def c4 = column[A4](columnNames(3))
+
     def c5 = column[A5](columnNames(4))
+
     def c6 = column[A6](columnNames(5))
+
     def c7 = column[A7](columnNames(6))
+
     def c8 = column[A8](columnNames(7))
+
     def c9 = column[A9](columnNames(8))
+
     def c10 = column[A10](columnNames(9))
+
     def c11 = column[A11](columnNames(10))
 
     override def id = c1
@@ -595,24 +640,23 @@ trait FilterableViewsGenerateCode {
   }
 
 
-
-  def createView[T: ClassTag, E, A1:TypedType, A2:TypedType, A3:TypedType, A4:TypedType, A5:TypedType, A6:TypedType, A7:TypedType, A8:TypedType, A9:TypedType, A10:TypedType, A11:TypedType, A12:TypedType](name: String,
-                                                                                                                                                                                                            apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12) => T,
-                                                                                                                                                                                                            unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12)],
-                                                                                                                                                                                                            baseQuery: Query[E, _, Seq])(
-                                                                                                                                                                                                             mappings: E => (
-                                                                                                                                                                                                               (String, Column[A1]),
-                                                                                                                                                                                                                 (String, Column[A2]),
-                                                                                                                                                                                                                 (String, Column[A3]),
-                                                                                                                                                                                                                 (String, Column[A4]),
-                                                                                                                                                                                                                 (String, Column[A5]),
-                                                                                                                                                                                                                 (String, Column[A6]),
-                                                                                                                                                                                                                 (String, Column[A7]),
-                                                                                                                                                                                                                 (String, Column[A8]),
-                                                                                                                                                                                                                 (String, Column[A9]),
-                                                                                                                                                                                                                 (String, Column[A10]),
-                                                                                                                                                                                                                 (String, Column[A11]),
-                                                                                                                                                                                                                 (String, Column[A12]))): TableQuery[BaseView12[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12]] = {
+  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType](name: String,
+                                                                                                                                                                                                                        apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12) => T,
+                                                                                                                                                                                                                        unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12)],
+                                                                                                                                                                                                                        baseQuery: Query[E, _, Seq])(
+                                                                                                                                                                                                                         mappings: E => (
+                                                                                                                                                                                                                           (String, Column[A1]),
+                                                                                                                                                                                                                             (String, Column[A2]),
+                                                                                                                                                                                                                             (String, Column[A3]),
+                                                                                                                                                                                                                             (String, Column[A4]),
+                                                                                                                                                                                                                             (String, Column[A5]),
+                                                                                                                                                                                                                             (String, Column[A6]),
+                                                                                                                                                                                                                             (String, Column[A7]),
+                                                                                                                                                                                                                             (String, Column[A8]),
+                                                                                                                                                                                                                             (String, Column[A9]),
+                                                                                                                                                                                                                             (String, Column[A10]),
+                                                                                                                                                                                                                             (String, Column[A11]),
+                                                                                                                                                                                                                             (String, Column[A12]))): TableQuery[BaseView12[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12]] = {
 
 
     var columnsNames = Seq[String]()
@@ -636,23 +680,34 @@ trait FilterableViewsGenerateCode {
   }
 
 
-  class BaseView12[T: ClassTag, A1:TypedType, A2:TypedType, A3:TypedType, A4:TypedType, A5:TypedType, A6:TypedType, A7:TypedType, A8:TypedType, A9:TypedType, A10:TypedType, A11:TypedType, A12:TypedType](tag: Tag,
-                                                                                                                                                                                                           name: String,
-                                                                                                                                                                                                           val columnNames: Seq[String],
-                                                                                                                                                                                                           apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12) => T,
-                                                                                                                                                                                                           unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12)],
-                                                                                                                                                                                                           val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
+  class BaseView12[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType](tag: Tag,
+                                                                                                                                                                                                                       name: String,
+                                                                                                                                                                                                                       val columnNames: Seq[String],
+                                                                                                                                                                                                                       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12) => T,
+                                                                                                                                                                                                                       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12)],
+                                                                                                                                                                                                                       val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
+
     def c2 = column[A2](columnNames(1))
+
     def c3 = column[A3](columnNames(2))
+
     def c4 = column[A4](columnNames(3))
+
     def c5 = column[A5](columnNames(4))
+
     def c6 = column[A6](columnNames(5))
+
     def c7 = column[A7](columnNames(6))
+
     def c8 = column[A8](columnNames(7))
+
     def c9 = column[A9](columnNames(8))
+
     def c10 = column[A10](columnNames(9))
+
     def c11 = column[A11](columnNames(10))
+
     def c12 = column[A12](columnNames(11))
 
     override def id = c1
@@ -675,25 +730,24 @@ trait FilterableViewsGenerateCode {
   }
 
 
-
-  def createView[T: ClassTag, E, A1:TypedType, A2:TypedType, A3:TypedType, A4:TypedType, A5:TypedType, A6:TypedType, A7:TypedType, A8:TypedType, A9:TypedType, A10:TypedType, A11:TypedType, A12:TypedType, A13:TypedType](name: String,
-                                                                                                                                                                                                                           apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13) => T,
-                                                                                                                                                                                                                           unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13)],
-                                                                                                                                                                                                                           baseQuery: Query[E, _, Seq])(
-                                                                                                                                                                                                                            mappings: E => (
-                                                                                                                                                                                                                              (String, Column[A1]),
-                                                                                                                                                                                                                                (String, Column[A2]),
-                                                                                                                                                                                                                                (String, Column[A3]),
-                                                                                                                                                                                                                                (String, Column[A4]),
-                                                                                                                                                                                                                                (String, Column[A5]),
-                                                                                                                                                                                                                                (String, Column[A6]),
-                                                                                                                                                                                                                                (String, Column[A7]),
-                                                                                                                                                                                                                                (String, Column[A8]),
-                                                                                                                                                                                                                                (String, Column[A9]),
-                                                                                                                                                                                                                                (String, Column[A10]),
-                                                                                                                                                                                                                                (String, Column[A11]),
-                                                                                                                                                                                                                                (String, Column[A12]),
-                                                                                                                                                                                                                                (String, Column[A13]))): TableQuery[BaseView13[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13]] = {
+  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType](name: String,
+                                                                                                                                                                                                                                        apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13) => T,
+                                                                                                                                                                                                                                        unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13)],
+                                                                                                                                                                                                                                        baseQuery: Query[E, _, Seq])(
+                                                                                                                                                                                                                                         mappings: E => (
+                                                                                                                                                                                                                                           (String, Column[A1]),
+                                                                                                                                                                                                                                             (String, Column[A2]),
+                                                                                                                                                                                                                                             (String, Column[A3]),
+                                                                                                                                                                                                                                             (String, Column[A4]),
+                                                                                                                                                                                                                                             (String, Column[A5]),
+                                                                                                                                                                                                                                             (String, Column[A6]),
+                                                                                                                                                                                                                                             (String, Column[A7]),
+                                                                                                                                                                                                                                             (String, Column[A8]),
+                                                                                                                                                                                                                                             (String, Column[A9]),
+                                                                                                                                                                                                                                             (String, Column[A10]),
+                                                                                                                                                                                                                                             (String, Column[A11]),
+                                                                                                                                                                                                                                             (String, Column[A12]),
+                                                                                                                                                                                                                                             (String, Column[A13]))): TableQuery[BaseView13[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13]] = {
 
 
     var columnsNames = Seq[String]()
@@ -717,24 +771,36 @@ trait FilterableViewsGenerateCode {
   }
 
 
-  class BaseView13[T: ClassTag, A1:TypedType, A2:TypedType, A3:TypedType, A4:TypedType, A5:TypedType, A6:TypedType, A7:TypedType, A8:TypedType, A9:TypedType, A10:TypedType, A11:TypedType, A12:TypedType, A13:TypedType](tag: Tag,
-                                                                                                                                                                                                                          name: String,
-                                                                                                                                                                                                                          val columnNames: Seq[String],
-                                                                                                                                                                                                                          apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13) => T,
-                                                                                                                                                                                                                          unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13)],
-                                                                                                                                                                                                                          val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
+  class BaseView13[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType](tag: Tag,
+                                                                                                                                                                                                                                       name: String,
+                                                                                                                                                                                                                                       val columnNames: Seq[String],
+                                                                                                                                                                                                                                       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13) => T,
+                                                                                                                                                                                                                                       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13)],
+                                                                                                                                                                                                                                       val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
+
     def c2 = column[A2](columnNames(1))
+
     def c3 = column[A3](columnNames(2))
+
     def c4 = column[A4](columnNames(3))
+
     def c5 = column[A5](columnNames(4))
+
     def c6 = column[A6](columnNames(5))
+
     def c7 = column[A7](columnNames(6))
+
     def c8 = column[A8](columnNames(7))
+
     def c9 = column[A9](columnNames(8))
+
     def c10 = column[A10](columnNames(9))
+
     def c11 = column[A11](columnNames(10))
+
     def c12 = column[A12](columnNames(11))
+
     def c13 = column[A13](columnNames(12))
 
     override def id = c1
@@ -758,26 +824,25 @@ trait FilterableViewsGenerateCode {
   }
 
 
-
-  def createView[T: ClassTag, E, A1:TypedType, A2:TypedType, A3:TypedType, A4:TypedType, A5:TypedType, A6:TypedType, A7:TypedType, A8:TypedType, A9:TypedType, A10:TypedType, A11:TypedType, A12:TypedType, A13:TypedType, A14:TypedType](name: String,
-                                                                                                                                                                                                                                          apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14) => T,
-                                                                                                                                                                                                                                          unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14)],
-                                                                                                                                                                                                                                          baseQuery: Query[E, _, Seq])(
-                                                                                                                                                                                                                                           mappings: E => (
-                                                                                                                                                                                                                                             (String, Column[A1]),
-                                                                                                                                                                                                                                               (String, Column[A2]),
-                                                                                                                                                                                                                                               (String, Column[A3]),
-                                                                                                                                                                                                                                               (String, Column[A4]),
-                                                                                                                                                                                                                                               (String, Column[A5]),
-                                                                                                                                                                                                                                               (String, Column[A6]),
-                                                                                                                                                                                                                                               (String, Column[A7]),
-                                                                                                                                                                                                                                               (String, Column[A8]),
-                                                                                                                                                                                                                                               (String, Column[A9]),
-                                                                                                                                                                                                                                               (String, Column[A10]),
-                                                                                                                                                                                                                                               (String, Column[A11]),
-                                                                                                                                                                                                                                               (String, Column[A12]),
-                                                                                                                                                                                                                                               (String, Column[A13]),
-                                                                                                                                                                                                                                               (String, Column[A14]))): TableQuery[BaseView14[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14]] = {
+  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType](name: String,
+                                                                                                                                                                                                                                                        apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14) => T,
+                                                                                                                                                                                                                                                        unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14)],
+                                                                                                                                                                                                                                                        baseQuery: Query[E, _, Seq])(
+                                                                                                                                                                                                                                                         mappings: E => (
+                                                                                                                                                                                                                                                           (String, Column[A1]),
+                                                                                                                                                                                                                                                             (String, Column[A2]),
+                                                                                                                                                                                                                                                             (String, Column[A3]),
+                                                                                                                                                                                                                                                             (String, Column[A4]),
+                                                                                                                                                                                                                                                             (String, Column[A5]),
+                                                                                                                                                                                                                                                             (String, Column[A6]),
+                                                                                                                                                                                                                                                             (String, Column[A7]),
+                                                                                                                                                                                                                                                             (String, Column[A8]),
+                                                                                                                                                                                                                                                             (String, Column[A9]),
+                                                                                                                                                                                                                                                             (String, Column[A10]),
+                                                                                                                                                                                                                                                             (String, Column[A11]),
+                                                                                                                                                                                                                                                             (String, Column[A12]),
+                                                                                                                                                                                                                                                             (String, Column[A13]),
+                                                                                                                                                                                                                                                             (String, Column[A14]))): TableQuery[BaseView14[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14]] = {
 
 
     var columnsNames = Seq[String]()
@@ -801,25 +866,38 @@ trait FilterableViewsGenerateCode {
   }
 
 
-  class BaseView14[T: ClassTag, A1:TypedType, A2:TypedType, A3:TypedType, A4:TypedType, A5:TypedType, A6:TypedType, A7:TypedType, A8:TypedType, A9:TypedType, A10:TypedType, A11:TypedType, A12:TypedType, A13:TypedType, A14:TypedType](tag: Tag,
-                                                                                                                                                                                                                                         name: String,
-                                                                                                                                                                                                                                         val columnNames: Seq[String],
-                                                                                                                                                                                                                                         apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14) => T,
-                                                                                                                                                                                                                                         unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14)],
-                                                                                                                                                                                                                                         val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
+  class BaseView14[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType](tag: Tag,
+                                                                                                                                                                                                                                                       name: String,
+                                                                                                                                                                                                                                                       val columnNames: Seq[String],
+                                                                                                                                                                                                                                                       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14) => T,
+                                                                                                                                                                                                                                                       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14)],
+                                                                                                                                                                                                                                                       val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
+
     def c2 = column[A2](columnNames(1))
+
     def c3 = column[A3](columnNames(2))
+
     def c4 = column[A4](columnNames(3))
+
     def c5 = column[A5](columnNames(4))
+
     def c6 = column[A6](columnNames(5))
+
     def c7 = column[A7](columnNames(6))
+
     def c8 = column[A8](columnNames(7))
+
     def c9 = column[A9](columnNames(8))
+
     def c10 = column[A10](columnNames(9))
+
     def c11 = column[A11](columnNames(10))
+
     def c12 = column[A12](columnNames(11))
+
     def c13 = column[A13](columnNames(12))
+
     def c14 = column[A14](columnNames(13))
 
     override def id = c1
@@ -844,27 +922,26 @@ trait FilterableViewsGenerateCode {
   }
 
 
-
-  def createView[T: ClassTag, E, A1:TypedType, A2:TypedType, A3:TypedType, A4:TypedType, A5:TypedType, A6:TypedType, A7:TypedType, A8:TypedType, A9:TypedType, A10:TypedType, A11:TypedType, A12:TypedType, A13:TypedType, A14:TypedType, A15:TypedType](name: String,
-                                                                                                                                                                                                                                                         apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15) => T,
-                                                                                                                                                                                                                                                         unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15)],
-                                                                                                                                                                                                                                                         baseQuery: Query[E, _, Seq])(
-                                                                                                                                                                                                                                                          mappings: E => (
-                                                                                                                                                                                                                                                            (String, Column[A1]),
-                                                                                                                                                                                                                                                              (String, Column[A2]),
-                                                                                                                                                                                                                                                              (String, Column[A3]),
-                                                                                                                                                                                                                                                              (String, Column[A4]),
-                                                                                                                                                                                                                                                              (String, Column[A5]),
-                                                                                                                                                                                                                                                              (String, Column[A6]),
-                                                                                                                                                                                                                                                              (String, Column[A7]),
-                                                                                                                                                                                                                                                              (String, Column[A8]),
-                                                                                                                                                                                                                                                              (String, Column[A9]),
-                                                                                                                                                                                                                                                              (String, Column[A10]),
-                                                                                                                                                                                                                                                              (String, Column[A11]),
-                                                                                                                                                                                                                                                              (String, Column[A12]),
-                                                                                                                                                                                                                                                              (String, Column[A13]),
-                                                                                                                                                                                                                                                              (String, Column[A14]),
-                                                                                                                                                                                                                                                              (String, Column[A15]))): TableQuery[BaseView15[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15]] = {
+  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType](name: String,
+                                                                                                                                                                                                                                                                        apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15) => T,
+                                                                                                                                                                                                                                                                        unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15)],
+                                                                                                                                                                                                                                                                        baseQuery: Query[E, _, Seq])(
+                                                                                                                                                                                                                                                                         mappings: E => (
+                                                                                                                                                                                                                                                                           (String, Column[A1]),
+                                                                                                                                                                                                                                                                             (String, Column[A2]),
+                                                                                                                                                                                                                                                                             (String, Column[A3]),
+                                                                                                                                                                                                                                                                             (String, Column[A4]),
+                                                                                                                                                                                                                                                                             (String, Column[A5]),
+                                                                                                                                                                                                                                                                             (String, Column[A6]),
+                                                                                                                                                                                                                                                                             (String, Column[A7]),
+                                                                                                                                                                                                                                                                             (String, Column[A8]),
+                                                                                                                                                                                                                                                                             (String, Column[A9]),
+                                                                                                                                                                                                                                                                             (String, Column[A10]),
+                                                                                                                                                                                                                                                                             (String, Column[A11]),
+                                                                                                                                                                                                                                                                             (String, Column[A12]),
+                                                                                                                                                                                                                                                                             (String, Column[A13]),
+                                                                                                                                                                                                                                                                             (String, Column[A14]),
+                                                                                                                                                                                                                                                                             (String, Column[A15]))): TableQuery[BaseView15[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15]] = {
 
 
     var columnsNames = Seq[String]()
@@ -888,26 +965,40 @@ trait FilterableViewsGenerateCode {
   }
 
 
-  class BaseView15[T: ClassTag, A1:TypedType, A2:TypedType, A3:TypedType, A4:TypedType, A5:TypedType, A6:TypedType, A7:TypedType, A8:TypedType, A9:TypedType, A10:TypedType, A11:TypedType, A12:TypedType, A13:TypedType, A14:TypedType, A15:TypedType](tag: Tag,
-                                                                                                                                                                                                                                                        name: String,
-                                                                                                                                                                                                                                                        val columnNames: Seq[String],
-                                                                                                                                                                                                                                                        apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15) => T,
-                                                                                                                                                                                                                                                        unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15)],
-                                                                                                                                                                                                                                                        val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
+  class BaseView15[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType](tag: Tag,
+                                                                                                                                                                                                                                                                       name: String,
+                                                                                                                                                                                                                                                                       val columnNames: Seq[String],
+                                                                                                                                                                                                                                                                       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15) => T,
+                                                                                                                                                                                                                                                                       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15)],
+                                                                                                                                                                                                                                                                       val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
+
     def c2 = column[A2](columnNames(1))
+
     def c3 = column[A3](columnNames(2))
+
     def c4 = column[A4](columnNames(3))
+
     def c5 = column[A5](columnNames(4))
+
     def c6 = column[A6](columnNames(5))
+
     def c7 = column[A7](columnNames(6))
+
     def c8 = column[A8](columnNames(7))
+
     def c9 = column[A9](columnNames(8))
+
     def c10 = column[A10](columnNames(9))
+
     def c11 = column[A11](columnNames(10))
+
     def c12 = column[A12](columnNames(11))
+
     def c13 = column[A13](columnNames(12))
+
     def c14 = column[A14](columnNames(13))
+
     def c15 = column[A15](columnNames(14))
 
     override def id = c1
@@ -933,28 +1024,27 @@ trait FilterableViewsGenerateCode {
   }
 
 
-
-  def createView[T: ClassTag, E, A1:TypedType, A2:TypedType, A3:TypedType, A4:TypedType, A5:TypedType, A6:TypedType, A7:TypedType, A8:TypedType, A9:TypedType, A10:TypedType, A11:TypedType, A12:TypedType, A13:TypedType, A14:TypedType, A15:TypedType, A16:TypedType](name: String,
-                                                                                                                                                                                                                                                                        apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16) => T,
-                                                                                                                                                                                                                                                                        unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16)],
-                                                                                                                                                                                                                                                                        baseQuery: Query[E, _, Seq])(
-                                                                                                                                                                                                                                                                         mappings: E => (
-                                                                                                                                                                                                                                                                           (String, Column[A1]),
-                                                                                                                                                                                                                                                                             (String, Column[A2]),
-                                                                                                                                                                                                                                                                             (String, Column[A3]),
-                                                                                                                                                                                                                                                                             (String, Column[A4]),
-                                                                                                                                                                                                                                                                             (String, Column[A5]),
-                                                                                                                                                                                                                                                                             (String, Column[A6]),
-                                                                                                                                                                                                                                                                             (String, Column[A7]),
-                                                                                                                                                                                                                                                                             (String, Column[A8]),
-                                                                                                                                                                                                                                                                             (String, Column[A9]),
-                                                                                                                                                                                                                                                                             (String, Column[A10]),
-                                                                                                                                                                                                                                                                             (String, Column[A11]),
-                                                                                                                                                                                                                                                                             (String, Column[A12]),
-                                                                                                                                                                                                                                                                             (String, Column[A13]),
-                                                                                                                                                                                                                                                                             (String, Column[A14]),
-                                                                                                                                                                                                                                                                             (String, Column[A15]),
-                                                                                                                                                                                                                                                                             (String, Column[A16]))): TableQuery[BaseView16[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16]] = {
+  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType](name: String,
+                                                                                                                                                                                                                                                                                        apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16) => T,
+                                                                                                                                                                                                                                                                                        unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16)],
+                                                                                                                                                                                                                                                                                        baseQuery: Query[E, _, Seq])(
+                                                                                                                                                                                                                                                                                         mappings: E => (
+                                                                                                                                                                                                                                                                                           (String, Column[A1]),
+                                                                                                                                                                                                                                                                                             (String, Column[A2]),
+                                                                                                                                                                                                                                                                                             (String, Column[A3]),
+                                                                                                                                                                                                                                                                                             (String, Column[A4]),
+                                                                                                                                                                                                                                                                                             (String, Column[A5]),
+                                                                                                                                                                                                                                                                                             (String, Column[A6]),
+                                                                                                                                                                                                                                                                                             (String, Column[A7]),
+                                                                                                                                                                                                                                                                                             (String, Column[A8]),
+                                                                                                                                                                                                                                                                                             (String, Column[A9]),
+                                                                                                                                                                                                                                                                                             (String, Column[A10]),
+                                                                                                                                                                                                                                                                                             (String, Column[A11]),
+                                                                                                                                                                                                                                                                                             (String, Column[A12]),
+                                                                                                                                                                                                                                                                                             (String, Column[A13]),
+                                                                                                                                                                                                                                                                                             (String, Column[A14]),
+                                                                                                                                                                                                                                                                                             (String, Column[A15]),
+                                                                                                                                                                                                                                                                                             (String, Column[A16]))): TableQuery[BaseView16[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16]] = {
 
 
     var columnsNames = Seq[String]()
@@ -978,27 +1068,42 @@ trait FilterableViewsGenerateCode {
   }
 
 
-  class BaseView16[T: ClassTag, A1:TypedType, A2:TypedType, A3:TypedType, A4:TypedType, A5:TypedType, A6:TypedType, A7:TypedType, A8:TypedType, A9:TypedType, A10:TypedType, A11:TypedType, A12:TypedType, A13:TypedType, A14:TypedType, A15:TypedType, A16:TypedType](tag: Tag,
-                                                                                                                                                                                                                                                                       name: String,
-                                                                                                                                                                                                                                                                       val columnNames: Seq[String],
-                                                                                                                                                                                                                                                                       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16) => T,
-                                                                                                                                                                                                                                                                       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16)],
-                                                                                                                                                                                                                                                                       val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
+  class BaseView16[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType](tag: Tag,
+                                                                                                                                                                                                                                                                                       name: String,
+                                                                                                                                                                                                                                                                                       val columnNames: Seq[String],
+                                                                                                                                                                                                                                                                                       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16) => T,
+                                                                                                                                                                                                                                                                                       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16)],
+                                                                                                                                                                                                                                                                                       val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
+
     def c2 = column[A2](columnNames(1))
+
     def c3 = column[A3](columnNames(2))
+
     def c4 = column[A4](columnNames(3))
+
     def c5 = column[A5](columnNames(4))
+
     def c6 = column[A6](columnNames(5))
+
     def c7 = column[A7](columnNames(6))
+
     def c8 = column[A8](columnNames(7))
+
     def c9 = column[A9](columnNames(8))
+
     def c10 = column[A10](columnNames(9))
+
     def c11 = column[A11](columnNames(10))
+
     def c12 = column[A12](columnNames(11))
+
     def c13 = column[A13](columnNames(12))
+
     def c14 = column[A14](columnNames(13))
+
     def c15 = column[A15](columnNames(14))
+
     def c16 = column[A16](columnNames(15))
 
     override def id = c1
@@ -1025,29 +1130,28 @@ trait FilterableViewsGenerateCode {
   }
 
 
-
-  def createView[T: ClassTag, E, A1:TypedType, A2:TypedType, A3:TypedType, A4:TypedType, A5:TypedType, A6:TypedType, A7:TypedType, A8:TypedType, A9:TypedType, A10:TypedType, A11:TypedType, A12:TypedType, A13:TypedType, A14:TypedType, A15:TypedType, A16:TypedType, A17:TypedType](name: String,
-                                                                                                                                                                                                                                                                                       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17) => T,
-                                                                                                                                                                                                                                                                                       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17)],
-                                                                                                                                                                                                                                                                                       baseQuery: Query[E, _, Seq])(
-                                                                                                                                                                                                                                                                                        mappings: E => (
-                                                                                                                                                                                                                                                                                          (String, Column[A1]),
-                                                                                                                                                                                                                                                                                            (String, Column[A2]),
-                                                                                                                                                                                                                                                                                            (String, Column[A3]),
-                                                                                                                                                                                                                                                                                            (String, Column[A4]),
-                                                                                                                                                                                                                                                                                            (String, Column[A5]),
-                                                                                                                                                                                                                                                                                            (String, Column[A6]),
-                                                                                                                                                                                                                                                                                            (String, Column[A7]),
-                                                                                                                                                                                                                                                                                            (String, Column[A8]),
-                                                                                                                                                                                                                                                                                            (String, Column[A9]),
-                                                                                                                                                                                                                                                                                            (String, Column[A10]),
-                                                                                                                                                                                                                                                                                            (String, Column[A11]),
-                                                                                                                                                                                                                                                                                            (String, Column[A12]),
-                                                                                                                                                                                                                                                                                            (String, Column[A13]),
-                                                                                                                                                                                                                                                                                            (String, Column[A14]),
-                                                                                                                                                                                                                                                                                            (String, Column[A15]),
-                                                                                                                                                                                                                                                                                            (String, Column[A16]),
-                                                                                                                                                                                                                                                                                            (String, Column[A17]))): TableQuery[BaseView17[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17]] = {
+  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType](name: String,
+                                                                                                                                                                                                                                                                                                        apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17) => T,
+                                                                                                                                                                                                                                                                                                        unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17)],
+                                                                                                                                                                                                                                                                                                        baseQuery: Query[E, _, Seq])(
+                                                                                                                                                                                                                                                                                                         mappings: E => (
+                                                                                                                                                                                                                                                                                                           (String, Column[A1]),
+                                                                                                                                                                                                                                                                                                             (String, Column[A2]),
+                                                                                                                                                                                                                                                                                                             (String, Column[A3]),
+                                                                                                                                                                                                                                                                                                             (String, Column[A4]),
+                                                                                                                                                                                                                                                                                                             (String, Column[A5]),
+                                                                                                                                                                                                                                                                                                             (String, Column[A6]),
+                                                                                                                                                                                                                                                                                                             (String, Column[A7]),
+                                                                                                                                                                                                                                                                                                             (String, Column[A8]),
+                                                                                                                                                                                                                                                                                                             (String, Column[A9]),
+                                                                                                                                                                                                                                                                                                             (String, Column[A10]),
+                                                                                                                                                                                                                                                                                                             (String, Column[A11]),
+                                                                                                                                                                                                                                                                                                             (String, Column[A12]),
+                                                                                                                                                                                                                                                                                                             (String, Column[A13]),
+                                                                                                                                                                                                                                                                                                             (String, Column[A14]),
+                                                                                                                                                                                                                                                                                                             (String, Column[A15]),
+                                                                                                                                                                                                                                                                                                             (String, Column[A16]),
+                                                                                                                                                                                                                                                                                                             (String, Column[A17]))): TableQuery[BaseView17[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17]] = {
 
 
     var columnsNames = Seq[String]()
@@ -1071,28 +1175,44 @@ trait FilterableViewsGenerateCode {
   }
 
 
-  class BaseView17[T: ClassTag, A1:TypedType, A2:TypedType, A3:TypedType, A4:TypedType, A5:TypedType, A6:TypedType, A7:TypedType, A8:TypedType, A9:TypedType, A10:TypedType, A11:TypedType, A12:TypedType, A13:TypedType, A14:TypedType, A15:TypedType, A16:TypedType, A17:TypedType](tag: Tag,
-                                                                                                                                                                                                                                                                                      name: String,
-                                                                                                                                                                                                                                                                                      val columnNames: Seq[String],
-                                                                                                                                                                                                                                                                                      apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17) => T,
-                                                                                                                                                                                                                                                                                      unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17)],
-                                                                                                                                                                                                                                                                                      val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
+  class BaseView17[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType](tag: Tag,
+                                                                                                                                                                                                                                                                                                       name: String,
+                                                                                                                                                                                                                                                                                                       val columnNames: Seq[String],
+                                                                                                                                                                                                                                                                                                       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17) => T,
+                                                                                                                                                                                                                                                                                                       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17)],
+                                                                                                                                                                                                                                                                                                       val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
+
     def c2 = column[A2](columnNames(1))
+
     def c3 = column[A3](columnNames(2))
+
     def c4 = column[A4](columnNames(3))
+
     def c5 = column[A5](columnNames(4))
+
     def c6 = column[A6](columnNames(5))
+
     def c7 = column[A7](columnNames(6))
+
     def c8 = column[A8](columnNames(7))
+
     def c9 = column[A9](columnNames(8))
+
     def c10 = column[A10](columnNames(9))
+
     def c11 = column[A11](columnNames(10))
+
     def c12 = column[A12](columnNames(11))
+
     def c13 = column[A13](columnNames(12))
+
     def c14 = column[A14](columnNames(13))
+
     def c15 = column[A15](columnNames(14))
+
     def c16 = column[A16](columnNames(15))
+
     def c17 = column[A17](columnNames(16))
 
     override def id = c1
@@ -1120,30 +1240,29 @@ trait FilterableViewsGenerateCode {
   }
 
 
-
-  def createView[T: ClassTag, E, A1:TypedType, A2:TypedType, A3:TypedType, A4:TypedType, A5:TypedType, A6:TypedType, A7:TypedType, A8:TypedType, A9:TypedType, A10:TypedType, A11:TypedType, A12:TypedType, A13:TypedType, A14:TypedType, A15:TypedType, A16:TypedType, A17:TypedType, A18:TypedType](name: String,
-                                                                                                                                                                                                                                                                                                      apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18) => T,
-                                                                                                                                                                                                                                                                                                      unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18)],
-                                                                                                                                                                                                                                                                                                      baseQuery: Query[E, _, Seq])(
-                                                                                                                                                                                                                                                                                                       mappings: E => (
-                                                                                                                                                                                                                                                                                                         (String, Column[A1]),
-                                                                                                                                                                                                                                                                                                           (String, Column[A2]),
-                                                                                                                                                                                                                                                                                                           (String, Column[A3]),
-                                                                                                                                                                                                                                                                                                           (String, Column[A4]),
-                                                                                                                                                                                                                                                                                                           (String, Column[A5]),
-                                                                                                                                                                                                                                                                                                           (String, Column[A6]),
-                                                                                                                                                                                                                                                                                                           (String, Column[A7]),
-                                                                                                                                                                                                                                                                                                           (String, Column[A8]),
-                                                                                                                                                                                                                                                                                                           (String, Column[A9]),
-                                                                                                                                                                                                                                                                                                           (String, Column[A10]),
-                                                                                                                                                                                                                                                                                                           (String, Column[A11]),
-                                                                                                                                                                                                                                                                                                           (String, Column[A12]),
-                                                                                                                                                                                                                                                                                                           (String, Column[A13]),
-                                                                                                                                                                                                                                                                                                           (String, Column[A14]),
-                                                                                                                                                                                                                                                                                                           (String, Column[A15]),
-                                                                                                                                                                                                                                                                                                           (String, Column[A16]),
-                                                                                                                                                                                                                                                                                                           (String, Column[A17]),
-                                                                                                                                                                                                                                                                                                           (String, Column[A18]))): TableQuery[BaseView18[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18]] = {
+  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType](name: String,
+                                                                                                                                                                                                                                                                                                                        apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18) => T,
+                                                                                                                                                                                                                                                                                                                        unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18)],
+                                                                                                                                                                                                                                                                                                                        baseQuery: Query[E, _, Seq])(
+                                                                                                                                                                                                                                                                                                                         mappings: E => (
+                                                                                                                                                                                                                                                                                                                           (String, Column[A1]),
+                                                                                                                                                                                                                                                                                                                             (String, Column[A2]),
+                                                                                                                                                                                                                                                                                                                             (String, Column[A3]),
+                                                                                                                                                                                                                                                                                                                             (String, Column[A4]),
+                                                                                                                                                                                                                                                                                                                             (String, Column[A5]),
+                                                                                                                                                                                                                                                                                                                             (String, Column[A6]),
+                                                                                                                                                                                                                                                                                                                             (String, Column[A7]),
+                                                                                                                                                                                                                                                                                                                             (String, Column[A8]),
+                                                                                                                                                                                                                                                                                                                             (String, Column[A9]),
+                                                                                                                                                                                                                                                                                                                             (String, Column[A10]),
+                                                                                                                                                                                                                                                                                                                             (String, Column[A11]),
+                                                                                                                                                                                                                                                                                                                             (String, Column[A12]),
+                                                                                                                                                                                                                                                                                                                             (String, Column[A13]),
+                                                                                                                                                                                                                                                                                                                             (String, Column[A14]),
+                                                                                                                                                                                                                                                                                                                             (String, Column[A15]),
+                                                                                                                                                                                                                                                                                                                             (String, Column[A16]),
+                                                                                                                                                                                                                                                                                                                             (String, Column[A17]),
+                                                                                                                                                                                                                                                                                                                             (String, Column[A18]))): TableQuery[BaseView18[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18]] = {
 
 
     var columnsNames = Seq[String]()
@@ -1167,29 +1286,46 @@ trait FilterableViewsGenerateCode {
   }
 
 
-  class BaseView18[T: ClassTag, A1:TypedType, A2:TypedType, A3:TypedType, A4:TypedType, A5:TypedType, A6:TypedType, A7:TypedType, A8:TypedType, A9:TypedType, A10:TypedType, A11:TypedType, A12:TypedType, A13:TypedType, A14:TypedType, A15:TypedType, A16:TypedType, A17:TypedType, A18:TypedType](tag: Tag,
-                                                                                                                                                                                                                                                                                                     name: String,
-                                                                                                                                                                                                                                                                                                     val columnNames: Seq[String],
-                                                                                                                                                                                                                                                                                                     apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18) => T,
-                                                                                                                                                                                                                                                                                                     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18)],
-                                                                                                                                                                                                                                                                                                     val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
+  class BaseView18[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType](tag: Tag,
+                                                                                                                                                                                                                                                                                                                       name: String,
+                                                                                                                                                                                                                                                                                                                       val columnNames: Seq[String],
+                                                                                                                                                                                                                                                                                                                       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18) => T,
+                                                                                                                                                                                                                                                                                                                       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18)],
+                                                                                                                                                                                                                                                                                                                       val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
+
     def c2 = column[A2](columnNames(1))
+
     def c3 = column[A3](columnNames(2))
+
     def c4 = column[A4](columnNames(3))
+
     def c5 = column[A5](columnNames(4))
+
     def c6 = column[A6](columnNames(5))
+
     def c7 = column[A7](columnNames(6))
+
     def c8 = column[A8](columnNames(7))
+
     def c9 = column[A9](columnNames(8))
+
     def c10 = column[A10](columnNames(9))
+
     def c11 = column[A11](columnNames(10))
+
     def c12 = column[A12](columnNames(11))
+
     def c13 = column[A13](columnNames(12))
+
     def c14 = column[A14](columnNames(13))
+
     def c15 = column[A15](columnNames(14))
+
     def c16 = column[A16](columnNames(15))
+
     def c17 = column[A17](columnNames(16))
+
     def c18 = column[A18](columnNames(17))
 
     override def id = c1
@@ -1216,4 +1352,5 @@ trait FilterableViewsGenerateCode {
 
     def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18) <>(apply.tupled, unapply)
   }
+
 }

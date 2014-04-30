@@ -1,14 +1,9 @@
 package org.virtuslab.beholder.model
 
 import play.api.db.slick.Config.driver.simple._
-import scala.slick.lifted.{TableQuery, Tag, ColumnBase}
+import scala.slick.lifted.{TableQuery, Tag}
 
-
-/**
- * Author: Krzysztof Romanowski
- */
 class UserMachines(tag: Tag) extends Table[(UserId, MachineId)](tag, "users_machines") {
-
 
   def userId = column[UserId]("user_id")
 

@@ -1,20 +1,15 @@
 package org.virtuslab.beholder.filters
 
-
-import play.api.data.{FormError, Mapping}
-import play.api.db.slick.Config.driver.simple._
-import play.api.data.Forms._
-import play.api.data.validation.Constraint
-import scala.Enumeration
-import play.api.data.format.Formatter
 import org.virtuslab.beholder.utils.ILikeExtension._
+import play.api.data.Forms._
+import play.api.data.format.Formatter
+import play.api.data.validation.Constraint
+import play.api.data.{FormError, Mapping}
+import scala.Enumeration
 import scala.slick.ast.{BaseTypedType, TypedType}
-import scala.slick.lifted.LiteralColumn
 import scala.slick.lifted.Column
-
-/**
- * @author krzysiek
- */
+import scala.slick.lifted.LiteralColumn
+import play.api.db.slick.Config.driver.simple._
 
 /**
  * filter field - there is information how read parameters from form data (mapping)
@@ -55,7 +50,6 @@ object FilterField {
     "from" -> optional(of[T]),
     "to" -> optional(of[T])
   )
-
 
   //API
 
@@ -106,34 +100,32 @@ object FilterField {
       override def filterOnColumn(column: Column[T])(data: T): Column[Option[Boolean]] = column === data
     }
 
+  def inRange[T](implicit tm: BaseTypedType[T], f: Formatter[T]): FilterField[T, (Option[T], Option[T])] =
+    new FilterField[T, (Option[T], Option[T])](rangeMapping[T]) {
+      override def filterOnColumn(column: Column[T])(value: (Option[T], Option[T])): Column[Option[Boolean]] = value match {
+        case (Some(from), Some(to)) => column >= from && column <= to
+        case (None, Some(to)) => column <= to
+        case (Some(from), None) => column >= from
+        case _ => LiteralColumn(Some(true))
+      }
+    }
 
-
- def inRange[T](implicit tm: BaseTypedType[T], f: Formatter[T]): FilterField[T, (Option[T], Option[T])] =
-   new FilterField[T, (Option[T], Option[T])](rangeMapping[T]) {
-     override def filterOnColumn(column: Column[T])(value: (Option[T], Option[T])): Column[Option[Boolean]] = value match {
-       case (Some(from), Some(to)) => column >= from && column <= to
-       case (None, Some(to)) => column <= to
-       case (Some(from), None) => column >= from
-       case _ => LiteralColumn(Some(true))
-     }
-   }
-
- /**
-  * search in range (form contain from and to)
-  * @param tm
-  * @param f
-  * @tparam T
-  * @return
-  */
- def inOptionRange[T](implicit tm: BaseTypedType[T], f: Formatter[T]): FilterField[Option[T], (Option[T], Option[T])] =
-   new FilterField[Option[T], (Option[T], Option[T])](rangeMapping[T]) {
-     override def filterOnColumn(column: Column[Option[T]])(value: (Option[T], Option[T])): Column[Option[Boolean]] = value match {
-       case (Some(from), Some(to)) => column >= from && column <= to
-       case (None, Some(to)) => column <= to
-       case (Some(from), None) => column >= from
-       case _ => LiteralColumn(Some(true))
-     }
-   }
+  /**
+   * search in range (form contain from and to)
+   * @param tm
+   * @param f
+   * @tparam T
+   * @return
+   */
+  def inOptionRange[T](implicit tm: BaseTypedType[T], f: Formatter[T]): FilterField[Option[T], (Option[T], Option[T])] =
+    new FilterField[Option[T], (Option[T], Option[T])](rangeMapping[T]) {
+      override def filterOnColumn(column: Column[Option[T]])(value: (Option[T], Option[T])): Column[Option[Boolean]] = value match {
+        case (Some(from), Some(to)) => column >= from && column <= to
+        case (None, Some(to)) => column <= to
+        case (Some(from), None) => column >= from
+        case _ => LiteralColumn(Some(true))
+      }
+    }
 
   /**
    * ignore given field in filter

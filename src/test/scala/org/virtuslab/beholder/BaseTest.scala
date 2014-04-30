@@ -1,21 +1,21 @@
 package org.virtuslab.beholder
 
-import org.scalatest._
-import play.api.Play
-import play.api.db.slick.DB
-import org.virtuslab.beholder.model._
-import play.api.db.slick.Config.driver.simple._
-import org.virtuslab.beholder.repositories._
-import org.virtuslab.beholder.model.User
-import org.virtuslab.beholder.model.Machine
-import play.api.test.FakeApplication
 import scala.Some
 import scala.slick.lifted.TableQuery
+
+import org.scalatest._
+import org.virtuslab.beholder.model._
+import org.virtuslab.beholder.repositories._
+import play.api.Play
+import play.api.db.slick.Config.driver.simple._
+import play.api.db.slick.DB
+import play.api.test.FakeApplication
 
 trait BaseTest extends FlatSpecLike with Matchers
 
 trait ModelIncluded {
   self: AppTest =>
+
   lazy val UsersRepository = new UsersRepository {}
 
   lazy val MachineRepository = new MachineRepository {}
@@ -53,7 +53,6 @@ trait ModelIncluded {
       (user2.id.get, machine2.id.get)
     )
   }
-
 }
 
 trait AppTest extends BaseTest with BeforeAndAfterEach with ModelIncluded {
@@ -64,7 +63,6 @@ trait AppTest extends BaseTest with BeforeAndAfterEach with ModelIncluded {
     "db.default.user" -> "sa",
     "db.default.password" -> ""
   )
-
 
   def withApp[A](func: FakeApplication => A): A = {
     val app = new FakeApplication(additionalConfiguration = testDb)

@@ -1,10 +1,7 @@
 package org.virtuslab.beholder.utils
 
-import scala.language.postfixOps
-
 /**
  * Utils for code generation - not used in production code
- * @author krzysiek
  */
 object CodeGenerationUtils {
   /**
@@ -21,14 +18,14 @@ object CodeGenerationUtils {
    * @param nr
    * @return
    */
-  def aTypes(implicit nr: Int) = fill("A" +)(nr)
+  def aTypes(implicit nr: Int) = fill("A" + _)(nr)
 
   /**
    * create B1, B2, etc
    * @param nr
    * @return
    */
-  def bTypes(implicit nr: Int) = fill("B" +)(nr)
+  def bTypes(implicit nr: Int) = fill("B" + _)(nr)
 
   /**
    * create A1:TypeMapper, A2:TypeMapper, etc
