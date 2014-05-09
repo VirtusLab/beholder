@@ -1,7 +1,7 @@
 package org.virtuslab.beholder.model
 
 import play.api.db.slick.Config.driver.simple._
-import scala.slick.lifted.{TableQuery, Tag}
+import scala.slick.lifted.{ TableQuery, Tag }
 
 class UserMachines(tag: Tag) extends Table[(UserId, MachineId)](tag, "users_machines") {
 

@@ -1,18 +1,18 @@
 package org.virtuslab.beholder.views
 
-import org.virtuslab.beholder.utils.QueryUtils
 import org.virtuslab.unicorn.ids.BaseTable
 import play.api.db.slick.Config.driver.simple._
 import play.api.db.slick.Config.driver.DDL
-import scala.slick.lifted.{TableQuery, Tag}
+import play.api.db.slick.Config.driver.QueryExecutor
+import scala.slick.lifted.{ TableQuery, Tag }
 
 import scala.language.existentials
 
 /**
  *
  * @param viewName name of view
- * @tparam Id entity id - not in a sence of lemma id cos there is no constraints on type
- * @tparam Entity entity
+ * @tparam Id entity id type
+ * @tparam Entity entity type
  */
 abstract class BaseView[Id, Entity](tag: Tag, val viewName: String) extends BaseTable[Entity](tag, viewName) {
 
@@ -26,7 +26,7 @@ abstract class BaseView[Id, Entity](tag: Tag, val viewName: String) extends Base
    * @param name
    * @return
    */
-  def columnByName(table: this.type)(name: String): Option[Column[_]] =
+  def columnByName[A](table: this.type)(name: String): Option[Column[_]] =
     columns.get(name).map(_.apply(table))
 
   /**
@@ -53,7 +53,7 @@ object BaseView {
     protected def createPhase1: Iterable[String] = {
       val viewName = table.viewName
       val fields = table.columns.keys.map(name => '"' + name + '"').mkString(", ")
-      val query = QueryUtils.selectStatements(table.query)
+      val query = selectStatements(table.query)
 
       s"CREATE VIEW $viewName ($fields) \n\t AS $query" :: Nil
     }
@@ -63,6 +63,17 @@ object BaseView {
     protected def dropPhase1: Iterable[String] = s"DROP VIEW ${table.viewName};" :: Nil
 
     protected def dropPhase2: Iterable[String] = Nil
+
+    /**
+     * util to print select query sql
+     * @param query
+     * @return
+     */
+    private def selectStatements(query: Query[_, _, Seq]): String = {
+      val castedQuery = query.asInstanceOf[Query[Any, Any, Seq]]
+      val exec: QueryExecutor[Seq[Any]] = queryToQueryExecutor(castedQuery)
+      exec.selectStatement
+    }
   }
 
 }

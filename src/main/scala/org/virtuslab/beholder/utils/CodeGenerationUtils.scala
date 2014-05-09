@@ -3,7 +3,8 @@ package org.virtuslab.beholder.utils
 /**
  * Utils for code generation - not used in production code
  */
-object CodeGenerationUtils {
+private[beholder] object CodeGenerationUtils {
+
   /**
    * create sequence of string with given function Int => String separated by separator for given numbers (starts with 1)
    * @param baseText

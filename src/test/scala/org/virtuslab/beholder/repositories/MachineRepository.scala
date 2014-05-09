@@ -1,7 +1,7 @@
 package org.virtuslab.beholder.repositories
 
 import org.virtuslab.unicorn.ids.repositories.BaseIdRepository
-import org.virtuslab.beholder.model.{Machines, Machine, MachineId}
+import org.virtuslab.beholder.model.{ Machines, Machine, MachineId }
 import scala.slick.lifted.TableQuery
 import play.api.db.slick.Config.driver.simple._
 

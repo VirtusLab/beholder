@@ -65,7 +65,7 @@ class FiltersTest extends AppTest with UserMachinesView {
       orderByCoreDesc should contain theSameElementsInOrderAs fromDbOrderedByCoresDesc.take(2)
   }
 
-  "filter"  should "skip correctly" in baseFilterTest {
+  "filter" should "skip correctly" in baseFilterTest {
     data =>
       import data._
       val orderByCoreDesc = filter.filter(baseFilter.copy(orderBy = Some("cores"), asc = false, skip = Some(1)))

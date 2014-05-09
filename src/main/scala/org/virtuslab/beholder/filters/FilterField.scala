@@ -4,12 +4,12 @@ import org.virtuslab.beholder.utils.ILikeExtension._
 import play.api.data.Forms._
 import play.api.data.format.Formatter
 import play.api.data.validation.Constraint
-import play.api.data.{FormError, Mapping}
+import play.api.data.{ FormError, Mapping }
+import play.api.db.slick.Config.driver.simple._
 import scala.Enumeration
-import scala.slick.ast.{BaseTypedType, TypedType}
+import scala.slick.ast.{ BaseTypedType, TypedType }
 import scala.slick.lifted.Column
 import scala.slick.lifted.LiteralColumn
-import play.api.db.slick.Config.driver.simple._
 
 /**
  * filter field - there is information how read parameters from form data (mapping)
@@ -61,7 +61,6 @@ object FilterField {
     override def filterOnColumn(column: Column[Int])(data: Int): Column[Option[Boolean]] = column === data
   }
 
-
   /**
    * simple check boolean
    * @return
@@ -69,7 +68,6 @@ object FilterField {
   object inBoolean extends FilterField[Boolean, Boolean](boolean) {
     override def filterOnColumn(column: Column[Boolean])(data: Boolean): Column[Option[Boolean]] = column === data
   }
-
 
   /**
    * search in text (ilike)
@@ -85,7 +83,6 @@ object FilterField {
     override def filterOnColumn(column: Column[Option[String]])(data: String): Column[Option[Boolean]] = column ilike s"%${escape(data)}%"
   }
 
-
   /**
    * check enum value
    * @tparam T - enum class (eg. Colors.type)
@@ -93,7 +90,6 @@ object FilterField {
    */
   def inEnum[T <: Enumeration](implicit tm: BaseTypedType[T#Value], formatter: Formatter[T#Value]): FilterField[T#Value, T#Value] =
     inField[T#Value]
-
 
   def inField[T](implicit tm: BaseTypedType[T], formatter: Formatter[T]): FilterField[T, T] =
     new FilterField[T, T](of[T]) {
@@ -111,7 +107,7 @@ object FilterField {
     }
 
   /**
-   * search in range (form contain from and to)
+   * Search in range (form contain from and to).
    * @param tm
    * @param f
    * @tparam T
@@ -120,7 +116,7 @@ object FilterField {
   def inOptionRange[T](implicit tm: BaseTypedType[T], f: Formatter[T]): FilterField[Option[T], (Option[T], Option[T])] =
     new FilterField[Option[T], (Option[T], Option[T])](rangeMapping[T]) {
       override def filterOnColumn(column: Column[Option[T]])(value: (Option[T], Option[T])): Column[Option[Boolean]] = value match {
-        case (Some(from), Some(to)) => column >= from && column <= to
+        case (Some(from), Some(to)) => column <= from && column <= to
         case (None, Some(to)) => column <= to
         case (Some(from), None) => column >= from
         case _ => LiteralColumn(Some(true))
@@ -128,7 +124,7 @@ object FilterField {
     }
 
   /**
-   * ignore given field in filter
+   * Ignores given field in filter.
    * @tparam T
    * @return
    */

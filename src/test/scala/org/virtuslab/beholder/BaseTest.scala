@@ -22,8 +22,7 @@ trait ModelIncluded {
 
   lazy val userMachineQuery = TableQuery[UserMachines]
 
-
-  def rollbackWithModel[A](func: Session => A): A = rollback {
+  final def rollbackWithModel[A](func: Session => A): A = rollback {
     implicit session: Session =>
       User
       UsersRepository.query.ddl.create
@@ -79,13 +78,12 @@ trait AppTest extends BaseTest with BeforeAndAfterEach with ModelIncluded {
    * @tparam A type returned by `f`
    * @return value returned from `f`
    */
-  def rollback[A](func: Session => A): A = withApp {
-    implicit app =>
-      DB.withTransaction {
-        session: Session =>
-          val out = func(session)
-          session.rollback()
-          out
-      }
+  def rollback[A](func: Session => A): A = withApp { implicit app =>
+    DB.withTransaction {
+      session: Session =>
+        val out = func(session)
+        session.rollback()
+        out
+    }
   }
 }

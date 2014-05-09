@@ -7,8 +7,8 @@ trait UserMachinesView extends ModelIncluded {
   self: AppTest =>
 
   case class UserMachineView(email: String,
-                             system: String,
-                             cores: Int)
+    system: String,
+    cores: Int)
 
   def createUsersMachineView(implicit session: Session) = {
     //query that is a base for view
@@ -22,12 +22,12 @@ trait UserMachinesView extends ModelIncluded {
       UserMachineView.apply _,
       UserMachineView.unapply _,
       baseQuery = usersMachinesQuery) {
-      case (user, machine) =>
-        //naming the fields
-        ("email" -> user.email,
-          "system" -> machine.system,
-          "cores" -> machine.cores)
-    }
+        case (user, machine) =>
+          //naming the fields
+          ("email" -> user.email,
+            "system" -> machine.system,
+            "cores" -> machine.cores)
+      }
 
     tableQuery.viewDDL.create
 

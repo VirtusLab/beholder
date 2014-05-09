@@ -32,3 +32,5 @@ scalacOptions ++= Seq(
   "-Xlint",
   "-Ywarn-all"
 )
+
+com.typesafe.sbt.SbtScalariform.scalariformSettings
