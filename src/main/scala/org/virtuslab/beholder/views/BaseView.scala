@@ -26,8 +26,8 @@ abstract class BaseView[Id, Entity](tag: Tag, val viewName: String) extends Base
    * @param name
    * @return
    */
-  def columnByName[A](table: this.type)(name: String): Option[Column[_]] =
-    columns.get(name).map(_.apply(table))
+  def columnByName[A](name: String): Column[_] =
+    columns(name).apply(this)
 
   /**
    * column that is tread as view 'id' - it is use eg. for default sort

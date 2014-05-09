@@ -30,7 +30,7 @@ final class FiltersGenerator[Entity] extends FiltersGeneratedCode[Entity] {
     new BaseFilter[A1, Entity, T, (Option[B1], Option[B2])](table) {
       private val realTable = obtainRealTable
 
-      def filterMapping: Mapping[BaseFilterEntity[(Option[B1], Option[B2])]] = baseFilterEntityMapping(tuple(
+      def filterMapping: Mapping[FilterDefinition[(Option[B1], Option[B2])]] = baseFilterEntityMapping(tuple(
         realTable.columnNames(0) -> optional(c1Mapping.mapping),
         realTable.columnNames(1) -> optional(c2Mapping.mapping)
       ))

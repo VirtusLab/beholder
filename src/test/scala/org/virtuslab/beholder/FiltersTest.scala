@@ -6,7 +6,7 @@ import play.api.db.slick.Config.driver.simple._
 
 class FiltersTest extends AppTest with UserMachinesView {
 
-  def userMachineFilter()(implicit session: Session) = {
+  private def userMachineFilter()(implicit session: Session) = {
     val view = createUsersMachineView
 
     new FiltersGenerator[UserMachineView].create(view,
@@ -16,12 +16,12 @@ class FiltersTest extends AppTest with UserMachinesView {
     )
   }
 
-  def baseFilterTest[A](testImplementation: BaseFilterData => A) = rollbackWithModel {
+  private def baseFilterTest[A](testImplementation: BaseFilterData => A) = rollbackWithModel {
     implicit session: Session =>
       testImplementation(new BaseFilterData())
   }
 
-  class BaseFilterData(implicit val session: Session) extends PopulatedDatabase {
+  private class BaseFilterData(implicit val session: Session) extends PopulatedDatabase {
     val filter = userMachineFilter()
     val baseFilter = filter.emptyFilterData
     val baseFilterData = baseFilter.data
@@ -29,7 +29,9 @@ class FiltersTest extends AppTest with UserMachinesView {
     val allFromDb = filter.table.list
   }
 
-  "filter" should "query all entities for empty filter" in baseFilterTest {
+  behavior of "filter"
+
+  it should "query all entities for empty filter" in baseFilterTest {
     data =>
       import data._
       val all = filter.filter(baseFilter)
@@ -37,38 +39,38 @@ class FiltersTest extends AppTest with UserMachinesView {
       all should contain theSameElementsAs allFromDb
   }
 
-  "filter" should "order by argument asc correctly" in baseFilterTest {
+  it should "order by argument asc correctly" in baseFilterTest {
     data =>
       import data._
 
       val fromDbOrderedByCores = allFromDb.sortBy(view => (view.cores, view.email))
-      val orderByCore = filter.filter(baseFilter.copy(orderBy = Some("cores")))
+      val orderByCore = filter.filter(baseFilter.copy(orderBy = Some(Order("cores", asc = true))))
 
       orderByCore should contain theSameElementsInOrderAs fromDbOrderedByCores
   }
 
-  "filter" should "order by argument desc correctly" in baseFilterTest {
+  it should "order by argument desc correctly" in baseFilterTest {
     data =>
       import data._
-      val orderByCoreDesc = filter.filter(baseFilter.copy(orderBy = Some("cores"), asc = false))
+      val orderByCoreDesc = filter.filter(baseFilter.copy(orderBy = Some(Order("cores", asc = false))))
       val fromDbOrderedByCoresDesc = allFromDb.sortBy(view => (-view.cores, view.email))
 
       orderByCoreDesc should contain theSameElementsInOrderAs fromDbOrderedByCoresDesc
   }
 
-  "filter" should "take correctly" in baseFilterTest {
+  it should "take correctly" in baseFilterTest {
     data =>
       import data._
-      val orderByCoreDesc = filter.filter(baseFilter.copy(orderBy = Some("cores"), asc = false, take = Some(2)))
+      val orderByCoreDesc = filter.filter(baseFilter.copy(orderBy = Some(Order("cores", asc = false)), take = Some(2)))
       val fromDbOrderedByCoresDesc = allFromDb.sortBy(view => (-view.cores, view.email))
 
       orderByCoreDesc should contain theSameElementsInOrderAs fromDbOrderedByCoresDesc.take(2)
   }
 
-  "filter" should "skip correctly" in baseFilterTest {
+  it should "skip correctly" in baseFilterTest {
     data =>
       import data._
-      val orderByCoreDesc = filter.filter(baseFilter.copy(orderBy = Some("cores"), asc = false, skip = Some(1)))
+      val orderByCoreDesc = filter.filter(baseFilter.copy(orderBy = Some(Order("cores", asc = false)), skip = Some(1)))
       val fromDbOrderedByCoresDesc = allFromDb.sortBy(view => (-view.cores, view.email))
 
       orderByCoreDesc should contain theSameElementsInOrderAs fromDbOrderedByCoresDesc.drop(1)

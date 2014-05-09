@@ -4,20 +4,16 @@ import play.api.db.slick.Config.driver.simple._
 
 class ViewsTest extends AppTest with UserMachinesView {
 
-  "view" should "be querable" in rollbackWithModel {
+  "view" should "be queryable" in rollbackWithModel {
     implicit session =>
 
       val view = createUsersMachineView
 
       new PopulatedDatabase
 
-      val query = for {
-        a <- view
-      } yield a
+      val all = view.list
 
-      val all = query.list
-
-      all.size should equal(3)
+      all.size shouldEqual 3
   }
 
 }

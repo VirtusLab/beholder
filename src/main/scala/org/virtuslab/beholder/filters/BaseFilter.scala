@@ -4,23 +4,24 @@ import org.virtuslab.beholder.views.BaseView
 import play.api.data.{ Form, Mapping }
 import play.api.db.slick.Config.driver.simple._
 import scala.slick.lifted.TableQuery
+import scala.slick.lifted.Ordered
 
 /**
  * Base class that is mapped to form.
  * Contains all common and specific (data field of generic type Data) filter data
  *
- * @param take
- * @param skip
- * @param orderBy
- * @param asc
+ * @param take how many elements to take
+ * @param skip how many elements to skip before taking
+ * @param orderBy field by which ordering is done
  * @param data
  * @tparam Data type of filter data
  */
-case class BaseFilterEntity[Data](take: Option[Int],
+case class FilterDefinition[Data](take: Option[Int],
   skip: Option[Int],
-  orderBy: Option[String],
-  asc: Boolean,
+  orderBy: Option[Order],
   data: Data)
+
+case class Order(column: String, asc: Boolean)
 
 /**
  * Base filter class, contains public operations for all filters instances.
@@ -37,7 +38,7 @@ abstract class BaseFilter[Id, Entity, Table <: BaseView[Id, Entity], FilteredDat
    * from mapping for this filter
    * @return
    */
-  protected def filterMapping: Mapping[BaseFilterEntity[FilteredData]]
+  protected def filterMapping: Mapping[FilterDefinition[FilteredData]]
 
   /**
    * Empty data for filter representing empty filter (all fields in tuple (type M) are filled with Empty)
@@ -55,7 +56,7 @@ abstract class BaseFilter[Id, Entity, Table <: BaseView[Id, Entity], FilteredDat
   /**
    * @return data representing empty filter - query for all entities in table
    */
-  final def emptyFilterData = BaseFilterEntity(None, None, None, asc = true, emptyFilterDataInner)
+  final def emptyFilterData = FilterDefinition(None, None, None, emptyFilterDataInner)
 
   /**
    * form for this filter
@@ -69,14 +70,14 @@ abstract class BaseFilter[Id, Entity, Table <: BaseView[Id, Entity], FilteredDat
    * @param session
    * @return
    */
-  final def filter(data: BaseFilterEntity[FilteredData])(implicit session: Session): Seq[Entity] = {
+  final def filter(data: FilterDefinition[FilteredData])(implicit session: Session): Seq[Entity] = {
     val base = table.filter(filters(data.data)).sortBy {
       inQueryTable =>
         val globalColumns =
-          order(data)(inQueryTable).map(c =>
-            if (data.asc) c.asc else c.desc
-          ).toSeq.flatMap(_.columns)
-        new scala.slick.lifted.Ordered(globalColumns ++ inQueryTable.id.asc.columns)
+          order(data)(inQueryTable).map {
+            case (column, asc) => if (asc) column.asc else column.desc
+          }.toSeq.flatMap(_.columns)
+        new Ordered(globalColumns ++ inQueryTable.id.asc.columns)
     }
 
     val afterTake = data.take.fold(base)(base.take)
@@ -86,6 +87,6 @@ abstract class BaseFilter[Id, Entity, Table <: BaseView[Id, Entity], FilteredDat
   }
 
   //ordering
-  private def order(data: BaseFilterEntity[FilteredData])(table: Table): Option[Column[_]] =
-    data.orderBy.flatMap(table.columnByName(table))
+  private def order(data: FilterDefinition[FilteredData])(table: Table): Option[(Column[_], Boolean)] =
+    data.orderBy.map { case order => (table.columnByName(order.column), order.asc) }
 }

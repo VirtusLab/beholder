@@ -16,7 +16,11 @@ private[filters] trait BaseFilterData {
     "orderBy" -> optional(text),
     "asc" -> boolean,
     "data" -> dataMapping
-  )(BaseFilterEntity.apply)(BaseFilterEntity.unapply)
+  )(
+      (take, skip, orderBy, asc, data) => FilterDefinition[D](take, skip, orderBy.map(Order(_, asc)), data)
+    )(
+        filter => Some((filter.take, filter.skip, filter.orderBy.map(_.column), filter.orderBy.fold(true)(_.asc), filter.data))
+      )
 
 }
 
@@ -37,7 +41,7 @@ protected[beholder] trait FiltersGeneratedCode[Entity] extends BaseFilterData {
 
       private val realTable = obtainRealTable
 
-      def filterMapping: Mapping[BaseFilterEntity[(Option[B1], Option[B2], Option[B3])]] = baseFilterEntityMapping(tuple(
+      def filterMapping: Mapping[FilterDefinition[(Option[B1], Option[B2], Option[B3])]] = baseFilterEntityMapping(tuple(
         realTable.columnNames(0) -> optional(c1Mapping.mapping),
         realTable.columnNames(1) -> optional(c2Mapping.mapping),
         realTable.columnNames(2) -> optional(c3Mapping.mapping)
@@ -70,7 +74,7 @@ protected[beholder] trait FiltersGeneratedCode[Entity] extends BaseFilterData {
 
       private val realTable = obtainRealTable
 
-      def filterMapping: Mapping[BaseFilterEntity[(Option[B1], Option[B2], Option[B3], Option[B4])]] = baseFilterEntityMapping(tuple(
+      def filterMapping: Mapping[FilterDefinition[(Option[B1], Option[B2], Option[B3], Option[B4])]] = baseFilterEntityMapping(tuple(
         realTable.columnNames(0) -> optional(c1Mapping.mapping),
         realTable.columnNames(1) -> optional(c2Mapping.mapping),
         realTable.columnNames(2) -> optional(c3Mapping.mapping),
@@ -106,7 +110,7 @@ protected[beholder] trait FiltersGeneratedCode[Entity] extends BaseFilterData {
 
       private val realTable = obtainRealTable
 
-      def filterMapping: Mapping[BaseFilterEntity[(Option[B1], Option[B2], Option[B3], Option[B4], Option[B5])]] = baseFilterEntityMapping(tuple(
+      def filterMapping: Mapping[FilterDefinition[(Option[B1], Option[B2], Option[B3], Option[B4], Option[B5])]] = baseFilterEntityMapping(tuple(
         realTable.columnNames(0) -> optional(c1Mapping.mapping),
         realTable.columnNames(1) -> optional(c2Mapping.mapping),
         realTable.columnNames(2) -> optional(c3Mapping.mapping),
@@ -145,7 +149,7 @@ protected[beholder] trait FiltersGeneratedCode[Entity] extends BaseFilterData {
 
       private val realTable = obtainRealTable
 
-      def filterMapping: Mapping[BaseFilterEntity[(Option[B1], Option[B2], Option[B3], Option[B4], Option[B5], Option[B6])]] = baseFilterEntityMapping(tuple(
+      def filterMapping: Mapping[FilterDefinition[(Option[B1], Option[B2], Option[B3], Option[B4], Option[B5], Option[B6])]] = baseFilterEntityMapping(tuple(
         realTable.columnNames(0) -> optional(c1Mapping.mapping),
         realTable.columnNames(1) -> optional(c2Mapping.mapping),
         realTable.columnNames(2) -> optional(c3Mapping.mapping),
@@ -187,7 +191,7 @@ protected[beholder] trait FiltersGeneratedCode[Entity] extends BaseFilterData {
 
       private val realTable = obtainRealTable
 
-      def filterMapping: Mapping[BaseFilterEntity[(Option[B1], Option[B2], Option[B3], Option[B4], Option[B5], Option[B6], Option[B7])]] = baseFilterEntityMapping(tuple(
+      def filterMapping: Mapping[FilterDefinition[(Option[B1], Option[B2], Option[B3], Option[B4], Option[B5], Option[B6], Option[B7])]] = baseFilterEntityMapping(tuple(
         realTable.columnNames(0) -> optional(c1Mapping.mapping),
         realTable.columnNames(1) -> optional(c2Mapping.mapping),
         realTable.columnNames(2) -> optional(c3Mapping.mapping),
@@ -232,7 +236,7 @@ protected[beholder] trait FiltersGeneratedCode[Entity] extends BaseFilterData {
 
       private val realTable = obtainRealTable
 
-      def filterMapping: Mapping[BaseFilterEntity[(Option[B1], Option[B2], Option[B3], Option[B4], Option[B5], Option[B6], Option[B7], Option[B8])]] = baseFilterEntityMapping(tuple(
+      def filterMapping: Mapping[FilterDefinition[(Option[B1], Option[B2], Option[B3], Option[B4], Option[B5], Option[B6], Option[B7], Option[B8])]] = baseFilterEntityMapping(tuple(
         realTable.columnNames(0) -> optional(c1Mapping.mapping),
         realTable.columnNames(1) -> optional(c2Mapping.mapping),
         realTable.columnNames(2) -> optional(c3Mapping.mapping),
@@ -280,7 +284,7 @@ protected[beholder] trait FiltersGeneratedCode[Entity] extends BaseFilterData {
 
       private val realTable = obtainRealTable
 
-      def filterMapping: Mapping[BaseFilterEntity[(Option[B1], Option[B2], Option[B3], Option[B4], Option[B5], Option[B6], Option[B7], Option[B8], Option[B9])]] = baseFilterEntityMapping(tuple(
+      def filterMapping: Mapping[FilterDefinition[(Option[B1], Option[B2], Option[B3], Option[B4], Option[B5], Option[B6], Option[B7], Option[B8], Option[B9])]] = baseFilterEntityMapping(tuple(
         realTable.columnNames(0) -> optional(c1Mapping.mapping),
         realTable.columnNames(1) -> optional(c2Mapping.mapping),
         realTable.columnNames(2) -> optional(c3Mapping.mapping),
@@ -331,7 +335,7 @@ protected[beholder] trait FiltersGeneratedCode[Entity] extends BaseFilterData {
 
       private val realTable = obtainRealTable
 
-      def filterMapping: Mapping[BaseFilterEntity[(Option[B1], Option[B2], Option[B3], Option[B4], Option[B5], Option[B6], Option[B7], Option[B8], Option[B9], Option[B10])]] = baseFilterEntityMapping(tuple(
+      def filterMapping: Mapping[FilterDefinition[(Option[B1], Option[B2], Option[B3], Option[B4], Option[B5], Option[B6], Option[B7], Option[B8], Option[B9], Option[B10])]] = baseFilterEntityMapping(tuple(
         realTable.columnNames(0) -> optional(c1Mapping.mapping),
         realTable.columnNames(1) -> optional(c2Mapping.mapping),
         realTable.columnNames(2) -> optional(c3Mapping.mapping),
@@ -385,7 +389,7 @@ protected[beholder] trait FiltersGeneratedCode[Entity] extends BaseFilterData {
 
       private val realTable = obtainRealTable
 
-      def filterMapping: Mapping[BaseFilterEntity[(Option[B1], Option[B2], Option[B3], Option[B4], Option[B5], Option[B6], Option[B7], Option[B8], Option[B9], Option[B10], Option[B11])]] = baseFilterEntityMapping(tuple(
+      def filterMapping: Mapping[FilterDefinition[(Option[B1], Option[B2], Option[B3], Option[B4], Option[B5], Option[B6], Option[B7], Option[B8], Option[B9], Option[B10], Option[B11])]] = baseFilterEntityMapping(tuple(
         realTable.columnNames(0) -> optional(c1Mapping.mapping),
         realTable.columnNames(1) -> optional(c2Mapping.mapping),
         realTable.columnNames(2) -> optional(c3Mapping.mapping),
@@ -442,7 +446,7 @@ protected[beholder] trait FiltersGeneratedCode[Entity] extends BaseFilterData {
 
       private val realTable = obtainRealTable
 
-      def filterMapping: Mapping[BaseFilterEntity[(Option[B1], Option[B2], Option[B3], Option[B4], Option[B5], Option[B6], Option[B7], Option[B8], Option[B9], Option[B10], Option[B11], Option[B12])]] = baseFilterEntityMapping(tuple(
+      def filterMapping: Mapping[FilterDefinition[(Option[B1], Option[B2], Option[B3], Option[B4], Option[B5], Option[B6], Option[B7], Option[B8], Option[B9], Option[B10], Option[B11], Option[B12])]] = baseFilterEntityMapping(tuple(
         realTable.columnNames(0) -> optional(c1Mapping.mapping),
         realTable.columnNames(1) -> optional(c2Mapping.mapping),
         realTable.columnNames(2) -> optional(c3Mapping.mapping),
@@ -502,7 +506,7 @@ protected[beholder] trait FiltersGeneratedCode[Entity] extends BaseFilterData {
 
       private val realTable = obtainRealTable
 
-      def filterMapping: Mapping[BaseFilterEntity[(Option[B1], Option[B2], Option[B3], Option[B4], Option[B5], Option[B6], Option[B7], Option[B8], Option[B9], Option[B10], Option[B11], Option[B12], Option[B13])]] = baseFilterEntityMapping(tuple(
+      def filterMapping: Mapping[FilterDefinition[(Option[B1], Option[B2], Option[B3], Option[B4], Option[B5], Option[B6], Option[B7], Option[B8], Option[B9], Option[B10], Option[B11], Option[B12], Option[B13])]] = baseFilterEntityMapping(tuple(
         realTable.columnNames(0) -> optional(c1Mapping.mapping),
         realTable.columnNames(1) -> optional(c2Mapping.mapping),
         realTable.columnNames(2) -> optional(c3Mapping.mapping),
@@ -565,7 +569,7 @@ protected[beholder] trait FiltersGeneratedCode[Entity] extends BaseFilterData {
 
       private val realTable = obtainRealTable
 
-      def filterMapping: Mapping[BaseFilterEntity[(Option[B1], Option[B2], Option[B3], Option[B4], Option[B5], Option[B6], Option[B7], Option[B8], Option[B9], Option[B10], Option[B11], Option[B12], Option[B13], Option[B14])]] = baseFilterEntityMapping(tuple(
+      def filterMapping: Mapping[FilterDefinition[(Option[B1], Option[B2], Option[B3], Option[B4], Option[B5], Option[B6], Option[B7], Option[B8], Option[B9], Option[B10], Option[B11], Option[B12], Option[B13], Option[B14])]] = baseFilterEntityMapping(tuple(
         realTable.columnNames(0) -> optional(c1Mapping.mapping),
         realTable.columnNames(1) -> optional(c2Mapping.mapping),
         realTable.columnNames(2) -> optional(c3Mapping.mapping),
@@ -631,7 +635,7 @@ protected[beholder] trait FiltersGeneratedCode[Entity] extends BaseFilterData {
 
       private val realTable = obtainRealTable
 
-      def filterMapping: Mapping[BaseFilterEntity[(Option[B1], Option[B2], Option[B3], Option[B4], Option[B5], Option[B6], Option[B7], Option[B8], Option[B9], Option[B10], Option[B11], Option[B12], Option[B13], Option[B14], Option[B15])]] = baseFilterEntityMapping(tuple(
+      def filterMapping: Mapping[FilterDefinition[(Option[B1], Option[B2], Option[B3], Option[B4], Option[B5], Option[B6], Option[B7], Option[B8], Option[B9], Option[B10], Option[B11], Option[B12], Option[B13], Option[B14], Option[B15])]] = baseFilterEntityMapping(tuple(
         realTable.columnNames(0) -> optional(c1Mapping.mapping),
         realTable.columnNames(1) -> optional(c2Mapping.mapping),
         realTable.columnNames(2) -> optional(c3Mapping.mapping),
@@ -700,7 +704,7 @@ protected[beholder] trait FiltersGeneratedCode[Entity] extends BaseFilterData {
 
       private val realTable = obtainRealTable
 
-      def filterMapping: Mapping[BaseFilterEntity[(Option[B1], Option[B2], Option[B3], Option[B4], Option[B5], Option[B6], Option[B7], Option[B8], Option[B9], Option[B10], Option[B11], Option[B12], Option[B13], Option[B14], Option[B15], Option[B16])]] = baseFilterEntityMapping(tuple(
+      def filterMapping: Mapping[FilterDefinition[(Option[B1], Option[B2], Option[B3], Option[B4], Option[B5], Option[B6], Option[B7], Option[B8], Option[B9], Option[B10], Option[B11], Option[B12], Option[B13], Option[B14], Option[B15], Option[B16])]] = baseFilterEntityMapping(tuple(
         realTable.columnNames(0) -> optional(c1Mapping.mapping),
         realTable.columnNames(1) -> optional(c2Mapping.mapping),
         realTable.columnNames(2) -> optional(c3Mapping.mapping),
@@ -772,7 +776,7 @@ protected[beholder] trait FiltersGeneratedCode[Entity] extends BaseFilterData {
 
       private val realTable = obtainRealTable
 
-      def filterMapping: Mapping[BaseFilterEntity[(Option[B1], Option[B2], Option[B3], Option[B4], Option[B5], Option[B6], Option[B7], Option[B8], Option[B9], Option[B10], Option[B11], Option[B12], Option[B13], Option[B14], Option[B15], Option[B16], Option[B17])]] = baseFilterEntityMapping(tuple(
+      def filterMapping: Mapping[FilterDefinition[(Option[B1], Option[B2], Option[B3], Option[B4], Option[B5], Option[B6], Option[B7], Option[B8], Option[B9], Option[B10], Option[B11], Option[B12], Option[B13], Option[B14], Option[B15], Option[B16], Option[B17])]] = baseFilterEntityMapping(tuple(
         realTable.columnNames(0) -> optional(c1Mapping.mapping),
         realTable.columnNames(1) -> optional(c2Mapping.mapping),
         realTable.columnNames(2) -> optional(c3Mapping.mapping),
@@ -847,7 +851,7 @@ protected[beholder] trait FiltersGeneratedCode[Entity] extends BaseFilterData {
 
       private val realTable = obtainRealTable
 
-      def filterMapping: Mapping[BaseFilterEntity[(Option[B1], Option[B2], Option[B3], Option[B4], Option[B5], Option[B6], Option[B7], Option[B8], Option[B9], Option[B10], Option[B11], Option[B12], Option[B13], Option[B14], Option[B15], Option[B16], Option[B17], Option[B18])]] = baseFilterEntityMapping(tuple(
+      def filterMapping: Mapping[FilterDefinition[(Option[B1], Option[B2], Option[B3], Option[B4], Option[B5], Option[B6], Option[B7], Option[B8], Option[B9], Option[B10], Option[B11], Option[B12], Option[B13], Option[B14], Option[B15], Option[B16], Option[B17], Option[B18])]] = baseFilterEntityMapping(tuple(
         realTable.columnNames(0) -> optional(c1Mapping.mapping),
         realTable.columnNames(1) -> optional(c2Mapping.mapping),
         realTable.columnNames(2) -> optional(c3Mapping.mapping),
