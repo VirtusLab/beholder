@@ -1,8 +1,8 @@
 package org.virtuslab.beholder
 
-import org.virtuslab.beholder.filters._
 import org.virtuslab.beholder.filters.FilterField._
-import play.api.db.slick.Config.driver.simple._
+import org.virtuslab.beholder.filters._
+import org.virtuslab.unicorn.UnicornPlay.driver.simple._
 
 class FiltersTest extends AppTest with UserMachinesView {
 

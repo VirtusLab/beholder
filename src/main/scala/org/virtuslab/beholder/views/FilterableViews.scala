@@ -1,9 +1,9 @@
 package org.virtuslab.beholder.views
 
-import play.api.db.slick.Config.driver.simple._
-import scala.slick.lifted.{ TableQuery, Tag, Column }
-import scala.slick.ast.TypedType
+import org.virtuslab.unicorn.UnicornPlay.driver.simple._
 import scala.reflect.ClassTag
+import scala.slick.ast.TypedType
+import scala.slick.lifted.{ TableQuery, Tag, Column }
 
 /**
  * generates code for file FilterableViewsGeneratedCode

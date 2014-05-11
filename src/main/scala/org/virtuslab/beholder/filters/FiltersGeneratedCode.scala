@@ -1,12 +1,11 @@
 package org.virtuslab.beholder.filters
 
+import org.virtuslab.beholder.views.FilterableViews._
+import org.virtuslab.unicorn.UnicornPlay.driver.simple._
+import play.api.data.Forms._
+import play.api.data.Mapping
 import scala.slick.ast.TypedType
 import scala.slick.lifted.{ Column, LiteralColumn, TableQuery }
-
-import org.virtuslab.beholder.views.FilterableViews._
-import play.api.data.Mapping
-import play.api.data.Forms._
-import play.api.db.slick.Config.driver.simple._
 
 private[filters] trait BaseFilterData {
 
@@ -21,7 +20,6 @@ private[filters] trait BaseFilterData {
     )(
         filter => Some((filter.take, filter.skip, filter.orderBy.map(_.column), filter.orderBy.fold(true)(_.asc), filter.data))
       )
-
 }
 
 /**

@@ -1,7 +1,9 @@
 package org.virtuslab.beholder
 
+import org.virtuslab.beholder.model.{ Machines, Users }
 import org.virtuslab.beholder.views.FilterableViews
-import play.api.db.slick.Config.driver.simple._
+import org.virtuslab.unicorn.UnicornPlay.driver.simple._
+import scala.slick.lifted.TableQuery
 
 trait UserMachinesView extends ModelIncluded {
   self: AppTest =>
@@ -13,9 +15,9 @@ trait UserMachinesView extends ModelIncluded {
   def createUsersMachineView(implicit session: Session) = {
     //query that is a base for view
     val usersMachinesQuery = for {
-      user <- UsersRepository.query
+      user <- TableQuery[Users]
       userMachine <- userMachineQuery if user.id === userMachine.userId
-      machine <- MachineRepository.query if machine.id === userMachine.machineId
+      machine <- TableQuery[Machines] if machine.id === userMachine.machineId
     } yield (user, machine)
 
     val tableQuery = FilterableViews.createView(name = "USERS_MACHINE_VIEW",

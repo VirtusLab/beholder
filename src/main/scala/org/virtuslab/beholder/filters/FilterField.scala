@@ -1,11 +1,11 @@
 package org.virtuslab.beholder.filters
 
 import org.virtuslab.beholder.utils.ILikeExtension._
+import org.virtuslab.unicorn.UnicornPlay.driver.simple._
 import play.api.data.Forms._
 import play.api.data.format.Formatter
 import play.api.data.validation.Constraint
 import play.api.data.{ FormError, Mapping }
-import play.api.db.slick.Config.driver.simple._
 import scala.Enumeration
 import scala.slick.ast.{ BaseTypedType, TypedType }
 import scala.slick.lifted.Column

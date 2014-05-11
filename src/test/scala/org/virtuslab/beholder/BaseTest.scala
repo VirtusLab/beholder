@@ -1,15 +1,14 @@
 package org.virtuslab.beholder
 
-import scala.Some
-import scala.slick.lifted.TableQuery
-
 import org.scalatest._
 import org.virtuslab.beholder.model._
 import org.virtuslab.beholder.repositories._
+import org.virtuslab.unicorn.UnicornPlay.driver.simple._
 import play.api.Play
-import play.api.db.slick.Config.driver.simple._
 import play.api.db.slick.DB
 import play.api.test.FakeApplication
+import scala.Some
+import scala.slick.lifted.TableQuery
 
 trait BaseTest extends FlatSpecLike with Matchers
 
@@ -25,8 +24,8 @@ trait ModelIncluded {
   final def rollbackWithModel[A](func: Session => A): A = rollback {
     implicit session: Session =>
       User
-      UsersRepository.query.ddl.create
-      MachineRepository.query.ddl.create
+      UsersRepository.create
+      MachineRepository.create
       userMachineQuery.ddl.create
       func(session)
   }

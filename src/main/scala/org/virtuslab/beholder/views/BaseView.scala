@@ -1,12 +1,11 @@
 package org.virtuslab.beholder.views
 
-import org.virtuslab.unicorn.ids.BaseTable
-import play.api.db.slick.Config.driver.simple._
-import play.api.db.slick.Config.driver.DDL
-import play.api.db.slick.Config.driver.QueryExecutor
-import scala.slick.lifted.{ TableQuery, Tag }
-
+import org.virtuslab.unicorn.UnicornPlay._
+import org.virtuslab.unicorn.UnicornPlay.driver.DDL
+import org.virtuslab.unicorn.UnicornPlay.driver.QueryExecutor
+import org.virtuslab.unicorn.UnicornPlay.driver.simple._
 import scala.language.existentials
+import scala.slick.lifted.{ TableQuery, Tag }
 
 /**
  *

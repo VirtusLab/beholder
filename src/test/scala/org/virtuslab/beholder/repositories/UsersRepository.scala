@@ -1,9 +1,9 @@
 package org.virtuslab.beholder.repositories
 
-import play.api.db.slick.Config.driver.simple._
-import org.virtuslab.unicorn.ids.repositories._
-import org.virtuslab.beholder.model._
 import org.virtuslab.beholder.model.User
+import org.virtuslab.beholder.model._
+import org.virtuslab.unicorn.UnicornPlay._
+import org.virtuslab.unicorn.UnicornPlay.driver.simple._
 import scala.slick.lifted.TableQuery
 
-class UsersRepository extends BaseIdRepository[UserId, User, Users]("Users", TableQuery[Users])
+class UsersRepository extends BaseIdRepository[UserId, User, Users](TableQuery[Users])

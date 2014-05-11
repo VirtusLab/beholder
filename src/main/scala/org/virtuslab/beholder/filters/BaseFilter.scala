@@ -1,10 +1,10 @@
 package org.virtuslab.beholder.filters
 
 import org.virtuslab.beholder.views.BaseView
+import org.virtuslab.unicorn.UnicornPlay.driver.simple._
 import play.api.data.{ Form, Mapping }
-import play.api.db.slick.Config.driver.simple._
-import scala.slick.lifted.TableQuery
 import scala.slick.lifted.Ordered
+import scala.slick.lifted.TableQuery
 
 /**
  * Base class that is mapped to form.

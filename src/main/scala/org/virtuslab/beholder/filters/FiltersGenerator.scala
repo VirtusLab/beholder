@@ -1,9 +1,9 @@
 package org.virtuslab.beholder.filters
 
 import org.virtuslab.beholder.views.FilterableViews.BaseView2
+import org.virtuslab.unicorn.UnicornPlay.driver.simple._
 import play.api.data.Forms._
 import play.api.data.Mapping
-import play.api.db.slick.Config.driver.simple._
 import scala.slick.ast.TypedType
 
 final class FiltersGenerator[Entity] extends FiltersGeneratedCode[Entity] {
