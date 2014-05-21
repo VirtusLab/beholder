@@ -5,7 +5,6 @@ import org.virtuslab.unicorn.UnicornPlay.driver.simple._
 import play.api.data.Forms._
 import play.api.data.Mapping
 import scala.slick.ast.TypedType
-import scala.slick.lifted.{ Column, LiteralColumn, TableQuery }
 
 private[filters] trait BaseFilterData {
 

@@ -9,6 +9,8 @@ import play.api.db.slick.DB
 import play.api.test.FakeApplication
 import scala.Some
 import scala.slick.lifted.TableQuery
+import org.joda.time.DateTime
+import java.sql.Date
 
 trait BaseTest extends FlatSpecLike with Matchers
 
@@ -38,8 +40,8 @@ trait ModelIncluded {
     ).map(user => user.copy(id = Some(UsersRepository.save(user))))
 
     val machines = Seq(
-      Machine(None, "a@a.pl", "Ubuntu", 4),
-      Machine(None, "o@a.pl", "Fedora", 1)
+      Machine(None, "a@a.pl", "Ubuntu", 4, new Date(DateTime.now().getMillis)),
+      Machine(None, "o@a.pl", "Fedora", 1, new Date(DateTime.now().getMillis))
     ).map(machine => machine.copy(id = Some(MachineRepository.save(machine))))
 
     val Seq(user1, user2) = users

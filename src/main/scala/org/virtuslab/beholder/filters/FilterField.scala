@@ -8,8 +8,6 @@ import play.api.data.validation.Constraint
 import play.api.data.{ FormError, Mapping }
 import scala.Enumeration
 import scala.slick.ast.{ BaseTypedType, TypedType }
-import scala.slick.lifted.Column
-import scala.slick.lifted.LiteralColumn
 
 /**
  * filter field - there is information how read parameters from form data (mapping)
@@ -33,7 +31,7 @@ abstract class FilterField[A: TypedType, B](val mapping: Mapping[B]) {
 object FilterField {
 
   private def ignoreMapping[T] = new Mapping[T] {
-    val key: String = ""
+    val key = ""
     val mappings: Seq[Mapping[_]] = Nil
     val constraints: Seq[Constraint[T]] = Nil
 
@@ -99,11 +97,11 @@ object FilterField {
   def inRange[T](implicit tm: BaseTypedType[T], f: Formatter[T]): FilterField[T, (Option[T], Option[T])] =
     new FilterField[T, (Option[T], Option[T])](rangeMapping[T]) {
       override def filterOnColumn(column: Column[T])(value: (Option[T], Option[T])): Column[Option[Boolean]] = value match {
-        case (Some(from), Some(to)) => column >= from && column <= to
-        case (None, Some(to)) => column <= to
-        case (Some(from), None) => column >= from
-        case _ => LiteralColumn(Some(true))
-      }
+          case (Some(from), Some(to)) => column >= from && column <= to
+          case (None, Some(to)) => column <= to
+          case (Some(from), None) => column >= from
+          case _ => LiteralColumn(Some(true))
+        }
     }
 
   /**

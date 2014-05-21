@@ -3,17 +3,23 @@ package org.virtuslab.beholder
 import org.virtuslab.beholder.filters.FilterField._
 import org.virtuslab.beholder.filters._
 import org.virtuslab.unicorn.UnicornPlay.driver.simple._
+import org.joda.time.DateTime
+import play.api.data.format.Formats._
+import org.virtuslab.unicorn.UnicornPlay._
+import java.sql.Date
 
 class FiltersTest extends AppTest with UserMachinesView {
 
   private def userMachineFilter()(implicit session: Session) = {
     val view = createUsersMachineView
-
-    new FiltersGenerator[UserMachineView].create(view,
-      inText,
-      inText,
-      inIntField
-    )
+    new CustomTypeMappers {
+      val filterGenerator = new FiltersGenerator[UserMachineView].create(view,
+        inText,
+        inText,
+        inIntField,
+        inRange[Date]
+      )
+    }.filterGenerator
   }
 
   private def baseFilterTest[A](testImplementation: BaseFilterData => A) = rollbackWithModel {
@@ -74,5 +80,13 @@ class FiltersTest extends AppTest with UserMachinesView {
       val fromDbOrderedByCoresDesc = allFromDb.sortBy(view => (-view.cores, view.email))
 
       orderByCoreDesc should contain theSameElementsInOrderAs fromDbOrderedByCoresDesc.drop(1)
+  }
+
+  it should "not crash for date option" in baseFilterTest {
+    data =>
+      import data._
+      val a = baseFilter.data
+      val dataRange = Some((None, Some(new Date(DateTime.now().getMillis))))
+      val orderByCoreDesc = filter.filter(baseFilter.copy(data = a.copy(_4 = dataRange)))
   }
 }

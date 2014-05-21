@@ -2,7 +2,7 @@ package org.virtuslab.beholder.model
 
 import org.virtuslab.unicorn.UnicornPlay._
 import org.virtuslab.unicorn.UnicornPlay.driver.simple._
-import scala.slick.lifted.Tag
+import java.sql.Date
 
 /** Id class for type-safe joins and queries. */
 case class MachineId(id: Long) extends AnyVal with BaseId
@@ -24,7 +24,8 @@ object MachineId extends IdCompanion[MachineId]
 case class Machine(id: Option[MachineId],
   url: String,
   system: String,
-  cores: Int) extends WithId[MachineId]
+  cores: Int,
+  created: Date) extends WithId[MachineId]
 
 /** Table definition for machines. */
 class Machines(tag: Tag) extends IdTable[MachineId, Machine](tag, "MACHINES") {
@@ -35,5 +36,7 @@ class Machines(tag: Tag) extends IdTable[MachineId, Machine](tag, "MACHINES") {
 
   def cores = column[Int]("cores", O.NotNull)
 
-  override def * = (id.?, url, system, cores) <> (Machine.tupled, Machine.unapply)
+  def created = column[Date]("created", O.NotNull)
+
+  override def * = (id.?, url, system, cores, created) <> (Machine.tupled, Machine.unapply)
 }

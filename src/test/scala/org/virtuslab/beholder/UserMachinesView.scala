@@ -3,36 +3,39 @@ package org.virtuslab.beholder
 import org.virtuslab.beholder.model.{ Machines, Users }
 import org.virtuslab.beholder.views.FilterableViews
 import org.virtuslab.unicorn.UnicornPlay.driver.simple._
-import scala.slick.lifted.TableQuery
+import org.virtuslab.unicorn.UnicornPlay._
+import java.sql.Date
 
 trait UserMachinesView extends ModelIncluded {
   self: AppTest =>
 
   case class UserMachineView(email: String,
     system: String,
-    cores: Int)
+    cores: Int,
+    created: Date)
 
   def createUsersMachineView(implicit session: Session) = {
     //query that is a base for view
-    val usersMachinesQuery = for {
-      user <- TableQuery[Users]
-      userMachine <- userMachineQuery if user.id === userMachine.userId
-      machine <- TableQuery[Machines] if machine.id === userMachine.machineId
-    } yield (user, machine)
+    new CustomTypeMappers {
+      val usersMachinesQuery = for {
+        user <- TableQuery[Users]
+        userMachine <- userMachineQuery if user.id === userMachine.userId
+        machine <- TableQuery[Machines] if machine.id === userMachine.machineId
+      } yield (user, machine)
 
-    val tableQuery = FilterableViews.createView(name = "USERS_MACHINE_VIEW",
-      UserMachineView.apply _,
-      UserMachineView.unapply _,
-      baseQuery = usersMachinesQuery) {
-        case (user, machine) =>
-          //naming the fields
-          ("email" -> user.email,
-            "system" -> machine.system,
-            "cores" -> machine.cores)
-      }
+      val tableQuery = FilterableViews.createView(name = "USERS_MACHINE_VIEW",
+        UserMachineView.apply _,
+        UserMachineView.unapply _,
+        baseQuery = usersMachinesQuery) {
+          case (user, machine) =>
+            //naming the fields
+            ("email" -> user.email,
+              "system" -> machine.system,
+              "cores" -> machine.cores,
+              "created" -> machine.created)
+        }
 
-    tableQuery.viewDDL.create
-
-    tableQuery
+      tableQuery.viewDDL.create
+    }.tableQuery
   }
 }

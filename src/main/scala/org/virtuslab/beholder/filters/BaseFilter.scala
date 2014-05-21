@@ -1,10 +1,10 @@
 package org.virtuslab.beholder.filters
 
 import org.virtuslab.beholder.views.BaseView
-import org.virtuslab.unicorn.UnicornPlay.driver.simple._
 import play.api.data.{ Form, Mapping }
 import scala.slick.lifted.Ordered
-import scala.slick.lifted.TableQuery
+import org.virtuslab.unicorn.UnicornPlay.driver.simple._
+import scala.slick.ast.TypedCollectionTypeConstructor
 
 /**
  * Base class that is mapped to form.
@@ -71,19 +71,20 @@ abstract class BaseFilter[Id, Entity, Table <: BaseView[Id, Entity], FilteredDat
    * @return
    */
   final def filter(data: FilterDefinition[FilteredData])(implicit session: Session): Seq[Entity] = {
-    val base = table.filter(filters(data.data)).sortBy {
-      inQueryTable =>
-        val globalColumns =
-          order(data)(inQueryTable).map {
-            case (column, asc) => if (asc) column.asc else column.desc
-          }.toSeq.flatMap(_.columns)
-        new Ordered(globalColumns ++ inQueryTable.id.asc.columns)
-    }
+    val base = table.filter(filters(data.data))
+      .sortBy {
+        inQueryTable =>
+          val globalColumns =
+            order(data)(inQueryTable).map {
+              case (column, asc) => if (asc) column.asc else column.desc
+            }.toSeq.flatMap(_.columns)
+          new Ordered(globalColumns ++ inQueryTable.id.asc.columns)
+      }
 
     val afterTake = data.take.fold(base)(base.take)
     val afterSkip = data.skip.fold(afterTake)(afterTake.drop)
 
-    afterSkip.list
+    afterSkip.to(TypedCollectionTypeConstructor.forArray).list
   }
 
   //ordering
