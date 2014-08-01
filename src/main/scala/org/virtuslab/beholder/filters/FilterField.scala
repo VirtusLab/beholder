@@ -37,11 +37,13 @@ object FilterField {
 
     def bind(data: Map[String, String]): Either[Seq[FormError], T] = Left(Nil)
 
-    def unbind(value: T): (Map[String, String], Seq[FormError]) = Map[String, String]() -> Nil
+    def unbindAndValidate(value: T): (Map[String, String], Seq[FormError]) = Map[String, String]() -> Nil
 
     def withPrefix(prefix: String): Mapping[T] = this
 
     def verifying(constraints: Constraint[T]*): Mapping[T] = this
+
+    override def unbind(value: T): Map[String, String] = Map[String, String]()
   }
 
   private def rangeMapping[T: Formatter] = tuple(
@@ -97,11 +99,11 @@ object FilterField {
   def inRange[T](implicit tm: BaseTypedType[T], f: Formatter[T]): FilterField[T, (Option[T], Option[T])] =
     new FilterField[T, (Option[T], Option[T])](rangeMapping[T]) {
       override def filterOnColumn(column: Column[T])(value: (Option[T], Option[T])): Column[Option[Boolean]] = value match {
-          case (Some(from), Some(to)) => column >= from && column <= to
-          case (None, Some(to)) => column <= to
-          case (Some(from), None) => column >= from
-          case _ => LiteralColumn(Some(true))
-        }
+        case (Some(from), Some(to)) => column >= from && column <= to
+        case (None, Some(to)) => column <= to
+        case (Some(from), None) => column >= from
+        case _ => LiteralColumn(Some(true))
+      }
     }
 
   /**

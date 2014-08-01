@@ -7,7 +7,6 @@ import org.virtuslab.unicorn.UnicornPlay.driver.simple._
 import play.api.Play
 import play.api.db.slick.DB
 import play.api.test.FakeApplication
-import scala.Some
 import scala.slick.lifted.TableQuery
 import org.joda.time.DateTime
 import java.sql.Date
@@ -37,7 +36,6 @@ trait ModelIncluded {
     val users = Seq(
       User(None, "a@a.pl", "Ala", "maKota"),
       User(None, "o@a.pl", "Ola", "maPsa")
-    ).map(user => user.copy(id = Some(UsersRepository.save(user))))
 
     val machines = Seq(
       Machine(None, "a@a.pl", "Ubuntu", 4, new Date(DateTime.now().getMillis)),
