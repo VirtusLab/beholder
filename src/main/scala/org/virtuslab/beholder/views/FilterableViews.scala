@@ -1,6 +1,6 @@
 package org.virtuslab.beholder.views
 
-import org.virtuslab.unicorn.UnicornPlay.driver.simple._
+import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 import scala.reflect.ClassTag
 import scala.slick.ast.TypedType
 import scala.slick.lifted.{ TableQuery, Tag, Column }

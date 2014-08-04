@@ -13,7 +13,7 @@ resolvers += Resolver.sonatypeRepo("releases")
 resolvers += Resolver.sonatypeRepo("snapshots")
 
 libraryDependencies ++= Seq(
-  "com.typesafe.slick" %% "slick" % "2.1.0-RC3",
+  "com.typesafe.slick" %% "slick" % "2.1.0",
   "com.typesafe.play" %% "play-slick" % "0.8.0-RC3",
   "org.virtuslab" %% "unicorn" % "0.6.0-SNAPSHOT",
   "org.scalatest" %% "scalatest" % "2.0" % "test",

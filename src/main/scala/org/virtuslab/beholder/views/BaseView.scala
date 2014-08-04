@@ -1,9 +1,9 @@
 package org.virtuslab.beholder.views
 
-import org.virtuslab.unicorn.UnicornPlay._
-import org.virtuslab.unicorn.UnicornPlay.driver.DDL
-import org.virtuslab.unicorn.UnicornPlay.driver.QueryExecutor
-import org.virtuslab.unicorn.UnicornPlay.driver.simple._
+import org.virtuslab.unicorn.LongUnicornPlay._
+import org.virtuslab.unicorn.LongUnicornPlay.driver.DDL
+import org.virtuslab.unicorn.LongUnicornPlay.driver.QueryExecutor
+import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 import scala.language.existentials
 import scala.slick.lifted.{ TableQuery, Tag }
 

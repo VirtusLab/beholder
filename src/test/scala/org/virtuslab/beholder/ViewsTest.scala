@@ -1,6 +1,6 @@
 package org.virtuslab.beholder
 
-import org.virtuslab.unicorn.UnicornPlay.driver.simple._
+import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 
 class ViewsTest extends AppTest with UserMachinesView {
 

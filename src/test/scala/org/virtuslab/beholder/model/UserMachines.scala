@@ -1,6 +1,6 @@
 package org.virtuslab.beholder.model
 
-import org.virtuslab.unicorn.UnicornPlay.driver.simple._
+import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 import scala.slick.lifted.{ TableQuery, Tag }
 
 class UserMachines(tag: Tag) extends Table[(UserId, MachineId)](tag, "users_machines") {

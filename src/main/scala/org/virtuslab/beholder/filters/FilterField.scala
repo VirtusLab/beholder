@@ -1,7 +1,7 @@
 package org.virtuslab.beholder.filters
 
 import org.virtuslab.beholder.utils.ILikeExtension._
-import org.virtuslab.unicorn.UnicornPlay.driver.simple._
+import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 import play.api.data.Forms._
 import play.api.data.format.Formatter
 import play.api.data.validation.Constraint

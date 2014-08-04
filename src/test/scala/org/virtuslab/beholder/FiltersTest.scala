@@ -2,10 +2,10 @@ package org.virtuslab.beholder
 
 import org.virtuslab.beholder.filters.FilterField._
 import org.virtuslab.beholder.filters._
-import org.virtuslab.unicorn.UnicornPlay.driver.simple._
+import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 import org.joda.time.DateTime
 import play.api.data.format.Formats._
-import org.virtuslab.unicorn.UnicornPlay._
+import org.virtuslab.unicorn.LongUnicornPlay._
 import java.sql.Date
 
 class FiltersTest extends AppTest with UserMachinesView {

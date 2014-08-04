@@ -2,8 +2,8 @@ package org.virtuslab.beholder
 
 import org.virtuslab.beholder.model.{ Machines, Users }
 import org.virtuslab.beholder.views.FilterableViews
-import org.virtuslab.unicorn.UnicornPlay.driver.simple._
-import org.virtuslab.unicorn.UnicornPlay._
+import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
+import org.virtuslab.unicorn.LongUnicornPlay._
 import java.sql.Date
 
 trait UserMachinesView extends ModelIncluded {

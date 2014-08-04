@@ -1,7 +1,7 @@
 package org.virtuslab.beholder.model
 
-import org.virtuslab.unicorn.UnicornPlay._
-import org.virtuslab.unicorn.UnicornPlay.driver.simple._
+import org.virtuslab.unicorn.LongUnicornPlay._
+import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 import scala.slick.lifted.Tag
 
 /** Id class for type-safe joins and queries. */

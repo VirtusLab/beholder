@@ -3,7 +3,7 @@ package org.virtuslab.beholder
 import org.scalatest._
 import org.virtuslab.beholder.model._
 import org.virtuslab.beholder.repositories._
-import org.virtuslab.unicorn.UnicornPlay.driver.simple._
+import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 import play.api.Play
 import play.api.db.slick.DB
 import play.api.test.FakeApplication

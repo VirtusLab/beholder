@@ -3,7 +3,7 @@ package org.virtuslab.beholder.filters
 import org.virtuslab.beholder.views.BaseView
 import play.api.data.{ Form, Mapping }
 import scala.slick.lifted.Ordered
-import org.virtuslab.unicorn.UnicornPlay.driver.simple._
+import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 import scala.slick.ast.TypedCollectionTypeConstructor
 
 /**
