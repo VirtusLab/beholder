@@ -62,10 +62,14 @@ val UsersMachineView = FilterableViews.createView(name = "USERS_MACHINE_VIEW",
       "system" -> machine.system,
       "cores" -> machine.cores)
 }
+
+UsersMachineView.viewDDL.create
 ```
 
 Defining filter
 ---------------
+We create a filter by specify table query (view or normal table) and mapping for field
+
 
 ```scala
 val UsersMachineFilter = new FiltersGenerator[UserMachineView].create(view,

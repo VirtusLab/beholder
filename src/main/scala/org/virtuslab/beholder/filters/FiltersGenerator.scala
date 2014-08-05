@@ -64,7 +64,7 @@ private[beholder] object FiltersGenerator extends App {
         val options = fill(nr => s"Option[B$nr]")
         val columnsNames = fill("c" + _)
         val filterMappings = fill(nr => s"realTable.columnNames(${nr - 1}) -> optional(c${nr}Mapping.mapping)", ",\n")
-        val queryFilters = fill(nr => s"c$nr.map(c${nr}Mapping.filterOnColumn(realTable.c$nr))", ",\n")
+        val queryFilters = fill(nr => s"c$nr.map(c${nr}Mapping.filterOnColumn(table.c$nr))", ",\n")
         val nones = fill(nr => "None")
         s"""
           |def create[$aTypesWithTypedType, $bTypes, T <: BaseView$nr[Entity, $aTypes]](table: TableQuery[T],
@@ -77,7 +77,7 @@ private[beholder] object FiltersGenerator extends App {
           |
           |      private val realTable = obtainRealTable
           |
-          |      def filterMapping: Mapping[BaseFilterEntity[($options)]] = baseFilterEntityMapping(tuple(
+          |      def filterMapping: Mapping[FilterDefinition[($options)]] = baseFilterEntityMapping(tuple(
           |        $filterMappings
           |      ))
           |

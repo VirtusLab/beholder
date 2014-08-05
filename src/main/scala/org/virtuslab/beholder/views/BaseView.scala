@@ -70,7 +70,7 @@ object BaseView {
      */
     private def selectStatements(query: Query[_, _, Seq]): String = {
       val castedQuery = query.asInstanceOf[Query[Any, Any, Seq]]
-      queryToInsertInvoker(castedQuery).insertStatement
+      castedQuery.selectStatement
     }
   }
 
