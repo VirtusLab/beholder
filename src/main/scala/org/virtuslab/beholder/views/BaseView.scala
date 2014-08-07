@@ -2,7 +2,6 @@ package org.virtuslab.beholder.views
 
 import org.virtuslab.unicorn.LongUnicornPlay._
 import org.virtuslab.unicorn.LongUnicornPlay.driver.DDL
-import org.virtuslab.unicorn.LongUnicornPlay.driver.QueryExecutor
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 import scala.language.existentials
 import scala.slick.lifted.{ TableQuery, Tag }
@@ -68,10 +67,8 @@ object BaseView {
      * @param query
      * @return
      */
-    private def selectStatements(query: Query[_, _, Seq]): String = {
-      val castedQuery = query.asInstanceOf[Query[Any, Any, Seq]]
-      castedQuery.selectStatement
-    }
+    private def selectStatements(query: Query[_, _, Seq]): String = query.selectStatement
+
   }
 
 }

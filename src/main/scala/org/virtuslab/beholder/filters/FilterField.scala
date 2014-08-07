@@ -5,10 +5,10 @@ import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 import play.api.data.Forms._
 import play.api.data.format.Formatter
 import play.api.data.validation.Constraint
-import play.api.data.{FormError, Mapping}
+import play.api.data.{ FormError, Mapping }
 import scala.Enumeration
 import scala.reflect._
-import scala.slick.ast.{BaseTypedType, TypedType}
+import scala.slick.ast.{ BaseTypedType, TypedType }
 
 /**
  * filter field - there is information how read parameters from form data (mapping)
@@ -97,10 +97,9 @@ object FilterField {
       override def filterOnColumn(column: Column[T])(data: T): Column[Option[Boolean]] = column === data
     }
 
-  def inRange[T: ClassTag](implicit tm: BaseTypedType[T], f: Formatter[T]): FilterField[T, (Option[T], Option[T])] =
+  def inRange[T](implicit tm: BaseTypedType[T], f: Formatter[T]): FilterField[T, (Option[T], Option[T])] =
     new FilterField[T, (Option[T], Option[T])](rangeMapping[T]) {
       override def filterOnColumn(column: Column[T])(value: (Option[T], Option[T])): Column[Option[Boolean]] = {
-        val cc = classTag[T].runtimeClass
         value match {
           case (Some(from), Some(to)) => column >= from && column <= to
           case (None, Some(to)) => column <= to

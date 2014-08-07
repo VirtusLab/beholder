@@ -22,6 +22,8 @@ object ILikeExtension {
 
   implicit def iLikeExtension(c: Column[String]) = new ILikeExtension(c)
 
+  implicit def iLikeMappedExtension(c: Column[MappedTo[String]]) = new ILikeExtension(c)
+
   implicit def iLikeOptionExtension(c: Column[Option[String]]) = new ILikeExtension(c)
 
   implicit def seq2Ordered[T <% Ordered](t: Seq[T]) = new Ordered(t.flatMap(_.columns))
@@ -32,7 +34,7 @@ object ILikeExtension {
  */
 class ILikeExtension[B](val c: Column[B]) extends AnyVal with ExtensionMethods[String, B] {
 
-  def ilike[R](e: String)(implicit om: o#arg[String, String]#to[Boolean, R]) =
+  def ilike[R](e: String)(implicit om: o#arg[String, B]#to[Boolean, R]) =
     om.column(ILikeExtension.ILIKE, n, LiteralNode(e))
 
 }
