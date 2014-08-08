@@ -14,11 +14,11 @@ resolvers += Resolver.sonatypeRepo("snapshots")
 
 libraryDependencies ++= Seq(
   "com.typesafe.slick" %% "slick" % "2.1.0",
-  "com.typesafe.play" %% "play-slick" % "0.8.0-RC3",
+  "com.typesafe.play" %% "play-slick" % "0.8.0",
   "org.virtuslab" %% "unicorn" % "0.6.0-SNAPSHOT",
-  "org.scalatest" %% "scalatest" % "2.0" % "test",
+  "org.scalatest" %% "scalatest" % "2.2.1" % "test",
   "com.typesafe.play" %% "play-test" % "2.3.2" % "test",
-  "com.h2database" % "h2" % "1.3.175" % "test"
+  "com.h2database" % "h2" % "1.4.180" % "test"
 )
 
 parallelExecution in Test := false
