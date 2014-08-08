@@ -9,19 +9,20 @@ Contributors
 Authors:
 * [Krzysztof Romanowski](https://github.com/romanowski)
 * [Jerzy Müller](https://github.com/Kwestor)
+* [Mikołaj Jakubowski](https://github.com/mkljakubowski)
 
 Feel free to use it, test it and to contribute!
 
 Getting beholder
 ----------------
 
-For latest version (Scala 2.10.x compatible) use:
+For latest version (Scala 2.10.4/2.11.2 compatible) use:
 
 ```scala
-libraryDependencies += "org.virtuslab" %% "beholder" % "0.1.2"
+libraryDependencies += "org.virtuslab" %% "beholder" % "0.2.0"
 ```
 
-Or see [Maven repository](http://maven-repository.com/artifact/org.virtuslab/beholder_2.10).
+Or see Maven repository for [2.10](http://maven-repository.com/artifact/org.virtuslab/beholder_2.10) and [2.11](http://maven-repository.com/artifact/org.virtuslab/beholder_2.11).
 
 Examples
 ========
