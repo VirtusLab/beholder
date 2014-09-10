@@ -1,7 +1,12 @@
-Scala Slick type-safe ids
+Beholder: Play-Slick library for data presentation
 =========================
 
-Slick (the Scala Language-Integrated Connection Kit) is a framework for type-safe, composable data access in Scala. This library adds tools to create views that can be easly used. Users needs only to declare how view and filter should like and Beholder provides methods for filtering data.
+Standard part of many application are list of data that is not a effect of simple query from one table but junction and aggregation of data from many tables. Beholder provides support for such elemets.
+
+Features:
+* views as table
+* declaring filters for data
+* suport for sorting, filtering on mutliple (custom) datatype
 
 
 Contributors
