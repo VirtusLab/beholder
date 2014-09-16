@@ -17,7 +17,8 @@ class FiltersTest extends AppTest with UserMachinesView {
         inText,
         inText,
         inIntField,
-        inRange[Date]
+        inRange[Date],
+        FilterField.ignore[Option[BigDecimal]]
       )
     }.filterGenerator
   }

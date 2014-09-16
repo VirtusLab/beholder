@@ -20,12 +20,14 @@ object MachineId extends IdCompanion[MachineId]
  * @param url machine email address
  * @param system operating system installed on machine
  * @param cores number of cores that machine posess
+ * @param capacity capacity of that machine
  */
 case class Machine(id: Option[MachineId],
   url: String,
   system: String,
   cores: Int,
-  created: Date) extends WithId[MachineId]
+  created: Date,
+  capacity: Option[BigDecimal]) extends WithId[MachineId]
 
 /** Table definition for machines. */
 class Machines(tag: Tag) extends IdTable[MachineId, Machine](tag, "MACHINES") {
@@ -38,5 +40,7 @@ class Machines(tag: Tag) extends IdTable[MachineId, Machine](tag, "MACHINES") {
 
   def created = column[Date]("created", O.NotNull)
 
-  override def * = (id.?, url, system, cores, created) <> (Machine.tupled, Machine.unapply)
+  def capacity = column[Option[BigDecimal]]("capacity")
+
+  override def * = (id.?, url, system, cores, created, capacity) <> (Machine.tupled, Machine.unapply)
 }

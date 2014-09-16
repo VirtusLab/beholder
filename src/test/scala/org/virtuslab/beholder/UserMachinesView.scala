@@ -12,7 +12,8 @@ trait UserMachinesView extends ModelIncluded {
   case class UserMachineView(email: String,
     system: String,
     cores: Int,
-    created: Date)
+    created: Date,
+    capacity: Option[BigDecimal])
 
   def createUsersMachineView(implicit session: Session) = {
     //query that is a base for view
@@ -32,7 +33,8 @@ trait UserMachinesView extends ModelIncluded {
             ("email" -> user.email,
               "system" -> machine.system,
               "cores" -> machine.cores,
-              "created" -> machine.created)
+              "created" -> machine.created,
+              "capacity" -> machine.capacity)
         }
 
       tableQuery.viewDDL.create
