@@ -65,7 +65,7 @@ private object FilterableViewsGenerator extends App {
       |
       |    override def id = c1
       |
-      |    override protected val columns: Map[String, this.type => Column[_]] = Map(
+      |    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
       |      $columnsMap)
       |
       |    def * = ($mapping) <>(apply.tupled, unapply)

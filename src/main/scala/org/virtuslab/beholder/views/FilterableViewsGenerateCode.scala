@@ -42,14 +42,12 @@ trait FilterableViewsGenerateCode {
       unapply: T => Option[(A1, A2, A3)],
       val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
-
     def c2 = column[A2](columnNames(1))
-
     def c3 = column[A3](columnNames(2))
 
     override def id = c1
 
-    override protected val columns: Map[String, this.type => Column[_]] = Map(
+    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3))
@@ -90,16 +88,13 @@ trait FilterableViewsGenerateCode {
       unapply: T => Option[(A1, A2, A3, A4)],
       val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
-
     def c2 = column[A2](columnNames(1))
-
     def c3 = column[A3](columnNames(2))
-
     def c4 = column[A4](columnNames(3))
 
     override def id = c1
 
-    override protected val columns: Map[String, this.type => Column[_]] = Map(
+    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
@@ -141,18 +136,14 @@ trait FilterableViewsGenerateCode {
       unapply: T => Option[(A1, A2, A3, A4, A5)],
       val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
-
     def c2 = column[A2](columnNames(1))
-
     def c3 = column[A3](columnNames(2))
-
     def c4 = column[A4](columnNames(3))
-
     def c5 = column[A5](columnNames(4))
 
     override def id = c1
 
-    override protected val columns: Map[String, this.type => Column[_]] = Map(
+    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
@@ -195,20 +186,15 @@ trait FilterableViewsGenerateCode {
       unapply: T => Option[(A1, A2, A3, A4, A5, A6)],
       val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
-
     def c2 = column[A2](columnNames(1))
-
     def c3 = column[A3](columnNames(2))
-
     def c4 = column[A4](columnNames(3))
-
     def c5 = column[A5](columnNames(4))
-
     def c6 = column[A6](columnNames(5))
 
     override def id = c1
 
-    override protected val columns: Map[String, this.type => Column[_]] = Map(
+    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
@@ -252,22 +238,16 @@ trait FilterableViewsGenerateCode {
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7)],
       val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
-
     def c2 = column[A2](columnNames(1))
-
     def c3 = column[A3](columnNames(2))
-
     def c4 = column[A4](columnNames(3))
-
     def c5 = column[A5](columnNames(4))
-
     def c6 = column[A6](columnNames(5))
-
     def c7 = column[A7](columnNames(6))
 
     override def id = c1
 
-    override protected val columns: Map[String, this.type => Column[_]] = Map(
+    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
@@ -312,24 +292,17 @@ trait FilterableViewsGenerateCode {
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8)],
       val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
-
     def c2 = column[A2](columnNames(1))
-
     def c3 = column[A3](columnNames(2))
-
     def c4 = column[A4](columnNames(3))
-
     def c5 = column[A5](columnNames(4))
-
     def c6 = column[A6](columnNames(5))
-
     def c7 = column[A7](columnNames(6))
-
     def c8 = column[A8](columnNames(7))
 
     override def id = c1
 
-    override protected val columns: Map[String, this.type => Column[_]] = Map(
+    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
@@ -375,26 +348,18 @@ trait FilterableViewsGenerateCode {
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9)],
       val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
-
     def c2 = column[A2](columnNames(1))
-
     def c3 = column[A3](columnNames(2))
-
     def c4 = column[A4](columnNames(3))
-
     def c5 = column[A5](columnNames(4))
-
     def c6 = column[A6](columnNames(5))
-
     def c7 = column[A7](columnNames(6))
-
     def c8 = column[A8](columnNames(7))
-
     def c9 = column[A9](columnNames(8))
 
     override def id = c1
 
-    override protected val columns: Map[String, this.type => Column[_]] = Map(
+    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
@@ -441,28 +406,19 @@ trait FilterableViewsGenerateCode {
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10)],
       val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
-
     def c2 = column[A2](columnNames(1))
-
     def c3 = column[A3](columnNames(2))
-
     def c4 = column[A4](columnNames(3))
-
     def c5 = column[A5](columnNames(4))
-
     def c6 = column[A6](columnNames(5))
-
     def c7 = column[A7](columnNames(6))
-
     def c8 = column[A8](columnNames(7))
-
     def c9 = column[A9](columnNames(8))
-
     def c10 = column[A10](columnNames(9))
 
     override def id = c1
 
-    override protected val columns: Map[String, this.type => Column[_]] = Map(
+    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
@@ -510,30 +466,20 @@ trait FilterableViewsGenerateCode {
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11)],
       val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
-
     def c2 = column[A2](columnNames(1))
-
     def c3 = column[A3](columnNames(2))
-
     def c4 = column[A4](columnNames(3))
-
     def c5 = column[A5](columnNames(4))
-
     def c6 = column[A6](columnNames(5))
-
     def c7 = column[A7](columnNames(6))
-
     def c8 = column[A8](columnNames(7))
-
     def c9 = column[A9](columnNames(8))
-
     def c10 = column[A10](columnNames(9))
-
     def c11 = column[A11](columnNames(10))
 
     override def id = c1
 
-    override protected val columns: Map[String, this.type => Column[_]] = Map(
+    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
@@ -582,32 +528,21 @@ trait FilterableViewsGenerateCode {
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12)],
       val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
-
     def c2 = column[A2](columnNames(1))
-
     def c3 = column[A3](columnNames(2))
-
     def c4 = column[A4](columnNames(3))
-
     def c5 = column[A5](columnNames(4))
-
     def c6 = column[A6](columnNames(5))
-
     def c7 = column[A7](columnNames(6))
-
     def c8 = column[A8](columnNames(7))
-
     def c9 = column[A9](columnNames(8))
-
     def c10 = column[A10](columnNames(9))
-
     def c11 = column[A11](columnNames(10))
-
     def c12 = column[A12](columnNames(11))
 
     override def id = c1
 
-    override protected val columns: Map[String, this.type => Column[_]] = Map(
+    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
@@ -657,34 +592,22 @@ trait FilterableViewsGenerateCode {
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13)],
       val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
-
     def c2 = column[A2](columnNames(1))
-
     def c3 = column[A3](columnNames(2))
-
     def c4 = column[A4](columnNames(3))
-
     def c5 = column[A5](columnNames(4))
-
     def c6 = column[A6](columnNames(5))
-
     def c7 = column[A7](columnNames(6))
-
     def c8 = column[A8](columnNames(7))
-
     def c9 = column[A9](columnNames(8))
-
     def c10 = column[A10](columnNames(9))
-
     def c11 = column[A11](columnNames(10))
-
     def c12 = column[A12](columnNames(11))
-
     def c13 = column[A13](columnNames(12))
 
     override def id = c1
 
-    override protected val columns: Map[String, this.type => Column[_]] = Map(
+    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
@@ -735,36 +658,23 @@ trait FilterableViewsGenerateCode {
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14)],
       val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
-
     def c2 = column[A2](columnNames(1))
-
     def c3 = column[A3](columnNames(2))
-
     def c4 = column[A4](columnNames(3))
-
     def c5 = column[A5](columnNames(4))
-
     def c6 = column[A6](columnNames(5))
-
     def c7 = column[A7](columnNames(6))
-
     def c8 = column[A8](columnNames(7))
-
     def c9 = column[A9](columnNames(8))
-
     def c10 = column[A10](columnNames(9))
-
     def c11 = column[A11](columnNames(10))
-
     def c12 = column[A12](columnNames(11))
-
     def c13 = column[A13](columnNames(12))
-
     def c14 = column[A14](columnNames(13))
 
     override def id = c1
 
-    override protected val columns: Map[String, this.type => Column[_]] = Map(
+    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
@@ -816,38 +726,24 @@ trait FilterableViewsGenerateCode {
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15)],
       val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
-
     def c2 = column[A2](columnNames(1))
-
     def c3 = column[A3](columnNames(2))
-
     def c4 = column[A4](columnNames(3))
-
     def c5 = column[A5](columnNames(4))
-
     def c6 = column[A6](columnNames(5))
-
     def c7 = column[A7](columnNames(6))
-
     def c8 = column[A8](columnNames(7))
-
     def c9 = column[A9](columnNames(8))
-
     def c10 = column[A10](columnNames(9))
-
     def c11 = column[A11](columnNames(10))
-
     def c12 = column[A12](columnNames(11))
-
     def c13 = column[A13](columnNames(12))
-
     def c14 = column[A14](columnNames(13))
-
     def c15 = column[A15](columnNames(14))
 
     override def id = c1
 
-    override protected val columns: Map[String, this.type => Column[_]] = Map(
+    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
@@ -900,40 +796,25 @@ trait FilterableViewsGenerateCode {
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16)],
       val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
-
     def c2 = column[A2](columnNames(1))
-
     def c3 = column[A3](columnNames(2))
-
     def c4 = column[A4](columnNames(3))
-
     def c5 = column[A5](columnNames(4))
-
     def c6 = column[A6](columnNames(5))
-
     def c7 = column[A7](columnNames(6))
-
     def c8 = column[A8](columnNames(7))
-
     def c9 = column[A9](columnNames(8))
-
     def c10 = column[A10](columnNames(9))
-
     def c11 = column[A11](columnNames(10))
-
     def c12 = column[A12](columnNames(11))
-
     def c13 = column[A13](columnNames(12))
-
     def c14 = column[A14](columnNames(13))
-
     def c15 = column[A15](columnNames(14))
-
     def c16 = column[A16](columnNames(15))
 
     override def id = c1
 
-    override protected val columns: Map[String, this.type => Column[_]] = Map(
+    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
@@ -987,42 +868,26 @@ trait FilterableViewsGenerateCode {
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17)],
       val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
-
     def c2 = column[A2](columnNames(1))
-
     def c3 = column[A3](columnNames(2))
-
     def c4 = column[A4](columnNames(3))
-
     def c5 = column[A5](columnNames(4))
-
     def c6 = column[A6](columnNames(5))
-
     def c7 = column[A7](columnNames(6))
-
     def c8 = column[A8](columnNames(7))
-
     def c9 = column[A9](columnNames(8))
-
     def c10 = column[A10](columnNames(9))
-
     def c11 = column[A11](columnNames(10))
-
     def c12 = column[A12](columnNames(11))
-
     def c13 = column[A13](columnNames(12))
-
     def c14 = column[A14](columnNames(13))
-
     def c15 = column[A15](columnNames(14))
-
     def c16 = column[A16](columnNames(15))
-
     def c17 = column[A17](columnNames(16))
 
     override def id = c1
 
-    override protected val columns: Map[String, this.type => Column[_]] = Map(
+    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
@@ -1077,44 +942,27 @@ trait FilterableViewsGenerateCode {
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18)],
       val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
-
     def c2 = column[A2](columnNames(1))
-
     def c3 = column[A3](columnNames(2))
-
     def c4 = column[A4](columnNames(3))
-
     def c5 = column[A5](columnNames(4))
-
     def c6 = column[A6](columnNames(5))
-
     def c7 = column[A7](columnNames(6))
-
     def c8 = column[A8](columnNames(7))
-
     def c9 = column[A9](columnNames(8))
-
     def c10 = column[A10](columnNames(9))
-
     def c11 = column[A11](columnNames(10))
-
     def c12 = column[A12](columnNames(11))
-
     def c13 = column[A13](columnNames(12))
-
     def c14 = column[A14](columnNames(13))
-
     def c15 = column[A15](columnNames(14))
-
     def c16 = column[A16](columnNames(15))
-
     def c17 = column[A17](columnNames(16))
-
     def c18 = column[A18](columnNames(17))
 
     override def id = c1
 
-    override protected val columns: Map[String, this.type => Column[_]] = Map(
+    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),

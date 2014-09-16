@@ -17,7 +17,8 @@ abstract class BaseView[Id, Entity](tag: Tag, val viewName: String) extends Base
   /**
    *
    */
-  protected val columns: Map[String, this.type => Column[_]]
+  protected val columns: Seq[(String, this.type => Column[_])]
+  private lazy val columnsMap: Map[String, this.type => Column[_]] = columns.toMap
 
   /**
    * find column by name
@@ -25,7 +26,7 @@ abstract class BaseView[Id, Entity](tag: Tag, val viewName: String) extends Base
    * @return
    */
   def columnByName[A](name: String): Column[_] =
-    columns(name).apply(this)
+    columnsMap(name).apply(this)
 
   /**
    * column that is tread as view 'id' - it is use eg. for default sort
@@ -50,7 +51,7 @@ object BaseView {
   case class ViewDDL(table: BaseView[_, _]) extends DDL {
     protected def createPhase1: Iterable[String] = {
       val viewName = table.viewName
-      val fields = table.columns.keys.map(name => '"' + name + '"').mkString(", ")
+      val fields = table.columns.map { case (name, _) => '"' + name + '"' }.mkString(", ")
       val query = selectStatements(table.query)
 
       s"CREATE VIEW $viewName ($fields) \n\t AS $query" :: Nil
