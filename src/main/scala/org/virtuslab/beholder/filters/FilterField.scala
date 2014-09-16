@@ -119,7 +119,7 @@ object FilterField {
   def inOptionRange[T](implicit tm: BaseTypedType[T], f: Formatter[T]): FilterField[Option[T], (Option[T], Option[T])] =
     new FilterField[Option[T], (Option[T], Option[T])](rangeMapping[T]) {
       override def filterOnColumn(column: Column[Option[T]])(value: (Option[T], Option[T])): Column[Option[Boolean]] = value match {
-        case (Some(from), Some(to)) => column <= from && column <= to
+        case (Some(from), Some(to)) => column >= from && column <= to
         case (None, Some(to)) => column <= to
         case (Some(from), None) => column >= from
         case _ => LiteralColumn(Some(true))

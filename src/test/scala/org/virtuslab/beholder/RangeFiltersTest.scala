@@ -49,4 +49,24 @@ class RangeFiltersTest extends AppTest with UserMachinesView {
       coreRangeData should contain theSameElementsAs allFromDb
   }
 
+  it should "should take BigDecimal range correctly" in baseFilterTest {
+    data =>
+      {
+        def testCapacityRange(minCapacity: BigDecimal, maxCapacity: BigDecimal) = {
+          import data._
+          val fromDbFilteredByCapacity = allFromDb.filter(a => (minCapacity <= a.capacity.get) && (a.capacity.get <= maxCapacity))
+          val a = baseFilter.data
+          val capacityRange = Some((Some(minCapacity), Some(maxCapacity)))
+
+          val coreRangeData = filter.filter(baseFilter.copy(data = a.copy(_5 = capacityRange)))
+
+          coreRangeData should contain theSameElementsAs fromDbFilteredByCapacity
+        }
+
+        testCapacityRange(1, 3)
+        testCapacityRange(1, 2)
+        testCapacityRange(2, 2)
+      }
+  }
+
 }
