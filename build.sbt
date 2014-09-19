@@ -2,7 +2,7 @@ organization := "org.virtuslab"
 
 name := "beholder"
 
-version := "0.2.0"
+version := "0.2.1"
 
 scalaVersion := "2.11.2"
 
@@ -17,15 +17,13 @@ resolvers += Resolver.sonatypeRepo("snapshots")
 libraryDependencies ++= Seq(
   "com.typesafe.slick" %% "slick" % "2.1.0",
   "com.typesafe.play" %% "play-slick" % "0.8.0",
-  "org.virtuslab" %% "unicorn" % "0.6.0",
-  "org.scalatest" %% "scalatest" % "2.2.1" % "test",
-  "com.typesafe.play" %% "play-test" % "2.3.2" % "test",
+  "org.virtuslab" %% "unicorn" % "0.6.1",
+  "org.scalatest" %% "scalatest" % "2.2.2" % "test",
+  "com.typesafe.play" %% "play-test" % "2.3.4" % "test",
   "com.h2database" % "h2" % "1.4.181" % "test"
 )
 
 parallelExecution in Test := false
-
-incOptions := incOptions.value.withNameHashing(true)
 
 testOptions in Test ++= Seq(Tests.Argument("-oF"))
 

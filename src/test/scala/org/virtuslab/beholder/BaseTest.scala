@@ -35,7 +35,8 @@ trait ModelIncluded {
 
     val users = Seq(
       User(None, "a@a.pl", "Ala", "maKota"),
-      User(None, "o@a.pl", "Ola", "maPsa")).
+      User(None, "o@a.pl", "Ola", "maPsa")
+    ).
       map(user => user.copy(id = Some(UsersRepository.save(user))))
 
     val machines = Seq(

@@ -13,7 +13,8 @@ class FiltersTest extends AppTest with UserMachinesView {
   private def userMachineFilter()(implicit session: Session) = {
     val view = createUsersMachineView
     new CustomTypeMappers {
-      val filterGenerator = new FiltersGenerator[UserMachineView].create(view,
+      val filterGenerator = new FiltersGenerator[UserMachineView].create(
+        view,
         inText,
         inText,
         inIntField,

@@ -21,10 +21,12 @@ object UserId extends IdCompanion[UserId]
  * @param lastName lastName
  * @param firstName firstName
  */
-case class User(id: Option[UserId],
+case class User(
+  id: Option[UserId],
   email: String,
   firstName: String,
-  lastName: String) extends WithId[UserId]
+  lastName: String
+) extends WithId[UserId]
 
 /** Table definition for users. */
 class Users(tag: Tag) extends IdTable[UserId, User](tag, "USERS") {

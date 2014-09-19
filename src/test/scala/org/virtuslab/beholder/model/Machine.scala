@@ -22,12 +22,14 @@ object MachineId extends IdCompanion[MachineId]
  * @param cores number of cores that machine posess
  * @param capacity capacity of that machine
  */
-case class Machine(id: Option[MachineId],
+case class Machine(
+  id: Option[MachineId],
   url: String,
   system: String,
   cores: Int,
   created: Date,
-  capacity: Option[BigDecimal]) extends WithId[MachineId]
+  capacity: Option[BigDecimal]
+) extends WithId[MachineId]
 
 /** Table definition for machines. */
 class Machines(tag: Tag) extends IdTable[MachineId, Machine](tag, "MACHINES") {
