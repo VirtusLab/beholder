@@ -71,7 +71,34 @@ abstract class BaseFilter[Id, Entity, Table <: BaseView[Id, Entity], FilteredDat
    * @return
    */
   final def filter(data: FilterDefinition[FilteredData])(implicit session: Session): Seq[Entity] = {
-    val base = table.filter(filters(data.data))
+    val base = baseFilter(data)
+
+    val afterTake = data.take.fold(base)(base.take)
+    val afterSkip = data.skip.fold(afterTake)(afterTake.drop)
+
+    afterSkip.to(TypedCollectionTypeConstructor.forArray).list
+  }
+
+  /**
+   * filter and sort all entities with given data
+   * return also total number of entities without taking FilterDefinition.take and FilterDefinition.skip fields into account
+   * @param data FilterDefinition
+   * @param session
+   * @return
+   */
+  final def filterWithTotalEntitiesNumber(data: FilterDefinition[FilteredData])(implicit session: Session): (Seq[Entity], Int) = {
+    val base = baseFilter(data)
+
+    val totalEntitiesNumber = base.length.run
+
+    val afterTake = data.take.fold(base)(base.take)
+    val afterSkip = data.skip.fold(afterTake)(afterTake.drop)
+
+    (afterSkip.to(TypedCollectionTypeConstructor.forArray).list, totalEntitiesNumber)
+  }
+
+  private def baseFilter(data: FilterDefinition[FilteredData]): Query[Table, Table#TableElementType, Seq] = {
+    table.filter(filters(data.data))
       .sortBy {
         inQueryTable =>
           val globalColumns =
@@ -80,11 +107,6 @@ abstract class BaseFilter[Id, Entity, Table <: BaseView[Id, Entity], FilteredDat
             }.toSeq.flatMap(_.columns)
           new Ordered(globalColumns ++ inQueryTable.id.asc.columns)
       }
-
-    val afterTake = data.take.fold(base)(base.take)
-    val afterSkip = data.skip.fold(afterTake)(afterTake.drop)
-
-    afterSkip.to(TypedCollectionTypeConstructor.forArray).list
   }
 
   //ordering
