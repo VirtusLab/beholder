@@ -7,13 +7,14 @@ import org.joda.time.DateTime
 import play.api.data.format.Formats._
 import org.virtuslab.unicorn.LongUnicornPlay._
 import java.sql.Date
+import org.virtuslab.beholder.filters.forms.FormFilters
 
 class FiltersTest extends AppTest with UserMachinesView {
 
   private def userMachineFilter()(implicit session: Session) = {
     val view = createUsersMachineView
     new CustomTypeMappers {
-      val filterGenerator = new FiltersGenerator[UserMachineView].create(
+      val filterGenerator = new FormFilters[UserMachineView].create(
         view,
         inText,
         inText,
@@ -89,6 +90,9 @@ class FiltersTest extends AppTest with UserMachinesView {
       import data._
       val a = baseFilter.data
       val dataRange = Some((None, Some(new Date(DateTime.now().getMillis))))
-      val orderByCoreDesc = filter.filter(baseFilter.copy(data = a.copy(_4 = dataRange)))
+
+      val newVersion = baseFilter.copy(data = a.updated(4, dataRange))
+
+      val orderByCoreDesc = filter.filter(newVersion)
   }
 }
