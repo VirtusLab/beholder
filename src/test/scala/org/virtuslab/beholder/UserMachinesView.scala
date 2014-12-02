@@ -6,16 +6,18 @@ import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 import org.virtuslab.unicorn.LongUnicornPlay._
 import java.sql.Date
 
+case class UserMachineViewRow(
+                            email: String,
+                            system: String,
+                            cores: Int,
+                            created: Date,
+                            capacity: Option[BigDecimal]
+                            )
+
+
 trait UserMachinesView extends ModelIncluded {
   self: AppTest =>
 
-  case class UserMachineView(
-    email: String,
-    system: String,
-    cores: Int,
-    created: Date,
-    capacity: Option[BigDecimal]
-  )
 
   def createUsersMachineView(implicit session: Session) = {
     //query that is a base for view
@@ -28,8 +30,8 @@ trait UserMachinesView extends ModelIncluded {
 
       val tableQuery = FilterableViews.createView(
         name = "USERS_MACHINE_VIEW",
-        UserMachineView.apply _,
-        UserMachineView.unapply _,
+        UserMachineViewRow.apply _,
+        UserMachineViewRow.unapply _,
         baseQuery = usersMachinesQuery
       ) {
         case (user, machine) =>

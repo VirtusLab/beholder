@@ -1,4 +1,4 @@
-package org.virtuslab.beholder.filters
+package org.virtuslab.beholder.filters.forms
 
 import org.virtuslab.beholder.utils.ILikeExtension._
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
@@ -7,9 +7,7 @@ import play.api.data.format.Formatter
 import play.api.data.validation.Constraint
 import play.api.data.{ FormError, Mapping }
 import scala.Enumeration
-import scala.reflect._
 import scala.slick.ast.{ BaseTypedType, TypedType }
-import org.virtuslab.beholder.filters.forms.FormFilterField
 
 /**
  * filter field - there is information how read parameters from form data (mapping)
