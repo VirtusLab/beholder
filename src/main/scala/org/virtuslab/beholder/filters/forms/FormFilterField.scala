@@ -1,6 +1,5 @@
 package org.virtuslab.beholder.filters.forms
 
-import org.virtuslab.beholder.filters.FilterField
 import scala.slick.ast.TypedType
 import play.api.data.Mapping
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple.Column
@@ -8,7 +7,7 @@ import org.virtuslab.unicorn.LongUnicornPlay.driver.simple.Column
 /**
  * Author: Krzysztof Romanowski
  */
-abstract class FormFilterField[A: TypedType, B](val mapping: Mapping[B]) extends FilterField {
+abstract class FormFilterField[A: TypedType, B](mapping: Mapping[B]) extends FilterField {
   /**
    * filter on column - apply filter form data into sql - default returns true
    * @param column
@@ -19,4 +18,8 @@ abstract class FormFilterField[A: TypedType, B](val mapping: Mapping[B]) extends
     filterOnColumn(column.asInstanceOf[Column[A]])(value.asInstanceOf[B])
 
   def filterOnColumn(column: Column[A])(value: B): Column[Option[Boolean]]
+
+  final def bind(name: String)(data: Map[String, String]) = mapping.withPrefix(name).bind(data)
+
+  final def unbind(name: String)(value: Any) = mapping.withPrefix(name).unbind(value.asInstanceOf[B])
 }

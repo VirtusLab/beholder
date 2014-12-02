@@ -3,7 +3,7 @@ package org.virtuslab.beholder.filters.forms
 import play.api.data.Mapping
 import play.api.data.Forms._
 import scala.Some
-import org.virtuslab.beholder.filters.{ BaseFilter, FilterField, Order, FilterDefinition }
+import org.virtuslab.beholder.filters.{ BaseFilter, Order, FilterDefinition }
 import scala.slick.ast.TypedType
 import org.virtuslab.beholder.views.FilterableViews._
 import scala.slick.lifted.TableQuery
@@ -13,20 +13,6 @@ import org.virtuslab.unicorn.LongUnicornPlay
  * Author: Krzysztof Romanowski
  */
 class FormFilters[Entity] {
-
-  /*
-    def baseFilterEntityMapping[D](dataMapping: Mapping[D]) = mapping(
-      "take" -> optional(number),
-      "skip" -> optional(number),
-      "orderBy" -> optional(text),
-      "asc" -> boolean,
-      "data" -> dataMapping
-    )(
-        (take, skip, orderBy, asc, data) => FilterDefinition[D](take, skip, orderBy.map(Order(_, asc)), data)
-      )(
-        filter => Some((filter.take, filter.skip, filter.orderBy.map(_.column), filter.orderBy.fold(true)(_.asc), filter.data))
-      )
-  */
 
   def create[A1: TypedType, A2: TypedType, A3: TypedType, B1, B2, B3, T <: BaseView3[Entity, A1, A2, A3]](
     table: TableQuery[T],
