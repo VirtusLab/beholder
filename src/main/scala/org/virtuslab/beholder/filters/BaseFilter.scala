@@ -1,7 +1,7 @@
 package org.virtuslab.beholder.filters
 
 import org.virtuslab.beholder.views.BaseView
-import play.api.data.{Form, Mapping}
+import play.api.data.{ Form, Mapping }
 import scala.slick.lifted.Ordered
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 import scala.slick.ast.TypedCollectionTypeConstructor
@@ -17,11 +17,11 @@ import org.virtuslab.beholder.filters.forms.FilterField
  * @param data
  */
 case class FilterDefinition(
-                             take: Option[Int],
-                             skip: Option[Int],
-                             orderBy: Option[Order],
-                             data: Seq[Option[Any]]
-                             )
+  take: Option[Int],
+  skip: Option[Int],
+  orderBy: Option[Order],
+  data: Seq[Option[Any]]
+)
 
 case class Order(column: String, asc: Boolean)
 
@@ -81,13 +81,13 @@ abstract class BaseFilter[Id, Entity, Table <: BaseView[Id, Entity], FieldType <
   final def filter(data: FilterDefinition)(implicit session: Session): Seq[Entity] = {
     val base = table.filter(filters(data.data))
       .sortBy {
-      inQueryTable =>
-        val globalColumns =
-          order(data)(inQueryTable).map {
-            case (column, asc) => if (asc) column.asc else column.desc
-          }.toSeq.flatMap(_.columns)
-        new Ordered(globalColumns ++ inQueryTable.id.asc.columns)
-    }
+        inQueryTable =>
+          val globalColumns =
+            order(data)(inQueryTable).map {
+              case (column, asc) => if (asc) column.asc else column.desc
+            }.toSeq.flatMap(_.columns)
+          new Ordered(globalColumns ++ inQueryTable.id.asc.columns)
+      }
 
     val afterTake = data.take.fold(base)(base.take)
     val afterSkip = data.skip.fold(afterTake)(afterTake.drop)
@@ -97,5 +97,5 @@ abstract class BaseFilter[Id, Entity, Table <: BaseView[Id, Entity], FieldType <
 
   //ordering
   private def order(data: FilterDefinition)(table: Table): Option[(Column[_], Boolean)] =
-    data.orderBy.map { case order => (table.columnByName(order.column), order.asc)}
+    data.orderBy.map { case order => (table.columnByName(order.column), order.asc) }
 }

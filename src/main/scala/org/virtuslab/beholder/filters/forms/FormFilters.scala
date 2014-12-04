@@ -1,17 +1,11 @@
 package org.virtuslab.beholder.filters.forms
 
-import play.api.data.Mapping
-import play.api.data.Forms._
-import scala.Some
-import org.virtuslab.beholder.filters.{ BaseFilter, Order, FilterDefinition }
+import org.virtuslab.beholder.filters.BaseFilter
 import scala.slick.ast.TypedType
 import org.virtuslab.beholder.views.FilterableViews._
 import scala.slick.lifted.TableQuery
 import org.virtuslab.unicorn.LongUnicornPlay
 
-/**
- * Author: Krzysztof Romanowski
- */
 class FormFilters[Entity] {
 
   def create[A1: TypedType, A2: TypedType, A3: TypedType, B1, B2, B3, T <: BaseView3[Entity, A1, A2, A3]](

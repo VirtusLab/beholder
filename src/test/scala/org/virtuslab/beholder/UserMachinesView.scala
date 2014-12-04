@@ -7,17 +7,15 @@ import org.virtuslab.unicorn.LongUnicornPlay._
 import java.sql.Date
 
 case class UserMachineViewRow(
-                            email: String,
-                            system: String,
-                            cores: Int,
-                            created: Date,
-                            capacity: Option[BigDecimal]
-                            )
-
+  email: String,
+  system: String,
+  cores: Int,
+  created: Date,
+  capacity: Option[BigDecimal]
+)
 
 trait UserMachinesView extends ModelIncluded {
   self: AppTest =>
-
 
   def createUsersMachineView(implicit session: Session) = {
     //query that is a base for view

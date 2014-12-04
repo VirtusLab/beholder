@@ -1,7 +1,7 @@
 package org.virtuslab.beholder.filters.forms
 
-import play.api.data.{Forms, FormError, Form, Mapping}
-import org.virtuslab.beholder.filters.{Order, BaseFilter, FilterDefinition}
+import play.api.data.{ Forms, FormError, Form, Mapping }
+import org.virtuslab.beholder.filters.{ Order, BaseFilter, FilterDefinition }
 import org.virtuslab.beholder.views.BaseView
 import scala.slick.lifted.TableQuery
 import play.api.data.Forms._
@@ -13,10 +13,9 @@ trait FormFilterMappings {
 
   protected def columnsNames: Seq[String]
 
+  private def fieldName(key: String)(name: String) = s"$key.$name"
 
-  def fieldName(key: String)(name: String) = s"$key.$name"
-
-  val dataFormatter = new Formatter[Seq[Option[Any]]] {
+  private val dataFormatter = new Formatter[Seq[Option[Any]]] {
     override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], Seq[Option[Any]]] = {
 
       Right((columnsNames zip filterFields).map {
@@ -35,11 +34,10 @@ trait FormFilterMappings {
     }
   }
 
-
-  val orderingFormatter = new Formatter[Order] {
+  private val orderingFormatter = new Formatter[Order] {
     def ascKey(key: String) = s"$key.asc"
 
-    def columnKey(key: String) = s"$key.clumn"
+    def columnKey(key: String) = s"$key.column"
 
     override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], Order] = {
       data.get(columnKey(key)).fold[Either[Seq[FormError], Order]](Left(Seq(FormError(key, "no field to order by")))) { value =>
@@ -56,7 +54,6 @@ trait FormFilterMappings {
     }
   }
 
-
   val baseFilterEntityMapping = mapping(
     "take" -> optional(number),
     "skip" -> optional(number),
@@ -65,10 +62,8 @@ trait FormFilterMappings {
   )(FilterDefinition.apply)(FilterDefinition.unapply)
 }
 
-
 abstract class BaseFormFilter[Id, Entity, Table <: BaseView[Id, Entity]](table: TableQuery[Table])
-  extends BaseFilter[Id, Entity, Table, FormFilterField[_, _ <: Any]](table) with FormFilterMappings {
-
+    extends BaseFilter[Id, Entity, Table, FormFilterField[_, _ <: Any]](table) with FormFilterMappings {
 
   /**
    * from mapping for this filter
@@ -81,6 +76,5 @@ abstract class BaseFormFilter[Id, Entity, Table <: BaseView[Id, Entity]](table: 
    * @return
    */
   final def filterForm = Form(filterMapping)
-
 
 }

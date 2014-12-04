@@ -1,6 +1,6 @@
 package org.virtuslab.beholder.suites
 
-import org.virtuslab.beholder.filters.forms.{FilterField, FormFilters}
+import org.virtuslab.beholder.filters.forms.FilterField
 import FilterField._
 import org.virtuslab.beholder.filters._
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
@@ -9,7 +9,7 @@ import play.api.data.format.Formats._
 import org.virtuslab.unicorn.LongUnicornPlay._
 import java.sql.Date
 import org.virtuslab.beholder.filters.forms.FormFilters
-import org.virtuslab.beholder.{UserMachineViewRow, AppTest, UserMachinesView}
+import org.virtuslab.beholder.{ UserMachineViewRow, AppTest, UserMachinesView }
 
 trait FiltersTestSuite extends UserMachinesView {
   self: AppTest =>
@@ -40,7 +40,6 @@ trait FiltersTestSuite extends UserMachinesView {
 
     val allFromDb = filter.table.list
   }
-
 
   def doFilters(data: BaseFilterData, currentFilter: FilterDefinition): Seq[UserMachineViewRow]
 
