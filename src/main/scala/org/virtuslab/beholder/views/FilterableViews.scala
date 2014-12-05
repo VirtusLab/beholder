@@ -23,10 +23,12 @@ object FilterableViews extends App with FilterableViewsGenerateCode {
    * @tparam B sec field
    * @return table for this view
    */
-  def createView[T: ClassTag, E, A: TypedType, B: TypedType](name: String,
+  def createView[T: ClassTag, E, A: TypedType, B: TypedType](
+    name: String,
     apply: (A, B) => T,
     unapply: T => Option[(A, B)],
-    baseQuery: Query[E, _, Seq])(mappings: E => ((String, Column[A]), (String, Column[B]))): TableQuery[BaseView2[T, A, B]] = {
+    baseQuery: Query[E, _, Seq]
+  )(mappings: E => ((String, Column[A]), (String, Column[B]))): TableQuery[BaseView2[T, A, B]] = {
 
     var columnsNames = Seq[String]()
 
@@ -59,12 +61,14 @@ object FilterableViews extends App with FilterableViewsGenerateCode {
    * @tparam A first field
    * @tparam B sec field
    */
-  class BaseView2[T: ClassTag, A: TypedType, B: TypedType](tag: Tag,
+  class BaseView2[T: ClassTag, A: TypedType, B: TypedType](
+    tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A, B) => T,
       unapply: T => Option[(A, B)],
-      val query: Query[_, T, Seq]) extends BaseView[A, T](tag, name) {
+      val query: Query[_, T, Seq]
+  ) extends BaseView[A, T](tag, name) {
     def c1 = column[A](columnNames(0))
 
     def c2 = column[B](columnNames(1))
@@ -73,7 +77,8 @@ object FilterableViews extends App with FilterableViewsGenerateCode {
 
     override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
       columnNames(0) -> (_.c1),
-      columnNames(1) -> (_.c2))
+      columnNames(1) -> (_.c2)
+    )
 
     def * = (c1, c2) <> (apply.tupled, unapply)
   }

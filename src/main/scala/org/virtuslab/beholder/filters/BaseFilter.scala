@@ -1,11 +1,10 @@
 package org.virtuslab.beholder.filters
 
 import org.virtuslab.beholder.views.BaseView
-import play.api.data.{ Form, Mapping }
+import play.api.data.Mapping
 import scala.slick.lifted.Ordered
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 import scala.slick.ast.TypedCollectionTypeConstructor
-import org.virtuslab.beholder.filters.forms.FilterField
 
 /**
  * Base class that is mapped to form.
@@ -25,6 +24,8 @@ case class FilterDefinition(
 
 case class Order(column: String, asc: Boolean)
 
+case class FilterRange[T](from: Option[T], to: Option[T])
+
 /**
  * Base filter class, contains public operations for all filters instances.
  *
@@ -33,7 +34,7 @@ case class Order(column: String, asc: Boolean)
  * @tparam Entity table entity
  * @tparam Table table class (usually View.type)
  */
-abstract class BaseFilter[Id, Entity, Table <: BaseView[Id, Entity], FieldType <: FilterField](val table: TableQuery[Table]) {
+abstract class BaseFilter[Id, Entity, Table <: BaseView[Id, Entity], FieldType <: FilterField, Formatter](val table: TableQuery[Table]) extends FilterAPI[Entity, Formatter] {
 
   def columnsNames: Seq[String] = table.shaped.value.columnsNames
 
@@ -42,7 +43,7 @@ abstract class BaseFilter[Id, Entity, Table <: BaseView[Id, Entity], FieldType <
    */
   protected def emptyFilterDataInner: Seq[Option[Any]]
 
-  protected def filterFields: Seq[FieldType]
+  def filterFields: Seq[FieldType]
 
   protected def tableColumns(table: Table): Seq[Column[_]]
 
@@ -70,7 +71,7 @@ abstract class BaseFilter[Id, Entity, Table <: BaseView[Id, Entity], FieldType <
   /**
    * @return data representing empty filter - query for all entities in table
    */
-  final def emptyFilterData = FilterDefinition(None, None, None, emptyFilterDataInner)
+  final override def emptyFilterData: FilterDefinition = FilterDefinition(None, None, None, emptyFilterDataInner)
 
   /**
    * filter and sort all entities with given data
@@ -78,7 +79,7 @@ abstract class BaseFilter[Id, Entity, Table <: BaseView[Id, Entity], FieldType <
    * @param session
    * @return
    */
-  final def filter(data: FilterDefinition)(implicit session: Session): Seq[Entity] = {
+  final override def filter(data: FilterDefinition)(implicit session: Session): Seq[Entity] = {
     val base = table.filter(filters(data.data))
       .sortBy {
         inQueryTable =>
@@ -98,4 +99,12 @@ abstract class BaseFilter[Id, Entity, Table <: BaseView[Id, Entity], FieldType <
   //ordering
   private def order(data: FilterDefinition)(table: Table): Option[(Column[_], Boolean)] =
     data.orderBy.map { case order => (table.columnByName(order.column), order.asc) }
+}
+
+trait FilterAPI[Entity, Formatter] {
+  def filter(data: FilterDefinition)(implicit session: Session): Seq[Entity]
+
+  def emptyFilterData: FilterDefinition
+
+  def formatter: Formatter
 }

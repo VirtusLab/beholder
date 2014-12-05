@@ -1,47 +1,19 @@
 package org.virtuslab.beholder.suites
 
-import org.virtuslab.beholder.filters.forms.FilterField
-import FilterField._
 import org.virtuslab.beholder.filters._
-import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 import org.joda.time.DateTime
-import play.api.data.format.Formats._
-import org.virtuslab.unicorn.LongUnicornPlay._
 import java.sql.Date
-import org.virtuslab.beholder.filters.forms.FormFilters
-import org.virtuslab.beholder.{ UserMachineViewRow, AppTest, UserMachinesView }
+import org.virtuslab.beholder.AppTest
+import scala.Some
 
-trait FiltersTestSuite extends UserMachinesView {
+trait FiltersTestSuite[Formatter] extends BaseSuite[Formatter] {
   self: AppTest =>
 
-  private def userMachineFilter()(implicit session: Session) = {
-    val view = createUsersMachineView
-    new CustomTypeMappers {
-      val filterGenerator = new FormFilters[UserMachineViewRow].create(
-        view,
-        inText,
-        inText,
-        inIntField,
-        inRange[Date],
-        FilterField.ignore[Option[BigDecimal]]
-      )
-    }.filterGenerator
-  }
-
-  private def baseFilterTest[A](testImplementation: BaseFilterData => A) = rollbackWithModel {
-    implicit session: Session =>
-      testImplementation(new BaseFilterData())
-  }
-
-  protected class BaseFilterData(implicit val session: Session) extends PopulatedDatabase {
-    val filter = userMachineFilter()
-    val baseFilter = filter.emptyFilterData
-    val baseFilterData = baseFilter.data
-
-    val allFromDb = filter.table.list
-  }
-
-  def doFilters(data: BaseFilterData, currentFilter: FilterDefinition): Seq[UserMachineViewRow]
+  /*
+    UserMachineViewRow(a@a.pl,Ubuntu,4,2014-12-05,Some(1.00))
+    UserMachineViewRow(o@a.pl,Ubuntu,4,2014-12-05,Some(1.00))
+    UserMachineViewRow(o@a.pl,Fedora,1,2014-12-05,Some(3.00))
+   */
 
   it should "query all entities for empty filter" in baseFilterTest {
     data =>
@@ -88,6 +60,39 @@ trait FiltersTestSuite extends UserMachinesView {
       orderByCoreDesc should contain theSameElementsInOrderAs fromDbOrderedByCoresDesc.drop(1)
   }
 
+  it should "filter by int field" in baseFilterTest {
+    data =>
+      import data._
+      val orderByCoreDesc = doFilters(data, baseFilter.copy(data = baseFilter.data.updated(2, Some(2))))
+      val fromDbOrderedByCoresDesc = allFromDb.filter(_.cores == 2)
+
+      orderByCoreDesc should contain theSameElementsInOrderAs fromDbOrderedByCoresDesc.drop(1)
+  }
+
+  //h2db does not have ilike operator
+  ignore should "filter by string field" in baseFilterTest {
+    data =>
+      import data._
+      val orderByCoreDesc = doFilters(data, baseFilter.copy(data = baseFilter.data.updated(1, Some("buntu"))))
+      val fromDbOrderedByCoresDesc = allFromDb.filter(_.system.contains("buntu"))
+
+      orderByCoreDesc should contain theSameElementsInOrderAs fromDbOrderedByCoresDesc.drop(1)
+  }
+
+  it should "not crash for date option" in baseFilterTest {
+    data =>
+      import data._
+      val a = baseFilter.data
+      val toDate = new Date(DateTime.now().minusHours(24).getMillis)
+      val dataRange = Some(FilterRange(None, Some(toDate)))
+
+      val newVersion = baseFilter.copy(data = a.updated(3, dataRange))
+      val fromdbWithCorrectDates = allFromDb.filter(_.created.before(toDate))
+
+      val withCorrectDates = doFilters(data, newVersion)
+      withCorrectDates should contain theSameElementsInOrderAs fromdbWithCorrectDates
+  }
+
   it should "skip correctly and return correct total amount of entities" in baseFilterTest {
     data =>
       import data._
@@ -99,16 +104,5 @@ trait FiltersTestSuite extends UserMachinesView {
 
       totalEntitiesAmount shouldEqual allFromDb.size
 
-  }
-
-  it should "not crash for date option" in baseFilterTest {
-    data =>
-      import data._
-      val a = baseFilter.data
-      val dataRange = Some((None, Some(new Date(DateTime.now().getMillis))))
-
-      val newVersion = baseFilter.copy(data = a.updated(4, dataRange))
-
-      val orderByCoreDesc = doFilters(data, newVersion)
   }
 }

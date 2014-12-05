@@ -1,17 +1,11 @@
 package org.virtuslab.beholder.filters.forms
 
-import play.api.data.{ Forms, FormError, Form, Mapping }
-import org.virtuslab.beholder.filters.{ Order, BaseFilter, FilterDefinition }
-import org.virtuslab.beholder.views.BaseView
-import scala.slick.lifted.TableQuery
+import play.api.data.{ FormError, Form, Mapping }
+import org.virtuslab.beholder.filters.{ Order, FilterDefinition }
 import play.api.data.Forms._
 import play.api.data.format.Formatter
 
-trait FormFilterMappings {
-
-  protected def filterFields: Seq[FormFilterField[_, _]]
-
-  protected def columnsNames: Seq[String]
+case class FormFormatter(filterFields: Seq[FormFilterField[_, _]], columnsNames: Seq[String]) {
 
   private def fieldName(key: String)(name: String) = s"$key.$name"
 
@@ -54,16 +48,12 @@ trait FormFilterMappings {
     }
   }
 
-  val baseFilterEntityMapping = mapping(
+  private val baseFilterEntityMapping = mapping(
     "take" -> optional(number),
     "skip" -> optional(number),
     "ordering" -> optional(of(orderingFormatter)),
     "data" -> of(dataFormatter)
   )(FilterDefinition.apply)(FilterDefinition.unapply)
-}
-
-abstract class BaseFormFilter[Id, Entity, Table <: BaseView[Id, Entity]](table: TableQuery[Table])
-    extends BaseFilter[Id, Entity, Table, FormFilterField[_, _ <: Any]](table) with FormFilterMappings {
 
   /**
    * from mapping for this filter
@@ -76,5 +66,5 @@ abstract class BaseFormFilter[Id, Entity, Table <: BaseView[Id, Entity]](table: 
    * @return
    */
   final def filterForm = Form(filterMapping)
-
 }
+

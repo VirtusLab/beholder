@@ -1,46 +1,10 @@
 package org.virtuslab.beholder.suites
 
-import org.virtuslab.beholder.filters.forms.FilterField
-import FilterField._
-import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
-import play.api.data.format.Formats._
-import org.virtuslab.unicorn.LongUnicornPlay._
-import java.sql.Date
-import org.virtuslab.beholder.filters.forms.FormFilters
-import org.virtuslab.beholder.{ UserMachineViewRow, UserMachinesView, AppTest }
-import org.virtuslab.beholder.filters.FilterDefinition
+import org.virtuslab.beholder.AppTest
+import org.virtuslab.beholder.filters.FilterRange
 
-trait RangeFiltersSuite extends UserMachinesView {
+trait RangeFiltersSuite[Formatter] extends BaseSuite[Formatter] {
   self: AppTest =>
-
-  def doFilters(data: BaseFilterData, currentFilter: FilterDefinition): Seq[UserMachineViewRow]
-
-  private def userMachineFilter()(implicit session: Session) = {
-    val view = createUsersMachineView
-    new CustomTypeMappers {
-      val filterGenerator = new FormFilters[UserMachineViewRow].create(
-        view,
-        inText,
-        inText,
-        inRange[Int],
-        inRange[Date],
-        inOptionRange[BigDecimal]
-      )
-    }.filterGenerator
-  }
-
-  private def baseFilterTest[A](testImplementation: BaseFilterData => A) = rollbackWithModel {
-    implicit session: Session =>
-      testImplementation(new BaseFilterData())
-  }
-
-  protected class BaseFilterData(implicit val session: Session) extends PopulatedDatabase {
-    val filter = userMachineFilter()
-    val baseFilter = filter.emptyFilterData
-    val baseFilterData = baseFilter.data
-
-    val allFromDb = filter.table.list
-  }
 
   behavior of "range filters"
 
@@ -49,7 +13,7 @@ trait RangeFiltersSuite extends UserMachinesView {
       import data._
 
       val a = baseFilter.data
-      val coreRange = Some((Some(1), Some(4)))
+      val coreRange = Some(FilterRange(Some(1), Some(4)))
 
       val coreRangeData = doFilters(data, baseFilter.copy(data = a.updated(2, coreRange)))
 
@@ -72,7 +36,7 @@ trait RangeFiltersSuite extends UserMachinesView {
           import data._
           val fromDbFilteredByCapacity = allFromDb.filter(a => isInRange(minCapacity, maxCapacity, a.capacity))
           val a = baseFilter.data
-          val capacityRange = Some((minCapacity, maxCapacity))
+          val capacityRange = Some(FilterRange(minCapacity, maxCapacity))
 
           val coreRangeData = doFilters(data, baseFilter.copy(data = a.updated(4, capacityRange)))
 
