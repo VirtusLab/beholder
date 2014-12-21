@@ -84,6 +84,19 @@ class FiltersTest extends AppTest with UserMachinesView {
       orderByCoreDesc should contain theSameElementsInOrderAs fromDbOrderedByCoresDesc.drop(1)
   }
 
+  it should "skip correctly and return correct total amount of entities" in baseFilterTest {
+    data =>
+      import data._
+
+      val (orderByCoreDesc, totalEntitiesAmount) = filter.filterWithTotalEntitiesNumber(baseFilter.copy(orderBy = Some(Order("cores", asc = false)), skip = Some(1)))
+      val fromDbOrderedByCoresDesc = allFromDb.sortBy(view => (-view.cores, view.email))
+
+      orderByCoreDesc should contain theSameElementsInOrderAs fromDbOrderedByCoresDesc.drop(1);
+
+      totalEntitiesAmount shouldEqual allFromDb.size
+
+  }
+
   it should "not crash for date option" in baseFilterTest {
     data =>
       import data._
