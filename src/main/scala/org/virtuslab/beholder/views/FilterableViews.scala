@@ -62,7 +62,7 @@ object FilterableViews extends App with FilterableViewsGenerateCode {
    * @tparam B sec field
    */
   class BaseView2[T: ClassTag, A: TypedType, B: TypedType](
-    tag: Tag,
+      tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A, B) => T,

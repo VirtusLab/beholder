@@ -39,7 +39,7 @@ trait FilterableViewsGenerateCode {
   }
 
   class BaseView3[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType](
-    tag: Tag,
+      tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3) => T,
@@ -91,7 +91,7 @@ trait FilterableViewsGenerateCode {
   }
 
   class BaseView4[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType](
-    tag: Tag,
+      tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4) => T,
@@ -145,7 +145,7 @@ trait FilterableViewsGenerateCode {
   }
 
   class BaseView5[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType](
-    tag: Tag,
+      tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5) => T,
@@ -201,7 +201,7 @@ trait FilterableViewsGenerateCode {
   }
 
   class BaseView6[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType](
-    tag: Tag,
+      tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6) => T,
@@ -259,7 +259,7 @@ trait FilterableViewsGenerateCode {
   }
 
   class BaseView7[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType](
-    tag: Tag,
+      tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7) => T,
@@ -319,7 +319,7 @@ trait FilterableViewsGenerateCode {
   }
 
   class BaseView8[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType](
-    tag: Tag,
+      tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8) => T,
@@ -381,7 +381,7 @@ trait FilterableViewsGenerateCode {
   }
 
   class BaseView9[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType](
-    tag: Tag,
+      tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9) => T,
@@ -445,7 +445,7 @@ trait FilterableViewsGenerateCode {
   }
 
   class BaseView10[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType](
-    tag: Tag,
+      tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10) => T,
@@ -511,7 +511,7 @@ trait FilterableViewsGenerateCode {
   }
 
   class BaseView11[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType](
-    tag: Tag,
+      tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11) => T,
@@ -579,7 +579,7 @@ trait FilterableViewsGenerateCode {
   }
 
   class BaseView12[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType](
-    tag: Tag,
+      tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12) => T,
@@ -649,7 +649,7 @@ trait FilterableViewsGenerateCode {
   }
 
   class BaseView13[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType](
-    tag: Tag,
+      tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13) => T,
@@ -721,7 +721,7 @@ trait FilterableViewsGenerateCode {
   }
 
   class BaseView14[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType](
-    tag: Tag,
+      tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14) => T,
@@ -795,7 +795,7 @@ trait FilterableViewsGenerateCode {
   }
 
   class BaseView15[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType](
-    tag: Tag,
+      tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15) => T,
@@ -871,7 +871,7 @@ trait FilterableViewsGenerateCode {
   }
 
   class BaseView16[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType](
-    tag: Tag,
+      tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16) => T,
@@ -949,7 +949,7 @@ trait FilterableViewsGenerateCode {
   }
 
   class BaseView17[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType](
-    tag: Tag,
+      tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17) => T,
@@ -1029,7 +1029,7 @@ trait FilterableViewsGenerateCode {
   }
 
   class BaseView18[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType](
-    tag: Tag,
+      tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18) => T,
