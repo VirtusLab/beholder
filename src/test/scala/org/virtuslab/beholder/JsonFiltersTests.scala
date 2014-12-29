@@ -1,19 +1,13 @@
 package org.virtuslab.beholder
 
-import org.virtuslab.beholder.suites.{ RangeFiltersSuite, FiltersTestSuite, BaseSuite }
-import org.virtuslab.beholder.filters.{ FilterAPI, FilterDefinition }
-import org.virtuslab.beholder.filters.json.{ JsonFilterFields, JsonFilters, JsonFormatter }
-import play.api.libs.json.JsObject
-import org.virtuslab.beholder.filters.json.JsonFilterFields._
 import java.sql.Date
+
+import org.virtuslab.beholder.filters.{FilterAPI, FilterDefinition}
+import org.virtuslab.beholder.filters.json.JsonFilterFields.{inIntField, inOptionRange, inRange, _}
+import org.virtuslab.beholder.filters.json.{JsonFilterFields, JsonFilters, JsonFormatter}
+import org.virtuslab.beholder.suites.{BaseSuite, FiltersTestSuite, RangeFiltersSuite}
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
-import org.virtuslab.beholder.filters.json.JsonFilterFields._
-import org.virtuslab.beholder.filters.FilterDefinition
-import org.virtuslab.beholder.filters.json.JsonFilterFields.inOptionRange
-import org.virtuslab.beholder.filters.json.JsonFilterFields.inRange
 import play.api.libs.json.JsObject
-import scala.Some
-import org.virtuslab.beholder.filters.json.JsonFilterFields.inIntField
 
 trait JsonFiltersTestsBase {
   self: AppTest with BaseSuite[JsonFormatter[UserMachineViewRow]] =>
