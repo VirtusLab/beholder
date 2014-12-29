@@ -1,11 +1,16 @@
 package org.virtuslab.beholder.filters
 
 import org.virtuslab.beholder.views.BaseView
-import play.api.data.Mapping
+import play.api.libs.json.Json
 import scala.slick.lifted.Ordered
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 import scala.slick.ast.TypedCollectionTypeConstructor
 
+case class Order(column: String, asc: Boolean)
+
+object Order {
+  implicit val format = Json.format[Order]
+}
 /**
  * Base class that is mapped to form.
  * Contains all common and specific (data field of generic type Data) filter data
@@ -22,7 +27,9 @@ case class FilterDefinition(
   data: Seq[Option[Any]]
 )
 
-case class Order(column: String, asc: Boolean)
+object FilterDefinition {
+  implicit val format = Json.format[FilterDefinition]
+}
 
 case class FilterRange[T](from: Option[T], to: Option[T])
 
@@ -107,4 +114,23 @@ trait FilterAPI[Entity, Formatter] {
   def emptyFilterData: FilterDefinition
 
   def formatter: Formatter
+}
+
+case class FilterResult[T](content: Seq[T], total: Int) {
+
+  def this(data: Seq[T]) {
+    this(data, data.size)
+  }
+}
+
+object FilterResult {
+
+  import play.api.libs.functional.syntax._
+  import play.api.libs.json.Format._
+  import play.api.libs.json._
+
+  implicit def format[T](implicit f: Format[T]): Format[FilterResult[T]] = (
+    (__ \ "data").format[Seq[T]] and
+    (__ \ "total").format[Int]
+  )(FilterResult.apply, unlift(FilterResult.unapply))
 }

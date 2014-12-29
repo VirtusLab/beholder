@@ -4,7 +4,6 @@ import org.virtuslab.beholder.filters._
 import org.joda.time.DateTime
 import java.sql.Date
 import org.virtuslab.beholder.AppTest
-import scala.Some
 
 trait FiltersTestSuite[Formatter] extends BaseSuite[Formatter] {
   self: AppTest =>
