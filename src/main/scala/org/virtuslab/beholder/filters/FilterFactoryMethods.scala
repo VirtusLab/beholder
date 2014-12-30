@@ -45,6 +45,8 @@ private[beholder] object FormFiltersGenerator extends App {
   println(generateCode.mkString("\n"))
 }
 
+import scala.language.higherKinds
+
 /**
  * Author: Krzysztof Romanowski
  */

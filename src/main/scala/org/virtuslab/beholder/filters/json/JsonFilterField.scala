@@ -4,9 +4,9 @@ import org.virtuslab.beholder.filters._
 import org.virtuslab.beholder.utils.ILikeExtension._
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{JsArray, JsObject, JsString, _}
+import play.api.libs.json.{ JsArray, JsObject, JsString, _ }
 
-import scala.slick.ast.{BaseTypedType, TypedType}
+import scala.slick.ast.{ BaseTypedType, TypedType }
 
 /**
  * Author: Krzysztof Romanowski
