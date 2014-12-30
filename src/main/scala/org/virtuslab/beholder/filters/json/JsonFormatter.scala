@@ -1,16 +1,8 @@
 package org.virtuslab.beholder.filters.json
 
-import play.api.libs.json._
-import org.virtuslab.beholder.filters.forms.FormFilterField
-import org.virtuslab.beholder.filters.{ Order, FilterDefinition }
-import akka.io.Tcp.Write
-import play.api.data.Forms._
+import org.virtuslab.beholder.filters.{ FilterDefinition, Order }
 import play.api.data.validation.ValidationError
-import play.api.libs.json.JsArray
-import org.virtuslab.beholder.filters.FilterDefinition
-import play.api.libs.json.JsObject
-import play.api.data.validation.ValidationError
-import org.virtuslab.beholder.filters.Order
+import play.api.libs.json.{ JsObject, _ }
 
 /**
  * Author: Krzysztof Romanowski
@@ -22,8 +14,8 @@ class JsonFormatter[Entity <: Product](filterFields: Seq[JsonFilterField[_, _]],
     )
   }
 
-  import play.api.libs.json._
   import play.api.libs.functional.syntax._
+  import play.api.libs.json._
 
   private implicit val orderingFormatter: Format[Order] = (
     (__ \ "column").format[String] and
@@ -61,7 +53,7 @@ class JsonFormatter[Entity <: Product](filterFields: Seq[JsonFilterField[_, _]],
     }
   }
 
-  private val filterDefinitionFormat: Format[FilterDefinition] =
+  implicit val filterDefinitionFormat: Format[FilterDefinition] =
     ((__ \ "take").format[Option[Int]] and
       (__ \ "skip").format[Option[Int]] and
       (__ \ "ordering").format[Option[Order]] and

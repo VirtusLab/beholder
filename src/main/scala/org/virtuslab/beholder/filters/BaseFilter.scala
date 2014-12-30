@@ -27,10 +27,6 @@ case class FilterDefinition(
   data: Seq[Option[Any]]
 )
 
-object FilterDefinition {
-  implicit val format = Json.format[FilterDefinition]
-}
-
 case class FilterRange[T](from: Option[T], to: Option[T])
 
 /**
@@ -113,7 +109,7 @@ trait FilterAPI[Entity, Formatter] {
 
   def emptyFilterData: FilterDefinition
 
-  def formatter: Formatter
+  val formatter: Formatter
 }
 
 case class FilterResult[T](content: Seq[T], total: Int) {

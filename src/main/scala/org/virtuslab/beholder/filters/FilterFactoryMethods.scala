@@ -25,7 +25,7 @@ private[beholder] object FormFiltersGenerator extends App {
           |
           |    new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
           |
-          |      override def formatter: Formatter = createFormatter(this)
+          |      override val formatter: Formatter = createFormatter(this)
           |
           |      override protected def emptyFilterDataInner: Seq[Option[Any]] = Seq.fill($nr)(None)
           |
@@ -61,7 +61,7 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
 
     new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
 
-      override def formatter: Formatter = createFormatter(this)
+      override val formatter: Formatter = createFormatter(this)
 
       override protected def emptyFilterDataInner: Seq[Option[Any]] = Seq.fill(3)(None)
 
@@ -84,7 +84,7 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
 
     new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
 
-      override def formatter: Formatter = createFormatter(this)
+      override val formatter: Formatter = createFormatter(this)
 
       override protected def emptyFilterDataInner: Seq[Option[Any]] = Seq.fill(4)(None)
 
@@ -108,7 +108,7 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
 
     new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
 
-      override def formatter: Formatter = createFormatter(this)
+      override val formatter: Formatter = createFormatter(this)
 
       override protected def emptyFilterDataInner: Seq[Option[Any]] = Seq.fill(5)(None)
 
@@ -133,7 +133,7 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
 
     new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
 
-      override def formatter: Formatter = createFormatter(this)
+      override val formatter: Formatter = createFormatter(this)
 
       override protected def emptyFilterDataInner: Seq[Option[Any]] = Seq.fill(6)(None)
 
@@ -159,7 +159,7 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
 
     new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
 
-      override def formatter: Formatter = createFormatter(this)
+      override val formatter: Formatter = createFormatter(this)
 
       override protected def emptyFilterDataInner: Seq[Option[Any]] = Seq.fill(7)(None)
 
@@ -186,7 +186,7 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
 
     new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
 
-      override def formatter: Formatter = createFormatter(this)
+      override val formatter: Formatter = createFormatter(this)
 
       override protected def emptyFilterDataInner: Seq[Option[Any]] = Seq.fill(8)(None)
 
@@ -214,7 +214,7 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
 
     new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
 
-      override def formatter: Formatter = createFormatter(this)
+      override val formatter: Formatter = createFormatter(this)
 
       override protected def emptyFilterDataInner: Seq[Option[Any]] = Seq.fill(9)(None)
 
@@ -243,7 +243,7 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
 
     new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
 
-      override def formatter: Formatter = createFormatter(this)
+      override val formatter: Formatter = createFormatter(this)
 
       override protected def emptyFilterDataInner: Seq[Option[Any]] = Seq.fill(10)(None)
 
@@ -273,7 +273,7 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
 
     new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
 
-      override def formatter: Formatter = createFormatter(this)
+      override val formatter: Formatter = createFormatter(this)
 
       override protected def emptyFilterDataInner: Seq[Option[Any]] = Seq.fill(11)(None)
 
@@ -304,7 +304,7 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
 
     new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
 
-      override def formatter: Formatter = createFormatter(this)
+      override val formatter: Formatter = createFormatter(this)
 
       override protected def emptyFilterDataInner: Seq[Option[Any]] = Seq.fill(12)(None)
 
@@ -336,7 +336,7 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
 
     new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
 
-      override def formatter: Formatter = createFormatter(this)
+      override val formatter: Formatter = createFormatter(this)
 
       override protected def emptyFilterDataInner: Seq[Option[Any]] = Seq.fill(13)(None)
 
@@ -369,7 +369,7 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
 
     new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
 
-      override def formatter: Formatter = createFormatter(this)
+      override val formatter: Formatter = createFormatter(this)
 
       override protected def emptyFilterDataInner: Seq[Option[Any]] = Seq.fill(14)(None)
 
@@ -403,7 +403,7 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
 
     new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
 
-      override def formatter: Formatter = createFormatter(this)
+      override val formatter: Formatter = createFormatter(this)
 
       override protected def emptyFilterDataInner: Seq[Option[Any]] = Seq.fill(15)(None)
 
@@ -438,7 +438,7 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
 
     new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
 
-      override def formatter: Formatter = createFormatter(this)
+      override val formatter: Formatter = createFormatter(this)
 
       override protected def emptyFilterDataInner: Seq[Option[Any]] = Seq.fill(16)(None)
 
@@ -474,7 +474,7 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
 
     new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
 
-      override def formatter: Formatter = createFormatter(this)
+      override val formatter: Formatter = createFormatter(this)
 
       override protected def emptyFilterDataInner: Seq[Option[Any]] = Seq.fill(17)(None)
 
@@ -511,7 +511,7 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
 
     new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
 
-      override def formatter: Formatter = createFormatter(this)
+      override val formatter: Formatter = createFormatter(this)
 
       override protected def emptyFilterDataInner: Seq[Option[Any]] = Seq.fill(18)(None)
 

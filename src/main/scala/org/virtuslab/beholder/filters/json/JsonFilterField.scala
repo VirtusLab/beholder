@@ -1,22 +1,12 @@
 package org.virtuslab.beholder.filters.json
 
 import org.virtuslab.beholder.filters._
-import play.api.libs.json._
-import scala.slick.ast.{ BaseTypedType, TypedType }
-import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 import org.virtuslab.beholder.utils.ILikeExtension._
-import org.virtuslab.unicorn.LongUnicornPlay
+import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 import play.api.libs.functional.syntax._
-import play.api.libs.json.JsArray
-import play.api.libs.json.JsString
-import scala.Some
-import scala.Tuple2
-import play.api.libs.json.JsObject
-import java.sql.Date
-import play.api.libs.json.JsArray
-import play.api.libs.json.JsString
-import scala.Some
-import play.api.libs.json.JsObject
+import play.api.libs.json.{JsArray, JsObject, JsString, _}
+
+import scala.slick.ast.{BaseTypedType, TypedType}
 
 /**
  * Author: Krzysztof Romanowski
@@ -52,7 +42,10 @@ object JsonFilterFields {
    */
   object inIntField extends ImplicitlyJsonFilterFiled[Int, Int]("Int") {
     override protected def filterOnColumn(column: Column[Int])(data: Int): Column[Option[Boolean]] = column === data
+  }
 
+  object inBigDecimal extends ImplicitlyJsonFilterFiled[BigDecimal, BigDecimal]("bigDecimal") {
+    override protected def filterOnColumn(column: Column[BigDecimal])(data: BigDecimal): Column[Option[Boolean]] = column === data
   }
 
   /**
@@ -145,7 +138,6 @@ object JsonFilterFields {
       override protected def valueWrite: Writes[Option[T]] = implicitly
 
       import play.api.libs.json._
-      import play.api.libs.functional.syntax._
 
       override protected def filterFormat: Format[FilterRange[T]] = rangeFormat
     }
