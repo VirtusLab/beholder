@@ -54,9 +54,9 @@ class JsonFormatter[Entity <: Product](filterFields: Seq[JsonFilterField[_, _]],
   }
 
   implicit val filterDefinitionFormat: Format[FilterDefinition] =
-    ((__ \ "take").format[Option[Int]] and
-      (__ \ "skip").format[Option[Int]] and
-      (__ \ "ordering").format[Option[Order]] and
+    ((__ \ "take").formatNullable[Int] and
+      (__ \ "skip").formatNullable[Int] and
+      (__ \ "ordering").formatNullable[Order] and
       (__ \ "data").format(filterDataFormatter))(FilterDefinition.apply, unlift(FilterDefinition.unapply))
 
   private def entity2Json(data: Entity): JsValue =
