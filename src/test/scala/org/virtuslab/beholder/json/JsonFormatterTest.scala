@@ -1,13 +1,12 @@
 package org.virtuslab.beholder.json
 
 import org.virtuslab.beholder._
-import org.virtuslab.beholder.filters.json.{JsonFilterFields, JsonFilters, JsonFormatter}
+import org.virtuslab.beholder.filters.json.{ JsonFilterFields, JsonFilters }
 import org.virtuslab.beholder.filters.json.JsonFilterFields._
 import java.sql.Date
 import org.virtuslab.beholder.UserMachineViewRow
-import org.virtuslab.beholder.suites.BaseSuite
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
-import play.api.libs.json.{JsString, JsObject}
+import play.api.libs.json.{ JsString, JsObject }
 import org.virtuslab.beholder.filters.FilterDefinition
 
 /**

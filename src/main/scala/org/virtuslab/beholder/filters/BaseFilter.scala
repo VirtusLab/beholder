@@ -11,6 +11,7 @@ case class Order(column: String, asc: Boolean)
 object Order {
   implicit val format = Json.format[Order]
 }
+
 /**
  * Base class that is mapped to form.
  * Contains all common and specific (data field of generic type Data) filter data
@@ -35,9 +36,10 @@ case class FilterRange[T](from: Option[T], to: Option[T])
  * @param table table to filter on
  * @tparam Id table id
  * @tparam Entity table entity
- * @tparam Table table class (usually View.type)
+ * @tparam FilterTable table class (usually View.type)
  */
-abstract class BaseFilter[Id, Entity, Table <: BaseView[Id, Entity], FieldType <: FilterField, Formatter](val table: TableQuery[Table]) extends FilterAPI[Entity, Formatter] {
+abstract class BaseFilter[Id, Entity, FilterTable <: BaseView[Id, Entity], FieldType <: FilterField, Formatter](val table: TableQuery[FilterTable])
+    extends FilterAPI[Entity, Formatter] {
 
   def columnsNames: Seq[String] = table.shaped.value.columnsNames
 
@@ -48,9 +50,9 @@ abstract class BaseFilter[Id, Entity, Table <: BaseView[Id, Entity], FieldType <
 
   def filterFields: Seq[FieldType]
 
-  protected def tableColumns(table: Table): Seq[Column[_]]
+  protected def tableColumns(table: FilterTable): Seq[Column[_]]
 
-  protected def columnsFilters(table: Table, data: Seq[Option[Any]]): Seq[Column[Option[Boolean]]] = {
+  protected def columnsFilters(table: FilterTable, data: Seq[Option[Any]]): Seq[Column[Option[Boolean]]] = {
     assert(data.size == filterFields.size, "Wrong numbers of columns")
 
     filterFields.zip(data).zip(tableColumns(table)).flatMap {
@@ -65,7 +67,7 @@ abstract class BaseFilter[Id, Entity, Table <: BaseView[Id, Entity], FieldType <
    * @param table
    * @return
    */
-  protected def filters(data: Seq[Option[Any]])(table: Table): Column[Option[Boolean]] = {
+  protected def filters(data: Seq[Option[Any]])(table: FilterTable): Column[Option[Boolean]] = {
     columnsFilters(table, data).foldLeft(LiteralColumn(Some(true)): Column[Option[Boolean]]) {
       _ && _
     }
@@ -76,14 +78,10 @@ abstract class BaseFilter[Id, Entity, Table <: BaseView[Id, Entity], FieldType <
    */
   final override def emptyFilterData: FilterDefinition = FilterDefinition(None, None, None, emptyFilterDataInner)
 
-  /**
-   * filter and sort all entities with given data
-   * @param data
-   * @param session
-   * @return
-   */
-  final override def filter(data: FilterDefinition)(implicit session: Session): Seq[Entity] = {
-    val base = table.filter(filters(data.data))
+  private type FilterQuery = Query[FilterTable, FilterTable#TableElementType, Seq]
+
+  private def createFilter(data: FilterDefinition): FilterQuery = {
+    table.filter(filters(data.data))
       .sortBy {
         inQueryTable =>
           val globalColumns =
@@ -92,20 +90,39 @@ abstract class BaseFilter[Id, Entity, Table <: BaseView[Id, Entity], FieldType <
             }.toSeq.flatMap(_.columns)
           new Ordered(globalColumns ++ inQueryTable.id.asc.columns)
       }
+  }
 
-    val afterTake = data.take.fold(base)(base.take)
+  private def takeAndSkip(data: FilterDefinition, filter: FilterQuery)(implicit session: Session): Seq[Entity] = {
+    val afterTake = data.take.fold(filter)(filter.take)
     val afterSkip = data.skip.fold(afterTake)(afterTake.drop)
 
     afterSkip.to(TypedCollectionTypeConstructor.forArray).list
   }
 
+  /**
+   * filter and sort all entities with given data
+   * @param data
+   * @param session
+   * @return
+   */
+  final override def filter(data: FilterDefinition)(implicit session: Session): Seq[Entity] =
+    takeAndSkip(data, createFilter(data))
+
+  override def filterWithTotalEntitiesNumber(data: FilterDefinition)(implicit session: Session): (Seq[Entity], Int) = {
+    val filter = createFilter(data)
+    (takeAndSkip(data, filter), filter.length.run)
+  }
+
   //ordering
-  private def order(data: FilterDefinition)(table: Table): Option[(Column[_], Boolean)] =
+  private def order(data: FilterDefinition)(table: FilterTable): Option[(Column[_], Boolean)] =
     data.orderBy.map { case order => (table.columnByName(order.column), order.asc) }
 }
 
 trait FilterAPI[Entity, Formatter] {
+
   def filter(data: FilterDefinition)(implicit session: Session): Seq[Entity]
+
+  def filterWithTotalEntitiesNumber(data: FilterDefinition)(implicit session: Session): (Seq[Entity], Int)
 
   def emptyFilterData: FilterDefinition
 
