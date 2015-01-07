@@ -4,9 +4,11 @@ import org.virtuslab.beholder.filters._
 import org.virtuslab.beholder.utils.ILikeExtension._
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 import play.api.libs.functional.syntax._
-import play.api.libs.json.{ JsArray, JsObject, JsString, _ }
+import org.virtuslab.unicorn.LongUnicornPlay.CustomTypeMappers._
+import play.api.libs.json._
 
 import scala.slick.ast.{ BaseTypedType, TypedType }
+import org.joda.time.DateTime
 
 /**
  * Author: Krzysztof Romanowski
@@ -68,6 +70,10 @@ object JsonFilterFields {
    */
   object inOptionText extends ImplicitlyJsonFilterFiled[Option[String], String]("OptionalText") {
     override def filterOnColumn(column: Column[Option[String]])(data: String): Column[Option[Boolean]] = column ilike s"%${escape(data)}%"
+  }
+
+  object inDateTime extends ImplicitlyJsonFilterFiled[DateTime, DateTime]("DateTime") {
+    override def filterOnColumn(column: Column[DateTime])(data: DateTime): Column[Option[Boolean]] = column === data
   }
 
   /**

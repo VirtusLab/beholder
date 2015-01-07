@@ -14,14 +14,14 @@ trait JsonFiltersTestsBase {
 
   override def doFilters(data: BaseFilterData, currentFilter: FilterDefinition): Seq[UserMachineViewRow] = {
     import data._
-    val result = filter.filter(currentFilter)
+    val result = filter.filterWithTotalEntitiesNumber(currentFilter)
 
     filter.formatter.results(currentFilter, result) match {
       case JsObject(Seq(("filter", jsonFilter), _)) =>
         filter.formatter.filterDefinition(jsonFilter) should equal(Some(currentFilter))
     }
 
-    result
+    result.content
   }
 }
 

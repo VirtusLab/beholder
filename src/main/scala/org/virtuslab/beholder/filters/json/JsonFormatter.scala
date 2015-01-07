@@ -1,6 +1,6 @@
 package org.virtuslab.beholder.filters.json
 
-import org.virtuslab.beholder.filters.{ FilterDefinition, Order }
+import org.virtuslab.beholder.filters.{ FilterResult, FilterDefinition, Order }
 import play.api.data.validation.ValidationError
 import play.api.libs.json.{ JsObject, _ }
 
@@ -68,9 +68,17 @@ class JsonFormatter[Entity <: Product](filterFields: Seq[JsonFilterField[_, _]],
 
   final def filterDefinition(from: JsValue): Option[FilterDefinition] = from.asOpt(filterDefinitionFormat)
 
-  final def results(from: FilterDefinition, data: Seq[Entity]): JsValue = JsObject(Seq(
+  final def entities(from: FilterDefinition, data: Seq[Entity]): JsValue = JsObject(Seq(
     "filter" -> Json.toJson(from)(filterDefinitionFormat),
     "data" -> JsArray(data.map(entity2Json))
+  ))
+
+  final def results(from: FilterDefinition, data: FilterResult[Entity]): JsValue = JsObject(Seq(
+    "filter" -> Json.toJson(from)(filterDefinitionFormat),
+    "result" -> JsObject(Seq(
+      "data" -> JsArray(data.content.map(entity2Json)),
+      "total" -> JsNumber(data.total)
+    ))
   ))
 
 }

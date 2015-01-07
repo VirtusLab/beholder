@@ -10,7 +10,7 @@ import play.api.libs.json.JsValue
  */
 abstract class FilterController[Entity <: Product](filter: FilterAPI[Entity, JsonFormatter[Entity]]) extends Controller {
 
-  protected def inSession[T](body: Request[AnyContent] => Session => Option[JsValue]): Action[T]
+  protected def inSession(body: Request[AnyContent] => Session => Option[JsValue]): EssentialAction
 
   final def filterDefinition = inSession { request =>
     _ =>
@@ -20,14 +20,14 @@ abstract class FilterController[Entity <: Product](filter: FilterAPI[Entity, Jso
   //for filter modification such us setting default parameters etc.
   protected def mapFilterData(data: FilterDefinition) = data
 
-  final def doFilter =
+  final def doFilter: EssentialAction =
     inSession {
       request =>
         implicit session =>
           for {
             json <- request.body.asJson
             filterDefinition <- filter.formatter.filterDefinition(json)
-            data = filter.filter(mapFilterData(filterDefinition))
+            data = filter.filterWithTotalEntitiesNumber(mapFilterData(filterDefinition))
           } yield filter.formatter.results(filterDefinition, data)
     }
 }

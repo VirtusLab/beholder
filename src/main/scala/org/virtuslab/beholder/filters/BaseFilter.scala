@@ -108,9 +108,9 @@ abstract class BaseFilter[Id, Entity, FilterTable <: BaseView[Id, Entity], Field
   final override def filter(data: FilterDefinition)(implicit session: Session): Seq[Entity] =
     takeAndSkip(data, createFilter(data))
 
-  override def filterWithTotalEntitiesNumber(data: FilterDefinition)(implicit session: Session): (Seq[Entity], Int) = {
+  override def filterWithTotalEntitiesNumber(data: FilterDefinition)(implicit session: Session): FilterResult[Entity] = {
     val filter = createFilter(data)
-    (takeAndSkip(data, filter), filter.length.run)
+    FilterResult(takeAndSkip(data, filter), filter.length.run)
   }
 
   //ordering
@@ -122,7 +122,7 @@ trait FilterAPI[Entity, Formatter] {
 
   def filter(data: FilterDefinition)(implicit session: Session): Seq[Entity]
 
-  def filterWithTotalEntitiesNumber(data: FilterDefinition)(implicit session: Session): (Seq[Entity], Int)
+  def filterWithTotalEntitiesNumber(data: FilterDefinition)(implicit session: Session): FilterResult[Entity]
 
   def emptyFilterData: FilterDefinition
 

@@ -96,12 +96,12 @@ trait FiltersTestSuite[Formatter] extends BaseSuite[Formatter] {
     data =>
       import data._
 
-      val (orderByCoreDesc, totalEntitiesAmount) = filter.filterWithTotalEntitiesNumber(baseFilter.copy(orderBy = Some(Order("cores", asc = false)), skip = Some(1)))
+      val filterData = filter.filterWithTotalEntitiesNumber(baseFilter.copy(orderBy = Some(Order("cores", asc = false)), skip = Some(1)))
       val fromDbOrderedByCoresDesc = allFromDb.sortBy(view => (-view.cores, view.email))
 
-      orderByCoreDesc should contain theSameElementsInOrderAs fromDbOrderedByCoresDesc.drop(1);
+      filterData.content should contain theSameElementsInOrderAs fromDbOrderedByCoresDesc.drop(1);
 
-      totalEntitiesAmount shouldEqual allFromDb.size
+      filterData.total shouldEqual allFromDb.size
 
   }
 }
