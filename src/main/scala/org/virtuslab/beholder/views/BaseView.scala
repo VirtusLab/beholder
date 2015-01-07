@@ -20,6 +20,8 @@ abstract class BaseView[Id, Entity](tag: Tag, val viewName: String) extends Base
   protected val columns: Seq[(String, this.type => Column[_])]
   private lazy val columnsMap: Map[String, this.type => Column[_]] = columns.toMap
 
+  final def columnsNames = columns.map(_._1)
+
   /**
    * find column by name
    * @param name
