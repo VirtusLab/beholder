@@ -1,13 +1,13 @@
 Beholder: Play-Slick library for data presentation
-=========================
+==================================================
+[![Build Status](https://travis-ci.org/VirtusLab/beholder.svg?branch=master)](https://travis-ci.org/VirtusLab/beholder)
 
 Standard part of many application are list of data that is not a effect of simple query from one table but junction and aggregation of data from many tables. Beholder provides support for such elemets.
 
 Features:
 * views as table
 * declaring filters for data
-* suport for sorting, filtering on mutliple (custom) datatype
-
+* support for sorting, filtering on multiple (custom) datatypes
 
 Contributors
 ------------
@@ -22,10 +22,10 @@ Feel free to use it, test it and to contribute!
 Getting beholder
 ----------------
 
-For latest version (Scala 2.10.4/2.11.2 compatible) use:
+For latest version (Scala 2.11.5 compatible) use:
 
 ```scala
-libraryDependencies += "org.virtuslab" %% "beholder" % "0.2.0"
+libraryDependencies += "org.virtuslab" %% "beholder" % "0.2.2"
 ```
 
 Or see Maven repository for [2.10](http://maven-repository.com/artifact/org.virtuslab/beholder_2.10) and [2.11](http://maven-repository.com/artifact/org.virtuslab/beholder_2.11).
@@ -47,7 +47,8 @@ and junction table joined them by ids.
 Defining view
 -------------
 
-Usually for data in view does not came form single table so we have to create view that is materialisation of some query. Beholder provieds such utility. We can create Slick's table that operate on view (it is read only).
+Usually for data in view does not came form single table so we have to create view that is materialisation of some query.
+Beholder provides such utility. We can create Slick's table that operate on view (it is read only).
 
 ```scala
 case class UserMachineView(email: String, system: String, cores: Int)
@@ -76,7 +77,6 @@ UsersMachineView.viewDDL.create
 Defining filter
 ---------------
 We create a filter by specify table query (view or normal table) and mapping for field
-
 
 ```scala
 val UsersMachineFilter = new FiltersGenerator[UserMachineView].create(view,

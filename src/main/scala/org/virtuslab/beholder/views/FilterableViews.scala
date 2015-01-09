@@ -1,14 +1,12 @@
 package org.virtuslab.beholder.views
 
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
+
 import scala.reflect.ClassTag
 import scala.slick.ast.TypedType
-import scala.slick.lifted.{ TableQuery, Tag, Column }
+import scala.slick.lifted.{ Column, TableQuery, Tag }
 
-/**
- * generates code for file FilterableViewsGeneratedCode
- */
-object FilterableViews extends App with FilterableViewsGenerateCode {
+object FilterableViews extends FilterableViewsGenerateCode {
 
   /**
    * create view with 2 fields
@@ -18,7 +16,7 @@ object FilterableViews extends App with FilterableViewsGenerateCode {
    * @param baseQuery query for create view - it should returns E
    * @param mappings map E to columns that suits apply function
    * @tparam T entity
-   * @tparam E value returns form query (in sence of columns and tables not entities) - usually tuple with tables
+   * @tparam E value returns form query (in sense of columns and tables not entities) - usually tuple with tables
    * @tparam A first field
    * @tparam B sec field
    * @return table for this view

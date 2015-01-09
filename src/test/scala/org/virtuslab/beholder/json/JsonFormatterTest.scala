@@ -1,22 +1,19 @@
 package org.virtuslab.beholder.json
 
-import org.virtuslab.beholder._
-import org.virtuslab.beholder.filters.json.{ JsonFilterFields, JsonFilters }
-import org.virtuslab.beholder.filters.json.JsonFilterFields._
 import java.sql.Date
-import org.virtuslab.beholder.UserMachineViewRow
-import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
-import play.api.libs.json.{ JsString, JsObject }
-import org.virtuslab.beholder.filters.FilterDefinition
 
-/**
- * Author: Krzysztof Romanowski
- */
+import org.virtuslab.beholder.filters.FilterDefinition
+import org.virtuslab.beholder.filters.json.JsonFilterFields._
+import org.virtuslab.beholder.filters.json.{ JsonFilterFields, JsonFilters }
+import org.virtuslab.beholder.{ UserMachineViewRow, _ }
+import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
+import play.api.libs.json.{ JsObject, JsString }
+
 class JsonFormatterTest extends AppTest with UserMachinesView with ModelIncluded {
 
   behavior of "JsonFormatter"
 
-  it should "parse data corrently" in rollbackWithModel {
+  it should "parse data correctly" in rollbackWithModel {
     implicit session =>
       lazy val view = createUsersMachineView
 
@@ -31,8 +28,8 @@ class JsonFormatterTest extends AppTest with UserMachinesView with ModelIncluded
 
       val req = JsObject(Seq("data" -> JsObject(Seq("email" -> JsString("ala")))))
 
-      val data = FilterDefinition(None, None, None, Seq(Some("ala")))
+      val data = FilterDefinition(None, None, None, Seq(Some("ala"), None, None, None, None))
 
-      data should equal(data)
+      filter.formatter.filterDefinition(req) shouldEqual Some(data)
   }
 }

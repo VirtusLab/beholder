@@ -1,18 +1,15 @@
 package org.virtuslab.beholder.filters.json
 
+import org.joda.time.DateTime
 import org.virtuslab.beholder.filters._
 import org.virtuslab.beholder.utils.ILikeExtension._
+import org.virtuslab.unicorn.LongUnicornPlay.CustomTypeMappers._
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 import play.api.libs.functional.syntax._
-import org.virtuslab.unicorn.LongUnicornPlay.CustomTypeMappers._
 import play.api.libs.json._
 
 import scala.slick.ast.{ BaseTypedType, TypedType }
-import org.joda.time.DateTime
 
-/**
- * Author: Krzysztof Romanowski
- */
 abstract class JsonFilterField[A: TypedType, B] extends MappedFilterField[A, B] {
   def fieldDefinition: JsValue
 
@@ -40,7 +37,6 @@ object JsonFilterFields {
 
   /**
    * search in text (ilike)
-   * @return
    */
   object inIntField extends ImplicitlyJsonFilterFiled[Int, Int]("Int") {
     override protected def filterOnColumn(column: Column[Int])(data: Int): Column[Option[Boolean]] = column === data
@@ -52,7 +48,6 @@ object JsonFilterFields {
 
   /**
    * simple check boolean
-   * @return
    */
   object inBoolean extends ImplicitlyJsonFilterFiled[Boolean, Boolean]("Boolean") {
     override def filterOnColumn(column: Column[Boolean])(data: Boolean): Column[Option[Boolean]] = column === data
@@ -79,7 +74,6 @@ object JsonFilterFields {
   /**
    * check enum value
    * @tparam T - enum class (eg. Colors.type)
-   * @return
    */
   def inEnum[T <: Enumeration](enum: T)(implicit tm: BaseTypedType[T#Value], formatter: Format[T#Value]): JsonFilterField[T#Value, T#Value] = {
     new JsonFilterField[T#Value, T#Value] {
@@ -150,8 +144,6 @@ object JsonFilterFields {
 
   /**
    * Ignores given field in filter.
-   * @tparam T
-   * @return
    */
   def ignore[T: TypedType: Writes]: JsonFilterField[T, T] = new JsonFilterField[T, T] {
 

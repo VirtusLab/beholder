@@ -1,14 +1,14 @@
 package org.virtuslab.beholder.filters.forms
 
-import scala.slick.ast.{ BaseTypedType, TypedType }
-import play.api.data.{ FormError, Mapping }
-import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 import org.virtuslab.beholder.filters.{ FilterRange, MappedFilterField }
-import play.api.data.validation.Constraint
-import play.api.data.format.Formatter
-import play.api.data.Forms._
 import org.virtuslab.beholder.utils.ILikeExtension._
-import scala.Some
+import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
+import play.api.data.Forms._
+import play.api.data.format.Formatter
+import play.api.data.validation.Constraint
+import play.api.data.{ FormError, Mapping }
+
+import scala.slick.ast.{ BaseTypedType, TypedType }
 
 abstract class FormFilterField[A: TypedType, B](mapping: Mapping[B]) extends MappedFilterField[A, B] {
 
@@ -18,6 +18,7 @@ abstract class FormFilterField[A: TypedType, B](mapping: Mapping[B]) extends Map
 }
 
 object FromFilterFields {
+
   private def ignoreMapping[T] = new Mapping[T] {
     val key = ""
     val mappings: Seq[Mapping[_]] = Nil
@@ -37,13 +38,12 @@ object FromFilterFields {
   private def rangeMapping[T: Formatter] = mapping(
     "from" -> optional(of[T]),
     "to" -> optional(of[T])
-  )(FilterRange.apply _)(FilterRange.unapply _)
+  )(FilterRange.apply)(FilterRange.unapply)
 
   //API
 
   /**
    * search in text (ilike)
-   * @return
    */
   object inIntField extends FormFilterField[Int, Int](number) {
     override def filterOnColumn(column: Column[Int])(data: Int): Column[Option[Boolean]] = column === data
@@ -51,7 +51,6 @@ object FromFilterFields {
 
   /**
    * simple check boolean
-   * @return
    */
   object inBoolean extends FormFilterField[Boolean, Boolean](boolean) {
     override def filterOnColumn(column: Column[Boolean])(data: Boolean): Column[Option[Boolean]] = column === data
@@ -74,7 +73,6 @@ object FromFilterFields {
   /**
    * check enum value
    * @tparam T - enum class (eg. Colors.type)
-   * @return
    */
   def inEnum[T <: Enumeration](implicit tm: BaseTypedType[T#Value], formatter: Formatter[T#Value]): FormFilterField[T#Value, T#Value] =
     inField[T#Value]
@@ -98,10 +96,6 @@ object FromFilterFields {
 
   /**
    * Search in range (form contain from and to).
-   * @param tm
-   * @param f
-   * @tparam T
-   * @return
    */
   def inOptionRange[T](implicit tm: BaseTypedType[T], f: Formatter[T]): FormFilterField[Option[T], FilterRange[T]] =
     new FormFilterField[Option[T], FilterRange[T]](rangeMapping[T]) {
@@ -115,8 +109,6 @@ object FromFilterFields {
 
   /**
    * Ignores given field in filter.
-   * @tparam T
-   * @return
    */
   def ignore[T: TypedType]: FormFilterField[T, T] = new FormFilterField[T, T](ignoreMapping[T]) {
     override def filterOnColumn(column: Column[T])(value: T): Column[Option[Boolean]] = LiteralColumn(Some(true))

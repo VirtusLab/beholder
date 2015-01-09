@@ -3,6 +3,7 @@ package org.virtuslab.beholder.views
 import org.virtuslab.unicorn.LongUnicornPlay._
 import org.virtuslab.unicorn.LongUnicornPlay.driver.DDL
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
+
 import scala.language.existentials
 import scala.slick.lifted.{ TableQuery, Tag }
 
@@ -24,21 +25,17 @@ abstract class BaseView[Id, Entity](tag: Tag, val viewName: String) extends Base
 
   /**
    * find column by name
-   * @param name
-   * @return
    */
   def columnByName[A](name: String): Column[_] =
     columnsMap(name).apply(this)
 
   /**
    * column that is tread as view 'id' - it is use eg. for default sort
-   * @return
    */
   def id: Column[Id]
 
   /**
    * query that build this view
-   * @return
    */
   def query: Query[_, Entity, Seq]
 
@@ -67,8 +64,6 @@ object BaseView {
 
     /**
      * util to print select query sql
-     * @param query
-     * @return
      */
     private def selectStatements(query: Query[_, _, Seq]): String = query.selectStatement
 

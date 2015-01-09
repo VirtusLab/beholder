@@ -1,55 +1,12 @@
 package org.virtuslab.beholder.filters
 
-import scala.slick.ast.TypedType
-import scala.slick.lifted.TableQuery
 import org.virtuslab.beholder.views.FilterableViews._
 import org.virtuslab.unicorn.LongUnicornPlay
 
-private[beholder] object FormFiltersGenerator extends App {
-  final def generateCode = {
-    (3 to 18).map {
-      implicit nr =>
-        import org.virtuslab.beholder.utils.CodeGenerationUtils._
-
-        val fieldFilters = fill(nr => s"c${nr}Mapping: FieldType[A$nr, B$nr]", ",\n")
-        val mappings = fill(n => s"c${n}Mapping")
-        val columnsNames = fill("table.c" + _)
-
-        s"""
-          |def create[$aTypesWithTypedType,
-          |           $bTypes,
-          |           T <: BaseView$nr[Entity,
-          |             $aTypes]](table: TableQuery[T],
-          |                       $fieldFilters):
-          |             FilterAPI[Entity, Formatter] = {
-          |
-          |    new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
-          |
-          |      override val formatter: Formatter = createFormatter(this)
-          |
-          |      override protected def emptyFilterDataInner: Seq[Option[Any]] = Seq.fill($nr)(None)
-          |
-          |      override def filterFields: Seq[FieldType[_, _]] =
-          |       Seq[FieldType[_, _]]($mappings)
-          |
-          |      override protected def tableColumns(table: T): Seq[LongUnicornPlay.driver.simple.Column[_]] = Seq(
-          |       $columnsNames
-          |      )
-          |    }
-          |  }
-        """.stripMargin
-
-    }
-  }
-
-  println(generateCode.mkString("\n"))
-}
-
 import scala.language.higherKinds
+import scala.slick.ast.TypedType
+import scala.slick.lifted.TableQuery
 
-/**
- * Author: Krzysztof Romanowski
- */
 abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField[_, _], Formatter] {
 
   def createFormatter(table: BaseFilter[_, _, _, FieldType[_, _], Formatter]): Formatter

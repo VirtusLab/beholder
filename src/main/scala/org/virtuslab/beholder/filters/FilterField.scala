@@ -12,9 +12,6 @@ trait FilterField {
 
   /**
    * filter on column - apply filter form data into sql - default returns true
-   * @param column
-   * @param value
-   * @return
    */
   def doFilter(column: Column[_])(value: Any): Column[Option[Boolean]]
 }

@@ -1,15 +1,17 @@
 package org.virtuslab.beholder
 
-import org.scalatest._
+import java.sql.Date
+
+import org.joda.time.DateTime
+import org.scalatest.{ BeforeAndAfterEach, FlatSpecLike, Matchers }
 import org.virtuslab.beholder.model._
 import org.virtuslab.beholder.repositories._
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 import play.api.Play
 import play.api.db.slick.DB
 import play.api.test.FakeApplication
+
 import scala.slick.lifted.TableQuery
-import org.joda.time.DateTime
-import java.sql.Date
 
 trait BaseTest extends FlatSpecLike with Matchers
 
@@ -24,7 +26,6 @@ trait ModelIncluded {
 
   final def rollbackWithModel[A](func: Session => A): A = rollback {
     implicit session: Session =>
-      User
       UsersRepository.create
       MachineRepository.create
       userMachineQuery.ddl.create
@@ -36,8 +37,7 @@ trait ModelIncluded {
     val users = Seq(
       User(None, "a@a.pl", "Ala", "maKota"),
       User(None, "o@a.pl", "Ola", "maPsa")
-    ).
-      map(user => user.copy(id = Some(UsersRepository.save(user))))
+    ).map(user => user.copy(id = Some(UsersRepository.save(user))))
 
     val machines = Seq(
       Machine(None, "a@a.pl", "Ubuntu", 4, new Date(DateTime.now().minusHours(24).getMillis), Some(1)),
