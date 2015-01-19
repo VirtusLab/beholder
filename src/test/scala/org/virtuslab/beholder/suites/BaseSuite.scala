@@ -1,12 +1,9 @@
 package org.virtuslab.beholder.suites
 
-import org.virtuslab.beholder.filters.{ FilterDefinition, FilterAPI }
-import org.virtuslab.beholder.{ AppTest, UserMachinesView, UserMachineViewRow }
+import org.virtuslab.beholder.filters.{ FilterAPI, FilterDefinition }
+import org.virtuslab.beholder.{ AppTest, UserMachineViewRow, UserMachinesView }
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 
-/**
- * Author: Krzysztof Romanowski
- */
 trait BaseSuite[Formatter] extends UserMachinesView {
   self: AppTest =>
   def createFilter(data: BaseFilterData): FilterAPI[UserMachineViewRow, Formatter]
@@ -22,7 +19,6 @@ trait BaseSuite[Formatter] extends UserMachinesView {
 
     lazy val filter = createFilter(this)
 
-    /**/
     lazy val baseFilter = filter.emptyFilterData
     lazy val baseFilterData = baseFilter.data
 

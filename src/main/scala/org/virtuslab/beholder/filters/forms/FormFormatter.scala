@@ -1,9 +1,9 @@
 package org.virtuslab.beholder.filters.forms
 
-import play.api.data.{ FormError, Form, Mapping }
-import org.virtuslab.beholder.filters.{ Order, FilterDefinition }
+import org.virtuslab.beholder.filters.{ FilterDefinition, Order }
 import play.api.data.Forms._
 import play.api.data.format.Formatter
+import play.api.data.{ Form, FormError, Mapping }
 
 case class FormFormatter(filterFields: Seq[FormFilterField[_, _]], columnsNames: Seq[String]) {
 
@@ -36,8 +36,8 @@ case class FormFormatter(filterFields: Seq[FormFilterField[_, _]], columnsNames:
     override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], Order] = {
       data.get(columnKey(key)).fold[Either[Seq[FormError], Order]](Left(Seq(FormError(key, "no field to order by")))) { value =>
         data.get(ascKey(key)) match {
-          case Some("true") => Right(Order(value, true))
-          case Some("false") => Right(Order(value, false))
+          case Some("true") => Right(Order(value, asc = true))
+          case Some("false") => Right(Order(value, asc = false))
           case _ => Left(Seq(FormError(ascKey(columnKey(key)), "Asc field not set!")))
         }
       }
@@ -57,13 +57,11 @@ case class FormFormatter(filterFields: Seq[FormFilterField[_, _]], columnsNames:
 
   /**
    * from mapping for this filter
-   * @return
    */
   protected def filterMapping: Mapping[FilterDefinition] = baseFilterEntityMapping
 
   /**
    * form for this filter
-   * @return
    */
   final def filterForm = Form(filterMapping)
 }

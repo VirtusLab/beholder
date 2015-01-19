@@ -11,6 +11,7 @@ import scala.slick.lifted._
  * to work import iLikeExtension from its body in scope
  */
 object ILikeExtension {
+
   val ILIKE = new SqlOperator("ilike")
 
   /**

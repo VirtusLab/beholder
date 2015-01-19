@@ -1,9 +1,10 @@
 package org.virtuslab.beholder.suites
 
-import org.virtuslab.beholder.filters._
-import org.joda.time.DateTime
 import java.sql.Date
+
+import org.joda.time.DateTime
 import org.virtuslab.beholder.AppTest
+import org.virtuslab.beholder.filters._
 
 trait FiltersTestSuite[Formatter] extends BaseSuite[Formatter] {
   self: AppTest =>
@@ -99,7 +100,7 @@ trait FiltersTestSuite[Formatter] extends BaseSuite[Formatter] {
       val filterData = filter.filterWithTotalEntitiesNumber(baseFilter.copy(orderBy = Some(Order("cores", asc = false)), skip = Some(1)))
       val fromDbOrderedByCoresDesc = allFromDb.sortBy(view => (-view.cores, view.email))
 
-      filterData.content should contain theSameElementsInOrderAs fromDbOrderedByCoresDesc.drop(1);
+      filterData.content should contain theSameElementsInOrderAs fromDbOrderedByCoresDesc.drop(1)
 
       filterData.total shouldEqual allFromDb.size
 

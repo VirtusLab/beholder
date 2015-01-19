@@ -4,9 +4,7 @@ name := "beholder"
 
 version := "0.2.3-SNAPSHOT"
 
-scalaVersion := "2.11.4"
-
-crossScalaVersions := Seq("2.10.4", scalaVersion.value)
+scalaVersion := "2.11.5"
 
 resolvers += Resolver.typesafeRepo("releases")
 
@@ -16,11 +14,11 @@ resolvers += Resolver.sonatypeRepo("snapshots")
 
 libraryDependencies ++= Seq(
   "com.typesafe.slick" %% "slick" % "2.1.0",
-  "com.typesafe.play" %% "play-slick" % "0.8.0",
-  "org.virtuslab" %% "unicorn" % "0.6.1",
-  "org.scalatest" %% "scalatest" % "2.2.2" % "test",
+  "com.typesafe.play" %% "play-slick" % "0.8.1",
+  "org.virtuslab" %% "unicorn" % "0.6.2",
+  "org.scalatest" %% "scalatest" % "2.2.3" % "test",
   "com.typesafe.play" %% "play-test" % "2.3.7" % "test",
-  "com.h2database" % "h2" % "1.4.181" % "test"
+  "com.h2database" % "h2" % "1.4.184" % "test"
 )
 
 parallelExecution in Test := false
@@ -31,7 +29,8 @@ scalacOptions ++= Seq(
   "-deprecation",
   "-unchecked",
   "-feature",
-  "-Xlint"
+  "-Xlint",
+  "-Xfatal-warnings"
 )
 
 com.typesafe.sbt.SbtScalariform.scalariformSettings
@@ -67,3 +66,16 @@ pomExtra := <url>https://github.com/VirtusLab/beholder</url>
   </developers>
 
 xerial.sbt.Sonatype.sonatypeSettings
+
+// Scoverage setup
+
+ScoverageSbtPlugin.ScoverageKeys.coverageMinimum := 48
+
+ScoverageSbtPlugin.ScoverageKeys.coverageFailOnMinimum := true
+
+ScoverageSbtPlugin.ScoverageKeys.coverageExcludedPackages := Seq(
+  "org.virtuslab.beholder.utils.generators.*",
+  // only BaseView5 is tested, all are generated, so there is no need to check them all
+  "org.virtuslab.beholder.views.FilterableViews.*",
+  "org.virtuslab.beholder.views.FilterableViewsGenerateCode.BaseView[^5].*"
+).mkString(";")

@@ -1,13 +1,11 @@
 package org.virtuslab.beholder.filters.json
 
-import org.virtuslab.beholder.filters.{ FilterResult, FilterDefinition, Order }
+import org.virtuslab.beholder.filters.{ FilterDefinition, FilterResult, Order }
 import play.api.data.validation.ValidationError
 import play.api.libs.json.{ JsObject, _ }
 
-/**
- * Author: Krzysztof Romanowski
- */
 class JsonFormatter[Entity <: Product](filterFields: Seq[JsonFilterField[_, _]], columnsNames: Seq[String]) {
+
   def jsonDefinition: JsValue = {
     JsObject(
       columnsNames.zip(filterFields.map(_.fieldDefinition))
@@ -33,7 +31,7 @@ class JsonFormatter[Entity <: Product](filterFields: Seq[JsonFilterField[_, _]],
     override def reads(json: JsValue): JsResult[Seq[Option[Any]]] = json match {
       case jsObject: JsObject =>
         jsObject.keys -- columnsNames.toSet match {
-          case badFields if !badFields.isEmpty =>
+          case badFields if badFields.nonEmpty =>
             JsError((JsPath(Nil), ValidationError("No such fields in filter: " + badFields)))
           case _ =>
             val fieldResults = columnsNames.map(jsObject.value.get).zip(filterFields).map {

@@ -1,8 +1,9 @@
 package org.virtuslab.beholder.model
 
+import java.sql.Date
+
 import org.virtuslab.unicorn.LongUnicornPlay._
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
-import java.sql.Date
 
 /** Id class for type-safe joins and queries. */
 case class MachineId(id: Long) extends AnyVal with BaseId

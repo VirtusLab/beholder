@@ -1,14 +1,16 @@
 package org.virtuslab.beholder.views
 
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
+
 import scala.reflect.ClassTag
 import scala.slick.ast.TypedType
-import scala.slick.lifted.{ TableQuery, Tag, Column }
+import scala.slick.lifted.{ Column, TableQuery, Tag }
 
 /**
  * Generated code for filterable views.
  */
-trait FilterableViewsGenerateCode {
+private[beholder] trait FilterableViewsGenerateCode {
+
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType](
     name: String,
     apply: (A1, A2, A3) => T,

@@ -1,10 +1,11 @@
 package org.virtuslab.beholder
 
+import java.sql.Date
+
 import org.virtuslab.beholder.model.{ Machines, Users }
 import org.virtuslab.beholder.views.FilterableViews
-import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 import org.virtuslab.unicorn.LongUnicornPlay._
-import java.sql.Date
+import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 
 case class UserMachineViewRow(
   email: String,

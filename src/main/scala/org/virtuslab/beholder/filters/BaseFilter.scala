@@ -1,10 +1,11 @@
 package org.virtuslab.beholder.filters
 
 import org.virtuslab.beholder.views.BaseView
-import play.api.libs.json.Json
-import scala.slick.lifted.Ordered
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
+import play.api.libs.json.Json
+
 import scala.slick.ast.TypedCollectionTypeConstructor
+import scala.slick.lifted.Ordered
 
 case class Order(column: String, asc: Boolean)
 
@@ -19,7 +20,6 @@ object Order {
  * @param take how many elements to take
  * @param skip how many elements to skip before taking
  * @param orderBy field by which ordering is done
- * @param data
  */
 case class FilterDefinition(
   take: Option[Int],
@@ -56,16 +56,13 @@ abstract class BaseFilter[Id, Entity, FilterTable <: BaseView[Id, Entity], Field
     assert(data.size == filterFields.size, "Wrong numbers of columns")
 
     filterFields.zip(data).zip(tableColumns(table)).flatMap {
-      case ((columnDef, data), column) =>
-        data.map(columnDef.doFilter(column))
+      case ((columnDef, dataElem), column) =>
+        dataElem.map(columnDef.doFilter(column))
     }
   }
 
   /**
    * applies filter data into query where clauses
-   * @param data
-   * @param table
-   * @return
    */
   protected def filters(data: Seq[Option[Any]])(table: FilterTable): Column[Option[Boolean]] = {
     columnsFilters(table, data).foldLeft(LiteralColumn(Some(true)): Column[Option[Boolean]]) {
@@ -101,9 +98,6 @@ abstract class BaseFilter[Id, Entity, FilterTable <: BaseView[Id, Entity], Field
 
   /**
    * filter and sort all entities with given data
-   * @param data
-   * @param session
-   * @return
    */
   final override def filter(data: FilterDefinition)(implicit session: Session): Seq[Entity] =
     takeAndSkip(data, createFilter(data))

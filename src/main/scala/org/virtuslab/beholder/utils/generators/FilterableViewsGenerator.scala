@@ -1,15 +1,13 @@
-package org.virtuslab.beholder.views
+package org.virtuslab.beholder.utils.generators
 
-import org.virtuslab.beholder.utils.CodeGenerationUtils._
+import org.virtuslab.beholder.utils.generators.CodeGenerationUtils._
 
-private object FilterableViewsGenerator extends App {
+private[beholder] object FilterableViewsGenerator extends App {
 
-  //for code generation
   println(generate.mkString("\n\n"))
 
   /**
    * generate code for [db.FilterableViewsGenerateCode]
-   * @return
    */
   def generate = (3 to 18).map(generateSingle)
 

@@ -1,13 +1,10 @@
 package org.virtuslab.beholder.filters.json
 
-import org.virtuslab.beholder.filters.{ FilterDefinition, FilterAPI }
-import play.api.mvc._
+import org.virtuslab.beholder.filters.{ FilterAPI, FilterDefinition }
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple.Session
 import play.api.libs.json.JsValue
+import play.api.mvc._
 
-/**
- * Author: Krzysztof Romanowski
- */
 abstract class FilterController[Entity <: Product](filter: FilterAPI[Entity, JsonFormatter[Entity]]) extends Controller {
 
   protected def inSession(body: Request[AnyContent] => Session => Option[JsValue]): EssentialAction

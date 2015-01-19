@@ -16,4 +16,12 @@ class ViewsTest extends AppTest with UserMachinesView {
       all.size shouldEqual 3
   }
 
+  "view" should "be creatable" in rollbackWithModel {
+    implicit session =>
+      val view = createUsersMachineView
+      view.viewDDL.drop
+      view.viewDDL.create
+      view.viewDDL.drop
+  }
+
 }
