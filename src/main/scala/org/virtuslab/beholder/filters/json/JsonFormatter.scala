@@ -4,13 +4,18 @@ import org.virtuslab.beholder.filters.{ FilterDefinition, FilterResult, Order }
 import play.api.data.validation.ValidationError
 import play.api.libs.json.{ JsObject, _ }
 
-class JsonFormatter[Entity <: Product](filterFields: Seq[JsonFilterField[_, _]], columnsNames: Seq[String]) {
+class JsonFormatter[Entity <: Product](filterFields: Seq[JsonFilterField[_, _]], columnsNames: Seq[String], label: String => String) {
 
-  def jsonDefinition: JsValue = {
-    JsObject(
-      columnsNames.zip(filterFields.map(_.fieldDefinition))
-    )
-  }
+  private def jsonFieldDefinition(name: String, field: JsonFilterField[_, _]): JsObject = JsObject(Seq(
+    "key" -> JsString(name),
+    "label" -> JsString(label(name)),
+    "type" -> field.fieldTypeDefinition
+  ))
+
+  def jsonDefinition: JsValue =
+    JsArray(columnsNames.zip(filterFields)
+      .filterNot(_._2.isIgnored)
+      .map(Function.tupled(jsonFieldDefinition)))
 
   import play.api.libs.functional.syntax._
   import play.api.libs.json._

@@ -11,7 +11,7 @@ import play.api.libs.json._
 import scala.slick.ast.{ BaseTypedType, TypedType }
 
 abstract class JsonFilterField[A: TypedType, B] extends MappedFilterField[A, B] {
-  def fieldDefinition: JsValue
+  def fieldTypeDefinition: JsValue
 
   protected def filterFormat: Format[B]
 
@@ -22,11 +22,13 @@ abstract class JsonFilterField[A: TypedType, B] extends MappedFilterField[A, B] 
   final def readFilter(value: JsValue): JsResult[Any] = filterFormat.reads(value)
 
   final def writeFilter(value: Any): JsValue = filterFormat.writes(value.asInstanceOf[B])
+
+  def isIgnored = false
 }
 
 abstract class ImplicitlyJsonFilterFiled[A: TypedType: Writes, B: Format](dataTypeName: String)
     extends JsonFilterField[A, B] {
-  override def fieldDefinition: JsValue = JsString(dataTypeName)
+  override def fieldTypeDefinition: JsValue = JsString(dataTypeName)
 
   override protected def valueWrite: Writes[A] = implicitly
 
@@ -77,7 +79,7 @@ object JsonFilterFields {
    */
   def inEnum[T <: Enumeration](enum: T)(implicit tm: BaseTypedType[T#Value], formatter: Format[T#Value]): JsonFilterField[T#Value, T#Value] = {
     new JsonFilterField[T#Value, T#Value] {
-      override def fieldDefinition: JsValue = JsArray(
+      override def fieldTypeDefinition: JsValue = JsArray(
         enum.values.toList.map(v => Json.toJson(v.asInstanceOf[T#Value]))
       )
 
@@ -109,9 +111,9 @@ object JsonFilterFields {
         }
       }
 
-      override def fieldDefinition: JsValue = JsObject(Seq(
+      override def fieldTypeDefinition: JsValue = JsObject(Seq(
         "type" -> JsString("range"),
-        "dataType" -> baseType.fieldDefinition
+        "dataType" -> baseType.fieldTypeDefinition
       ))
 
       override protected def valueWrite: Writes[T] = implicitly
@@ -130,9 +132,9 @@ object JsonFilterFields {
         }
       }
 
-      override def fieldDefinition: JsValue = JsObject(Seq(
+      override def fieldTypeDefinition: JsValue = JsObject(Seq(
         "type" -> JsString("range"),
-        "dataType" -> baseType.fieldDefinition
+        "dataType" -> baseType.fieldTypeDefinition
       ))
 
       override protected def valueWrite: Writes[Option[T]] = implicitly
@@ -147,7 +149,7 @@ object JsonFilterFields {
    */
   def ignore[T: TypedType: Writes]: JsonFilterField[T, T] = new JsonFilterField[T, T] {
 
-    override def fieldDefinition: JsValue = JsNull
+    override def fieldTypeDefinition: JsValue = JsNull
 
     override protected def valueWrite: Writes[T] = implicitly
 
@@ -158,5 +160,7 @@ object JsonFilterFields {
     }
 
     override def filterOnColumn(column: Column[T])(value: T): Column[Option[Boolean]] = LiteralColumn(Some(true))
+
+    override def isIgnored: Boolean = true
   }
 }

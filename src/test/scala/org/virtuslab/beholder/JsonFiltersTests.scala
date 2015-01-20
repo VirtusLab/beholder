@@ -27,7 +27,7 @@ trait JsonFiltersTestsBase {
 
 class JsonFiltersTests extends AppTest with FiltersTestSuite[JsonFormatter[UserMachineViewRow]] with JsonFiltersTestsBase {
   def createFilter(data: BaseFilterData): FilterAPI[UserMachineViewRow, JsonFormatter[UserMachineViewRow]] =
-    new JsonFilters[UserMachineViewRow].create(
+    new JsonFilters[UserMachineViewRow](identity).create(
       data.view,
       inText,
       inText,
@@ -39,7 +39,7 @@ class JsonFiltersTests extends AppTest with FiltersTestSuite[JsonFormatter[UserM
 
 class JsonFiltersRangeTests extends AppTest with RangeFiltersSuite[JsonFormatter[UserMachineViewRow]] with JsonFiltersTestsBase {
   def createFilter(data: BaseFilterData): FilterAPI[UserMachineViewRow, JsonFormatter[UserMachineViewRow]] =
-    new JsonFilters[UserMachineViewRow].create(
+    new JsonFilters[UserMachineViewRow](identity).create(
       data.view,
       inText,
       inText,
