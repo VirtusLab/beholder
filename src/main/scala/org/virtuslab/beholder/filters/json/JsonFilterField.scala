@@ -87,7 +87,7 @@ object JsonFilterFields {
 
       override protected def filterFormat: Format[T#Value] = implicitly
 
-      override protected def filterOnColumn(column: Column[T#Value])(value: T#Value): Column[Option[Boolean]] = ???
+      override protected def filterOnColumn(column: Column[T#Value])(value: T#Value): Column[Option[Boolean]] = column === value
     }
   }
 

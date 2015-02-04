@@ -65,7 +65,7 @@ object BaseView {
     /**
      * util to print select query sql
      */
-    def selectStatements(query: Query[_, _, Seq]): String = query.selectStatement
+    private def selectStatements(query: Query[_, _, Seq]): String = query.selectStatement
 
   }
 
