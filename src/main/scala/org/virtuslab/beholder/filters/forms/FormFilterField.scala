@@ -64,6 +64,13 @@ object FromFilterFields {
   }
 
   /**
+   * search in text (ilike)
+   */
+  object inBigDecimal extends FormFilterField[BigDecimal, BigDecimal](bigDecimal) {
+    override def filterOnColumn(column: Column[BigDecimal])(data: BigDecimal): Column[Option[Boolean]] = column === data
+  }
+
+  /**
    * search in text (ilike) for optional fields
    */
   object inOptionText extends FormFilterField[Option[String], String](text) {
