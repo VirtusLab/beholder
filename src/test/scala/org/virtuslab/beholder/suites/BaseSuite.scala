@@ -22,7 +22,7 @@ trait BaseSuite[Formatter] extends UserMachinesView {
     lazy val baseFilter = filter.emptyFilterData
     lazy val baseFilterData = baseFilter.data
 
-    lazy val allFromDb = view.list
+    lazy val allFromDb: Seq[UserMachineViewRow] = view.list
   }
 
   def doFilters(data: BaseFilterData, currentFilter: FilterDefinition): Seq[UserMachineViewRow]

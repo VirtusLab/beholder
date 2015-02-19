@@ -5,7 +5,7 @@ import java.sql.Date
 import org.virtuslab.beholder.filters.forms.FromFilterFields._
 import org.virtuslab.beholder.filters.forms.{ FormFilters, FormFormatter, FromFilterFields }
 import org.virtuslab.beholder.filters.{ FilterAPI, FilterDefinition }
-import org.virtuslab.beholder.suites.{ BaseSuite, FiltersTestSuite, RangeFiltersSuite }
+import org.virtuslab.beholder.suites.{InitialQueryTestSuite, BaseSuite, FiltersTestSuite, RangeFiltersSuite}
 import org.virtuslab.unicorn.LongUnicornPlay._
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 
@@ -37,6 +37,8 @@ class FormFiltersTests extends AppTest with FiltersTestSuite[FormFormatter] with
     )
   }.filterGenerator
 }
+
+class InitialFormFiltersTests extends FormFiltersTests with InitialQueryTestSuite[FormFormatter]
 
 class FormRangeFiltersTests extends AppTest with RangeFiltersSuite[FormFormatter] with FormFiltersTestsBase {
   def createFilter(data: BaseFilterData): FilterAPI[UserMachineViewRow, FormFormatter] = new CustomTypeMappers {
