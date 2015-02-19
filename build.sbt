@@ -2,7 +2,7 @@ organization := "org.virtuslab"
 
 name := "beholder"
 
-version := "0.2.5"
+version := "0.2.6"
 
 scalaVersion := "2.11.5"
 
@@ -17,7 +17,7 @@ libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play-slick" % "0.8.1",
   "org.virtuslab" %% "unicorn" % "0.6.2",
   "org.scalatest" %% "scalatest" % "2.2.3" % "test",
-  "com.typesafe.play" %% "play-test" % "2.3.7" % "test",
+  "com.typesafe.play" %% "play-test" % "2.3.8" % "test",
   "com.h2database" % "h2" % "1.4.184" % "test"
 )
 
