@@ -70,13 +70,15 @@ trait FiltersTestSuite[Formatter] extends BaseSuite[Formatter] {
   }
 
   //h2db does not have ilike operator
-  ignore should "filter by string field" in baseFilterTest {
+  it should "filter by string field" in baseFilterTest {
     data =>
-      import data._
-      val orderByCoreDesc = doFilters(data, baseFilter.copy(data = baseFilter.data.updated(1, Some("buntu"))))
-      val fromDbOrderedByCoresDesc = allFromDb.filter(_.system.contains("buntu"))
+      pendingUntilFixed {
+        import data._
+        val orderByCoreDesc = doFilters(data, baseFilter.copy(data = baseFilter.data.updated(1, Some("buntu"))))
+        val fromDbOrderedByCoresDesc = allFromDb.filter(_.system.contains("buntu"))
 
-      orderByCoreDesc should contain theSameElementsInOrderAs fromDbOrderedByCoresDesc.drop(1)
+        orderByCoreDesc should contain theSameElementsInOrderAs fromDbOrderedByCoresDesc.drop(1)
+      }
   }
 
   it should "not crash for date option" in baseFilterTest {

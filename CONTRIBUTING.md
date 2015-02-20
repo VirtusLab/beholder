@@ -28,5 +28,8 @@ Minimum coverage is set to *48%* (which is current coverage) so all code you add
 Releasing
 ---------
 
-Before release you must have access to Sonatype and have PGP keys for signing artifacts. 
-For make release just use `+publishSigned +releaseSonatype`. 
+Before release you must have access to Sonatype and have PGP keys for signing artifacts.
+
+To automate release process, `beholder` uses [sbt-release](https://github.com/sbt/sbt-release) plugin. To release a new version, just use `sbt release` and follow instructions. For more information, see plugin docs.
+
+**Warn** - You should *not* update version file (`version.sbt`) yourself, `sbt-release` does it for you.

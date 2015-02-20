@@ -1,13 +1,19 @@
 Beholder: Play-Slick library for data presentation
 ==================================================
-[![Build Status](https://travis-ci.org/VirtusLab/beholder.svg?branch=master)](https://travis-ci.org/VirtusLab/beholder)
 
-Standard part of many application are list of data that is not a effect of simple query from one table but junction and aggregation of data from many tables. Beholder provides support for such elemets.
+[![Build Status](https://travis-ci.org/VirtusLab/beholder.svg?branch=master)](https://travis-ci.org/VirtusLab/beholder)
+[![Coverage Status](https://img.shields.io/coveralls/VirtusLab/beholder.svg)](https://coveralls.io/r/VirtusLab/beholder?branch=master)
+
+Standard part of many application are list of data that is not a effect of simple query from one table but junction and aggregation of data from many tables. Beholder provides support for such elements.
 
 Features:
 * views as table
 * declaring filters for data
-* support for sorting, filtering on multiple (custom) datatypes
+* support for sorting, filtering on multiple (custom) data types
+
+Beholder is Open Source under [Apache 2.0 license](LICENSE).
+
+ScalaDoc API for [0.2.6](http://virtuslab.com/beholder-api/0.2.6).
 
 Contributors
 ------------
@@ -17,7 +23,7 @@ Authors:
 * [Mikołaj Jakubowski](https://github.com/mkljakubowski)
 * [Krzysztof Borowski](https://github.com/liosedhel)
 
-Feel free to use it, test it and to contribute!
+Feel free to use it, test it and to contribute! For some helpful tips'n'tricks, see [contribution guide](CONTRIBUTING.md).
 
 Getting beholder
 ----------------
@@ -25,10 +31,10 @@ Getting beholder
 For latest version (Scala 2.11.5 compatible) use:
 
 ```scala
-libraryDependencies += "org.virtuslab" %% "beholder" % "0.2.2"
+libraryDependencies += "org.virtuslab" %% "beholder" % "0.2.6"
 ```
 
-Or see Maven repository for [2.10](http://maven-repository.com/artifact/org.virtuslab/beholder_2.10) and [2.11](http://maven-repository.com/artifact/org.virtuslab/beholder_2.11).
+Or see [Maven repository](http://maven-repository.com/artifact/org.virtuslab/beholder_2.11).
 
 Examples
 ========

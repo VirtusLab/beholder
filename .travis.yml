@@ -5,4 +5,6 @@ jdk:
   - openjdk7
   - oraclejdk8
 
-script: sbt -no-colors ++$TRAVIS_SCALA_VERSION clean coverage test
+sbt_args: -no-colors
+script: sbt ++$TRAVIS_SCALA_VERSION clean coverage test doc
+after_success: sbt coveralls
