@@ -37,7 +37,7 @@ abstract class BareFilter[E, DbE, T, FT <: FilterField, Formatter] extends Filte
 
   protected def table: FilterQuery
 
-  protected def columnsNames: Seq[String]
+  def columnsNames: Seq[String]
 
   protected def tableColumns(table: T): Seq[Column[_]]
 
@@ -47,13 +47,13 @@ abstract class BareFilter[E, DbE, T, FT <: FilterField, Formatter] extends Filte
 
   def defaultColumn(table: T): Column[_]
 
+  def filterFields: Seq[FT]
+
   /**
    * Empty data for filter representing empty filter (all fields in tuple (type M) are filled with Empty)
    */
   //TODO
-  protected def emptyFilterDataInner: Seq[Option[Any]]
-
-  def filterFields: Seq[FT]
+  protected def emptyFilterDataInner: Seq[Option[Any]] = columnsNames.map(_ => None)
 
   protected def columnsFilters(table: T, data: Seq[Option[Any]]): Seq[Column[Option[Boolean]]] = {
     assert(data.size == filterFields.size, "Wrong numbers of columns")
