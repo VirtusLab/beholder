@@ -1,7 +1,7 @@
 package org.virtuslab.beholder.filters.dsl
 
 import org.virtuslab.beholder.filters._
-import org.virtuslab.beholder.filters.json.{ JsonFormatter, JsonFilterField }
+import org.virtuslab.beholder.filters.json.{JsonFormatter, JsonFilterField}
 import org.virtuslab.unicorn.LongUnicornPlay
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 import scala.language.higherKinds
@@ -31,7 +31,7 @@ class JsonMacroFilters[Entity <: Product](labels: String => String) extends DSLF
     new JsonFormatter[Entity](table.filterFields, table.columnsNames, labels)
 }
 
-abstract class DSLFilters[E, FT[_, _] <: MappedFilterField[_, _], Formatter] {
+abstract class DSLFilters[E <: Product, FT[_, _] <: MappedFilterField[_, _], Formatter] {
 
   import DSL._
 
@@ -41,8 +41,8 @@ abstract class DSLFilters[E, FT[_, _] <: MappedFilterField[_, _], Formatter] {
 
   import scala.language.experimental.macros
 
-  case class DslFilter[DbE, T <: Product](table: Query[T, DbE, Seq], filterFields: Seq[FT], columnsNames: Seq[String], mapping: DbE => E)
-      extends BareFilter[E, DbE, T, FT, JsonFormatter[E]] {
+  case class DslFilter[DbE, T <: Product](table: Query[T, DbE, Seq], filterFields: Seq[FT[_, _]], columnsNames: Seq[String], mapping: DbE => E)
+    extends BareFilter[E, DbE, T, FT[_, _], JsonFormatter[E]] {
 
     override def defaultColumn(table: T): LongUnicornPlay.driver.simple.Column[_] = tableColumns(table).head
 
@@ -55,7 +55,7 @@ abstract class DSLFilters[E, FT[_, _] <: MappedFilterField[_, _], Formatter] {
 
     override protected def tableColumns(table: T) = table.productIterator.map(_.asInstanceOf[Column[_]]).toSeq
 
-    override val formatter: JsonFormatter[E] = createFormatter(this)
+    override val formatter: JsonFormatter[E] = ??? //createFormatter(this)
   }
 
   def create[T, L](q: Query[T, L, Seq])(creation: T => EndDsl): FilterAPI[E, Formatter] = macro Implementer.create_imp[E, Formatter]
@@ -90,7 +90,7 @@ object Implementer {
         case Apply(Select(Apply(TypeApply(Select(Apply(rest, List(name)), _), _), List(field)), _), List(column)) =>
           names = name :: names
           fields = field :: fields
-          columns = column :: columns
+          columns = columns
           rest match {
             case t if t.toString() == "org.virtuslab.beholder.filters.dsl.DSL.Named" =>
             case Select(nextLevel, _) => pop(nextLevel)
@@ -103,11 +103,9 @@ object Implementer {
       pop(body)
 
       def seq(args: List[Tree]) =
-        Apply(Ident("Seq"), args)
+        Apply(Ident(TermName("Seq")), args)
 
-      val query = ???
-
-      Apply(Ident("DslFilter"), List(seq(fields), seq(names)))
+      Apply(Select(Ident(TermName("FilterFactory")), TermName("crate")), List(seq(fields), seq(names)))
     }
 
   }

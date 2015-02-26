@@ -2,11 +2,11 @@ package org.virtuslab.beholder
 
 import java.sql.Date
 
-import org.virtuslab.beholder.filters.dsl.{ JsonMacroFilters, JsonDslFilters }
+import org.virtuslab.beholder.filters.dsl.{FilterFactory, JsonMacroFilters, JsonDslFilters}
 import org.virtuslab.beholder.filters.json.JsonFilterFields._
-import org.virtuslab.beholder.filters.json.{ JsonFilterFields, JsonFilters, JsonFormatter }
-import org.virtuslab.beholder.filters.{ FilterAPI, FilterDefinition }
-import org.virtuslab.beholder.suites.{ BaseSuite, FiltersTestSuite, RangeFiltersSuite }
+import org.virtuslab.beholder.filters.json.{JsonFilterFields, JsonFilters, JsonFormatter}
+import org.virtuslab.beholder.filters.{FilterAPI, FilterDefinition}
+import org.virtuslab.beholder.suites.{BaseSuite, FiltersTestSuite, RangeFiltersSuite}
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 import play.api.libs.json.JsObject
 
@@ -74,7 +74,8 @@ class JsonDslFiltersTests extends AppTest with FiltersTestSuite[JsonFormatter[Us
 class JsonMacroDslFiltersTests extends AppTest with FiltersTestSuite[JsonFormatter[UserMachineViewRow]] with JsonFiltersTestsBase {
   def createFilter(data: BaseFilterData): FilterAPI[UserMachineViewRow, JsonFormatter[UserMachineViewRow]] = {
     import org.virtuslab.beholder.filters.dsl.DSL._
-    new JsonMacroFilters[UserMachineViewRow](identity).create(usersMachinesQuery) {
+    val formatter = new JsonMacroFilters[UserMachineViewRow](identity)
+    formatter.create({FilterFactory.toString; usersMachinesQuery}) {
       case (user, machine) =>
         /* "email" as inText from user.email and
           "system" as inText from machine.system and
