@@ -1,20 +1,17 @@
 package org.virtuslab.beholder.filters.dsl
 
-import org.virtuslab.beholder.filters.{FilterDefinition, FilterField, FilterAPI, BareFilter}
+import org.virtuslab.beholder.filters._
 import org.virtuslab.beholder.filters.json.JsonFormatter
 import org.virtuslab.unicorn.LongUnicornPlay
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 
-
-trait FormatterProvider[E, Formatter] extends Function1[FilterAPI[E, Formatter], Formatter]
-
 object FilterFactory {
-  def crate[E, T <: Product, DbE, FT <: FilterField, Formatter](provider: FormatterProvider[E, Formatter],
-                                                                query: Query[T, DbE, Seq],
-                                                                fields: Seq[FT],
-                                                                names: Seq[String],
-                                                                mapping: DbE => E): FilterAPI[E, Formatter] = {
-    new BareFilter[E, DbE, T, FT, Formatter]() {
+  def crate[T <: Product, E, FT <: FilterField, Formatter](
+    query: Query[T, E, Seq],
+    fields: Seq[FT],
+    names: Seq[String]
+  ): MappableFilterAPI[E, Unit, FT] = {
+    new BareFilter[E, E, T, FT, Unit]() {
       override protected def table = query
 
       override def filterFields: Seq[FT] = fields
@@ -26,14 +23,14 @@ object FilterFactory {
         map(name)
       }
 
-      override def mappingFunction(e: DbE): E = mapping(e)
+      override def mappingFunction(e: E): E = e
 
       override def columnsNames: Seq[String] = names
 
       override protected def tableColumns(table: T): Seq[LongUnicornPlay.driver.simple.Column[_]] =
         table.productIterator.map(_.asInstanceOf[Column[_]]).toSeq
 
-      override val formatter: Formatter = provider(this)
+      override val formatter: Unit = Unit
     }
 
   }

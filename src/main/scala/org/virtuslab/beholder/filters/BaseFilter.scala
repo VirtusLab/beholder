@@ -31,13 +31,11 @@ case class FilterDefinition(
 
 case class FilterRange[T](from: Option[T], to: Option[T])
 
-abstract class BareFilter[E, DbE, T, FT <: FilterField, Formatter] extends FilterAPI[E, Formatter] {
+abstract class BareFilter[E, DbE, T, FT <: FilterField, Formatter] extends MappableFilterAPI[E, Formatter, FT] {
 
   private type FilterQuery = Query[T, DbE, Seq]
 
   protected def table: FilterQuery
-
-  def columnsNames: Seq[String]
 
   protected def tableColumns(table: T): Seq[Column[_]]
 
@@ -46,8 +44,6 @@ abstract class BareFilter[E, DbE, T, FT <: FilterField, Formatter] extends Filte
   def columnByName(table: T, name: String): Column[_]
 
   def defaultColumn(table: T): Column[_]
-
-  def filterFields: Seq[FT]
 
   /**
    * Empty data for filter representing empty filter (all fields in tuple (type M) are filled with Empty)
@@ -140,6 +136,18 @@ trait FilterAPI[Entity, Formatter] {
   def emptyFilterData: FilterDefinition
 
   val formatter: Formatter
+}
+
+trait MappableFilterAPI[Entity, Formatter, FT] extends FilterAPI[Entity, Formatter] {
+
+  def columnsNames: Seq[String]
+
+  def filterFields: Seq[FT]
+
+  def withFormat[NF](f: this.type => NF): FilterAPI[Entity, NF] = ???
+
+  def mapped[NE](mapping: Entity => NE): FilterAPI[NE, Formatter] = ???
+
 }
 
 case class FilterResult[T](content: Seq[T], total: Int) {

@@ -1,11 +1,11 @@
 package org.virtuslab.beholder.filters.dsl
 
 import org.virtuslab.beholder.filters._
-import org.virtuslab.beholder.filters.json.{JsonFormatter, JsonFilterField}
 import org.virtuslab.unicorn.LongUnicornPlay
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 import scala.language.higherKinds
 import scala.reflect.macros.whitebox.Context
+import scala.language.experimental.macros
 
 /**
  * Created by krzysiek on 26.02.15.
@@ -24,57 +24,30 @@ object DSL {
     def and(name: String): Named = ???
   }
 
-}
+  def create[T, L, FT, E](q: Query[T, L, Seq])(creation: T => NamedFieldColumn): MappableFilterAPI[E, Unit, FT] = macro Implementer.create_imp
 
-class JsonMacroFilters[Entity <: Product](labels: String => String) extends DSLFilters[Entity, JsonFilterField, JsonFormatter[Entity]] {
-  override def createFormatter(table: BareFilter[_, _, _, JsonFilterField[_, _], JsonFormatter[Entity]]) =
-    new JsonFormatter[Entity](table.filterFields, table.columnsNames, labels)
-}
-
-abstract class DSLFilters[E <: Product, FT[_, _] <: MappedFilterField[_, _], Formatter] {
-
-  import DSL._
-
-  type EndDsl = NamedFieldColumn
-
-  def createFormatter(table: BareFilter[_, _, _, FT[_, _], Formatter]): Formatter
-
-  import scala.language.experimental.macros
-
-  case class DslFilter[DbE, T <: Product](table: Query[T, DbE, Seq], filterFields: Seq[FT[_, _]], columnsNames: Seq[String], mapping: DbE => E)
-    extends BareFilter[E, DbE, T, FT[_, _], JsonFormatter[E]] {
-
-    override def defaultColumn(table: T): LongUnicornPlay.driver.simple.Column[_] = tableColumns(table).head
-
-    override def columnByName(table: T, name: String): LongUnicornPlay.driver.simple.Column[_] = {
-      val map: Map[String, Column[_]] = columnsNames.zip(tableColumns(table))(collection.breakOut)
-      map(name)
-    }
-
-    override def mappingFunction(e: DbE): E = mapping(e)
-
-    override protected def tableColumns(table: T) = table.productIterator.map(_.asInstanceOf[Column[_]]).toSeq
-
-    override val formatter: JsonFormatter[E] = ??? //createFormatter(this)
-  }
-
-  def create[T, L](q: Query[T, L, Seq])(creation: T => EndDsl): FilterAPI[E, Formatter] = macro Implementer.create_imp[E, Formatter]
 }
 
 object Implementer {
-  def create_imp[E, F](c: Context)(q: c.Tree)(creation: c.Tree): c.Tree = {
+  def create_imp(c: Context)(q: c.Tree)(creation: c.Tree): c.Tree = {
     val e = Extractor(c)
-    e.implement(creation.asInstanceOf[e.c.Tree]).asInstanceOf[c.Tree]
+    e.implement(creation.asInstanceOf[e.c.Tree], q.asInstanceOf[e.c.Tree]).asInstanceOf[c.Tree]
   }
 
   case class Extractor(c: Context) {
 
     import c.universe._
 
-    def implement(code: Tree): Tree = {
+    def implement(code: Tree, queryCode: Tree): Tree = {
       code match {
         case Function(fA, Match(mA, List(CaseDef(pat, guards, body)))) =>
-          transform(body => Function(fA, Match(mA, List(CaseDef(pat, guards, body)))), body)
+          val a = q"a.map{ case (x, y) => y}"
+          def f(b: Tree) = {
+            val fun = Function(fA, Match(mA, List(CaseDef(pat, guards, body))))
+            q"$queryCode.map($fun)"
+          }
+          transform(f, body)
+        //Function(fA, Match(mA, List(CaseDef(pat, guards, body))))
         case _ =>
           c.abort(c.enclosingPosition, "unsupported tree shape")
       }
@@ -90,14 +63,14 @@ object Implementer {
         case Apply(Select(Apply(TypeApply(Select(Apply(rest, List(name)), _), _), List(field)), _), List(column)) =>
           names = name :: names
           fields = field :: fields
-          columns = columns
+          columns = column :: columns
           rest match {
             case t if t.toString() == "org.virtuslab.beholder.filters.dsl.DSL.Named" =>
             case Select(nextLevel, _) => pop(nextLevel)
             case t =>
               c.error(t.pos, "Unknown tree")
           }
-        case _ =>
+        case tree =>
           c.error(t.pos, "Unknown tree")
       }
       pop(body)
@@ -105,7 +78,29 @@ object Implementer {
       def seq(args: List[Tree]) =
         Apply(Ident(TermName("Seq")), args)
 
-      Apply(Select(Ident(TermName("FilterFactory")), TermName("crate")), List(seq(fields), seq(names)))
+      def fromString(name: String): Tree = {
+        val h :: t = name.split('.').toList
+        t.foldLeft(Ident(TermName(h)): Tree) {
+          case (tree, name) =>
+            Select(tree, TermName(name))
+        }
+      }
+
+      val provider = Select(c.prefix.tree, TermName("provider"))
+
+      val query =
+        Apply(fromString("scala.Tuple" + columns.size), columns)
+
+      val mapping = fromString("identity")
+
+      Apply(Select(
+        fromString("org.virtuslab.beholder.filters.dsl.FilterFactory"),
+        TermName("crate")
+      ), List(
+        query,
+        seq(fields),
+        seq(names)
+      ))
     }
 
   }
