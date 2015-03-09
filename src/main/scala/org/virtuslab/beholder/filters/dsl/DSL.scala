@@ -43,18 +43,21 @@ object Implementer {
         case Function(fA, Match(mA, List(CaseDef(pat, guards, body)))) =>
           val a = q"a.map{ case (x, y) => y}"
           def f(b: Tree) = {
-            val fun = Function(fA, Match(mA, List(CaseDef(pat, guards, body))))
-            q"$queryCode.map($fun)"
+            val fun = Function(fA, Match(mA, List(CaseDef(pat, guards, b))))
+            fun
           }
-          transform(f, body)
+          transform(f, body, queryCode)
         //Function(fA, Match(mA, List(CaseDef(pat, guards, body))))
+
+        case Function(vals, body) =>
+          transform(body => Function(vals, body), body, queryCode)
         case _ =>
           c.abort(c.enclosingPosition, "unsupported tree shape")
       }
 
     }
 
-    def transform(funcCreation: Tree => Tree, body: Tree): Tree = {
+    def transform(funcCreation: Tree => Tree, body: Tree, query: Tree): Tree = {
       var names: List[Tree] = Nil
       var fields: List[Tree] = Nil
       var columns: List[Tree] = Nil
@@ -88,21 +91,25 @@ object Implementer {
 
       val provider = Select(c.prefix.tree, TermName("provider"))
 
-      val query =
-        Apply(fromString("scala.Tuple" + columns.size), columns)
+      val mappedColumns = columns //.map(column => q"user.name")
+
+      val queryMapping =
+        funcCreation(Apply(fromString("scala.Tuple" + columns.size), mappedColumns))
+
+      val qq = q"$query.map($queryMapping)"
 
       val mapping = fromString("identity")
 
-      Apply(Select(
+      val tree = Apply(Select(
         fromString("org.virtuslab.beholder.filters.dsl.FilterFactory"),
         TermName("crate")
       ), List(
-        query,
+        qq,
         seq(fields),
         seq(names)
       ))
+      tree
     }
-
   }
 
 }

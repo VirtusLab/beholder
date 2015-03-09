@@ -144,9 +144,40 @@ trait MappableFilterAPI[Entity, Formatter, FT] extends FilterAPI[Entity, Formatt
 
   def filterFields: Seq[FT]
 
-  def withFormat[NF](f: this.type => NF): FilterAPI[Entity, NF] = ???
+  private val parentObject = this
 
-  def mapped[NE](mapping: Entity => NE): FilterAPI[NE, Formatter] = ???
+  def withFormat[NF](f: MappableFilterAPI[Entity, Formatter, FT] => NF): FilterAPI[Entity, NF] = new MappableFilterAPI[Entity, NF, FT] {
+    override def columnsNames: Seq[String] = parentObject.columnsNames
+
+    override def filterFields: Seq[FT] = parentObject.filterFields
+
+    override def filter(data: FilterDefinition)(implicit session: Session): Seq[Entity] = parentObject.filter(data)
+
+    override def filterWithTotalEntitiesNumber(data: FilterDefinition)(implicit session: Session): FilterResult[Entity] =
+      parentObject.filterWithTotalEntitiesNumber(data)
+
+    override def emptyFilterData: FilterDefinition = parentObject.emptyFilterData
+
+    override val formatter: NF = f(parentObject)
+  }
+
+  def mapped[NE](mapping: Entity => NE): FilterAPI[NE, Formatter] = new MappableFilterAPI[NE, Formatter, FT] {
+    override def columnsNames: Seq[String] = parentObject.columnsNames
+
+    override def filterFields: Seq[FT] = parentObject.filterFields
+
+    override def filter(data: FilterDefinition)(implicit session: Session): Seq[NE] =
+      parentObject.filter(data).map(mapping)
+
+    override def filterWithTotalEntitiesNumber(data: FilterDefinition)(implicit session: Session): FilterResult[NE] = {
+      val res = parentObject.filterWithTotalEntitiesNumber(data)
+      res.copy(content = res.content.map(mapping))
+    }
+
+    override def emptyFilterData: FilterDefinition = parentObject.emptyFilterData
+
+    override val formatter: Formatter = parentObject.formatter
+  }
 
 }
 
