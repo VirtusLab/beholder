@@ -7,7 +7,7 @@ import org.virtuslab.beholder.filters.{ FilterAPI, FilterDefinition }
 import org.virtuslab.beholder.suites.FiltersTestSuite
 import org.virtuslab.beholder.filters.json.JsonFilterFields._
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
-/*
+
 class DslTests extends AppTest with FiltersTestSuite[Unit] {
   override def createFilter(data: BaseFilterData): FilterAPI[UserMachineViewRow, Unit] = {
     import org.virtuslab.beholder.filters.dsl.DSL._
@@ -25,7 +25,7 @@ class DslTests extends AppTest with FiltersTestSuite[Unit] {
     import data._
     filter.filterWithTotalEntitiesNumber(currentFilter).content
   }
-}*/
+}
 
 class DslTests2 extends AppTest with FiltersTestSuite[Unit] {
   override def createFilter(data: BaseFilterData): FilterAPI[UserMachineViewRow, Unit] = {

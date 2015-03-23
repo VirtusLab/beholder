@@ -41,10 +41,9 @@ object Implementer {
     def implement(code: Tree, queryCode: Tree): Tree = {
       code match {
         case Function(fA, Match(mA, List(CaseDef(pat, guards, body)))) =>
-          val a = q"a.map{ case (x, y) => y}"
           def f(b: Tree) = {
             val fun = Function(fA, Match(mA, List(CaseDef(pat, guards, b))))
-            fun
+            c.untypecheck(fun)
           }
           transform(f, body, queryCode)
         //Function(fA, Match(mA, List(CaseDef(pat, guards, body))))
@@ -91,7 +90,7 @@ object Implementer {
 
       val provider = Select(c.prefix.tree, TermName("provider"))
 
-      val mappedColumns = columns //.map(column => q"user.name")
+      val mappedColumns = columns //.map(column => c.parse(column.toString()))
 
       val queryMapping =
         funcCreation(Apply(fromString("scala.Tuple" + columns.size), mappedColumns))
