@@ -2,7 +2,6 @@ package org.virtuslab.beholder
 
 import java.sql.Date
 
-import org.virtuslab.beholder.filters.dsl.{ FilterFactory, JsonDslFilters }
 import org.virtuslab.beholder.filters.json.JsonFilterFields._
 import org.virtuslab.beholder.filters.json.{ JsonFilterFields, JsonFilters, JsonFormatter }
 import org.virtuslab.beholder.filters.{ FilterAPI, FilterDefinition }
@@ -36,39 +35,6 @@ class JsonFiltersTests extends AppTest with FiltersTestSuite[JsonFormatter[UserM
       inRange(inField[Date]("date")),
       JsonFilterFields.ignore[Option[BigDecimal]]
     )
-}
-
-class JsonDslFiltersTests extends AppTest with FiltersTestSuite[JsonFormatter[UserMachineViewRow]] with JsonFiltersTestsBase {
-  def createFilter(data: BaseFilterData): FilterAPI[UserMachineViewRow, JsonFormatter[UserMachineViewRow]] = {
-
-    val dsl = new JsonDslFilters[UserMachineViewRow](identity)
-
-    val q = usersMachinesQuery.map {
-      case (user, machine) =>
-        //naming the fields
-        (user.email, machine.system, machine.cores,
-          machine.created,
-          machine.capacity)
-    }
-
-    val names = Seq(
-      "email",
-      "system",
-      "cores",
-      "created",
-      "capacity"
-    )
-
-    val fields = Seq(
-      inText,
-      inText,
-      inIntField,
-      inRange(inField[Date]("date")),
-      JsonFilterFields.ignore[Option[BigDecimal]]
-    )
-
-    new dsl.DslFilter(q, fields, names, UserMachineViewRow.tupled)
-  }
 }
 
 class JsonFiltersRangeTests extends AppTest with RangeFiltersSuite[JsonFormatter[UserMachineViewRow]] with JsonFiltersTestsBase {
