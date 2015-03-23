@@ -18,14 +18,15 @@ case class UserMachineViewRow(
 trait UserMachinesView extends ModelIncluded {
   self: AppTest =>
 
+  lazy val usersMachinesQuery = for {
+    user <- TableQuery[Users]
+    userMachine <- userMachineQuery if user.id === userMachine.userId
+    machine <- TableQuery[Machines] if machine.id === userMachine.machineId
+  } yield (user, machine)
+
   def createUsersMachineView(implicit session: Session) = {
     //query that is a base for view
     new CustomTypeMappers {
-      val usersMachinesQuery = for {
-        user <- TableQuery[Users]
-        userMachine <- userMachineQuery if user.id === userMachine.userId
-        machine <- TableQuery[Machines] if machine.id === userMachine.machineId
-      } yield (user, machine)
 
       val tableQuery = FilterableViews.createView(
         name = "USERS_MACHINE_VIEW",

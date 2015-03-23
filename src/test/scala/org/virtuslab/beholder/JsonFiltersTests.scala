@@ -2,7 +2,7 @@ package org.virtuslab.beholder
 
 import java.sql.Date
 
-import org.virtuslab.beholder.filters.json.JsonFilterFields.{ inIntField, inOptionRange, inRange, _ }
+import org.virtuslab.beholder.filters.json.JsonFilterFields._
 import org.virtuslab.beholder.filters.json.{ JsonFilterFields, JsonFilters, JsonFormatter }
 import org.virtuslab.beholder.filters.{ FilterAPI, FilterDefinition }
 import org.virtuslab.beholder.suites.{ BaseSuite, FiltersTestSuite, RangeFiltersSuite }
