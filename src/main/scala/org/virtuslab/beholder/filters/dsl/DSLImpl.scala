@@ -1,5 +1,6 @@
 package org.virtuslab.beholder.filters.dsl
 
+import scala.reflect.macros.whitebox
 import scala.reflect.macros.whitebox.Context
 
 /**
@@ -14,11 +15,26 @@ object DSLImpl {
     ).asInstanceOf[c.Tree]
   }
 
+  def unsupportedTreeMessage =
+    """This tree is unsupported. Supported shapes:
+      | create(query){case (a, b, ... ) => fieldDeclarations }
+      | or
+      | create(query){(a, b, ...) => fieldDeclarations }
+      | where fieldDeclarations:
+      | "name" as inText from user.name and
+      | ... and
+      | "cores" as inTest from machine.cores
+    """.stripMargin
+
   private class Extractor(val c: Context) {
 
     import c.universe._
 
-    private object Field {
+    var names: List[Tree] = Nil
+    var fields: List[Tree] = Nil
+    var columns: List[Tree] = Nil
+
+    private object FieldDefinition {
       def unapply(tree: Tree): Option[(Tree, Tree, Tree, Tree)] = tree match {
         case Apply(Select(Apply(Apply(TypeApply(Select(Apply(rest, List(name)), _), _), List(field)), _), _), List(column)) =>
           Some((rest, name, field, column))
@@ -26,27 +42,23 @@ object DSLImpl {
       }
     }
 
-    var names: List[Tree] = Nil
-    var fields: List[Tree] = Nil
-    var columns: List[Tree] = Nil
-
     def implement(code: c.Tree, query: c.Tree): Tree = {
       code match {
         case Function(List(functionArg), Match(selector, List(CaseDef(pattern, guards, body)))) =>
-          transform(body, query) {
+          implementFilterCreation(body, query) {
             newBody =>
               c.untypecheck(Function(List(functionArg), Match(selector, List(CaseDef(pattern, guards, newBody)))))
           }
-        case Function(vals, body) =>
-          transform(body, query) {
-            newBody => Function(vals, newBody)
+        case Function(args, body) =>
+          implementFilterCreation(body, query) {
+            newBody => Function(args, newBody)
           }
         case _ =>
-          c.abort(c.enclosingPosition, "unsupported tree shape")
+          c.abort(c.enclosingPosition, unsupportedTreeMessage)
       }
     }
 
-    def transform(body: Tree, query: Tree)(funcCreation: Tree => Tree): Tree = {
+    def implementFilterCreation(body: Tree, query: Tree)(funcCreation: Tree => Tree): Tree = {
       newField(body)
 
       val mappedQuery = {
@@ -61,7 +73,7 @@ object DSLImpl {
     }
 
     private def newField(t: Tree): Unit = t match {
-      case Field(rest, name, field, column) =>
+      case FieldDefinition(rest, name, field, column) =>
         names = name :: names
         fields = field :: fields
         columns = column :: columns
@@ -69,14 +81,13 @@ object DSLImpl {
           case q"org.virtuslab.beholder.filters.dsl.DSL.EmptyName" =>
           case Select(nextLevel, _) =>
             newField(nextLevel)
-          case t =>
-            c.error(t.pos, "Unknown tree")
+          case _ =>
+            c.error(t.pos, unsupportedTreeMessage)
         }
       case tree =>
-        c.error(t.pos, "Unknown tree")
+        c.error(t.pos, unsupportedTreeMessage)
     }
 
-    def seq(args: List[Tree]) =
-      Apply(Ident(TermName("Seq")), args)
+    def seq(args: List[Tree]) = q"Seq(..$args)"
   }
 }
