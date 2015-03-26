@@ -1,6 +1,7 @@
 package org.virtuslab.beholder.filters.dsl
 
 import org.virtuslab.beholder.filters._
+import org.virtuslab.beholder.filters.json.JsonFilterField
 import org.virtuslab.unicorn.LongUnicornPlay
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 import scala.language.higherKinds
@@ -14,18 +15,18 @@ object DSL {
   implicit class EmptyName(name: String) extends Named[Unit](name)
 
   class Named[S](name: String) {
-    def as[A, B, NS](field: MappedFilterField[A, B])(implicit shaper: Mappable[S, A, NS]): NamedField[A, NS] = ???
+    def from[A, NS](c: Column[A])(implicit shaper: Mappable[S, A, NS]): NamedFieldColumn[NS, A] = ???
   }
 
-  class NamedField[A, S] {
-    def from(c: Column[A]): NamedFieldColumn[S] = ???
-  }
-
-  class NamedFieldColumn[S] {
+  class CompleteRow[S] {
     def and(name: String): Named[S] = ???
   }
 
-  def create[T, L, FT, E](query: Query[T, L, Seq])(creation: T => NamedFieldColumn[E]): MappableFilterAPI[E, Unit, FT] = macro DSLImpl.create_imp
+  class NamedFieldColumn[S, A] {
+    def as[B](field: MappedFilterField[A, B]): CompleteRow[S] = ???
+  }
+
+  def create[T, L, FT, E](query: Query[T, L, Seq])(creation: T => CompleteRow[E]): MappableFilterAPI[E, Unit, FT] = macro DSLImpl.create_imp
 
   //generated mappable implicits
 
@@ -42,5 +43,10 @@ object DSL {
   implicit def tuple5Shape[A1, A2, A3, A4, A5, A6]: Mappable[(A1, A2, A3, A4, A5), A6, (A1, A2, A3, A4, A5, A6)] = ???
 
   implicit def tuple6Shape[A1, A2, A3, A4, A5, A6, A7]: Mappable[(A1, A2, A3, A4, A5, A6), A7, (A1, A2, A3, A4, A5, A6, A7)] = ???
+
+  /*  implicit class JsonFormatted[T](val filter: MappableFilterAPI[T, Unit, _ <: JsonFilterField[_, _]]){
+    def asJson[T]
+  }*/
+
 }
 

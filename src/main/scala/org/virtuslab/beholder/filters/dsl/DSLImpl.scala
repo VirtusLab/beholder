@@ -15,7 +15,7 @@ object DSLImpl {
     ).asInstanceOf[c.Tree]
   }
 
-  def unsupportedTreeMessage =
+  val unsupportedTreeMessage =
     """This tree is unsupported. Supported shapes:
       | create(query){case (a, b, ... ) => fieldDeclarations }
       | or
@@ -26,21 +26,12 @@ object DSLImpl {
       | "cores" as inTest from machine.cores
     """.stripMargin
 
+  val unableToCreateFilterImplementation =
+    "We cannot create filter implementation due to above errors"
+
   private class Extractor(val c: Context) {
 
     import c.universe._
-
-    var names: List[Tree] = Nil
-    var fields: List[Tree] = Nil
-    var columns: List[Tree] = Nil
-
-    private object FieldDefinition {
-      def unapply(tree: Tree): Option[(Tree, Tree, Tree, Tree)] = tree match {
-        case Apply(Select(Apply(Apply(TypeApply(Select(Apply(rest, List(name)), _), _), List(field)), _), _), List(column)) =>
-          Some((rest, name, field, column))
-        case _ => None
-      }
-    }
 
     def implement(code: c.Tree, query: c.Tree): Tree = {
       code match {
@@ -54,40 +45,70 @@ object DSLImpl {
             newBody => Function(args, newBody)
           }
         case _ =>
-          c.abort(c.enclosingPosition, unsupportedTreeMessage)
+          c.abort(code.pos, unsupportedTreeMessage)
       }
     }
 
-    def implementFilterCreation(body: Tree, query: Tree)(funcCreation: Tree => Tree): Tree = {
-      newField(body)
+    private case class FilterElements(names: List[Tree], fields: List[Tree], columns: List[Tree])
 
-      val mappedQuery = {
-        val tupleType = c.parse("scala.Tuple" + columns.size)
-        val queryMappingFunction = funcCreation(q"$tupleType(..$columns)")
-        q"$query.map($queryMappingFunction)"
+    private val EmptyFilter = FilterElements(Nil, Nil, Nil)
+
+    private object From {
+      def unapply(tree: Tree): Option[(Tree, Tree)] = tree match {
+        case Apply(Apply(TypeApply(Select(rest, _), _), List(column)), _) =>
+          Some(rest -> column)
+        case _ => None
       }
-      val createFun = q"org.virtuslab.beholder.filters.dsl.FilterFactory.crate"
-
-      val tree = Apply(createFun, List(mappedQuery, seq(fields), seq(names)))
-      tree
     }
 
-    private def newField(t: Tree): Unit = t match {
-      case FieldDefinition(rest, name, field, column) =>
-        names = name :: names
-        fields = field :: fields
-        columns = column :: columns
+    private object As {
+      def unapply(tree: Tree): Option[(Tree, Tree)] = tree match {
+        case Apply(TypeApply(Select(rest, _), _), List(field)) =>
+          Some(rest -> field)
+        case _ => None
+      }
+    }
+
+    private object Named {
+      def unapply(tree: Tree): Option[(Tree, Tree)] = tree match {
+        case Apply(rest, List(name)) =>
+          Some(rest -> name)
+        case _ => None
+      }
+    }
+
+    private def filterElements(t: Tree, elements: FilterElements): Option[FilterElements] = t match {
+      case rest Named name From column As field =>
+        val newElements = FilterElements(name :: elements.names, field :: elements.fields, column :: elements.columns)
         rest match {
-          case q"org.virtuslab.beholder.filters.dsl.DSL.EmptyName" =>
+          case q"org.virtuslab.beholder.filters.dsl.DSL.EmptyName" => Some(newElements)
           case Select(nextLevel, _) =>
-            newField(nextLevel)
+            filterElements(nextLevel, newElements)
           case _ =>
             c.error(t.pos, unsupportedTreeMessage)
+            None
         }
       case tree =>
         c.error(t.pos, unsupportedTreeMessage)
+        None
     }
 
-    def seq(args: List[Tree]) = q"Seq(..$args)"
+    private def seq(args: List[Tree]) = q"Seq(..$args)"
+
+    private def implementFilterCreation(body: Tree, query: Tree)(funcCreation: Tree => Tree): Tree = {
+      filterElements(body, EmptyFilter).map { elements =>
+        import elements._
+        val mappedQuery = {
+          val tupleType = c.parse("scala.Tuple" + columns.size)
+          val queryMappingFunction = funcCreation(q"$tupleType(..$columns)")
+          q"$query.map($queryMappingFunction)"
+        }
+        val createFun = q"org.virtuslab.beholder.filters.dsl.FilterFactory.crate"
+
+        val tree = Apply(createFun, List(mappedQuery, seq(fields), seq(names)))
+        tree
+      }.getOrElse(c.abort(body.pos, unableToCreateFilterImplementation))
+    }
   }
+
 }

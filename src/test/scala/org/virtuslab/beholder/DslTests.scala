@@ -3,7 +3,7 @@ package org.virtuslab.beholder
 import java.sql.Date
 
 import org.virtuslab.beholder.filters.dsl.FilterFactory
-import org.virtuslab.beholder.filters.json.JsonFilterFields
+import org.virtuslab.beholder.filters.json.{ JsonFormatter, JsonFilterFields }
 import org.virtuslab.beholder.filters.{ FilterAPI, FilterDefinition }
 import org.virtuslab.beholder.suites.FiltersTestSuite
 import org.virtuslab.beholder.filters.json.JsonFilterFields._
@@ -21,11 +21,11 @@ class LambdaDslTests extends DslTest {
     import org.virtuslab.beholder.filters.dsl.DSL._
     create(usersMachinesQuery) {
       case (user, machine) =>
-        "email" as inText from user.email and
-          "system" as inText from machine.system and
-          "cores" as inIntField from machine.cores and
-          "created" as inRange(inField[Date]("date")) from machine.created and
-          "capacity" as JsonFilterFields.ignore[Option[BigDecimal]] from machine.capacity
+        "email" from user.email as inText and
+          "system" from machine.system as inText and
+          "cores" from machine.cores as inIntField and
+          "created" from machine.created as inRange(inField[Date]("date")) and
+          "capacity" from machine.capacity as JsonFilterFields.ignore
     }.mapped(UserMachineViewRow.tupled)
   }
 }
@@ -35,11 +35,11 @@ class PartialFunctionDslTest extends DslTest {
     import org.virtuslab.beholder.filters.dsl.DSL._
     create(usersMachinesQuery) {
       e =>
-        "email" as inText from e._1.email and
-          "system" as inText from e._2.system and
-          "cores" as inIntField from e._2.cores and
-          "created" as inRange(inField[Date]("date")) from e._2.created and
-          "capacity" as JsonFilterFields.ignore[Option[BigDecimal]] from e._2.capacity
+        "email" from e._1.email as inText and
+          "system" from e._2.system as inText and
+          "cores" from e._2.cores as inIntField and
+          "created" from e._2.created as inRange(inField[Date]("date")) and
+          "capacity" from e._2.capacity as JsonFilterFields.ignore[Option[BigDecimal]]
     }.mapped(UserMachineViewRow.tupled)
   }
 

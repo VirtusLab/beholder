@@ -161,7 +161,7 @@ trait MappableFilterAPI[Entity, Formatter, FT] extends FilterAPI[Entity, Formatt
     override val formatter: NF = f(parentObject)
   }
 
-  def mapped[NE](mapping: Entity => NE): FilterAPI[NE, Formatter] = new MappableFilterAPI[NE, Formatter, FT] {
+  def mapped[NE](mapping: Entity => NE): MappableFilterAPI[NE, Formatter, FT] = new MappableFilterAPI[NE, Formatter, FT] {
     override def columnsNames: Seq[String] = parentObject.columnsNames
 
     override def filterFields: Seq[FT] = parentObject.filterFields
