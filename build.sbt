@@ -2,9 +2,9 @@ organization := "org.virtuslab"
 
 name := "beholder"
 
-version := "0.2.6"
+version := "0.2.7-SNAPSHOT"
 
-scalaVersion := "2.11.5"
+scalaVersion := "2.11.6"
 
 resolvers += Resolver.typesafeRepo("releases")
 
@@ -13,12 +13,11 @@ resolvers += Resolver.sonatypeRepo("releases")
 resolvers += Resolver.sonatypeRepo("snapshots")
 
 libraryDependencies ++= Seq(
-  "com.typesafe.slick" %% "slick" % "2.1.0",
-  "com.typesafe.play" %% "play-slick" % "0.8.1",
-  "org.virtuslab" %% "unicorn" % "0.6.2",
-  "org.scalatest" %% "scalatest" % "2.2.3" % "test",
-  "com.typesafe.play" %% "play-test" % "2.3.8" % "test",
-  "com.h2database" % "h2" % "1.4.184" % "test"
+  "com.typesafe.play" %% "play-slick" % "0.9.0-M4",
+  "org.virtuslab" %% "unicorn" % "0.6.5-SNAPSHOT",
+  "org.scalatest" %% "scalatest" % "2.2.4" % "test",
+  "com.typesafe.play" %% "play-test" % "2.4.0-M3" % "test",
+  "com.h2database" % "h2" % "1.4.186" % "test"
 )
 
 parallelExecution in Test := false
@@ -63,7 +62,7 @@ pomExtra := <url>https://github.com/VirtusLab/beholder</url>
       <name>Krzysztof Romanowski</name>
       <url>https://github.com/romanowski</url>
     </developer>
-  </developers>
+  </developers>;
 
 xerial.sbt.Sonatype.sonatypeSettings
 
