@@ -92,8 +92,8 @@ object JsonFilterFields {
   }
 
   private implicit def rangeFormat[T: Format]: Format[FilterRange[T]] =
-    ((__ \ "from").format[Option[T]] and
-      (__ \ "to").format[Option[T]])(FilterRange.apply, unlift(FilterRange.unapply))
+    ((__ \ "from").formatNullable[T] and
+      (__ \ "to").formatNullable[T])(FilterRange.apply, unlift(FilterRange.unapply))
 
   def inField[T: BaseTypedType: Format](typeName: String) =
     new ImplicitlyJsonFilterFiled[T, T](typeName) {
