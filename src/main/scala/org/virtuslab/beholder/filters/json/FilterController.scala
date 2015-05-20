@@ -10,7 +10,7 @@ trait FilterControllerBase[Context, Entity <: Product] extends Controller {
 
   protected def callFilter(context: Context, filterDefinition: FilterDefinition): FilterResult[Entity]
 
-  protected def inFilterContext(body: Request[JsValue] => Context => Option[JsValue]): EssentialAction
+  protected def inFilterContext(body: Request[AnyContent] => Context => Option[JsValue]): EssentialAction
 
   final def filterDefinition = inFilterContext { request => _ => Option(formatter.jsonDefinition) }
 
@@ -19,7 +19,8 @@ trait FilterControllerBase[Context, Entity <: Product] extends Controller {
       request =>
         context =>
           for {
-            filterDefinition <- formatter.filterDefinition(request.body)
+            json <- request.body.asJson
+            filterDefinition <- formatter.filterDefinition(json)
             data = callFilter(context, mapFilterData(filterDefinition))
           } yield formatter.results(filterDefinition, data)
     }
@@ -31,9 +32,9 @@ trait FilterControllerBase[Context, Entity <: Product] extends Controller {
 abstract class FilterController[Entity <: Product](filter: FilterAPI[Entity, JsonFormatter[Entity]])
     extends FilterControllerBase[Session, Entity] {
 
-  protected def inSession(body: Request[JsValue] => Session => Option[JsValue]): EssentialAction
+  protected def inSession(body: Request[AnyContent] => Session => Option[JsValue]): EssentialAction
 
-  override protected def inFilterContext(body: (Request[JsValue]) => (Session) => Option[JsValue]): EssentialAction =
+  override protected def inFilterContext(body: (Request[AnyContent]) => (Session) => Option[JsValue]): EssentialAction =
     inSession(body)
 
   override final protected def callFilter(session: Session, filterDefinition: FilterDefinition): FilterResult[Entity] =
