@@ -23,7 +23,7 @@ trait FormFiltersTestsBase {
 }
 
 class FormFiltersTests extends AppTest with FiltersTestSuite[FormFormatter] with FormFiltersTestsBase {
-  def createFilter(data: BaseFilterData): FilterAPI[UserMachineViewRow, FormFormatter] = new CustomTypeMappers {
+  def createFilter(data: FilterSetupData): FilterAPI[UserMachineViewRow, FormFormatter] = new CustomTypeMappers {
 
     import play.api.data.format.Formats._
 
@@ -39,7 +39,7 @@ class FormFiltersTests extends AppTest with FiltersTestSuite[FormFormatter] with
 }
 
 class FormRangeFiltersTests extends AppTest with RangeFiltersSuite[FormFormatter] with FormFiltersTestsBase {
-  def createFilter(data: BaseFilterData): FilterAPI[UserMachineViewRow, FormFormatter] = new CustomTypeMappers {
+  def createFilter(data: FilterSetupData): FilterAPI[UserMachineViewRow, FormFormatter] = new CustomTypeMappers {
 
     import play.api.data.format.Formats._
 

@@ -1,7 +1,7 @@
 package org.virtuslab.beholder.filters.dsl
 
 import org.virtuslab.beholder.filters._
-import org.virtuslab.beholder.filters.json.JsonFilterField
+import org.virtuslab.beholder.filters.json.{ JsonFilterField, JsonFormatter, JsonFilterFieldImpl }
 import org.virtuslab.unicorn.LongUnicornPlay
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 import scala.language.higherKinds
@@ -44,9 +44,14 @@ object DSL {
 
   implicit def tuple6Shape[A1, A2, A3, A4, A5, A6, A7]: Mappable[(A1, A2, A3, A4, A5, A6), A7, (A1, A2, A3, A4, A5, A6, A7)] = ???
 
-  /*  implicit class JsonFormatted[T](val filter: MappableFilterAPI[T, Unit, _ <: JsonFilterField[_, _]]){
-    def asJson[T]
-  }*/
+  implicit class JsonFieldedFilter[E <: Product, Formatter, FT <: JsonFilterField](filter: MappableFilterAPI[E, Formatter, FT]) {
+    def jsonFormatted[NE <: Product](mapping: E => NE, names: String => String): FilterAPI[NE, JsonFormatter[NE]] =
+      filter.mapped(mapping).withFormat(filter => new JsonFormatter[NE](filter.filterFields, filter.columnsNames, names))
+
+    def asJson[NE <: Product](applyFun: E => NE) = jsonFormatted(applyFun, identity)
+
+    def asJson = jsonFormatted(identity, identity)
+  }
 
 }
 

@@ -4,19 +4,18 @@ import org.virtuslab.beholder.filters.{ FilterAPI, FilterDefinition }
 import org.virtuslab.beholder.{ AppTest, UserMachineViewRow, UserMachinesView }
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 
-trait BaseSuite[Formatter] extends UserMachinesView {
+trait BaseSuite[Formatter] extends BaseSuiteData {
   self: AppTest =>
-  def createFilter(data: BaseFilterData): FilterAPI[UserMachineViewRow, Formatter]
+
+  def createFilter(data: FilterSetupData): FilterAPI[UserMachineViewRow, Formatter]
 
   protected def baseFilterTest[A](testImplementation: BaseFilterData => A) = rollbackWithModel {
     implicit session: Session =>
       testImplementation(new BaseFilterData())
   }
+  def doFilters(data: BaseFilterData, currentFilter: FilterDefinition): Seq[UserMachineViewRow]
 
-  protected class BaseFilterData(implicit val session: Session) extends PopulatedDatabase {
-
-    val view = createUsersMachineView
-
+  protected class BaseFilterData(implicit val session: Session) extends FilterSetupData {
     lazy val filter = createFilter(this)
 
     lazy val baseFilter = filter.emptyFilterData
@@ -24,6 +23,12 @@ trait BaseSuite[Formatter] extends UserMachinesView {
 
     lazy val allFromDb = view.list
   }
+}
 
-  def doFilters(data: BaseFilterData, currentFilter: FilterDefinition): Seq[UserMachineViewRow]
+trait BaseSuiteData extends UserMachinesView {
+  self: AppTest =>
+
+  protected class FilterSetupData(implicit session: Session) extends PopulatedDatabase {
+    val view = createUsersMachineView
+  }
 }

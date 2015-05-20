@@ -10,24 +10,32 @@ import play.api.libs.json._
 
 import scala.slick.ast.{ BaseTypedType, TypedType }
 
-abstract class JsonFilterField[A: TypedType, B] extends MappedFilterField[A, B] {
+trait JsonFilterField extends FilterField {
   def fieldTypeDefinition: JsValue
 
+  def isIgnored = false
+
+  def writeFilter(value: Any): JsValue
+
+  def readFilter(value: JsValue): JsResult[Any]
+
+  def writeValue(value: Any): JsValue
+}
+
+abstract class JsonFilterFieldImpl[A: TypedType, B] extends MappedFilterField[A, B] with JsonFilterField {
   protected def filterFormat: Format[B]
 
   protected def valueWrite: Writes[A]
 
-  final def writeValue(value: Any): JsValue = valueWrite.writes(value.asInstanceOf[A])
+  final override def writeValue(value: Any): JsValue = valueWrite.writes(value.asInstanceOf[A])
 
-  final def readFilter(value: JsValue): JsResult[Any] = filterFormat.reads(value)
+  final override def readFilter(value: JsValue): JsResult[Any] = filterFormat.reads(value)
 
-  final def writeFilter(value: Any): JsValue = filterFormat.writes(value.asInstanceOf[B])
-
-  def isIgnored = false
+  final override def writeFilter(value: Any): JsValue = filterFormat.writes(value.asInstanceOf[B])
 }
 
 abstract class ImplicitlyJsonFilterFiled[A: TypedType: Writes, B: Format](dataTypeName: String)
-    extends JsonFilterField[A, B] {
+    extends JsonFilterFieldImpl[A, B] {
   override def fieldTypeDefinition: JsValue = JsString(dataTypeName)
 
   override protected def valueWrite: Writes[A] = implicitly
@@ -77,8 +85,8 @@ object JsonFilterFields {
    * check enum value
    * @tparam T - enum class (eg. Colors.type)
    */
-  def inEnum[T <: Enumeration](enum: T)(implicit tm: BaseTypedType[T#Value], formatter: Format[T#Value]): JsonFilterField[T#Value, T#Value] = {
-    new JsonFilterField[T#Value, T#Value] {
+  def inEnum[T <: Enumeration](enum: T)(implicit tm: BaseTypedType[T#Value], formatter: Format[T#Value]): JsonFilterFieldImpl[T#Value, T#Value] = {
+    new JsonFilterFieldImpl[T#Value, T#Value] {
       override def fieldTypeDefinition: JsValue = JsArray(
         enum.values.toList.map(v => Json.toJson(v.asInstanceOf[T#Value]))
       )
@@ -100,8 +108,8 @@ object JsonFilterFields {
       override def filterOnColumn(column: Column[T])(data: T): Column[Option[Boolean]] = column === data
     }
 
-  def inRange[T: BaseTypedType: Format](baseType: JsonFilterField[T, T]): JsonFilterField[T, FilterRange[T]] =
-    new JsonFilterField[T, FilterRange[T]] {
+  def inRange[T: BaseTypedType: Format](baseType: JsonFilterFieldImpl[T, T]): JsonFilterFieldImpl[T, FilterRange[T]] =
+    new JsonFilterFieldImpl[T, FilterRange[T]] {
       override def filterOnColumn(column: Column[T])(value: FilterRange[T]): Column[Option[Boolean]] = {
         value match {
           case FilterRange(Some(from), Some(to)) => column >= from && column <= to
@@ -121,8 +129,8 @@ object JsonFilterFields {
       override protected def filterFormat: Format[FilterRange[T]] = implicitly
     }
 
-  def inOptionRange[T: BaseTypedType: Format](baseType: JsonFilterField[T, T]): JsonFilterField[Option[T], FilterRange[T]] =
-    new JsonFilterField[Option[T], FilterRange[T]] {
+  def inOptionRange[T: BaseTypedType: Format](baseType: JsonFilterFieldImpl[T, T]): JsonFilterFieldImpl[Option[T], FilterRange[T]] =
+    new JsonFilterFieldImpl[Option[T], FilterRange[T]] {
       override def filterOnColumn(column: Column[Option[T]])(value: FilterRange[T]): Column[Option[Boolean]] = {
         value match {
           case FilterRange(Some(from), Some(to)) => column >= from && column <= to
@@ -147,7 +155,7 @@ object JsonFilterFields {
   /**
    * Ignores given field in filter.
    */
-  def ignore[T: TypedType: Writes]: JsonFilterField[T, T] = new JsonFilterField[T, T] {
+  def ignore[T: TypedType: Writes]: JsonFilterFieldImpl[T, T] = new JsonFilterFieldImpl[T, T] {
 
     override def fieldTypeDefinition: JsValue = JsNull
 

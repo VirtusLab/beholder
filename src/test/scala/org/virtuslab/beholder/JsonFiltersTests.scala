@@ -9,8 +9,7 @@ import org.virtuslab.beholder.suites.{ BaseSuite, FiltersTestSuite, RangeFilters
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 import play.api.libs.json.JsObject
 
-trait JsonFiltersTestsBase {
-  self: AppTest with BaseSuite[JsonFormatter[UserMachineViewRow]] =>
+trait JsonFiltersTestsBase extends AppTest with BaseSuite[JsonFormatter[UserMachineViewRow]] {
 
   override def doFilters(data: BaseFilterData, currentFilter: FilterDefinition): Seq[UserMachineViewRow] = {
     import data._
@@ -25,8 +24,8 @@ trait JsonFiltersTestsBase {
   }
 }
 
-class JsonFiltersTests extends AppTest with FiltersTestSuite[JsonFormatter[UserMachineViewRow]] with JsonFiltersTestsBase {
-  def createFilter(data: BaseFilterData): FilterAPI[UserMachineViewRow, JsonFormatter[UserMachineViewRow]] =
+class JsonFiltersTests extends JsonFiltersTestsBase {
+  def createFilter(data: FilterSetupData): FilterAPI[UserMachineViewRow, JsonFormatter[UserMachineViewRow]] =
     new JsonFilters[UserMachineViewRow](identity).create(
       data.view,
       inText,
@@ -37,8 +36,8 @@ class JsonFiltersTests extends AppTest with FiltersTestSuite[JsonFormatter[UserM
     )
 }
 
-class JsonFiltersRangeTests extends AppTest with RangeFiltersSuite[JsonFormatter[UserMachineViewRow]] with JsonFiltersTestsBase {
-  def createFilter(data: BaseFilterData): FilterAPI[UserMachineViewRow, JsonFormatter[UserMachineViewRow]] =
+class JsonFiltersRangeTests extends JsonFiltersTestsBase {
+  def createFilter(data: FilterSetupData): FilterAPI[UserMachineViewRow, JsonFormatter[UserMachineViewRow]] =
     new JsonFilters[UserMachineViewRow](identity).create(
       data.view,
       inText,
