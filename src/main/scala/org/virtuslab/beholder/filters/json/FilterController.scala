@@ -7,24 +7,27 @@ import play.api.mvc._
 
 abstract class FilterController[Entity <: Product](filter: FilterAPI[Entity, JsonFormatter[Entity]]) extends Controller {
 
-  protected def inSession(body: Request[AnyContent] => Session => Option[JsValue]): EssentialAction
+  type FilterContext
 
-  final def filterDefinition = inSession { request =>
-    _ =>
-      Option(filter.formatter.jsonDefinition)
+  protected def getSession(t: FilterContext): Session
+
+  protected def getRequest(t: FilterContext): Request[JsValue]
+
+  protected def inFilterContext(body: FilterContext => Option[JsValue]): EssentialAction
+
+  final def filterDefinition = inFilterContext { _: FilterContext =>
+    Option(filter.formatter.jsonDefinition)
   }
 
   //for filter modification such us setting default parameters etc.
   protected def mapFilterData(data: FilterDefinition) = data
 
   final def doFilter: EssentialAction =
-    inSession {
-      request =>
-        implicit session =>
-          for {
-            json <- request.body.asJson
-            filterDefinition <- filter.formatter.filterDefinition(json)
-            data = filter.filterWithTotalEntitiesNumber(mapFilterData(filterDefinition))
-          } yield filter.formatter.results(filterDefinition, data)
+    inFilterContext {
+      context: FilterContext =>
+        for {
+          filterDefinition <- filter.formatter.filterDefinition(getRequest(context).body)
+          data = filter.filterWithTotalEntitiesNumber(mapFilterData(filterDefinition))(getSession(context))
+        } yield filter.formatter.results(filterDefinition, data)
     }
 }
