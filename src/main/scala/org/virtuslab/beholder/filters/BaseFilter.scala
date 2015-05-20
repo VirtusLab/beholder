@@ -119,6 +119,7 @@ abstract class BaseFilter[Id, Entity, FilterTable <: BaseView[Id, Entity], Field
 object BaseFilter {
   val initialEmptyFilter: Nothing => Column[Option[Boolean]] = _ => LiteralColumn(Some(true))
 }
+
 trait TableFilterAPI[Entity, Formatter, QueryBase] extends FilterAPI[Entity, Formatter] {
 
   /**
@@ -141,6 +142,19 @@ trait TableFilterAPI[Entity, Formatter, QueryBase] extends FilterAPI[Entity, For
         initialFilter: (QueryBase) => Column[Boolean]
       )(implicit session: Session): Seq[Entity] =
         org.doFilter(data, newInitialFilter)
+
+      override val formatter: Formatter = org.formatter
+    }
+  }
+
+  /**
+   * copy this filter with this initial filter.
+   * Retured filter will always yield entities that match  newInitialFilter
+   */
+  def withContextInitialFilter[Context](newInitialFilter: Context => QueryBase => Column[Boolean]): ContextedFilterAPI[Context, Entity, Formatter] = {
+    val org = this
+    new ContextedFilterAPI[Context, Entity, Formatter] {
+      override def apply(context: Context): FilterAPI[Entity, Formatter] = withInitialFilter(newInitialFilter(context))
 
       override val formatter: Formatter = org.formatter
     }
@@ -170,6 +184,10 @@ trait FilterAPI[Entity, Formatter] {
 
   def emptyFilterData: FilterDefinition
 
+  val formatter: Formatter
+}
+
+abstract class ContextedFilterAPI[Context, Entity, Formatter] extends (Context => FilterAPI[Entity, Formatter]) {
   val formatter: Formatter
 }
 

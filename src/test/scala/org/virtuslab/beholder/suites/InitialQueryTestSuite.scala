@@ -3,14 +3,13 @@ package org.virtuslab.beholder.suites
 import java.sql.Date
 
 import org.joda.time.DateTime
-import org.virtuslab.beholder.model.{Machine, User}
+import org.virtuslab.beholder.model.{ Machine, User }
 import org.virtuslab.beholder.views.FilterableViews
-import org.virtuslab.beholder.{UserMachineViewRow, AppTest}
-import org.virtuslab.beholder.filters.{TableFilterAPI, FilterAPI}
+import org.virtuslab.beholder.{ UserMachineViewRow, AppTest }
+import org.virtuslab.beholder.filters.{ TableFilterAPI, FilterAPI }
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 
 import scala.tools.nsc.doc.model.Entity
-
 
 /**
  * Author: Krzysztof Romanowski
@@ -60,7 +59,7 @@ trait InitialQueryTestSuite[Formatter] extends FiltersTestSuite[Formatter] {
       ignored.foreach(_.email shouldEqual newMail)
 
       val filtered =
-        (for(v <- view if !(v.c1 === newMail)) yield v).list
+        (for (v <- view if !(v.c1 === newMail)) yield v).list
 
       filtered should contain theSameElementsAs allFromDb
 
