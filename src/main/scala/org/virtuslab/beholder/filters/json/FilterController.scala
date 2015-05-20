@@ -6,9 +6,9 @@ import play.api.libs.json.JsValue
 import play.api.mvc._
 
 trait FilterControllerBase[Context, Entity <: Product] extends Controller {
-  protected def formatter: JsonFormatter[Entity]
+  private[beholder] def formatter: JsonFormatter[Entity]
 
-  protected def callFilter(context: Context, filterDefinition: FilterDefinition): FilterResult[Entity]
+  private[beholder] def callFilter(context: Context, filterDefinition: FilterDefinition): FilterResult[Entity]
 
   protected def inFilterContext(body: Request[AnyContent] => Context => Option[JsValue]): EssentialAction
 
@@ -37,17 +37,17 @@ abstract class FilterController[Entity <: Product](filter: FilterAPI[Entity, Jso
   override protected def inFilterContext(body: (Request[AnyContent]) => (Session) => Option[JsValue]): EssentialAction =
     inSession(body)
 
-  override final protected def callFilter(session: Session, filterDefinition: FilterDefinition): FilterResult[Entity] =
+  override final private[beholder] def callFilter(session: Session, filterDefinition: FilterDefinition): FilterResult[Entity] =
     filter.filterWithTotalEntitiesNumber(filterDefinition)(session)
 
-  override protected final def formatter: JsonFormatter[Entity] = filter.formatter
+  override final private[beholder] def formatter: JsonFormatter[Entity] = filter.formatter
 }
 
 abstract class ContextFilterController[Context, Entity <: Product](contextedFilter: ContextedFilterAPI[Context, Entity, JsonFormatter[Entity]])
     extends FilterControllerBase[Context, Entity] {
-  override protected final def formatter: JsonFormatter[Entity] = contextedFilter._formatter
+  override private[beholder] final def formatter: JsonFormatter[Entity] = contextedFilter.filterFormatter
 
-  override protected final def callFilter(context: Context, filterDefinition: FilterDefinition): FilterResult[Entity] = {
+  override private[beholder] final def callFilter(context: Context, filterDefinition: FilterDefinition): FilterResult[Entity] = {
     contextedFilter.apply(context).filterWithTotalEntitiesNumber(filterDefinition)(sessionFromContext(context))
   }
 
