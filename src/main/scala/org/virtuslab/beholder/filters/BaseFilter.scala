@@ -156,7 +156,7 @@ trait TableFilterAPI[Entity, Formatter, QueryBase] extends FilterAPI[Entity, For
     new ContextedFilterAPI[Context, Entity, Formatter] {
       override def apply(context: Context): FilterAPI[Entity, Formatter] = withInitialFilter(newInitialFilter(context))
 
-      override val formatter: Formatter = org.formatter
+      override val _formatter: Formatter = org.formatter
     }
   }
 
@@ -188,7 +188,7 @@ trait FilterAPI[Entity, Formatter] {
 }
 
 abstract class ContextedFilterAPI[Context, Entity, Formatter] extends (Context => FilterAPI[Entity, Formatter]) {
-  val formatter: Formatter
+  val _formatter: Formatter
 }
 
 case class FilterResult[T](content: Seq[T], total: Int) {

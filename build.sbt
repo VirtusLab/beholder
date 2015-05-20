@@ -4,7 +4,7 @@ name := "beholder"
 
 version := "0.2.7"
 
-scalaVersion := "2.11.5"
+scalaVersion := "2.11.6"
 
 resolvers += Resolver.typesafeRepo("releases")
 
@@ -15,9 +15,9 @@ resolvers += Resolver.sonatypeRepo("snapshots")
 libraryDependencies ++= Seq(
   "com.typesafe.slick" %% "slick" % "2.1.0",
   "com.typesafe.play" %% "play-slick" % "0.8.1",
-  "org.virtuslab" %% "unicorn" % "0.6.2",
+  "org.virtuslab" %% "unicorn" % "0.6.3",
   "org.scalatest" %% "scalatest" % "2.2.3" % "test",
-  "com.typesafe.play" %% "play-test" % "2.3.8" % "test",
+  "com.typesafe.play" %% "play-test" % "2.3.9" % "test",
   "com.h2database" % "h2" % "1.4.184" % "test"
 )
 
@@ -65,7 +65,7 @@ pomExtra := <url>https://github.com/VirtusLab/beholder</url>
     </developer>
   </developers>
 
-xerial.sbt.Sonatype.sonatypeSettings
+//xerial.sbt.Sonatype.sonatypeSettings
 
 // Scoverage setup
 
