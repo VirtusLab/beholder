@@ -69,7 +69,7 @@ class JsonFormatter[Entity <: Product](filterFields: Seq[JsonFilterField[_, _]],
       }
     )
 
-  final def filterDefinition(from: JsValue): Option[FilterDefinition] = from.asOpt(filterDefinitionFormat)
+  final def filterDefinition(from: JsValue): JsResult[FilterDefinition] = filterDefinitionFormat.reads(from)
 
   final def entities(from: FilterDefinition, data: Seq[Entity]): JsValue = JsObject(Seq(
     "filter" -> Json.toJson(from)(filterDefinitionFormat),
