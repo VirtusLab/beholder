@@ -1,6 +1,6 @@
 package org.virtuslab.beholder.filters.json
 
-import org.joda.time.DateTime
+import org.joda.time.{ LocalDate, DateTime }
 import org.virtuslab.beholder.filters._
 import org.virtuslab.beholder.utils.ILikeExtension._
 import org.virtuslab.unicorn.LongUnicornPlay.CustomTypeMappers._
@@ -71,6 +71,10 @@ object JsonFilterFields {
 
   object inDateTime extends ImplicitlyJsonFilterFiled[DateTime, DateTime]("DateTime") {
     override def filterOnColumn(column: Column[DateTime])(data: DateTime): Column[Option[Boolean]] = column === data
+  }
+
+  object inLocalDate extends ImplicitlyJsonFilterFiled[LocalDate, LocalDate]("LocalDate") {
+    override def filterOnColumn(column: Column[LocalDate])(data: LocalDate): Column[Option[Boolean]] = column === data
   }
 
   /**
