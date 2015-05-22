@@ -1,7 +1,6 @@
 package org.virtuslab.beholder.filters
 
 import org.virtuslab.beholder.views.BaseView
-import org.virtuslab.unicorn.LongUnicornPlay
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 import play.api.libs.json.Json
 
