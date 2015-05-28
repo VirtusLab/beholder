@@ -123,7 +123,7 @@ trait TableFilterAPI[Entity, Formatter, QueryBase] extends FilterAPI[Entity, For
 
   /**
    * copy this filter with this initial filter.
-   * Retured filter will always yield entities that match  newInitialFilter
+   * Returned filter will always yield entities that match  newInitialFilter
    */
   def withInitialFilter(newInitialFilter: QueryBase => Column[Boolean]): TableFilterAPI[Entity, Formatter, QueryBase] = {
     val org = this
@@ -148,7 +148,7 @@ trait TableFilterAPI[Entity, Formatter, QueryBase] extends FilterAPI[Entity, For
 
   /**
    * copy this filter with this initial filter.
-   * Retured filter will always yield entities that match  newInitialFilter
+   * Returned filter will always yield entities that match  newInitialFilter
    */
   def withContextInitialFilter[Context](newInitialFilter: Context => QueryBase => Column[Boolean]): ContextedFilterAPI[Context, Entity, Formatter] = {
     val org = this
