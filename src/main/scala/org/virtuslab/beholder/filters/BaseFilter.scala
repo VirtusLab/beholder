@@ -115,10 +115,6 @@ abstract class BaseFilter[Id, Entity, FilterTable <: BaseView[Id, Entity], Field
     data.orderBy.map { case order => (table.columnByName(order.column), order.asc) }
 }
 
-object BaseFilter {
-  val initialEmptyFilter: Nothing => Column[Option[Boolean]] = _ => LiteralColumn(Some(true))
-}
-
 trait TableFilterAPI[Entity, Formatter, QueryBase] extends FilterAPI[Entity, Formatter] {
 
   /**
