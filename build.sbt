@@ -2,7 +2,7 @@ organization := "org.virtuslab"
 
 name := "beholder"
 
-version := "0.2.7"
+version := "0.2.8"
 
 scalaVersion := "2.11.7"
 
@@ -79,3 +79,5 @@ ScoverageSbtPlugin.ScoverageKeys.coverageExcludedPackages := Seq(
   "org.virtuslab.beholder.views.FilterableViews.*",
   "org.virtuslab.beholder.views.FilterableViewsGenerateCode.BaseView[^5].*"
 ).mkString(";")
+
+Local.repository

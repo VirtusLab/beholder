@@ -15,7 +15,7 @@ abstract class JsonFilterField[A: TypedType, B] extends MappedFilterField[A, B] 
 
   protected def filterFormat: Format[B]
 
-  protected def valueWrite: Writes[A]
+  protected[json] def valueWrite: Writes[A]
 
   final def writeValue(value: Any): JsValue = valueWrite.writes(value.asInstanceOf[A])
 
@@ -30,7 +30,7 @@ abstract class ImplicitlyJsonFilterFiled[A: TypedType: Writes, B: Format](dataTy
     extends JsonFilterField[A, B] {
   override def fieldTypeDefinition: JsValue = JsString(dataTypeName)
 
-  override protected def valueWrite: Writes[A] = implicitly
+  override protected[json] def valueWrite: Writes[A] = implicitly
 
   override protected def filterFormat: Format[B] = implicitly
 }
@@ -71,6 +71,14 @@ object JsonFilterFields {
 
   object inDateTime extends ImplicitlyJsonFilterFiled[DateTime, DateTime]("DateTime") {
     override def filterOnColumn(column: Column[DateTime])(data: DateTime): Column[Option[Boolean]] = column === data
+
+    override protected[json] def valueWrite: Writes[DateTime] = Writes.jodaDateWrites("yyyy-MM-dd HH:mm")
+
+    override protected def filterFormat: Format[DateTime] = new Format[DateTime] {
+      override def writes(o: DateTime): JsValue = valueWrite.writes(o)
+
+      override def reads(json: JsValue): JsResult[DateTime] = Reads.jodaDateReads("yyyy-MM-dd HH:mm").reads(json)
+    }
   }
 
   object inLocalDate extends ImplicitlyJsonFilterFiled[LocalDate, LocalDate]("LocalDate") {
@@ -87,9 +95,9 @@ object JsonFilterFields {
         enum.values.toList.map(v => Json.toJson(v.asInstanceOf[T#Value]))
       )
 
-      override protected def valueWrite: Writes[T#Value] = implicitly
+      override protected[json] def valueWrite: Writes[T#Value] = formatter
 
-      override protected def filterFormat: Format[T#Value] = implicitly
+      override protected def filterFormat: Format[T#Value] = formatter
 
       override protected def filterOnColumn(column: Column[T#Value])(value: T#Value): Column[Option[Boolean]] = column === value
     }
@@ -120,7 +128,7 @@ object JsonFilterFields {
         "dataType" -> baseType.fieldTypeDefinition
       ))
 
-      override protected def valueWrite: Writes[T] = implicitly
+      override protected[json] def valueWrite: Writes[T] = baseType.valueWrite
 
       override protected def filterFormat: Format[FilterRange[T]] = implicitly
     }
@@ -141,9 +149,7 @@ object JsonFilterFields {
         "dataType" -> baseType.fieldTypeDefinition
       ))
 
-      override protected def valueWrite: Writes[Option[T]] = implicitly
-
-      import play.api.libs.json._
+      override protected[json] def valueWrite: Writes[Option[T]] = implicitly
 
       override protected def filterFormat: Format[FilterRange[T]] = rangeFormat
     }
@@ -155,7 +161,7 @@ object JsonFilterFields {
 
     override def fieldTypeDefinition: JsValue = JsNull
 
-    override protected def valueWrite: Writes[T] = implicitly
+    override protected[json] def valueWrite: Writes[T] = implicitly
 
     override protected def filterFormat: Format[T] = new Format[T] {
       override def reads(json: JsValue): JsResult[T] = JsError()
