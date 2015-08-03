@@ -2,7 +2,6 @@ package org.virtuslab.beholder
 
 import java.sql.Date
 
-import org.virtuslab.beholder.filters.dsl.DSL._
 import org.virtuslab.beholder.filters.dsl.FilterFactory
 import org.virtuslab.beholder.filters.json.{ JsonFormatter, JsonFilterFields }
 import org.virtuslab.beholder.filters.{ FilterAPI, FilterDefinition }
@@ -25,7 +24,7 @@ trait PartialFunctionDslTest extends DslTest with PartialFunctionDslProvider {
 
 trait PartialFunctionDslJsonTest extends JsonFiltersTestsBase with PartialFunctionDslProvider {
 
-  import org.virtuslab.beholder.filters.dsl.DSL._
+  import org.virtuslab.beholder.filters.dsl.JsonDSL._
 
   override def createFilter(data: FilterSetupData) =
     dslFilter(data).asJson(UserMachineViewRow.tupled)

@@ -6,7 +6,7 @@ import org.virtuslab.unicorn.LongUnicornPlay
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 
 object FilterFactory {
-  def crate[T <: Product, E, FT <: FilterField, Formatter](
+  def crate[T <: Product, E, FT <: FilterField](
     query: Query[T, E, Seq],
     fields: Seq[FT],
     names: Seq[String]

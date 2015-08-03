@@ -11,7 +11,7 @@ import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 trait LambdaDslProvider {
   self: BaseSuiteData =>
 
-  import org.virtuslab.beholder.filters.dsl.DSL._
+  import org.virtuslab.beholder.filters.dsl.JsonDSL._
 
   def dslFilter(data: FilterSetupData) =
     create(usersMachinesQuery) {

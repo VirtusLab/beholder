@@ -15,7 +15,7 @@ object DSLImpl {
     ).asInstanceOf[c.Tree]
   }
 
-  val unsupportedTreeMessage =
+  def unsupportedTreeMessage =
     """This tree is unsupported. Supported shapes:
       | create(query){case (a, b, ... ) => fieldDeclarations }
       | or
@@ -71,23 +71,29 @@ object DSLImpl {
 
     private object Named {
       def unapply(tree: Tree): Option[(Tree, Tree)] = tree match {
-        case Apply(rest, List(name)) =>
+        case Apply(NamedProvider(rest), List(name)) =>
           Some(rest -> name)
         case _ => None
       }
     }
 
+    private object NamedProvider {
+      def unapply(tree: Tree): Option[Tree] = tree match {
+        case Select(rest, TermName("and")) => Some(rest)
+        case Select(rest, TermName("string2EmptyName")) =>
+          //TODO validate if rest is stable
+          Some(EmptyTree)
+        case _ => None
+      }
+    }
+
+    object Starter
+
     private def filterElements(t: Tree, elements: FilterElements): Option[FilterElements] = t match {
       case rest Named name From column As field =>
         val newElements = FilterElements(name :: elements.names, field :: elements.fields, column :: elements.columns)
-        rest match {
-          case q"org.virtuslab.beholder.filters.dsl.DSL.EmptyName" => Some(newElements)
-          case Select(nextLevel, _) =>
-            filterElements(nextLevel, newElements)
-          case _ =>
-            c.error(t.pos, unsupportedTreeMessage)
-            None
-        }
+        filterElements(rest, newElements)
+      case EmptyTree => Some(elements)
       case tree =>
         c.error(t.pos, unsupportedTreeMessage)
         None
@@ -103,7 +109,7 @@ object DSLImpl {
           val queryMappingFunction = funcCreation(q"$tupleType(..$columns)")
           q"$query.map($queryMappingFunction)"
         }
-        val createFun = q"org.virtuslab.beholder.filters.dsl.FilterFactory.crate"
+        val createFun = Select(c.prefix.tree, TermName("crateFilter"))
 
         val tree = Apply(createFun, List(mappedQuery, seq(fields), seq(names)))
         tree

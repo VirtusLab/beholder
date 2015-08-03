@@ -2,11 +2,9 @@ package org.virtuslab.beholder.json
 
 import java.sql.Date
 
-import org.virtuslab.beholder.filters.dsl.DSL._
 import org.virtuslab.beholder.filters.{ FilterAPI, FilterDefinition }
 import org.virtuslab.beholder.filters.json.JsonFilterFields._
 import org.virtuslab.beholder.filters.json.{ JsonFormatter, JsonFilterFields, JsonFilters }
-import org.virtuslab.beholder.providers.PartialFunctionDslProvider
 import org.virtuslab.beholder.{ UserMachineViewRow, _ }
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 import play.api.libs.json.{ JsArray, JsObject, JsString }
@@ -72,17 +70,16 @@ class JsonFormatterTest extends BaseJsonFormatterTest {
 
 class JsonDslFormatterTest extends BaseJsonFormatterTest {
 
-  import org.virtuslab.beholder.filters.dsl.DSL._
+  import org.virtuslab.beholder.filters.dsl.JsonDSL._
 
   override def createFilter(labels: String => String)(implicit session: Session): FilterAPI[UserMachineViewRow, JsonFormatter[UserMachineViewRow]] = {
-    val a = create(usersMachinesQuery) {
+    create(usersMachinesQuery) {
       case (user, machine) =>
         "email" from user.email as inText and
           "system" from machine.system as inText and
           "cores" from machine.cores as inIntField and
           "created" from machine.created as inRange(inField("date")) and
           "capacity" from machine.capacity as JsonFilterFields.ignore
-    }
-    a.jsonFormatted(UserMachineViewRow.tupled, labels)
+    }.jsonFormatted(UserMachineViewRow.tupled, labels)
   }
 }

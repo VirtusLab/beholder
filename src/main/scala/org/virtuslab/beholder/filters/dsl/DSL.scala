@@ -5,14 +5,18 @@ import org.virtuslab.beholder.filters.json.{ JsonFilterField, JsonFormatter, Jso
 import org.virtuslab.unicorn.LongUnicornPlay
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 import scala.language.higherKinds
+import scala.language.implicitConversions
 import scala.reflect.macros.whitebox.Context
 import scala.language.experimental.macros
 
-object DSL {
+class DSL[FT <: FilterField] {
+
+  def crateFilter[T <: Product, E](query: Query[T, E, Seq], fields: Seq[FT], names: Seq[String]) =
+    FilterFactory.crate(query, fields, names)
 
   trait Mappable[S, E, NS]
 
-  implicit class EmptyName(name: String) extends Named[Unit](name)
+  class EmptyName(name: String) extends Named[Unit](name)
 
   class Named[S](name: String) {
     def from[A, NS](c: Column[A])(implicit shaper: Mappable[S, A, NS]): NamedFieldColumn[NS, A] = ???
@@ -23,10 +27,12 @@ object DSL {
   }
 
   class NamedFieldColumn[S, A] {
-    def as[B](field: MappedFilterField[A, B]): CompleteRow[S] = ???
+    def as[B](field: MappedFilterField[A, B] with FT): CompleteRow[S] = ???
   }
 
-  def create[T, L, FT, E](query: Query[T, L, Seq])(creation: T => CompleteRow[E]): MappableFilterAPI[E, Unit, FT] = macro DSLImpl.create_imp
+  implicit def string2EmptyName(name: String): EmptyName = ???
+
+  def create[T, L, E](query: Query[T, L, Seq])(creation: T => CompleteRow[E]): MappableFilterAPI[E, Unit, FT] = macro DSLImpl.create_imp
 
   //generated mappable implicits
 
@@ -44,6 +50,10 @@ object DSL {
 
   implicit def tuple6Shape[A1, A2, A3, A4, A5, A6, A7]: Mappable[(A1, A2, A3, A4, A5, A6), A7, (A1, A2, A3, A4, A5, A6, A7)] = ???
 
+}
+
+object JsonDSL extends DSL[JsonFilterField] {
+
   implicit class JsonFieldedFilter[E <: Product, Formatter, FT <: JsonFilterField](filter: MappableFilterAPI[E, Formatter, FT]) {
     def jsonFormatted[NE <: Product](mapping: E => NE, names: String => String): FilterAPI[NE, JsonFormatter[NE]] =
       filter.mapped(mapping).withFormat(filter => new JsonFormatter[NE](filter.filterFields, filter.columnsNames, names))
@@ -52,6 +62,4 @@ object DSL {
 
     def asJson = jsonFormatted(identity, identity)
   }
-
 }
-

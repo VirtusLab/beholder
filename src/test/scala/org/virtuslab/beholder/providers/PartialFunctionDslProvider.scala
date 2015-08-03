@@ -11,7 +11,7 @@ import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 trait PartialFunctionDslProvider {
   self: BaseSuiteData =>
 
-  import org.virtuslab.beholder.filters.dsl.DSL._
+  import org.virtuslab.beholder.filters.dsl.JsonDSL._
 
   def dslFilter(data: FilterSetupData) =
     create(usersMachinesQuery) {
@@ -23,15 +23,4 @@ trait PartialFunctionDslProvider {
           "capacity" from machine.capacity as JsonFilterFields.ignore
     }
 
-  val test = {
-    val a = create(usersMachinesQuery) {
-      case (user, machine) =>
-        "email" from user.email as inText and
-          "system" from machine.system as inText and
-          "cores" from machine.cores as inIntField and
-          "created" from machine.created as inRange(inField("date")) and
-          "capacity" from machine.capacity as JsonFilterFields.ignore
-    }
-    a.asJson
-  }
 }
