@@ -13,7 +13,7 @@ trait FormFiltersTestsBase {
   self: AppTest with BaseSuite[FormFormatter] =>
 
   override def doFilters(data: BaseFilterData, currentFilter: FilterDefinition): Seq[UserMachineViewRow] = {
-    val formatter = data.filter.formatter
+    val formatter = data.filter.filterFormatter
     val formData = formatter.filterForm.fill(currentFilter)
     formatter.filterForm.bind(formData.data).fold(
       errors => fail(s"Form errors ${errors.errors.mkString}"),
@@ -23,7 +23,7 @@ trait FormFiltersTestsBase {
 }
 
 class FormFiltersTests extends AppTest with FiltersTestSuite[FormFormatter] with FormFiltersTestsBase {
-  def createFilter(data: BaseFilterData): FilterAPI[UserMachineViewRow, FormFormatter] = new CustomTypeMappers {
+  def createFilter(data: FilterSetupData): FilterAPI[UserMachineViewRow, FormFormatter] = new CustomTypeMappers {
 
     import play.api.data.format.Formats._
 
@@ -41,7 +41,7 @@ class FormFiltersTests extends AppTest with FiltersTestSuite[FormFormatter] with
 class InitialFormFiltersTests extends FormFiltersTests with InitialQueryTestSuite[FormFormatter]
 
 class FormRangeFiltersTests extends AppTest with RangeFiltersSuite[FormFormatter] with FormFiltersTestsBase {
-  def createFilter(data: BaseFilterData): FilterAPI[UserMachineViewRow, FormFormatter] = new CustomTypeMappers {
+  def createFilter(data: FilterSetupData): FilterAPI[UserMachineViewRow, FormFormatter] = new CustomTypeMappers {
 
     import play.api.data.format.Formats._
 

@@ -2,7 +2,6 @@ package org.virtuslab.beholder.filters
 
 import org.virtuslab.beholder.views.FilterableViews._
 import org.virtuslab.unicorn.LongUnicornPlay
-import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 
 import scala.language.higherKinds
 import scala.slick.ast.TypedType
@@ -10,17 +9,19 @@ import scala.slick.lifted.TableQuery
 
 abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField[_, _], Formatter] {
 
-  def createFormatter(table: BaseFilter[_, _, _, FieldType[_, _], Formatter]): Formatter
+  type FT = FieldType[_, _]
+
+  def createFormatter(table: TabledFilterImplementation[_, _, _, FieldType[_, _], Formatter]): Formatter
 
   def create[A1: TypedType, A2: TypedType, A3: TypedType, B1, B2, B3, T <: BaseView3[Entity, A1, A2, A3]](
     table: TableQuery[T],
     c1Mapping: FieldType[A1, B1],
     c2Mapping: FieldType[A2, B2],
     c3Mapping: FieldType[A3, B3]
-  ): TableFilterAPI[Entity, Formatter, T] = {
+  ): MappableFilterAPI[Entity, Formatter, FT,  T] = {
 
-    new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
-      override val formatter: Formatter = createFormatter(this)
+    new TabledFilterImplementation[A1, Entity, T, FT, Formatter](table) {
+      override private[beholder] def filterFormatter: Formatter = createFormatter(this)
 
       override protected def emptyFilterDataInner: Seq[Option[Any]] = Seq.fill(3)(None)
 
@@ -39,10 +40,10 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
     c2Mapping: FieldType[A2, B2],
     c3Mapping: FieldType[A3, B3],
     c4Mapping: FieldType[A4, B4]
-  ): TableFilterAPI[Entity, Formatter, T] = {
+  ): MappableFilterAPI[Entity, Formatter, FT,  T] = {
 
-    new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
-      override val formatter: Formatter = createFormatter(this)
+    new TabledFilterImplementation[A1, Entity, T, FieldType[_, _], Formatter](table) {
+      override private[beholder] def filterFormatter: Formatter = createFormatter(this)
 
       override protected def emptyFilterDataInner: Seq[Option[Any]] = Seq.fill(4)(None)
 
@@ -62,10 +63,10 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
     c3Mapping: FieldType[A3, B3],
     c4Mapping: FieldType[A4, B4],
     c5Mapping: FieldType[A5, B5]
-  ): TableFilterAPI[Entity, Formatter, T] = {
+  ): MappableFilterAPI[Entity, Formatter, FT,  T] = {
 
-    new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
-      override val formatter: Formatter = createFormatter(this)
+    new TabledFilterImplementation[A1, Entity, T, FieldType[_, _], Formatter](table) {
+      override private[beholder] def filterFormatter: Formatter = createFormatter(this)
 
       override protected def emptyFilterDataInner: Seq[Option[Any]] = Seq.fill(5)(None)
 
@@ -86,10 +87,10 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
     c4Mapping: FieldType[A4, B4],
     c5Mapping: FieldType[A5, B5],
     c6Mapping: FieldType[A6, B6]
-  ): TableFilterAPI[Entity, Formatter, T] = {
+  ): MappableFilterAPI[Entity, Formatter, FT,  T] = {
 
-    new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
-      override val formatter: Formatter = createFormatter(this)
+    new TabledFilterImplementation[A1, Entity, T, FieldType[_, _], Formatter](table) {
+      override private[beholder] def filterFormatter: Formatter = createFormatter(this)
 
       override protected def emptyFilterDataInner: Seq[Option[Any]] = Seq.fill(6)(None)
 
@@ -111,10 +112,10 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
     c5Mapping: FieldType[A5, B5],
     c6Mapping: FieldType[A6, B6],
     c7Mapping: FieldType[A7, B7]
-  ): TableFilterAPI[Entity, Formatter, T] = {
+  ): MappableFilterAPI[Entity, Formatter, FT,  T] = {
 
-    new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
-      override val formatter: Formatter = createFormatter(this)
+    new TabledFilterImplementation[A1, Entity, T, FieldType[_, _], Formatter](table) {
+      override private[beholder] def filterFormatter: Formatter = createFormatter(this)
 
       override protected def emptyFilterDataInner: Seq[Option[Any]] = Seq.fill(7)(None)
 
@@ -137,10 +138,10 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
     c6Mapping: FieldType[A6, B6],
     c7Mapping: FieldType[A7, B7],
     c8Mapping: FieldType[A8, B8]
-  ): TableFilterAPI[Entity, Formatter, T] = {
+  ): MappableFilterAPI[Entity, Formatter, FT,  T] = {
 
-    new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
-      override val formatter: Formatter = createFormatter(this)
+    new TabledFilterImplementation[A1, Entity, T, FieldType[_, _], Formatter](table) {
+      override private[beholder] def filterFormatter: Formatter = createFormatter(this)
 
       override protected def emptyFilterDataInner: Seq[Option[Any]] = Seq.fill(8)(None)
 
@@ -164,10 +165,10 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
     c7Mapping: FieldType[A7, B7],
     c8Mapping: FieldType[A8, B8],
     c9Mapping: FieldType[A9, B9]
-  ): TableFilterAPI[Entity, Formatter, T] = {
+  ): MappableFilterAPI[Entity, Formatter, FT,  T] = {
 
-    new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
-      override val formatter: Formatter = createFormatter(this)
+    new TabledFilterImplementation[A1, Entity, T, FieldType[_, _], Formatter](table) {
+      override private[beholder] def filterFormatter: Formatter = createFormatter(this)
 
       override protected def emptyFilterDataInner: Seq[Option[Any]] = Seq.fill(9)(None)
 
@@ -192,10 +193,10 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
     c8Mapping: FieldType[A8, B8],
     c9Mapping: FieldType[A9, B9],
     c10Mapping: FieldType[A10, B10]
-  ): TableFilterAPI[Entity, Formatter, T] = {
+  ): MappableFilterAPI[Entity, Formatter, FT,  T] = {
 
-    new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
-      override val formatter: Formatter = createFormatter(this)
+    new TabledFilterImplementation[A1, Entity, T, FieldType[_, _], Formatter](table) {
+      override private[beholder] def filterFormatter: Formatter = createFormatter(this)
 
       override protected def emptyFilterDataInner: Seq[Option[Any]] = Seq.fill(10)(None)
 
@@ -221,10 +222,10 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
     c9Mapping: FieldType[A9, B9],
     c10Mapping: FieldType[A10, B10],
     c11Mapping: FieldType[A11, B11]
-  ): TableFilterAPI[Entity, Formatter, T] = {
+  ): MappableFilterAPI[Entity, Formatter, FT,  T] = {
 
-    new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
-      override val formatter: Formatter = createFormatter(this)
+    new TabledFilterImplementation[A1, Entity, T, FieldType[_, _], Formatter](table) {
+      override private[beholder] def filterFormatter: Formatter = createFormatter(this)
 
       override protected def emptyFilterDataInner: Seq[Option[Any]] = Seq.fill(11)(None)
 
@@ -251,10 +252,10 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
     c10Mapping: FieldType[A10, B10],
     c11Mapping: FieldType[A11, B11],
     c12Mapping: FieldType[A12, B12]
-  ): TableFilterAPI[Entity, Formatter, T] = {
+  ): MappableFilterAPI[Entity, Formatter, FT,  T] = {
 
-    new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
-      override val formatter: Formatter = createFormatter(this)
+    new TabledFilterImplementation[A1, Entity, T, FieldType[_, _], Formatter](table) {
+      override private[beholder] def filterFormatter: Formatter = createFormatter(this)
 
       override protected def emptyFilterDataInner: Seq[Option[Any]] = Seq.fill(12)(None)
 
@@ -282,10 +283,10 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
     c11Mapping: FieldType[A11, B11],
     c12Mapping: FieldType[A12, B12],
     c13Mapping: FieldType[A13, B13]
-  ): TableFilterAPI[Entity, Formatter, T] = {
+  ): MappableFilterAPI[Entity, Formatter, FT,  T] = {
 
-    new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
-      override val formatter: Formatter = createFormatter(this)
+    new TabledFilterImplementation[A1, Entity, T, FieldType[_, _], Formatter](table) {
+      override private[beholder] def filterFormatter: Formatter = createFormatter(this)
 
       override protected def emptyFilterDataInner: Seq[Option[Any]] = Seq.fill(13)(None)
 
@@ -314,10 +315,10 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
     c12Mapping: FieldType[A12, B12],
     c13Mapping: FieldType[A13, B13],
     c14Mapping: FieldType[A14, B14]
-  ): TableFilterAPI[Entity, Formatter, T] = {
+  ): MappableFilterAPI[Entity, Formatter, FT,  T] = {
 
-    new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
-      override val formatter: Formatter = createFormatter(this)
+    new TabledFilterImplementation[A1, Entity, T, FieldType[_, _], Formatter](table) {
+      override private[beholder] def filterFormatter: Formatter = createFormatter(this)
 
       override protected def emptyFilterDataInner: Seq[Option[Any]] = Seq.fill(14)(None)
 
@@ -347,10 +348,10 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
     c13Mapping: FieldType[A13, B13],
     c14Mapping: FieldType[A14, B14],
     c15Mapping: FieldType[A15, B15]
-  ): TableFilterAPI[Entity, Formatter, T] = {
+  ): MappableFilterAPI[Entity, Formatter, FT,  T] = {
 
-    new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
-      override val formatter: Formatter = createFormatter(this)
+    new TabledFilterImplementation[A1, Entity, T, FieldType[_, _], Formatter](table) {
+      override private[beholder] def filterFormatter: Formatter = createFormatter(this)
 
       override protected def emptyFilterDataInner: Seq[Option[Any]] = Seq.fill(15)(None)
 
@@ -381,10 +382,10 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
     c14Mapping: FieldType[A14, B14],
     c15Mapping: FieldType[A15, B15],
     c16Mapping: FieldType[A16, B16]
-  ): TableFilterAPI[Entity, Formatter, T] = {
+  ): MappableFilterAPI[Entity, Formatter, FT,  T] = {
 
-    new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
-      override val formatter: Formatter = createFormatter(this)
+    new TabledFilterImplementation[A1, Entity, T, FieldType[_, _], Formatter](table) {
+      override private[beholder] def filterFormatter: Formatter = createFormatter(this)
 
       override protected def emptyFilterDataInner: Seq[Option[Any]] = Seq.fill(16)(None)
 
@@ -416,10 +417,10 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
     c15Mapping: FieldType[A15, B15],
     c16Mapping: FieldType[A16, B16],
     c17Mapping: FieldType[A17, B17]
-  ): TableFilterAPI[Entity, Formatter, T] = {
+  ): MappableFilterAPI[Entity, Formatter, FT,  T] = {
 
-    new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
-      override val formatter: Formatter = createFormatter(this)
+    new TabledFilterImplementation[A1, Entity, T, FieldType[_, _], Formatter](table) {
+      override private[beholder] def filterFormatter: Formatter = createFormatter(this)
 
       override protected def emptyFilterDataInner: Seq[Option[Any]] = Seq.fill(17)(None)
 
@@ -452,10 +453,10 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
     c16Mapping: FieldType[A16, B16],
     c17Mapping: FieldType[A17, B17],
     c18Mapping: FieldType[A18, B18]
-  ): TableFilterAPI[Entity, Formatter, T] = {
+  ): MappableFilterAPI[Entity, Formatter, FT,  T] = {
 
-    new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
-      override val formatter: Formatter = createFormatter(this)
+    new TabledFilterImplementation[A1, Entity, T, FieldType[_, _], Formatter](table) {
+      override private[beholder] def filterFormatter: Formatter = createFormatter(this)
 
       override protected def emptyFilterDataInner: Seq[Option[Any]] = Seq.fill(18)(None)
 

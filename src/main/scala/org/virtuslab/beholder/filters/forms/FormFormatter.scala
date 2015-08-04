@@ -1,9 +1,9 @@
 package org.virtuslab.beholder.filters.forms
 
-import org.virtuslab.beholder.filters.{ FilterDefinition, Order }
+import org.virtuslab.beholder.filters.{FilterDefinition, Order}
 import play.api.data.Forms._
 import play.api.data.format.Formatter
-import play.api.data.{ Form, FormError, Mapping }
+import play.api.data.{Form, FormError, Mapping}
 
 case class FormFormatter(filterFields: Seq[FormFilterField[_, _]], columnsNames: Seq[String]) {
 
