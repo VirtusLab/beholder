@@ -5,7 +5,7 @@ import java.sql.Date
 import org.virtuslab.beholder.filters.json.JsonFilterFields._
 import org.virtuslab.beholder.filters.json.{ JsonFilterFields, JsonFilters, JsonFormatter }
 import org.virtuslab.beholder.filters.{ FilterAPI, FilterDefinition }
-import org.virtuslab.beholder.suites.{ InitialQueryTestSuite, BaseSuite, FiltersTestSuite, RangeFiltersSuite }
+import org.virtuslab.beholder.suites._
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 import play.api.libs.json.{ JsSuccess, JsObject }
 
@@ -36,7 +36,9 @@ class JsonFiltersTests extends JsonFiltersTestsBase {
     )
 }
 
-class InitialJsonFiltersTests extends JsonFiltersTests with InitialQueryTestSuite[JsonFormatter[UserMachineViewRow]]
+class InitialFiltersJsonTests extends JsonFiltersTests with InitialQueryTestSuite[JsonFormatter[UserMachineViewRow]]
+
+class ContextedFitlerJsonTests extends JsonFiltersTests with ContextedFitlerTestSuite[JsonFormatter[UserMachineViewRow]]
 
 class JsonFiltersRangeTests extends JsonFiltersTestsBase {
   def createFilter(data: FilterSetupData): FilterAPI[UserMachineViewRow, JsonFormatter[UserMachineViewRow]] =

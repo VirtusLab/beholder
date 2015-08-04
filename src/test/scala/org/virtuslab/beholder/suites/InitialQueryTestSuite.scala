@@ -7,19 +7,34 @@ import org.virtuslab.beholder.model.{ Machine, User }
 import org.virtuslab.beholder.views.FilterableViews
 import org.virtuslab.beholder.{ UserMachineViewRow, AppTest }
 import org.virtuslab.beholder.filters.{ MappableFilterAPI, FilterAPI }
+import org.virtuslab.unicorn.LongUnicornPlay
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 
-import scala.tools.nsc.doc.model.Entity
+trait ContextedFitlerTestSuite[Formatter] extends InitialQueryTestSuite[Formatter] {
+  self: AppTest =>
 
+  override def createData(implicit session: LongUnicornPlay.driver.simple.Session): InitialQueryFilterData =
+    new ContextedFitlerFilterData()
+
+  class ContextedFitlerFilterData(implicit session: Session) extends InitialQueryFilterData {
+    override lazy val filter: FilterAPI[UserMachineViewRow, Formatter] = createFilter(this)
+      .asInstanceOf[MappableFilterAPI[UserMachineViewRow, Formatter, _, FilterableViews.BaseView5[_, String, _, _, _, _]]]
+      .withContextInitialFilter[String](userMail => table => !(table.c1 === userMail))
+      .apply(newMail) //cos !== is not working)
+  }
+}
 /**
  * Author: Krzysztof Romanowski
  */
 trait InitialQueryTestSuite[Formatter] extends FiltersTestSuite[Formatter] {
   self: AppTest =>
+
+  def createData(implicit session: Session): InitialQueryFilterData = new InitialQueryFilterData()
+
   override protected def baseFilterTest[A](testImplementation: (BaseFilterData) => A): A =
     rollbackWithModel {
       implicit session: Session =>
-        testImplementation(new InitialQueryFilterData())
+        testImplementation(createData)
     }
 
   val newMail = "b@b.pl"
