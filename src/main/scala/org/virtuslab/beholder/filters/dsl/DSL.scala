@@ -1,11 +1,11 @@
 package org.virtuslab.beholder.filters.dsl
 
 import org.virtuslab.beholder.filters._
-import org.virtuslab.beholder.filters.json.{JsonFilterField, JsonFormatter}
+import org.virtuslab.beholder.filters.json.{ JsonFilterField, JsonFormatter }
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 
 import scala.language.experimental.macros
-import scala.language.{higherKinds, implicitConversions}
+import scala.language.{ higherKinds, implicitConversions }
 
 class DSL[FT <: FilterField] {
 

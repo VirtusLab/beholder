@@ -13,15 +13,15 @@ trait MappableFilterAPI[Entity, Formatter, FT, TableEntity] extends FilterAPI[En
 
   protected def globalInitialFilter(table: TableEntity): Column[Option[Boolean]]
 
-  protected def doFilter(data: FilterDefinition,
-                         initialFilter: TableEntity => Column[Option[Boolean]])
-                        (implicit session: Session): Seq[Entity]
+  protected def doFilter(
+    data: FilterDefinition,
+    initialFilter: TableEntity => Column[Option[Boolean]]
+  )(implicit session: Session): Seq[Entity]
 
-
-  protected def doFilterWithTotalEntitiesNumber(data: FilterDefinition,
-                                                initialFilter: TableEntity => Column[Option[Boolean]])
-                                               (implicit session: Session): FilterResult[Entity]
-
+  protected def doFilterWithTotalEntitiesNumber(
+    data: FilterDefinition,
+    initialFilter: TableEntity => Column[Option[Boolean]]
+  )(implicit session: Session): FilterResult[Entity]
 
   override final def filterWithTotalEntitiesNumber(data: FilterDefinition)(implicit session: Session): FilterResult[Entity] =
     doFilterWithTotalEntitiesNumber(data, globalInitialFilter)
@@ -29,18 +29,17 @@ trait MappableFilterAPI[Entity, Formatter, FT, TableEntity] extends FilterAPI[En
   override final def filter(data: FilterDefinition)(implicit session: Session): Seq[Entity] =
     doFilter(data, globalInitialFilter)
 
-
   private type ThisType = MappableFilterAPI[Entity, Formatter, FT, TableEntity]
 
-  private class MappedFilter[NE, NF](parent: ThisType)
-                                    (mappingFun: Entity => NE, foramtterFunc: ThisType => NF)
-    extends MappableFilterAPI[NE, NF, FT, TableEntity] {
+  private class MappedFilter[NE, NF](parent: ThisType)(mappingFun: Entity => NE, foramtterFunc: ThisType => NF)
+      extends MappableFilterAPI[NE, NF, FT, TableEntity] {
 
     override def columnsNames: Seq[String] = parent.columnsNames
 
-    override protected def doFilterWithTotalEntitiesNumber(data: FilterDefinition,
-                                                           initialFilter: (TableEntity) => Column[Option[Boolean]])
-                                                          (implicit session: Session): FilterResult[NE] = {
+    override protected def doFilterWithTotalEntitiesNumber(
+      data: FilterDefinition,
+      initialFilter: (TableEntity) => Column[Option[Boolean]]
+    )(implicit session: Session): FilterResult[NE] = {
       val res = parent.doFilterWithTotalEntitiesNumber(data, initialFilter)
       res.copy(content = res.content.map(mappingFun))
     }

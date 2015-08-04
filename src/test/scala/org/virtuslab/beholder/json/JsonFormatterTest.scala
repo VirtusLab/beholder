@@ -7,7 +7,7 @@ import org.virtuslab.beholder.filters.json.JsonFilterFields._
 import org.virtuslab.beholder.filters.json.{ JsonFormatter, JsonFilterFields, JsonFilters }
 import org.virtuslab.beholder.{ UserMachineViewRow, _ }
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
-import play.api.libs.json.{JsSuccess, JsArray, JsObject, JsString}
+import play.api.libs.json.{ JsSuccess, JsArray, JsObject, JsString }
 
 trait BaseJsonFormatterTest extends AppTest with UserMachinesView with ModelIncluded {
 

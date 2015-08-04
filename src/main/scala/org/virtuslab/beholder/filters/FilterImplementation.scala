@@ -29,7 +29,6 @@ abstract class FilterImplementation[E, DbE, T, FT <: FilterField, Formatter] ext
   /**
    * Empty data for filter representing empty filter (all fields in tuple (type M) are filled with Empty)
    */
-  //TODO
   protected def emptyFilterDataInner: Seq[Option[Any]] = columnsNames.map(_ => None)
 
   protected def columnsFilters(table: T, data: Seq[Option[Any]]): Seq[Column[Option[Boolean]]] = {
@@ -59,15 +58,15 @@ abstract class FilterImplementation[E, DbE, T, FT <: FilterField, Formatter] ext
     table
       .filter(filters(data.data, initialFilter))
       .sortBy {
-      inQueryTable =>
-        val columns = data.orderBy.map {
-          order =>
-            val column = columnByName(inQueryTable, order.column)
-            if (order.asc) column.asc else column.desc
-        }.toSeq.flatMap(_.columns)
-        val defaultColumns = defaultColumn(inQueryTable).asc.columns
-        new Ordered(columns ++ defaultColumns)
-    }
+        inQueryTable =>
+          val columns = data.orderBy.map {
+            order =>
+              val column = columnByName(inQueryTable, order.column)
+              if (order.asc) column.asc else column.desc
+          }.toSeq.flatMap(_.columns)
+          val defaultColumns = defaultColumn(inQueryTable).asc.columns
+          new Ordered(columns ++ defaultColumns)
+      }
   }
 
   private def takeAndSkip(data: FilterDefinition, filter: FilterQuery)(implicit session: Session): Seq[E] = {
@@ -77,18 +76,19 @@ abstract class FilterImplementation[E, DbE, T, FT <: FilterField, Formatter] ext
     afterSkip.to(TypedCollectionTypeConstructor.forArray).mapResult(mappingFunction).list
   }
 
-
   /**
    * filter and sort all entities with given data
    */
-  override protected def doFilter(data: FilterDefinition,
-                                  initialFilter: (T) => Column[Option[Boolean]])
-                                 (implicit session: Session): Seq[E] =
+  override protected def doFilter(
+    data: FilterDefinition,
+    initialFilter: (T) => Column[Option[Boolean]]
+  )(implicit session: Session): Seq[E] =
     takeAndSkip(data, createFilter(data, initialFilter))
 
-  override protected def doFilterWithTotalEntitiesNumber(data: FilterDefinition,
-                                                         initialFilter: (T) => Column[Option[Boolean]])
-                                                        (implicit session: Session): FilterResult[E] = {
+  override protected def doFilterWithTotalEntitiesNumber(
+    data: FilterDefinition,
+    initialFilter: (T) => Column[Option[Boolean]]
+  )(implicit session: Session): FilterResult[E] = {
     val filter = createFilter(data, initialFilter)
     FilterResult(takeAndSkip(data, filter), filter.length.run)
   }

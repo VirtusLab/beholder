@@ -3,10 +3,10 @@ package org.virtuslab.beholder.suites
 import java.sql.Date
 
 import org.joda.time.DateTime
-import org.virtuslab.beholder.model.{Machine, User}
+import org.virtuslab.beholder.model.{ Machine, User }
 import org.virtuslab.beholder.views.FilterableViews
-import org.virtuslab.beholder.{UserMachineViewRow, AppTest}
-import org.virtuslab.beholder.filters.{MappableFilterAPI, FilterAPI}
+import org.virtuslab.beholder.{ UserMachineViewRow, AppTest }
+import org.virtuslab.beholder.filters.{ MappableFilterAPI, FilterAPI }
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 
 import scala.tools.nsc.doc.model.Entity
@@ -28,8 +28,7 @@ trait InitialQueryTestSuite[Formatter] extends FiltersTestSuite[Formatter] {
     override lazy val filter: FilterAPI[UserMachineViewRow, Formatter] = createFilter(this)
       .asInstanceOf[MappableFilterAPI[UserMachineViewRow, Formatter, _, FilterableViews.BaseView5[_, String, _, _, _, _]]]
       .withInitialFilter(table =>
-      !(table.c1 === newMail)
-      ) //cos !== is not working
+        !(table.c1 === newMail)) //cos !== is not working
 
     val newUser = {
       val i = User(None, newMail, "Bala", "Bma'Kota")

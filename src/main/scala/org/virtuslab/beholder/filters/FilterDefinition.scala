@@ -17,10 +17,10 @@ object Order {
  * @param orderBy field by which ordering is done
  */
 case class FilterDefinition(
-                             take: Option[Int],
-                             skip: Option[Int],
-                             orderBy: Option[Order],
-                             data: Seq[Option[Any]]
-                             )
+  take: Option[Int],
+  skip: Option[Int],
+  orderBy: Option[Order],
+  data: Seq[Option[Any]]
+)
 
 case class FilterRange[T](from: Option[T], to: Option[T])

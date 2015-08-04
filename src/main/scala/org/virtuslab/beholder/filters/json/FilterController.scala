@@ -5,7 +5,7 @@ import org.virtuslab.unicorn.LongUnicornPlay.driver.simple.Session
 import play.api.libs.json.{ JsSuccess, JsResult, JsError, JsValue }
 import play.api.mvc._
 
-trait FilterControllerBase[Context, Entity <: Product] extends Controller {
+private[beholder] trait FilterControllerBase[Context, Entity <: Product] extends Controller {
   private[beholder] def formatter: JsonFormatter[Entity]
 
   private[beholder] def callFilter(context: Context, filterDefinition: FilterDefinition): FilterResult[Entity]

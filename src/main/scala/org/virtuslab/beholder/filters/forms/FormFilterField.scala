@@ -1,14 +1,14 @@
 package org.virtuslab.beholder.filters.forms
 
-import org.virtuslab.beholder.filters.{FilterRange, MappedFilterField}
+import org.virtuslab.beholder.filters.{ FilterRange, MappedFilterField }
 import org.virtuslab.beholder.utils.ILikeExtension._
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 import play.api.data.Forms._
 import play.api.data.format.Formatter
 import play.api.data.validation.Constraint
-import play.api.data.{FormError, Mapping}
+import play.api.data.{ FormError, Mapping }
 
-import scala.slick.ast.{BaseTypedType, TypedType}
+import scala.slick.ast.{ BaseTypedType, TypedType }
 
 abstract class FormFilterField[A: TypedType, B](mapping: Mapping[B]) extends MappedFilterField[A, B] {
 

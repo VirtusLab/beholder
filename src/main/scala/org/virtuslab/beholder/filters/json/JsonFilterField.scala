@@ -8,7 +8,7 @@ import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
-import scala.slick.ast.{BaseTypedType, TypedType}
+import scala.slick.ast.{ BaseTypedType, TypedType }
 
 trait JsonFilterField extends FilterField {
   def fieldTypeDefinition: JsValue
@@ -22,7 +22,7 @@ trait JsonFilterField extends FilterField {
   def writeValue(value: Any): JsValue
 }
 
-abstract class JsonFilterFieldImpl[A: TypedType, B] extends MappedFilterField[A, B] with JsonFilterField {
+private[beholder] abstract class JsonFilterFieldImpl[A: TypedType, B] extends MappedFilterField[A, B] with JsonFilterField {
   protected def filterFormat: Format[B]
 
   protected[json] def valueWrite: Writes[A]
@@ -34,7 +34,7 @@ abstract class JsonFilterFieldImpl[A: TypedType, B] extends MappedFilterField[A,
   final override def writeFilter(value: Any): JsValue = filterFormat.writes(value.asInstanceOf[B])
 }
 
-abstract class ImplicitlyJsonFilterFiled[A: TypedType: Writes, B: Format](dataTypeName: String)
+private[beholder] abstract class ImplicitlyJsonFilterFiled[A: TypedType: Writes, B: Format](dataTypeName: String)
     extends JsonFilterFieldImpl[A, B] {
   override def fieldTypeDefinition: JsValue = JsString(dataTypeName)
 
