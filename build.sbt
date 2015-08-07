@@ -79,5 +79,3 @@ ScoverageSbtPlugin.ScoverageKeys.coverageExcludedPackages := Seq(
   "org.virtuslab.beholder.views.FilterableViews.*",
   "org.virtuslab.beholder.views.FilterableViewsGenerateCode.BaseView[^5].*"
 ).mkString(";")
-
-Local.repository
