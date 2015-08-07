@@ -18,7 +18,7 @@ private[beholder] object FormFiltersGenerator extends App {
           |           T <: BaseView$nr[Entity,
           |             $aTypes]](table: TableQuery[T],
           |                       $fieldFilters):
-          |             TableFilterAPI[Entity, Formatter, T] = {
+          |             MappableFilterAPI[Entity, Formatter,FT, Entity] = {
           |
           |    new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
           |      override val formatter: Formatter = createFormatter(this)

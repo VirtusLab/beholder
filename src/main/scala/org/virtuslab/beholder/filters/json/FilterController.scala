@@ -5,7 +5,7 @@ import org.virtuslab.unicorn.LongUnicornPlay.driver.simple.Session
 import play.api.libs.json.{ JsSuccess, JsResult, JsError, JsValue }
 import play.api.mvc._
 
-trait FilterControllerBase[Context, Entity <: Product] extends Controller {
+private[beholder] trait FilterControllerBase[Context, Entity <: Product] extends Controller {
   private[beholder] def formatter: JsonFormatter[Entity]
 
   private[beholder] def callFilter(context: Context, filterDefinition: FilterDefinition): FilterResult[Entity]
@@ -42,7 +42,7 @@ abstract class FilterController[Entity <: Product](filter: FilterAPI[Entity, Jso
   override final private[beholder] def callFilter(session: Session, filterDefinition: FilterDefinition): FilterResult[Entity] =
     filter.filterWithTotalEntitiesNumber(filterDefinition)(session)
 
-  override final private[beholder] def formatter: JsonFormatter[Entity] = filter.formatter
+  override final private[beholder] def formatter: JsonFormatter[Entity] = filter.filterFormatter
 }
 
 abstract class ContextFilterController[Context, Entity <: Product](contextedFilter: ContextedFilterAPI[Context, Entity, JsonFormatter[Entity]])

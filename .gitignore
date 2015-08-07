@@ -15,3 +15,4 @@ project/plugins/project/
 # IDEA specific
 .idea/*
 .idea_modules/*
+.settings

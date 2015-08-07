@@ -4,9 +4,9 @@ import org.virtuslab.beholder.filters.{ FilterDefinition, FilterResult, Order }
 import play.api.data.validation.ValidationError
 import play.api.libs.json.{ JsObject, _ }
 
-class JsonFormatter[Entity <: Product](filterFields: Seq[JsonFilterField[_, _]], columnsNames: Seq[String], label: String => String) {
+class JsonFormatter[Entity <: Product](filterFields: Seq[JsonFilterField], columnsNames: Seq[String], label: String => String) {
 
-  private def jsonFieldDefinition(name: String, field: JsonFilterField[_, _]): JsObject = JsObject(Seq(
+  private def jsonFieldDefinition(name: String, field: JsonFilterField): JsObject = JsObject(Seq(
     "key" -> JsString(name),
     "label" -> JsString(label(name)),
     "type" -> field.fieldTypeDefinition
