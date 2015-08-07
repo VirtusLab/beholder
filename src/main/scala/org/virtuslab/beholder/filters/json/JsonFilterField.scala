@@ -149,7 +149,9 @@ object JsonFilterFields {
         "dataType" -> baseType.fieldTypeDefinition
       ))
 
-      override protected[json] def valueWrite: Writes[Option[T]] = implicitly
+      override protected[json] def valueWrite: Writes[Option[T]] = new Writes[Option[T]] {
+        override def writes(o: Option[T]): JsValue = o.map(baseType.valueWrite.writes).getOrElse(JsNull)
+      }
 
       override protected def filterFormat: Format[FilterRange[T]] = rangeFormat
     }
