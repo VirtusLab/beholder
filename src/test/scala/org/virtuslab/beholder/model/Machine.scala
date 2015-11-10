@@ -3,7 +3,7 @@ package org.virtuslab.beholder.model
 import java.sql.Date
 
 import org.virtuslab.unicorn.LongUnicornPlay._
-import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
+import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
 
 /** Id class for type-safe joins and queries. */
 case class MachineId(id: Long) extends AnyVal with BaseId
@@ -29,19 +29,18 @@ case class Machine(
   system: String,
   cores: Int,
   created: Date,
-  capacity: Option[BigDecimal]
-) extends WithId[MachineId]
+  capacity: Option[BigDecimal]) extends WithId[MachineId]
 
 /** Table definition for machines. */
 class Machines(tag: Tag) extends IdTable[MachineId, Machine](tag, "MACHINES") {
 
-  def url = column[String]("url", O.NotNull)
+  def url = column[String]("url")
 
-  def system = column[String]("system", O.NotNull)
+  def system = column[String]("system")
 
-  def cores = column[Int]("cores", O.NotNull)
+  def cores = column[Int]("cores")
 
-  def created = column[Date]("created", O.NotNull)
+  def created = column[Date]("created")
 
   def capacity = column[Option[BigDecimal]]("capacity")
 

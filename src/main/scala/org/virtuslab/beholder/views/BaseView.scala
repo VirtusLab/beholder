@@ -2,10 +2,14 @@ package org.virtuslab.beholder.views
 
 import org.virtuslab.unicorn.LongUnicornPlay._
 import org.virtuslab.unicorn.LongUnicornPlay.driver.DDL
-import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
+import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
+import slick.ast.TypedType
+
+import scala.concurrent.Await
+import scala.concurrent.duration._
 
 import scala.language.existentials
-import scala.slick.lifted.{ TableQuery, Tag }
+import slick.lifted.{ TableQuery, Tag }
 
 /**
  *
@@ -13,26 +17,26 @@ import scala.slick.lifted.{ TableQuery, Tag }
  * @tparam Id entity id type
  * @tparam Entity entity type
  */
-abstract class BaseView[Id, Entity](tag: Tag, val viewName: String) extends BaseTable[Entity](tag, viewName) {
+abstract class BaseView[Id: TypedType, Entity](tag: Tag, val viewName: String) extends BaseTable[Entity](tag, viewName) {
 
   /**
    *
    */
-  protected val columns: Seq[(String, this.type => Column[_])]
-  private lazy val columnsMap: Map[String, this.type => Column[_]] = columns.toMap
+  protected val columns: Seq[(String, this.type => Rep[_])]
+  private lazy val columnsMap: Map[String, this.type => Rep[_]] = columns.toMap
 
   final def columnsNames = columns.map(_._1)
 
   /**
    * find column by name
    */
-  def columnByName[A](name: String): Column[_] =
+  def columnByName(name: String): Rep[_] =
     columnsMap(name).apply(this)
 
   /**
    * column that is tread as view 'id' - it is use eg. for default sort
    */
-  def id: Column[Id]
+  def id: Rep[Id]
 
   /**
    * query that build this view
@@ -65,7 +69,7 @@ object BaseView {
     /**
      * util to print select query sql
      */
-    private def selectStatements(query: Query[_, _, Seq]): String = query.selectStatement
+    private def selectStatements(query: Query[_, _, Seq]): String = query.result.statements.mkString
 
   }
 

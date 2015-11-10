@@ -1,10 +1,10 @@
 package org.virtuslab.beholder.utils
 
 import scala.language.implicitConversions
-import scala.slick.ast.Library.SqlOperator
-import scala.slick.ast.ScalaBaseType.booleanType
-import scala.slick.ast._
-import scala.slick.lifted._
+import slick.ast.Library.SqlOperator
+import slick.ast.ScalaBaseType.booleanType
+import slick.ast._
+import slick.lifted._
 
 /**
  * companion object for ILikeExtension
@@ -21,11 +21,11 @@ object ILikeExtension {
    */
   def escape(text: String) = text.replace("%", "\\%").replace("_", "\\_")
 
-  implicit def iLikeExtension(c: Column[String]) = new ILikeExtension(c)
+  implicit def iLikeExtension(c: Rep[String]) = new ILikeExtension(c)
 
-  implicit def iLikeMappedExtension(c: Column[MappedTo[String]]) = new ILikeExtension(c)
+  implicit def iLikeMappedExtension(c: Rep[MappedTo[String]]) = new ILikeExtension(c)
 
-  implicit def iLikeOptionExtension(c: Column[Option[String]]) = new ILikeExtension(c)
+  implicit def iLikeOptionExtension(c: Rep[Option[String]]) = new ILikeExtension(c)
 
   implicit def seq2Ordered[T <% Ordered](t: Seq[T]) = new Ordered(t.flatMap(_.columns))
 }
@@ -33,9 +33,10 @@ object ILikeExtension {
 /**
  * Adds ilike operator to slick.
  */
-class ILikeExtension[B](val c: Column[B]) extends AnyVal with ExtensionMethods[String, B] {
+class ILikeExtension[B](val c: Rep[B]) extends AnyVal with ExtensionMethods[String, B] {
 
   def ilike[R](e: String)(implicit om: o#arg[String, B]#to[Boolean, R]) =
     om.column(ILikeExtension.ILIKE, n, LiteralNode(e))
 
+  override protected[this] implicit def b1Type: TypedType[String] = ???
 }

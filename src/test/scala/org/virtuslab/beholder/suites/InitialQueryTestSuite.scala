@@ -4,12 +4,11 @@ import java.sql.Date
 
 import org.joda.time.DateTime
 import org.virtuslab.beholder.model.{ Machine, User }
+import org.virtuslab.beholder.utils.Slick3Invoker
 import org.virtuslab.beholder.views.FilterableViews
 import org.virtuslab.beholder.{ UserMachineViewRow, AppTest }
 import org.virtuslab.beholder.filters.{ TableFilterAPI, FilterAPI }
-import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
-
-import scala.tools.nsc.doc.model.Entity
+import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
 
 /**
  * Author: Krzysztof Romanowski
@@ -33,15 +32,15 @@ trait InitialQueryTestSuite[Formatter] extends FiltersTestSuite[Formatter] {
 
     val newUser = {
       val i = User(None, newMail, "Bala", "Bma'Kota")
-      i.copy(id = Some(UsersRepository.save(i)))
+      i.copy(id = Some(usersRepository.save(i)))
     }
 
     val newMachine = {
       val m = Machine(None, "b.pl", "Windows", 6, new Date(DateTime.now().getMillis), Some(12))
-      m.copy(id = Some(MachineRepository.save(m)))
+      m.copy(id = Some(machineRepository.save(m)))
     }
 
-    userMachineQuery.insert(newUser.id.get -> newMachine.id.get)
+    Slick3Invoker.invokeAction(userMachineQuery += (newUser.id.get -> newMachine.id.get))
 
     override lazy val allFromDb: Seq[UserMachineViewRow] = {
       val seq: Seq[UserMachineViewRow] = view.list

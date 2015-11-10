@@ -1,10 +1,10 @@
 package org.virtuslab.beholder.views
 
-import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
+import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
+import slick.lifted.{ TupleShape, Shape }
 
 import scala.reflect.ClassTag
-import scala.slick.ast.TypedType
-import scala.slick.lifted.{ Column, TableQuery, Tag }
+import slick.ast.TypedType
 
 object FilterableViews extends FilterableViewsGenerateCode {
 
@@ -21,32 +21,31 @@ object FilterableViews extends FilterableViewsGenerateCode {
    * @tparam B sec field
    * @return table for this view
    */
-  def createView[T: ClassTag, E, A: TypedType, B: TypedType](
-    name: String,
-    apply: (A, B) => T,
-    unapply: T => Option[(A, B)],
-    baseQuery: Query[E, _, Seq]
-  )(mappings: E => ((String, Column[A]), (String, Column[B]))): TableQuery[BaseView2[T, A, B]] = {
-
-    var columnsNames = Seq[String]()
-
-    val preparedQuery: Query[_, T, Seq] = {
-      val mappedQuery = baseQuery.map {
-        t =>
-          mappings(t) match {
-            case ((name1, c1), (name2, c2)) =>
-              columnsNames = Seq(name1, name2)
-              (c1, c2) <> (Function.tupled(apply), unapply)
-          }
-      }
-
-      for {
-        a <- mappedQuery
-      } yield a
-    }
-    TableQuery.apply(tag => new BaseView2[T, A, B](tag, name, columnsNames, apply, unapply, preparedQuery))
-
-  }
+  //  def createView[T: ClassTag, E, A: TypedType, B: TypedType](
+  //    name: String,
+  //    apply: (A, B) => T,
+  //    unapply: T => Option[(A, B)],
+  //    baseQuery: Query[E, _, Seq])(mappings: E => ((String, Rep[A]), (String, Rep[B])))(implicit s1: Shape[_, Rep[A], A, _], s2: Shape[_, Rep[B], B, _]): TableQuery[BaseView2[T, A, B]] = {
+  //
+  //    var columnsNames = Seq[String]()
+  //
+  //    val preparedQuery: Query[_, T, Seq] = {
+  //      baseQuery.map {
+  //        t =>
+  //          mappings(t) match {
+  //            case ((name1, c1), (name2, c2)) =>
+  //              columnsNames = Seq(name1, name2)
+  //              implicit val tupleShape = new TupleShape(s1, s2)
+  //                .asInstanceOf[Shape[_ <: slick.lifted.FlatShapeLevel, (slick.lifted.Rep[A], slick.lifted.Rep[B]), (A, B), _]]
+  //              (c1, c2) <> (apply.tupled, unapply)
+  //
+  //            //              (c1, c2).<>(apply.tupled, unapply)(implicitly, tupleShape)
+  //          }
+  //      }
+  //    }
+  //    TableQuery.apply(tag => new BaseView2[T, A, B](tag, name, columnsNames, apply, unapply, preparedQuery))
+  //
+  //  }
 
   /**
    * Base view for view with 2 fields
@@ -65,18 +64,19 @@ object FilterableViews extends FilterableViewsGenerateCode {
       val columnNames: Seq[String],
       apply: (A, B) => T,
       unapply: T => Option[(A, B)],
-      val query: Query[_, T, Seq]
-  ) extends BaseView[A, T](tag, name) {
+      val query: Query[_, T, Seq])(implicit s1: Shape[_, Rep[A], A, _], s2: Shape[_, Rep[B], B, _]) extends BaseView[A, T](tag, name) {
     def c1 = column[A](columnNames(0))
 
     def c2 = column[B](columnNames(1))
 
     override def id = c1
 
-    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
+    override protected val columns: Seq[(String, this.type => Rep[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2)
     )
+
+    implicit val tupleShape = new TupleShape(s1, s2).asInstanceOf[Shape[_ <: slick.lifted.FlatShapeLevel, (slick.lifted.Rep[A], slick.lifted.Rep[B]), (A, B), _]]
 
     def * = (c1, c2) <> (apply.tupled, unapply)
   }

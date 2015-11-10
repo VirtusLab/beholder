@@ -1,105 +1,143 @@
 package org.virtuslab.beholder.views
 
-import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
+import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
+import slick.ast.TypedType
+import slick.lifted.{ TupleShape, Rep, TableQuery, Tag }
 
 import scala.reflect.ClassTag
-import scala.slick.ast.TypedType
-import scala.slick.lifted.{ Column, TableQuery, Tag }
 
 /**
  * Generated code for filterable views.
  */
 private[beholder] trait FilterableViewsGenerateCode {
-
-  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType](
-    name: String,
-    apply: (A1, A2, A3) => T,
-    unapply: T => Option[(A1, A2, A3)],
-    baseQuery: Query[E, _, Seq]
-  )(
-    mappings: E => ((String, Column[A1]), (String, Column[A2]), (String, Column[A3]))
-  ): TableQuery[BaseView3[T, A1, A2, A3]] = {
+  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType](name: String,
+    apply: (A1, A2) => T,
+    unapply: T => Option[(A1, A2)],
+    baseQuery: Query[E, _, Seq])(
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2])))(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _]): TableQuery[BaseView2[T, A1, A2]] = {
 
     var columnsNames = Seq[String]()
 
     val preparedQuery: Query[_, T, Seq] = {
-      val mappedQuery = baseQuery.map {
+      baseQuery.map {
+        t =>
+          mappings(t) match {
+            case ((name1, c1), (name2, c2)) =>
+              columnsNames = Seq(name1, name2)
+
+              implicit val tupleShape = new TupleShape(s1, s2)
+                .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2]), (A1, A2), _]]
+
+              (c1, c2) <> (apply.tupled, unapply)
+          }
+      }
+    }
+    TableQuery.apply(tag => new BaseView2[T, A1, A2](tag, name, columnsNames, apply, unapply, preparedQuery))
+
+  }
+
+  class BaseView2[T: ClassTag, A1: TypedType, A2: TypedType](tag: Tag,
+      name: String,
+      val columnNames: Seq[String],
+      apply: (A1, A2) => T,
+      unapply: T => Option[(A1, A2)],
+      val query: Query[_, T, Seq])(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _]) extends BaseView[A1, T](tag, name) {
+    def c1 = column[A1](columnNames(0))
+    def c2 = column[A2](columnNames(1))
+
+    override def id = c1
+
+    override protected val columns: Seq[(String, this.type => Rep[_])] = Seq(
+      columnNames(0) -> (_.c1),
+      columnNames(1) -> (_.c2))
+
+    implicit val tupleShape = new TupleShape(s1, s2)
+      .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2]), (A1, A2), _]]
+
+    def * = (c1, c2) <> (apply.tupled, unapply)
+  }
+
+  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType](name: String,
+    apply: (A1, A2, A3) => T,
+    unapply: T => Option[(A1, A2, A3)],
+    baseQuery: Query[E, _, Seq])(
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3])))(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _]): TableQuery[BaseView3[T, A1, A2, A3]] = {
+
+    var columnsNames = Seq[String]()
+
+    val preparedQuery: Query[_, T, Seq] = {
+      baseQuery.map {
         t =>
           mappings(t) match {
             case ((name1, c1), (name2, c2), (name3, c3)) =>
               columnsNames = Seq(name1, name2, name3)
+
+              implicit val tupleShape = new TupleShape(s1, s2, s3)
+                .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3]), (A1, A2, A3), _]]
+
               (c1, c2, c3) <> (apply.tupled, unapply)
           }
       }
-
-      for {
-        a <- mappedQuery
-      } yield a
     }
     TableQuery.apply(tag => new BaseView3[T, A1, A2, A3](tag, name, columnsNames, apply, unapply, preparedQuery))
 
   }
 
-  class BaseView3[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType](
-      tag: Tag,
+  class BaseView3[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType](tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3) => T,
       unapply: T => Option[(A1, A2, A3)],
-      val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq])(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
 
     override def id = c1
 
-    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
+    override protected val columns: Seq[(String, this.type => Rep[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
-      columnNames(2) -> (_.c3)
-    )
+      columnNames(2) -> (_.c3))
+
+    implicit val tupleShape = new TupleShape(s1, s2, s3)
+      .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3]), (A1, A2, A3), _]]
 
     def * = (c1, c2, c3) <> (apply.tupled, unapply)
   }
 
-  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType](
-    name: String,
+  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType](name: String,
     apply: (A1, A2, A3, A4) => T,
     unapply: T => Option[(A1, A2, A3, A4)],
-    baseQuery: Query[E, _, Seq]
-  )(
-    mappings: E => ((String, Column[A1]), (String, Column[A2]), (String, Column[A3]), (String, Column[A4]))
-  ): TableQuery[BaseView4[T, A1, A2, A3, A4]] = {
+    baseQuery: Query[E, _, Seq])(
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4])))(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _]): TableQuery[BaseView4[T, A1, A2, A3, A4]] = {
 
     var columnsNames = Seq[String]()
 
     val preparedQuery: Query[_, T, Seq] = {
-      val mappedQuery = baseQuery.map {
+      baseQuery.map {
         t =>
           mappings(t) match {
             case ((name1, c1), (name2, c2), (name3, c3), (name4, c4)) =>
               columnsNames = Seq(name1, name2, name3, name4)
+
+              implicit val tupleShape = new TupleShape(s1, s2, s3, s4)
+                .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4]), (A1, A2, A3, A4), _]]
+
               (c1, c2, c3, c4) <> (apply.tupled, unapply)
           }
       }
-
-      for {
-        a <- mappedQuery
-      } yield a
     }
     TableQuery.apply(tag => new BaseView4[T, A1, A2, A3, A4](tag, name, columnsNames, apply, unapply, preparedQuery))
 
   }
 
-  class BaseView4[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType](
-      tag: Tag,
+  class BaseView4[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType](tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4) => T,
       unapply: T => Option[(A1, A2, A3, A4)],
-      val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq])(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -107,53 +145,50 @@ private[beholder] trait FilterableViewsGenerateCode {
 
     override def id = c1
 
-    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
+    override protected val columns: Seq[(String, this.type => Rep[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
-      columnNames(3) -> (_.c4)
-    )
+      columnNames(3) -> (_.c4))
+
+    implicit val tupleShape = new TupleShape(s1, s2, s3, s4)
+      .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4]), (A1, A2, A3, A4), _]]
 
     def * = (c1, c2, c3, c4) <> (apply.tupled, unapply)
   }
 
-  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType](
-    name: String,
+  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType](name: String,
     apply: (A1, A2, A3, A4, A5) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5)],
-    baseQuery: Query[E, _, Seq]
-  )(
-    mappings: E => ((String, Column[A1]), (String, Column[A2]), (String, Column[A3]), (String, Column[A4]), (String, Column[A5]))
-  ): TableQuery[BaseView5[T, A1, A2, A3, A4, A5]] = {
+    baseQuery: Query[E, _, Seq])(
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5])))(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _]): TableQuery[BaseView5[T, A1, A2, A3, A4, A5]] = {
 
     var columnsNames = Seq[String]()
 
     val preparedQuery: Query[_, T, Seq] = {
-      val mappedQuery = baseQuery.map {
+      baseQuery.map {
         t =>
           mappings(t) match {
             case ((name1, c1), (name2, c2), (name3, c3), (name4, c4), (name5, c5)) =>
               columnsNames = Seq(name1, name2, name3, name4, name5)
+
+              implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5)
+                .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5]), (A1, A2, A3, A4, A5), _]]
+
               (c1, c2, c3, c4, c5) <> (apply.tupled, unapply)
           }
       }
-
-      for {
-        a <- mappedQuery
-      } yield a
     }
     TableQuery.apply(tag => new BaseView5[T, A1, A2, A3, A4, A5](tag, name, columnsNames, apply, unapply, preparedQuery))
 
   }
 
-  class BaseView5[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType](
-      tag: Tag,
+  class BaseView5[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType](tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5)],
-      val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq])(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -162,54 +197,51 @@ private[beholder] trait FilterableViewsGenerateCode {
 
     override def id = c1
 
-    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
+    override protected val columns: Seq[(String, this.type => Rep[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
       columnNames(3) -> (_.c4),
-      columnNames(4) -> (_.c5)
-    )
+      columnNames(4) -> (_.c5))
+
+    implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5)
+      .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5]), (A1, A2, A3, A4, A5), _]]
 
     def * = (c1, c2, c3, c4, c5) <> (apply.tupled, unapply)
   }
 
-  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType](
-    name: String,
+  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType](name: String,
     apply: (A1, A2, A3, A4, A5, A6) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6)],
-    baseQuery: Query[E, _, Seq]
-  )(
-    mappings: E => ((String, Column[A1]), (String, Column[A2]), (String, Column[A3]), (String, Column[A4]), (String, Column[A5]), (String, Column[A6]))
-  ): TableQuery[BaseView6[T, A1, A2, A3, A4, A5, A6]] = {
+    baseQuery: Query[E, _, Seq])(
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6])))(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _]): TableQuery[BaseView6[T, A1, A2, A3, A4, A5, A6]] = {
 
     var columnsNames = Seq[String]()
 
     val preparedQuery: Query[_, T, Seq] = {
-      val mappedQuery = baseQuery.map {
+      baseQuery.map {
         t =>
           mappings(t) match {
             case ((name1, c1), (name2, c2), (name3, c3), (name4, c4), (name5, c5), (name6, c6)) =>
               columnsNames = Seq(name1, name2, name3, name4, name5, name6)
+
+              implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6)
+                .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6]), (A1, A2, A3, A4, A5, A6), _]]
+
               (c1, c2, c3, c4, c5, c6) <> (apply.tupled, unapply)
           }
       }
-
-      for {
-        a <- mappedQuery
-      } yield a
     }
     TableQuery.apply(tag => new BaseView6[T, A1, A2, A3, A4, A5, A6](tag, name, columnsNames, apply, unapply, preparedQuery))
 
   }
 
-  class BaseView6[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType](
-      tag: Tag,
+  class BaseView6[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType](tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6)],
-      val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq])(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -219,55 +251,52 @@ private[beholder] trait FilterableViewsGenerateCode {
 
     override def id = c1
 
-    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
+    override protected val columns: Seq[(String, this.type => Rep[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
       columnNames(3) -> (_.c4),
       columnNames(4) -> (_.c5),
-      columnNames(5) -> (_.c6)
-    )
+      columnNames(5) -> (_.c6))
+
+    implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6)
+      .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6]), (A1, A2, A3, A4, A5, A6), _]]
 
     def * = (c1, c2, c3, c4, c5, c6) <> (apply.tupled, unapply)
   }
 
-  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType](
-    name: String,
+  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType](name: String,
     apply: (A1, A2, A3, A4, A5, A6, A7) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7)],
-    baseQuery: Query[E, _, Seq]
-  )(
-    mappings: E => ((String, Column[A1]), (String, Column[A2]), (String, Column[A3]), (String, Column[A4]), (String, Column[A5]), (String, Column[A6]), (String, Column[A7]))
-  ): TableQuery[BaseView7[T, A1, A2, A3, A4, A5, A6, A7]] = {
+    baseQuery: Query[E, _, Seq])(
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7])))(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _]): TableQuery[BaseView7[T, A1, A2, A3, A4, A5, A6, A7]] = {
 
     var columnsNames = Seq[String]()
 
     val preparedQuery: Query[_, T, Seq] = {
-      val mappedQuery = baseQuery.map {
+      baseQuery.map {
         t =>
           mappings(t) match {
             case ((name1, c1), (name2, c2), (name3, c3), (name4, c4), (name5, c5), (name6, c6), (name7, c7)) =>
               columnsNames = Seq(name1, name2, name3, name4, name5, name6, name7)
+
+              implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7)
+                .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7]), (A1, A2, A3, A4, A5, A6, A7), _]]
+
               (c1, c2, c3, c4, c5, c6, c7) <> (apply.tupled, unapply)
           }
       }
-
-      for {
-        a <- mappedQuery
-      } yield a
     }
     TableQuery.apply(tag => new BaseView7[T, A1, A2, A3, A4, A5, A6, A7](tag, name, columnsNames, apply, unapply, preparedQuery))
 
   }
 
-  class BaseView7[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType](
-      tag: Tag,
+  class BaseView7[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType](tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7)],
-      val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq])(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -278,56 +307,53 @@ private[beholder] trait FilterableViewsGenerateCode {
 
     override def id = c1
 
-    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
+    override protected val columns: Seq[(String, this.type => Rep[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
       columnNames(3) -> (_.c4),
       columnNames(4) -> (_.c5),
       columnNames(5) -> (_.c6),
-      columnNames(6) -> (_.c7)
-    )
+      columnNames(6) -> (_.c7))
+
+    implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7)
+      .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7]), (A1, A2, A3, A4, A5, A6, A7), _]]
 
     def * = (c1, c2, c3, c4, c5, c6, c7) <> (apply.tupled, unapply)
   }
 
-  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType](
-    name: String,
+  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType](name: String,
     apply: (A1, A2, A3, A4, A5, A6, A7, A8) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8)],
-    baseQuery: Query[E, _, Seq]
-  )(
-    mappings: E => ((String, Column[A1]), (String, Column[A2]), (String, Column[A3]), (String, Column[A4]), (String, Column[A5]), (String, Column[A6]), (String, Column[A7]), (String, Column[A8]))
-  ): TableQuery[BaseView8[T, A1, A2, A3, A4, A5, A6, A7, A8]] = {
+    baseQuery: Query[E, _, Seq])(
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8])))(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _]): TableQuery[BaseView8[T, A1, A2, A3, A4, A5, A6, A7, A8]] = {
 
     var columnsNames = Seq[String]()
 
     val preparedQuery: Query[_, T, Seq] = {
-      val mappedQuery = baseQuery.map {
+      baseQuery.map {
         t =>
           mappings(t) match {
             case ((name1, c1), (name2, c2), (name3, c3), (name4, c4), (name5, c5), (name6, c6), (name7, c7), (name8, c8)) =>
               columnsNames = Seq(name1, name2, name3, name4, name5, name6, name7, name8)
+
+              implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8)
+                .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8]), (A1, A2, A3, A4, A5, A6, A7, A8), _]]
+
               (c1, c2, c3, c4, c5, c6, c7, c8) <> (apply.tupled, unapply)
           }
       }
-
-      for {
-        a <- mappedQuery
-      } yield a
     }
     TableQuery.apply(tag => new BaseView8[T, A1, A2, A3, A4, A5, A6, A7, A8](tag, name, columnsNames, apply, unapply, preparedQuery))
 
   }
 
-  class BaseView8[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType](
-      tag: Tag,
+  class BaseView8[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType](tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8)],
-      val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq])(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -339,7 +365,7 @@ private[beholder] trait FilterableViewsGenerateCode {
 
     override def id = c1
 
-    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
+    override protected val columns: Seq[(String, this.type => Rep[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
@@ -347,49 +373,46 @@ private[beholder] trait FilterableViewsGenerateCode {
       columnNames(4) -> (_.c5),
       columnNames(5) -> (_.c6),
       columnNames(6) -> (_.c7),
-      columnNames(7) -> (_.c8)
-    )
+      columnNames(7) -> (_.c8))
+
+    implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8)
+      .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8]), (A1, A2, A3, A4, A5, A6, A7, A8), _]]
 
     def * = (c1, c2, c3, c4, c5, c6, c7, c8) <> (apply.tupled, unapply)
   }
 
-  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType](
-    name: String,
+  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType](name: String,
     apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9)],
-    baseQuery: Query[E, _, Seq]
-  )(
-    mappings: E => ((String, Column[A1]), (String, Column[A2]), (String, Column[A3]), (String, Column[A4]), (String, Column[A5]), (String, Column[A6]), (String, Column[A7]), (String, Column[A8]), (String, Column[A9]))
-  ): TableQuery[BaseView9[T, A1, A2, A3, A4, A5, A6, A7, A8, A9]] = {
+    baseQuery: Query[E, _, Seq])(
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9])))(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _]): TableQuery[BaseView9[T, A1, A2, A3, A4, A5, A6, A7, A8, A9]] = {
 
     var columnsNames = Seq[String]()
 
     val preparedQuery: Query[_, T, Seq] = {
-      val mappedQuery = baseQuery.map {
+      baseQuery.map {
         t =>
           mappings(t) match {
             case ((name1, c1), (name2, c2), (name3, c3), (name4, c4), (name5, c5), (name6, c6), (name7, c7), (name8, c8), (name9, c9)) =>
               columnsNames = Seq(name1, name2, name3, name4, name5, name6, name7, name8, name9)
+
+              implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9)
+                .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9]), (A1, A2, A3, A4, A5, A6, A7, A8, A9), _]]
+
               (c1, c2, c3, c4, c5, c6, c7, c8, c9) <> (apply.tupled, unapply)
           }
       }
-
-      for {
-        a <- mappedQuery
-      } yield a
     }
     TableQuery.apply(tag => new BaseView9[T, A1, A2, A3, A4, A5, A6, A7, A8, A9](tag, name, columnsNames, apply, unapply, preparedQuery))
 
   }
 
-  class BaseView9[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType](
-      tag: Tag,
+  class BaseView9[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType](tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9)],
-      val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq])(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -402,7 +425,7 @@ private[beholder] trait FilterableViewsGenerateCode {
 
     override def id = c1
 
-    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
+    override protected val columns: Seq[(String, this.type => Rep[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
@@ -411,49 +434,46 @@ private[beholder] trait FilterableViewsGenerateCode {
       columnNames(5) -> (_.c6),
       columnNames(6) -> (_.c7),
       columnNames(7) -> (_.c8),
-      columnNames(8) -> (_.c9)
-    )
+      columnNames(8) -> (_.c9))
+
+    implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9)
+      .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9]), (A1, A2, A3, A4, A5, A6, A7, A8, A9), _]]
 
     def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9) <> (apply.tupled, unapply)
   }
 
-  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType](
-    name: String,
+  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType](name: String,
     apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10)],
-    baseQuery: Query[E, _, Seq]
-  )(
-    mappings: E => ((String, Column[A1]), (String, Column[A2]), (String, Column[A3]), (String, Column[A4]), (String, Column[A5]), (String, Column[A6]), (String, Column[A7]), (String, Column[A8]), (String, Column[A9]), (String, Column[A10]))
-  ): TableQuery[BaseView10[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10]] = {
+    baseQuery: Query[E, _, Seq])(
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10])))(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _]): TableQuery[BaseView10[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10]] = {
 
     var columnsNames = Seq[String]()
 
     val preparedQuery: Query[_, T, Seq] = {
-      val mappedQuery = baseQuery.map {
+      baseQuery.map {
         t =>
           mappings(t) match {
             case ((name1, c1), (name2, c2), (name3, c3), (name4, c4), (name5, c5), (name6, c6), (name7, c7), (name8, c8), (name9, c9), (name10, c10)) =>
               columnsNames = Seq(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10)
+
+              implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10)
+                .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10), _]]
+
               (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10) <> (apply.tupled, unapply)
           }
       }
-
-      for {
-        a <- mappedQuery
-      } yield a
     }
     TableQuery.apply(tag => new BaseView10[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10](tag, name, columnsNames, apply, unapply, preparedQuery))
 
   }
 
-  class BaseView10[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType](
-      tag: Tag,
+  class BaseView10[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType](tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10)],
-      val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq])(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -467,7 +487,7 @@ private[beholder] trait FilterableViewsGenerateCode {
 
     override def id = c1
 
-    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
+    override protected val columns: Seq[(String, this.type => Rep[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
@@ -477,49 +497,46 @@ private[beholder] trait FilterableViewsGenerateCode {
       columnNames(6) -> (_.c7),
       columnNames(7) -> (_.c8),
       columnNames(8) -> (_.c9),
-      columnNames(9) -> (_.c10)
-    )
+      columnNames(9) -> (_.c10))
+
+    implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10)
+      .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10), _]]
 
     def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10) <> (apply.tupled, unapply)
   }
 
-  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType](
-    name: String,
+  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType](name: String,
     apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11)],
-    baseQuery: Query[E, _, Seq]
-  )(
-    mappings: E => ((String, Column[A1]), (String, Column[A2]), (String, Column[A3]), (String, Column[A4]), (String, Column[A5]), (String, Column[A6]), (String, Column[A7]), (String, Column[A8]), (String, Column[A9]), (String, Column[A10]), (String, Column[A11]))
-  ): TableQuery[BaseView11[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11]] = {
+    baseQuery: Query[E, _, Seq])(
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11])))(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _], s11: Shape[_, Rep[A11], A11, _]): TableQuery[BaseView11[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11]] = {
 
     var columnsNames = Seq[String]()
 
     val preparedQuery: Query[_, T, Seq] = {
-      val mappedQuery = baseQuery.map {
+      baseQuery.map {
         t =>
           mappings(t) match {
             case ((name1, c1), (name2, c2), (name3, c3), (name4, c4), (name5, c5), (name6, c6), (name7, c7), (name8, c8), (name9, c9), (name10, c10), (name11, c11)) =>
               columnsNames = Seq(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10, name11)
+
+              implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11)
+                .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10], Rep[A11]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11), _]]
+
               (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11) <> (apply.tupled, unapply)
           }
       }
-
-      for {
-        a <- mappedQuery
-      } yield a
     }
     TableQuery.apply(tag => new BaseView11[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11](tag, name, columnsNames, apply, unapply, preparedQuery))
 
   }
 
-  class BaseView11[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType](
-      tag: Tag,
+  class BaseView11[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType](tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11)],
-      val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq])(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _], s11: Shape[_, Rep[A11], A11, _]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -534,7 +551,7 @@ private[beholder] trait FilterableViewsGenerateCode {
 
     override def id = c1
 
-    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
+    override protected val columns: Seq[(String, this.type => Rep[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
@@ -545,49 +562,46 @@ private[beholder] trait FilterableViewsGenerateCode {
       columnNames(7) -> (_.c8),
       columnNames(8) -> (_.c9),
       columnNames(9) -> (_.c10),
-      columnNames(10) -> (_.c11)
-    )
+      columnNames(10) -> (_.c11))
+
+    implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11)
+      .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10], Rep[A11]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11), _]]
 
     def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11) <> (apply.tupled, unapply)
   }
 
-  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType](
-    name: String,
+  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType](name: String,
     apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12)],
-    baseQuery: Query[E, _, Seq]
-  )(
-    mappings: E => ((String, Column[A1]), (String, Column[A2]), (String, Column[A3]), (String, Column[A4]), (String, Column[A5]), (String, Column[A6]), (String, Column[A7]), (String, Column[A8]), (String, Column[A9]), (String, Column[A10]), (String, Column[A11]), (String, Column[A12]))
-  ): TableQuery[BaseView12[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12]] = {
+    baseQuery: Query[E, _, Seq])(
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11]), (String, Rep[A12])))(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _], s11: Shape[_, Rep[A11], A11, _], s12: Shape[_, Rep[A12], A12, _]): TableQuery[BaseView12[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12]] = {
 
     var columnsNames = Seq[String]()
 
     val preparedQuery: Query[_, T, Seq] = {
-      val mappedQuery = baseQuery.map {
+      baseQuery.map {
         t =>
           mappings(t) match {
             case ((name1, c1), (name2, c2), (name3, c3), (name4, c4), (name5, c5), (name6, c6), (name7, c7), (name8, c8), (name9, c9), (name10, c10), (name11, c11), (name12, c12)) =>
               columnsNames = Seq(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10, name11, name12)
+
+              implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12)
+                .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10], Rep[A11], Rep[A12]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12), _]]
+
               (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12) <> (apply.tupled, unapply)
           }
       }
-
-      for {
-        a <- mappedQuery
-      } yield a
     }
     TableQuery.apply(tag => new BaseView12[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12](tag, name, columnsNames, apply, unapply, preparedQuery))
 
   }
 
-  class BaseView12[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType](
-      tag: Tag,
+  class BaseView12[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType](tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12)],
-      val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq])(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _], s11: Shape[_, Rep[A11], A11, _], s12: Shape[_, Rep[A12], A12, _]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -603,7 +617,7 @@ private[beholder] trait FilterableViewsGenerateCode {
 
     override def id = c1
 
-    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
+    override protected val columns: Seq[(String, this.type => Rep[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
@@ -615,49 +629,46 @@ private[beholder] trait FilterableViewsGenerateCode {
       columnNames(8) -> (_.c9),
       columnNames(9) -> (_.c10),
       columnNames(10) -> (_.c11),
-      columnNames(11) -> (_.c12)
-    )
+      columnNames(11) -> (_.c12))
+
+    implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12)
+      .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10], Rep[A11], Rep[A12]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12), _]]
 
     def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12) <> (apply.tupled, unapply)
   }
 
-  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType](
-    name: String,
+  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType](name: String,
     apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13)],
-    baseQuery: Query[E, _, Seq]
-  )(
-    mappings: E => ((String, Column[A1]), (String, Column[A2]), (String, Column[A3]), (String, Column[A4]), (String, Column[A5]), (String, Column[A6]), (String, Column[A7]), (String, Column[A8]), (String, Column[A9]), (String, Column[A10]), (String, Column[A11]), (String, Column[A12]), (String, Column[A13]))
-  ): TableQuery[BaseView13[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13]] = {
+    baseQuery: Query[E, _, Seq])(
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11]), (String, Rep[A12]), (String, Rep[A13])))(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _], s11: Shape[_, Rep[A11], A11, _], s12: Shape[_, Rep[A12], A12, _], s13: Shape[_, Rep[A13], A13, _]): TableQuery[BaseView13[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13]] = {
 
     var columnsNames = Seq[String]()
 
     val preparedQuery: Query[_, T, Seq] = {
-      val mappedQuery = baseQuery.map {
+      baseQuery.map {
         t =>
           mappings(t) match {
             case ((name1, c1), (name2, c2), (name3, c3), (name4, c4), (name5, c5), (name6, c6), (name7, c7), (name8, c8), (name9, c9), (name10, c10), (name11, c11), (name12, c12), (name13, c13)) =>
               columnsNames = Seq(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10, name11, name12, name13)
+
+              implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13)
+                .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10], Rep[A11], Rep[A12], Rep[A13]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13), _]]
+
               (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13) <> (apply.tupled, unapply)
           }
       }
-
-      for {
-        a <- mappedQuery
-      } yield a
     }
     TableQuery.apply(tag => new BaseView13[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13](tag, name, columnsNames, apply, unapply, preparedQuery))
 
   }
 
-  class BaseView13[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType](
-      tag: Tag,
+  class BaseView13[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType](tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13)],
-      val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq])(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _], s11: Shape[_, Rep[A11], A11, _], s12: Shape[_, Rep[A12], A12, _], s13: Shape[_, Rep[A13], A13, _]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -674,7 +685,7 @@ private[beholder] trait FilterableViewsGenerateCode {
 
     override def id = c1
 
-    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
+    override protected val columns: Seq[(String, this.type => Rep[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
@@ -687,49 +698,46 @@ private[beholder] trait FilterableViewsGenerateCode {
       columnNames(9) -> (_.c10),
       columnNames(10) -> (_.c11),
       columnNames(11) -> (_.c12),
-      columnNames(12) -> (_.c13)
-    )
+      columnNames(12) -> (_.c13))
+
+    implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13)
+      .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10], Rep[A11], Rep[A12], Rep[A13]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13), _]]
 
     def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13) <> (apply.tupled, unapply)
   }
 
-  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType](
-    name: String,
+  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType](name: String,
     apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14)],
-    baseQuery: Query[E, _, Seq]
-  )(
-    mappings: E => ((String, Column[A1]), (String, Column[A2]), (String, Column[A3]), (String, Column[A4]), (String, Column[A5]), (String, Column[A6]), (String, Column[A7]), (String, Column[A8]), (String, Column[A9]), (String, Column[A10]), (String, Column[A11]), (String, Column[A12]), (String, Column[A13]), (String, Column[A14]))
-  ): TableQuery[BaseView14[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14]] = {
+    baseQuery: Query[E, _, Seq])(
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11]), (String, Rep[A12]), (String, Rep[A13]), (String, Rep[A14])))(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _], s11: Shape[_, Rep[A11], A11, _], s12: Shape[_, Rep[A12], A12, _], s13: Shape[_, Rep[A13], A13, _], s14: Shape[_, Rep[A14], A14, _]): TableQuery[BaseView14[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14]] = {
 
     var columnsNames = Seq[String]()
 
     val preparedQuery: Query[_, T, Seq] = {
-      val mappedQuery = baseQuery.map {
+      baseQuery.map {
         t =>
           mappings(t) match {
             case ((name1, c1), (name2, c2), (name3, c3), (name4, c4), (name5, c5), (name6, c6), (name7, c7), (name8, c8), (name9, c9), (name10, c10), (name11, c11), (name12, c12), (name13, c13), (name14, c14)) =>
               columnsNames = Seq(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10, name11, name12, name13, name14)
+
+              implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14)
+                .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10], Rep[A11], Rep[A12], Rep[A13], Rep[A14]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14), _]]
+
               (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14) <> (apply.tupled, unapply)
           }
       }
-
-      for {
-        a <- mappedQuery
-      } yield a
     }
     TableQuery.apply(tag => new BaseView14[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14](tag, name, columnsNames, apply, unapply, preparedQuery))
 
   }
 
-  class BaseView14[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType](
-      tag: Tag,
+  class BaseView14[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType](tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14)],
-      val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq])(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _], s11: Shape[_, Rep[A11], A11, _], s12: Shape[_, Rep[A12], A12, _], s13: Shape[_, Rep[A13], A13, _], s14: Shape[_, Rep[A14], A14, _]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -747,7 +755,7 @@ private[beholder] trait FilterableViewsGenerateCode {
 
     override def id = c1
 
-    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
+    override protected val columns: Seq[(String, this.type => Rep[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
@@ -761,49 +769,46 @@ private[beholder] trait FilterableViewsGenerateCode {
       columnNames(10) -> (_.c11),
       columnNames(11) -> (_.c12),
       columnNames(12) -> (_.c13),
-      columnNames(13) -> (_.c14)
-    )
+      columnNames(13) -> (_.c14))
+
+    implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14)
+      .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10], Rep[A11], Rep[A12], Rep[A13], Rep[A14]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14), _]]
 
     def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14) <> (apply.tupled, unapply)
   }
 
-  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType](
-    name: String,
+  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType](name: String,
     apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15)],
-    baseQuery: Query[E, _, Seq]
-  )(
-    mappings: E => ((String, Column[A1]), (String, Column[A2]), (String, Column[A3]), (String, Column[A4]), (String, Column[A5]), (String, Column[A6]), (String, Column[A7]), (String, Column[A8]), (String, Column[A9]), (String, Column[A10]), (String, Column[A11]), (String, Column[A12]), (String, Column[A13]), (String, Column[A14]), (String, Column[A15]))
-  ): TableQuery[BaseView15[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15]] = {
+    baseQuery: Query[E, _, Seq])(
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11]), (String, Rep[A12]), (String, Rep[A13]), (String, Rep[A14]), (String, Rep[A15])))(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _], s11: Shape[_, Rep[A11], A11, _], s12: Shape[_, Rep[A12], A12, _], s13: Shape[_, Rep[A13], A13, _], s14: Shape[_, Rep[A14], A14, _], s15: Shape[_, Rep[A15], A15, _]): TableQuery[BaseView15[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15]] = {
 
     var columnsNames = Seq[String]()
 
     val preparedQuery: Query[_, T, Seq] = {
-      val mappedQuery = baseQuery.map {
+      baseQuery.map {
         t =>
           mappings(t) match {
             case ((name1, c1), (name2, c2), (name3, c3), (name4, c4), (name5, c5), (name6, c6), (name7, c7), (name8, c8), (name9, c9), (name10, c10), (name11, c11), (name12, c12), (name13, c13), (name14, c14), (name15, c15)) =>
               columnsNames = Seq(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10, name11, name12, name13, name14, name15)
+
+              implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15)
+                .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10], Rep[A11], Rep[A12], Rep[A13], Rep[A14], Rep[A15]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15), _]]
+
               (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15) <> (apply.tupled, unapply)
           }
       }
-
-      for {
-        a <- mappedQuery
-      } yield a
     }
     TableQuery.apply(tag => new BaseView15[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15](tag, name, columnsNames, apply, unapply, preparedQuery))
 
   }
 
-  class BaseView15[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType](
-      tag: Tag,
+  class BaseView15[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType](tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15)],
-      val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq])(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _], s11: Shape[_, Rep[A11], A11, _], s12: Shape[_, Rep[A12], A12, _], s13: Shape[_, Rep[A13], A13, _], s14: Shape[_, Rep[A14], A14, _], s15: Shape[_, Rep[A15], A15, _]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -822,7 +827,7 @@ private[beholder] trait FilterableViewsGenerateCode {
 
     override def id = c1
 
-    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
+    override protected val columns: Seq[(String, this.type => Rep[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
@@ -837,49 +842,46 @@ private[beholder] trait FilterableViewsGenerateCode {
       columnNames(11) -> (_.c12),
       columnNames(12) -> (_.c13),
       columnNames(13) -> (_.c14),
-      columnNames(14) -> (_.c15)
-    )
+      columnNames(14) -> (_.c15))
+
+    implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15)
+      .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10], Rep[A11], Rep[A12], Rep[A13], Rep[A14], Rep[A15]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15), _]]
 
     def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15) <> (apply.tupled, unapply)
   }
 
-  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType](
-    name: String,
+  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType](name: String,
     apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16)],
-    baseQuery: Query[E, _, Seq]
-  )(
-    mappings: E => ((String, Column[A1]), (String, Column[A2]), (String, Column[A3]), (String, Column[A4]), (String, Column[A5]), (String, Column[A6]), (String, Column[A7]), (String, Column[A8]), (String, Column[A9]), (String, Column[A10]), (String, Column[A11]), (String, Column[A12]), (String, Column[A13]), (String, Column[A14]), (String, Column[A15]), (String, Column[A16]))
-  ): TableQuery[BaseView16[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16]] = {
+    baseQuery: Query[E, _, Seq])(
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11]), (String, Rep[A12]), (String, Rep[A13]), (String, Rep[A14]), (String, Rep[A15]), (String, Rep[A16])))(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _], s11: Shape[_, Rep[A11], A11, _], s12: Shape[_, Rep[A12], A12, _], s13: Shape[_, Rep[A13], A13, _], s14: Shape[_, Rep[A14], A14, _], s15: Shape[_, Rep[A15], A15, _], s16: Shape[_, Rep[A16], A16, _]): TableQuery[BaseView16[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16]] = {
 
     var columnsNames = Seq[String]()
 
     val preparedQuery: Query[_, T, Seq] = {
-      val mappedQuery = baseQuery.map {
+      baseQuery.map {
         t =>
           mappings(t) match {
             case ((name1, c1), (name2, c2), (name3, c3), (name4, c4), (name5, c5), (name6, c6), (name7, c7), (name8, c8), (name9, c9), (name10, c10), (name11, c11), (name12, c12), (name13, c13), (name14, c14), (name15, c15), (name16, c16)) =>
               columnsNames = Seq(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10, name11, name12, name13, name14, name15, name16)
+
+              implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16)
+                .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10], Rep[A11], Rep[A12], Rep[A13], Rep[A14], Rep[A15], Rep[A16]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16), _]]
+
               (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16) <> (apply.tupled, unapply)
           }
       }
-
-      for {
-        a <- mappedQuery
-      } yield a
     }
     TableQuery.apply(tag => new BaseView16[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16](tag, name, columnsNames, apply, unapply, preparedQuery))
 
   }
 
-  class BaseView16[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType](
-      tag: Tag,
+  class BaseView16[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType](tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16)],
-      val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq])(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _], s11: Shape[_, Rep[A11], A11, _], s12: Shape[_, Rep[A12], A12, _], s13: Shape[_, Rep[A13], A13, _], s14: Shape[_, Rep[A14], A14, _], s15: Shape[_, Rep[A15], A15, _], s16: Shape[_, Rep[A16], A16, _]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -899,7 +901,7 @@ private[beholder] trait FilterableViewsGenerateCode {
 
     override def id = c1
 
-    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
+    override protected val columns: Seq[(String, this.type => Rep[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
@@ -915,49 +917,46 @@ private[beholder] trait FilterableViewsGenerateCode {
       columnNames(12) -> (_.c13),
       columnNames(13) -> (_.c14),
       columnNames(14) -> (_.c15),
-      columnNames(15) -> (_.c16)
-    )
+      columnNames(15) -> (_.c16))
+
+    implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16)
+      .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10], Rep[A11], Rep[A12], Rep[A13], Rep[A14], Rep[A15], Rep[A16]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16), _]]
 
     def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16) <> (apply.tupled, unapply)
   }
 
-  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType](
-    name: String,
+  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType](name: String,
     apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17)],
-    baseQuery: Query[E, _, Seq]
-  )(
-    mappings: E => ((String, Column[A1]), (String, Column[A2]), (String, Column[A3]), (String, Column[A4]), (String, Column[A5]), (String, Column[A6]), (String, Column[A7]), (String, Column[A8]), (String, Column[A9]), (String, Column[A10]), (String, Column[A11]), (String, Column[A12]), (String, Column[A13]), (String, Column[A14]), (String, Column[A15]), (String, Column[A16]), (String, Column[A17]))
-  ): TableQuery[BaseView17[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17]] = {
+    baseQuery: Query[E, _, Seq])(
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11]), (String, Rep[A12]), (String, Rep[A13]), (String, Rep[A14]), (String, Rep[A15]), (String, Rep[A16]), (String, Rep[A17])))(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _], s11: Shape[_, Rep[A11], A11, _], s12: Shape[_, Rep[A12], A12, _], s13: Shape[_, Rep[A13], A13, _], s14: Shape[_, Rep[A14], A14, _], s15: Shape[_, Rep[A15], A15, _], s16: Shape[_, Rep[A16], A16, _], s17: Shape[_, Rep[A17], A17, _]): TableQuery[BaseView17[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17]] = {
 
     var columnsNames = Seq[String]()
 
     val preparedQuery: Query[_, T, Seq] = {
-      val mappedQuery = baseQuery.map {
+      baseQuery.map {
         t =>
           mappings(t) match {
             case ((name1, c1), (name2, c2), (name3, c3), (name4, c4), (name5, c5), (name6, c6), (name7, c7), (name8, c8), (name9, c9), (name10, c10), (name11, c11), (name12, c12), (name13, c13), (name14, c14), (name15, c15), (name16, c16), (name17, c17)) =>
               columnsNames = Seq(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10, name11, name12, name13, name14, name15, name16, name17)
+
+              implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17)
+                .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10], Rep[A11], Rep[A12], Rep[A13], Rep[A14], Rep[A15], Rep[A16], Rep[A17]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17), _]]
+
               (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17) <> (apply.tupled, unapply)
           }
       }
-
-      for {
-        a <- mappedQuery
-      } yield a
     }
     TableQuery.apply(tag => new BaseView17[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17](tag, name, columnsNames, apply, unapply, preparedQuery))
 
   }
 
-  class BaseView17[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType](
-      tag: Tag,
+  class BaseView17[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType](tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17)],
-      val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq])(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _], s11: Shape[_, Rep[A11], A11, _], s12: Shape[_, Rep[A12], A12, _], s13: Shape[_, Rep[A13], A13, _], s14: Shape[_, Rep[A14], A14, _], s15: Shape[_, Rep[A15], A15, _], s16: Shape[_, Rep[A16], A16, _], s17: Shape[_, Rep[A17], A17, _]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -978,7 +977,7 @@ private[beholder] trait FilterableViewsGenerateCode {
 
     override def id = c1
 
-    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
+    override protected val columns: Seq[(String, this.type => Rep[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
@@ -995,49 +994,46 @@ private[beholder] trait FilterableViewsGenerateCode {
       columnNames(13) -> (_.c14),
       columnNames(14) -> (_.c15),
       columnNames(15) -> (_.c16),
-      columnNames(16) -> (_.c17)
-    )
+      columnNames(16) -> (_.c17))
+
+    implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17)
+      .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10], Rep[A11], Rep[A12], Rep[A13], Rep[A14], Rep[A15], Rep[A16], Rep[A17]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17), _]]
 
     def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17) <> (apply.tupled, unapply)
   }
 
-  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType](
-    name: String,
+  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType](name: String,
     apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18)],
-    baseQuery: Query[E, _, Seq]
-  )(
-    mappings: E => ((String, Column[A1]), (String, Column[A2]), (String, Column[A3]), (String, Column[A4]), (String, Column[A5]), (String, Column[A6]), (String, Column[A7]), (String, Column[A8]), (String, Column[A9]), (String, Column[A10]), (String, Column[A11]), (String, Column[A12]), (String, Column[A13]), (String, Column[A14]), (String, Column[A15]), (String, Column[A16]), (String, Column[A17]), (String, Column[A18]))
-  ): TableQuery[BaseView18[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18]] = {
+    baseQuery: Query[E, _, Seq])(
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11]), (String, Rep[A12]), (String, Rep[A13]), (String, Rep[A14]), (String, Rep[A15]), (String, Rep[A16]), (String, Rep[A17]), (String, Rep[A18])))(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _], s11: Shape[_, Rep[A11], A11, _], s12: Shape[_, Rep[A12], A12, _], s13: Shape[_, Rep[A13], A13, _], s14: Shape[_, Rep[A14], A14, _], s15: Shape[_, Rep[A15], A15, _], s16: Shape[_, Rep[A16], A16, _], s17: Shape[_, Rep[A17], A17, _], s18: Shape[_, Rep[A18], A18, _]): TableQuery[BaseView18[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18]] = {
 
     var columnsNames = Seq[String]()
 
     val preparedQuery: Query[_, T, Seq] = {
-      val mappedQuery = baseQuery.map {
+      baseQuery.map {
         t =>
           mappings(t) match {
             case ((name1, c1), (name2, c2), (name3, c3), (name4, c4), (name5, c5), (name6, c6), (name7, c7), (name8, c8), (name9, c9), (name10, c10), (name11, c11), (name12, c12), (name13, c13), (name14, c14), (name15, c15), (name16, c16), (name17, c17), (name18, c18)) =>
               columnsNames = Seq(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10, name11, name12, name13, name14, name15, name16, name17, name18)
+
+              implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18)
+                .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10], Rep[A11], Rep[A12], Rep[A13], Rep[A14], Rep[A15], Rep[A16], Rep[A17], Rep[A18]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18), _]]
+
               (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18) <> (apply.tupled, unapply)
           }
       }
-
-      for {
-        a <- mappedQuery
-      } yield a
     }
     TableQuery.apply(tag => new BaseView18[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18](tag, name, columnsNames, apply, unapply, preparedQuery))
 
   }
 
-  class BaseView18[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType](
-      tag: Tag,
+  class BaseView18[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType](tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18)],
-      val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq])(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _], s11: Shape[_, Rep[A11], A11, _], s12: Shape[_, Rep[A12], A12, _], s13: Shape[_, Rep[A13], A13, _], s14: Shape[_, Rep[A14], A14, _], s15: Shape[_, Rep[A15], A15, _], s16: Shape[_, Rep[A16], A16, _], s17: Shape[_, Rep[A17], A17, _], s18: Shape[_, Rep[A18], A18, _]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -1059,7 +1055,7 @@ private[beholder] trait FilterableViewsGenerateCode {
 
     override def id = c1
 
-    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
+    override protected val columns: Seq[(String, this.type => Rep[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
@@ -1077,8 +1073,10 @@ private[beholder] trait FilterableViewsGenerateCode {
       columnNames(14) -> (_.c15),
       columnNames(15) -> (_.c16),
       columnNames(16) -> (_.c17),
-      columnNames(17) -> (_.c18)
-    )
+      columnNames(17) -> (_.c18))
+
+    implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18)
+      .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10], Rep[A11], Rep[A12], Rep[A13], Rep[A14], Rep[A15], Rep[A16], Rep[A17], Rep[A18]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18), _]]
 
     def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18) <> (apply.tupled, unapply)
   }

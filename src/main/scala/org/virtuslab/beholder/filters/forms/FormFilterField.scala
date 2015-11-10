@@ -2,13 +2,13 @@ package org.virtuslab.beholder.filters.forms
 
 import org.virtuslab.beholder.filters.{ FilterRange, MappedFilterField }
 import org.virtuslab.beholder.utils.ILikeExtension._
-import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
+import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
 import play.api.data.Forms._
 import play.api.data.format.Formatter
 import play.api.data.validation.Constraint
 import play.api.data.{ FormError, Mapping }
 
-import scala.slick.ast.{ BaseTypedType, TypedType }
+import slick.ast.{ BaseTypedType, TypedType }
 
 abstract class FormFilterField[A: TypedType, B](mapping: Mapping[B]) extends MappedFilterField[A, B] {
 
@@ -46,35 +46,35 @@ object FromFilterFields {
    * search in text (ilike)
    */
   object inIntField extends FormFilterField[Int, Int](number) {
-    override def filterOnColumn(column: Column[Int])(data: Int): Column[Option[Boolean]] = column === data
+    override def filterOnColumn(column: Rep[Int])(data: Int): Rep[Option[Boolean]] = column.? === data
   }
 
   /**
    * simple check boolean
    */
   object inBoolean extends FormFilterField[Boolean, Boolean](boolean) {
-    override def filterOnColumn(column: Column[Boolean])(data: Boolean): Column[Option[Boolean]] = column === data
+    override def filterOnColumn(column: Rep[Boolean])(data: Boolean): Rep[Option[Boolean]] = column.? === data
   }
 
   /**
    * search in text (ilike)
    */
   object inText extends FormFilterField[String, String](text) {
-    override def filterOnColumn(column: Column[String])(data: String): Column[Option[Boolean]] = column ilike s"%${escape(data)}%"
+    override def filterOnColumn(column: Rep[String])(data: String): Rep[Option[Boolean]] = column.? ilike s"%${escape(data)}%"
   }
 
   /**
    * search in text (ilike)
    */
   object inBigDecimal extends FormFilterField[BigDecimal, BigDecimal](bigDecimal) {
-    override def filterOnColumn(column: Column[BigDecimal])(data: BigDecimal): Column[Option[Boolean]] = column === data
+    override def filterOnColumn(column: Rep[BigDecimal])(data: BigDecimal): Rep[Option[Boolean]] = column.? === data
   }
 
   /**
    * search in text (ilike) for optional fields
    */
   object inOptionText extends FormFilterField[Option[String], String](text) {
-    override def filterOnColumn(column: Column[Option[String]])(data: String): Column[Option[Boolean]] = column ilike s"%${escape(data)}%"
+    override def filterOnColumn(column: Rep[Option[String]])(data: String): Rep[Option[Boolean]] = column ilike s"%${escape(data)}%"
   }
 
   /**
@@ -86,16 +86,16 @@ object FromFilterFields {
 
   def inField[T](implicit tm: BaseTypedType[T], formatter: Formatter[T]): FormFilterField[T, T] =
     new FormFilterField[T, T](of[T]) {
-      override def filterOnColumn(column: Column[T])(data: T): Column[Option[Boolean]] = column === data
+      override def filterOnColumn(column: Rep[T])(data: T): Rep[Option[Boolean]] = column.? === data
     }
 
   def inRange[T](implicit tm: BaseTypedType[T], f: Formatter[T]): FormFilterField[T, FilterRange[T]] =
     new FormFilterField[T, FilterRange[T]](rangeMapping[T]) {
-      override def filterOnColumn(column: Column[T])(value: FilterRange[T]): Column[Option[Boolean]] = {
+      override def filterOnColumn(column: Rep[T])(value: FilterRange[T]): Rep[Option[Boolean]] = {
         value match {
-          case FilterRange(Some(from), Some(to)) => column >= from && column <= to
-          case FilterRange(None, Some(to)) => column <= to
-          case FilterRange(Some(from), None) => column >= from
+          case FilterRange(Some(from), Some(to)) => column.? >= from && column.? <= to
+          case FilterRange(None, Some(to)) => column.? <= to
+          case FilterRange(Some(from), None) => column.? >= from
           case _ => LiteralColumn(Some(true))
         }
       }
@@ -106,7 +106,7 @@ object FromFilterFields {
    */
   def inOptionRange[T](implicit tm: BaseTypedType[T], f: Formatter[T]): FormFilterField[Option[T], FilterRange[T]] =
     new FormFilterField[Option[T], FilterRange[T]](rangeMapping[T]) {
-      override def filterOnColumn(column: Column[Option[T]])(value: FilterRange[T]): Column[Option[Boolean]] = value match {
+      override def filterOnColumn(column: Rep[Option[T]])(value: FilterRange[T]): Rep[Option[Boolean]] = value match {
         case FilterRange(Some(from), Some(to)) => column >= from && column <= to
         case FilterRange(None, Some(to)) => column <= to
         case FilterRange(Some(from), None) => column >= from
@@ -118,6 +118,6 @@ object FromFilterFields {
    * Ignores given field in filter.
    */
   def ignore[T: TypedType]: FormFilterField[T, T] = new FormFilterField[T, T](ignoreMapping[T]) {
-    override def filterOnColumn(column: Column[T])(value: T): Column[Option[Boolean]] = LiteralColumn(Some(true))
+    override def filterOnColumn(column: Rep[T])(value: T): Rep[Option[Boolean]] = LiteralColumn(Some(true))
   }
 }

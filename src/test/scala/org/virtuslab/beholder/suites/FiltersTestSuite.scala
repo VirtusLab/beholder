@@ -79,6 +79,16 @@ trait FiltersTestSuite[Formatter] extends BaseSuite[Formatter] {
       orderByCoreDesc should contain theSameElementsInOrderAs fromDbOrderedByCoresDesc.drop(1)
   }
 
+  ignore should "filter by BigDecimal field" in baseFilterTest {
+    data =>
+      import data._
+      println(s"data: $data")
+      val filteredData = doFilters(data, baseFilter.copy(data = baseFilter.data.updated(4, Some(BigDecimal(1.0)))))
+      val fromDbFiltered = allFromDb.filter(_.capacity.contains(BigDecimal(1.0)))
+
+      filteredData should contain theSameElementsInOrderAs fromDbFiltered
+  }
+
   it should "not crash for date option" in baseFilterTest {
     data =>
       import data._

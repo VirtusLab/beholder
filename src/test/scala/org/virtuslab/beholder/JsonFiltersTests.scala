@@ -6,8 +6,8 @@ import org.virtuslab.beholder.filters.json.JsonFilterFields.{ inIntField, inOpti
 import org.virtuslab.beholder.filters.json.{ JsonFilterFields, JsonFilters, JsonFormatter }
 import org.virtuslab.beholder.filters.{ FilterAPI, FilterDefinition }
 import org.virtuslab.beholder.suites.{ InitialQueryTestSuite, BaseSuite, FiltersTestSuite, RangeFiltersSuite }
-import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
-import play.api.libs.json.JsObject
+import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
+import play.api.libs.json.{ JsSuccess, JsValue, JsObject }
 
 trait JsonFiltersTestsBase {
   self: AppTest with BaseSuite[JsonFormatter[UserMachineViewRow]] =>
@@ -17,8 +17,8 @@ trait JsonFiltersTestsBase {
     val result = filter.filterWithTotalEntitiesNumber(currentFilter)
 
     filter.formatter.results(currentFilter, result) match {
-      case JsObject(Seq(("filter", jsonFilter), _)) =>
-        filter.formatter.filterDefinition(jsonFilter) should equal(Some(currentFilter))
+      case JsObject(fields) =>
+        filter.formatter.filterDefinition(fields("filter")) should equal(JsSuccess(currentFilter))
     }
 
     result.content

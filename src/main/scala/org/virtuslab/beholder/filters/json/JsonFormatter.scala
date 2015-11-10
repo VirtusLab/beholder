@@ -26,12 +26,14 @@ class JsonFormatter[Entity <: Product](filterFields: Seq[JsonFilterField[_, _]],
   )(Order.apply, unlift(Order.unapply))
 
   private val filterDataFormatter: Format[Seq[Option[Any]]] = new Format[Seq[Option[Any]]] {
-    override def writes(o: Seq[Option[Any]]): JsValue = JsObject(
-      columnsNames.zip(filterFields).zip(o).flatMap {
+    override def writes(o: Seq[Option[Any]]): JsValue = {
+      val seq = columnsNames.zip(filterFields).zip(o).flatMap {
         case ((name, filterFiled), value) =>
           value.map(v => name -> filterFiled.writeFilter(v))
       }
-    )
+
+      JsObject(seq)
+    }
 
     override def reads(json: JsValue): JsResult[Seq[Option[Any]]] = json match {
       case jsObject: JsObject =>

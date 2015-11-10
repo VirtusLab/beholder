@@ -1,7 +1,7 @@
 package org.virtuslab.beholder.filters.json
 
 import org.virtuslab.beholder.filters.{ ContextedFilterAPI, FilterAPI, FilterDefinition, FilterResult }
-import org.virtuslab.unicorn.LongUnicornPlay.driver.simple.Session
+import org.virtuslab.unicorn.LongUnicornPlay.driver.api.Session
 import play.api.libs.json.{ JsSuccess, JsResult, JsError, JsValue }
 import play.api.mvc._
 

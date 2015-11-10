@@ -2,7 +2,7 @@ package org.virtuslab.beholder.suites
 
 import org.virtuslab.beholder.filters.{ FilterAPI, FilterDefinition }
 import org.virtuslab.beholder.{ AppTest, UserMachineViewRow, UserMachinesView }
-import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
+import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
 
 trait BaseSuite[Formatter] extends UserMachinesView {
   self: AppTest =>
@@ -16,6 +16,8 @@ trait BaseSuite[Formatter] extends UserMachinesView {
   protected class BaseFilterData(implicit val session: Session) extends PopulatedDatabase {
 
     val view = createUsersMachineView
+
+    //Slick3Invoker.invokeAction(view.schema.create)
 
     lazy val filter = createFilter(this)
 
