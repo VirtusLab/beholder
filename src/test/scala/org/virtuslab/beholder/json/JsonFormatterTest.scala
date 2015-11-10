@@ -4,10 +4,10 @@ import java.sql.Date
 
 import org.virtuslab.beholder.filters.FilterDefinition
 import org.virtuslab.beholder.filters.json.JsonFilterFields._
-import org.virtuslab.beholder.filters.json.{ JsonFilterFields, JsonFilters }
+import org.virtuslab.beholder.filters.json.{ JsonFormatter, JsonFilterFields, JsonFilters }
 import org.virtuslab.beholder.{ UserMachineViewRow, _ }
-import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
-import play.api.libs.json.{ JsArray, JsObject, JsString }
+import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
+import play.api.libs.json._
 
 class JsonFormatterTest extends AppTest with UserMachinesView with ModelIncluded {
 
@@ -25,16 +25,23 @@ class JsonFormatterTest extends AppTest with UserMachinesView with ModelIncluded
     )
   }
 
-  it should "parse data correctly" in rollbackWithModel {
+  it should "create filter definition from json defining data field" in rollbackWithModel {
     implicit session =>
-
+      //given
       lazy val filter = createFilter(identity)
+      val jsonFilterData = JsObject(Seq("data" -> JsObject(Seq("email" -> JsString("ala")))))
+      val expectedFilterDefinition = FilterDefinition(
+        take = None,
+        skip = None,
+        orderBy = None,
+        data = Seq(Some("ala"), None, None, None, None))
+      val jsonFormatter: JsonFormatter[UserMachineViewRow] = filter.formatter
 
-      val req = JsObject(Seq("data" -> JsObject(Seq("email" -> JsString("ala")))))
+      //when
+      val builtFilterDefinition: JsResult[FilterDefinition] = jsonFormatter.filterDefinition(jsonFilterData)
 
-      val data = FilterDefinition(None, None, None, Seq(Some("ala"), None, None, None, None))
-
-      filter.formatter.filterDefinition(req) shouldEqual Some(data)
+      //then
+      builtFilterDefinition shouldEqual JsSuccess(expectedFilterDefinition)
   }
 
   it should "create json definition correctly" in rollbackWithModel {
@@ -46,7 +53,7 @@ class JsonFormatterTest extends AppTest with UserMachinesView with ModelIncluded
 
       println(definition)
 
-      def stringValue(on: JsObject, name: String) = on \ name match {
+      def stringValue(on: JsObject, name: String) = (on \ name).get match {
         case JsString(value) => value
         case _ => fail(s"Field $name fro $on is not string!")
       }

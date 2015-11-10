@@ -6,29 +6,36 @@ import org.joda.time.DateTime
 import org.scalatest.{ BeforeAndAfterEach, FlatSpecLike, Matchers }
 import org.virtuslab.beholder.model._
 import org.virtuslab.beholder.repositories._
-import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
+import org.virtuslab.beholder.utils.Slick3Invoker
+import org.virtuslab.unicorn.LongUnicornPlay.driver
+import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
 import play.api.Play
-import play.api.db.slick.DB
+import play.api.db.slick.DatabaseConfigProvider
 import play.api.test.FakeApplication
 
-import scala.slick.lifted.TableQuery
+import slick.lifted.TableQuery
+
+import scala.concurrent.Await
+import scala.concurrent.duration._
 
 trait BaseTest extends FlatSpecLike with Matchers
 
 trait ModelIncluded {
   self: AppTest =>
 
-  lazy val UsersRepository = new UsersRepository {}
+  protected val queryTimeout = Duration.Inf
 
-  lazy val MachineRepository = new MachineRepository {}
+  lazy val usersRepository = new UsersRepository()
+
+  lazy val machineRepository = new MachineRepository()
 
   lazy val userMachineQuery = TableQuery[UserMachines]
 
   final def rollbackWithModel[A](func: Session => A): A = rollback {
     implicit session: Session =>
-      UsersRepository.create
-      MachineRepository.create
-      userMachineQuery.ddl.create
+      usersRepository.create()
+      machineRepository.create()
+      Slick3Invoker.invokeAction(userMachineQuery.schema.create)
       func(session)
   }
 
@@ -37,38 +44,47 @@ trait ModelIncluded {
     val users = Seq(
       User(None, "a@a.pl", "Ala", "maKota"),
       User(None, "o@a.pl", "Ola", "maPsa")
-    ).map(user => user.copy(id = Some(UsersRepository.save(user))))
+    ).map { user =>
+        val userId = usersRepository.save(user)
+        val userWithId = user.copy(id = Some(userId))
+        userWithId
+      }
 
     val machines = Seq(
       Machine(None, "a.a.pl", "Ubuntu", 4, new Date(DateTime.now().minusHours(24).getMillis), Some(1)),
       Machine(None, "o.a.pl", "Fedora", 1, new Date(DateTime.now().getMillis), Some(3))
-    ).map(machine => machine.copy(id = Some(MachineRepository.save(machine))))
+    ).map { machine =>
+        val machineId = machineRepository.save(machine)
+        val machineWithId = machine.copy(id = Some(machineId))
+        machineWithId
+      }
 
     val Seq(user1, user2) = users
     val Seq(machine1, machine2) = machines
 
-    userMachineQuery.insertAll(
+    Slick3Invoker.invokeAction(userMachineQuery ++= Seq(
       (user1.id.get, machine1.id.get),
       (user2.id.get, machine1.id.get),
       (user2.id.get, machine2.id.get)
-    )
+    ))
   }
 }
 
 trait AppTest extends BaseTest with BeforeAndAfterEach with ModelIncluded {
 
   private val testDb = Map(
-    "db.default.driver" -> "org.h2.Driver",
-    "db.default.url" -> "jdbc:h2:mem:beholder",
-    "db.default.user" -> "sa",
-    "db.default.password" -> ""
+    "slick.dbs.default.driver" -> "slick.driver.H2Driver$",
+    "slick.dbs.default.db.driver" -> "org.h2.Driver",
+    "slick.dbs.default.db.url" -> "jdbc:h2:mem:beholder",
+    "slick.dbs.default.db.user" -> "sa",
+    "slick.dbs.default.db.password" -> ""
   )
 
   def withApp[A](func: FakeApplication => A): A = {
     val app = new FakeApplication(additionalConfiguration = testDb)
     Play.start(app)
     val ret = func(app)
-    Play.stop()
+    Play.stop(app)
     ret
   }
 
@@ -87,4 +103,6 @@ trait AppTest extends BaseTest with BeforeAndAfterEach with ModelIncluded {
         out
     }
   }
+
+  def DB = DatabaseConfigProvider.get(play.api.Play.current).db.asInstanceOf[driver.profile.backend.DatabaseDef]
 }

@@ -3,22 +3,22 @@ package org.virtuslab.beholder
 import java.sql.Date
 
 import org.virtuslab.beholder.model.{ Machines, Users }
+import org.virtuslab.beholder.utils.Slick3Invoker
 import org.virtuslab.beholder.views.FilterableViews
 import org.virtuslab.unicorn.LongUnicornPlay._
-import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
+import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
 
 case class UserMachineViewRow(
   email: String,
   system: String,
   cores: Int,
   created: Date,
-  capacity: Option[BigDecimal]
-)
+  capacity: Option[BigDecimal])
 
 trait UserMachinesView extends ModelIncluded {
   self: AppTest =>
 
-  def createUsersMachineView(implicit session: Session) = {
+  def createUsersMachineView()(implicit session: Session) = {
     //query that is a base for view
     new CustomTypeMappers {
       val usersMachinesQuery = for {
@@ -33,16 +33,16 @@ trait UserMachinesView extends ModelIncluded {
         UserMachineViewRow.unapply _,
         baseQuery = usersMachinesQuery
       ) {
-        case (user, machine) =>
-          //naming the fields
-          ("email" -> user.email,
-            "system" -> machine.system,
-            "cores" -> machine.cores,
-            "created" -> machine.created,
-            "capacity" -> machine.capacity)
-      }
+          case (user, machine) =>
+            //naming the fields
+            ("email" -> user.email,
+              "system" -> machine.system,
+              "cores" -> machine.cores,
+              "created" -> machine.created,
+              "capacity" -> machine.capacity)
+        }
 
-      tableQuery.viewDDL.create
+      Slick3Invoker.invokeAction(tableQuery.viewDDL.create)
     }.tableQuery
   }
 }

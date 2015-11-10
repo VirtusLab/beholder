@@ -4,11 +4,11 @@ import org.joda.time.{ LocalDate, DateTime }
 import org.virtuslab.beholder.filters._
 import org.virtuslab.beholder.utils.ILikeExtension._
 import org.virtuslab.unicorn.LongUnicornPlay.CustomTypeMappers._
-import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
+import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
-import scala.slick.ast.{ BaseTypedType, TypedType }
+import slick.ast.{ BaseTypedType, TypedType }
 
 abstract class JsonFilterField[A: TypedType, B] extends MappedFilterField[A, B] {
   def fieldTypeDefinition: JsValue
@@ -41,36 +41,36 @@ object JsonFilterFields {
    * search in text (ilike)
    */
   object inIntField extends ImplicitlyJsonFilterFiled[Int, Int]("Int") {
-    override protected def filterOnColumn(column: Column[Int])(data: Int): Column[Option[Boolean]] = column === data
+    override protected def filterOnColumn(column: Rep[Int])(data: Int): Rep[Option[Boolean]] = column.? === data
   }
 
   object inBigDecimal extends ImplicitlyJsonFilterFiled[BigDecimal, BigDecimal]("bigDecimal") {
-    override protected def filterOnColumn(column: Column[BigDecimal])(data: BigDecimal): Column[Option[Boolean]] = column === data
+    override protected def filterOnColumn(column: Rep[BigDecimal])(data: BigDecimal): Rep[Option[Boolean]] = column.? === data
   }
 
   /**
    * simple check boolean
    */
   object inBoolean extends ImplicitlyJsonFilterFiled[Boolean, Boolean]("Boolean") {
-    override def filterOnColumn(column: Column[Boolean])(data: Boolean): Column[Option[Boolean]] = column === data
+    override def filterOnColumn(column: Rep[Boolean])(data: Boolean): Rep[Option[Boolean]] = column.? === data
   }
 
   /**
    * search in text (ilike)
    */
   object inText extends ImplicitlyJsonFilterFiled[String, String]("Text") {
-    override def filterOnColumn(column: Column[String])(data: String): Column[Option[Boolean]] = column ilike s"%${escape(data)}%"
+    override def filterOnColumn(column: Rep[String])(data: String): Rep[Option[Boolean]] = column.? ilike s"%${escape(data)}%"
   }
 
   /**
    * search in text (ilike) for optional fields
    */
   object inOptionText extends ImplicitlyJsonFilterFiled[Option[String], String]("OptionalText") {
-    override def filterOnColumn(column: Column[Option[String]])(data: String): Column[Option[Boolean]] = column ilike s"%${escape(data)}%"
+    override def filterOnColumn(column: Rep[Option[String]])(data: String): Rep[Option[Boolean]] = column ilike s"%${escape(data)}%"
   }
 
   object inDateTime extends ImplicitlyJsonFilterFiled[DateTime, DateTime]("DateTime") {
-    override def filterOnColumn(column: Column[DateTime])(data: DateTime): Column[Option[Boolean]] = column === data
+    override def filterOnColumn(column: Rep[DateTime])(data: DateTime): Rep[Option[Boolean]] = column.? === data
 
     override protected[json] def valueWrite: Writes[DateTime] = Writes.jodaDateWrites("yyyy-MM-dd HH:mm")
 
@@ -82,7 +82,7 @@ object JsonFilterFields {
   }
 
   object inLocalDate extends ImplicitlyJsonFilterFiled[LocalDate, LocalDate]("LocalDate") {
-    override def filterOnColumn(column: Column[LocalDate])(data: LocalDate): Column[Option[Boolean]] = column === data
+    override def filterOnColumn(column: Rep[LocalDate])(data: LocalDate): Rep[Option[Boolean]] = column.? === data
   }
 
   /**
@@ -99,7 +99,7 @@ object JsonFilterFields {
 
       override protected def filterFormat: Format[T#Value] = formatter
 
-      override protected def filterOnColumn(column: Column[T#Value])(value: T#Value): Column[Option[Boolean]] = column === value
+      override protected def filterOnColumn(column: Rep[T#Value])(value: T#Value): Rep[Option[Boolean]] = column.? === value
     }
   }
 
@@ -109,16 +109,16 @@ object JsonFilterFields {
 
   def inField[T: BaseTypedType: Format](typeName: String) =
     new ImplicitlyJsonFilterFiled[T, T](typeName) {
-      override def filterOnColumn(column: Column[T])(data: T): Column[Option[Boolean]] = column === data
+      override def filterOnColumn(column: Rep[T])(data: T): Rep[Option[Boolean]] = column.? === data
     }
 
   def inRange[T: BaseTypedType: Format](baseType: JsonFilterField[T, T]): JsonFilterField[T, FilterRange[T]] =
     new JsonFilterField[T, FilterRange[T]] {
-      override def filterOnColumn(column: Column[T])(value: FilterRange[T]): Column[Option[Boolean]] = {
+      override def filterOnColumn(column: Rep[T])(value: FilterRange[T]): Rep[Option[Boolean]] = {
         value match {
-          case FilterRange(Some(from), Some(to)) => column >= from && column <= to
-          case FilterRange(None, Some(to)) => column <= to
-          case FilterRange(Some(from), None) => column >= from
+          case FilterRange(Some(from), Some(to)) => column.? >= from && column.? <= to
+          case FilterRange(None, Some(to)) => column.? <= to
+          case FilterRange(Some(from), None) => column.? >= from
           case _ => LiteralColumn(Some(true))
         }
       }
@@ -135,7 +135,7 @@ object JsonFilterFields {
 
   def inOptionRange[T: BaseTypedType: Format](baseType: JsonFilterField[T, T]): JsonFilterField[Option[T], FilterRange[T]] =
     new JsonFilterField[Option[T], FilterRange[T]] {
-      override def filterOnColumn(column: Column[Option[T]])(value: FilterRange[T]): Column[Option[Boolean]] = {
+      override def filterOnColumn(column: Rep[Option[T]])(value: FilterRange[T]): Rep[Option[Boolean]] = {
         value match {
           case FilterRange(Some(from), Some(to)) => column >= from && column <= to
           case FilterRange(None, Some(to)) => column <= to
@@ -171,7 +171,7 @@ object JsonFilterFields {
       override def writes(o: T): JsValue = JsNull
     }
 
-    override def filterOnColumn(column: Column[T])(value: T): Column[Option[Boolean]] = LiteralColumn(Some(true))
+    override def filterOnColumn(column: Rep[T])(value: T): Rep[Option[Boolean]] = LiteralColumn(Some(true))
 
     override def isIgnored: Boolean = true
   }
