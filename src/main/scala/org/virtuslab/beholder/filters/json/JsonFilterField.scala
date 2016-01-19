@@ -37,11 +37,22 @@ abstract class ImplicitlyJsonFilterFiled[A: TypedType: Writes, B: Format](dataTy
 
 object JsonFilterFields {
 
+  import org.virtuslab.beholder.utils.SeqParametersHelper._
+
   /**
-   * search in text (ilike)
+   * find exact number
    */
   object inIntField extends ImplicitlyJsonFilterFiled[Int, Int]("Int") {
     override protected def filterOnColumn(column: Rep[Int])(data: Int): Rep[Option[Boolean]] = column.? === data
+  }
+
+  /**
+   * check if value is in given sequence
+   */
+  object inIntFieldSeq extends ImplicitlyJsonFilterFiled[Int, Seq[Int]]("IntSeq") {
+    override protected def filterOnColumn(column: Column[Int])(dataSeq: Seq[Int]): Column[Option[Boolean]] = {
+      isColumnValueInsideSeq(column)(dataSeq)((column, data) => column === data)
+    }
   }
 
   object inBigDecimal extends ImplicitlyJsonFilterFiled[BigDecimal, BigDecimal]("bigDecimal") {
@@ -60,6 +71,15 @@ object JsonFilterFields {
    */
   object inText extends ImplicitlyJsonFilterFiled[String, String]("Text") {
     override def filterOnColumn(column: Rep[String])(data: String): Rep[Option[Boolean]] = column.? ilike s"%${escape(data)}%"
+  }
+
+  /**
+   * check if text is in given text sequence (ilike)
+   */
+  object inTextSeq extends ImplicitlyJsonFilterFiled[String, Seq[String]]("TextSeq") {
+    override def filterOnColumn(column: Column[String])(data: Seq[String]): Column[Option[Boolean]] = {
+      isColumnValueInsideSeq(column)(data)((column, d) => column ilike s"%${escape(d)}%")
+    }
   }
 
   /**
@@ -103,6 +123,30 @@ object JsonFilterFields {
     }
   }
 
+  /**
+   * check if enum value is in given sequence
+   * @tparam T - enum class (eg. Colors.type)
+   */
+  def inEnumSeq[T <: Enumeration](enum: T)(implicit tm: BaseTypedType[T#Value], formatter: Format[T#Value]): JsonFilterField[T#Value, Seq[T#Value]] = {
+    new JsonFilterField[T#Value, Seq[T#Value]] {
+      override def fieldTypeDefinition: JsValue = JsArray(
+        enum.values.toList.map(v => Json.toJson(v.asInstanceOf[T#Value]))
+      )
+
+      override protected[json] def valueWrite: Writes[T#Value] = formatter
+
+      override protected def filterFormat: Format[Seq[T#Value]] = new Format[Seq[T#Value]] {
+        override def reads(json: JsValue): JsResult[Seq[T#Value]] = JsSuccess(json.as[Seq[T#Value]])
+
+        override def writes(o: Seq[T#Value]): JsValue = JsArray(o.map(Json.toJson(_)))
+      }
+
+      override protected def filterOnColumn(column: Column[T#Value])(dataSeq: Seq[T#Value]): Column[Option[Boolean]] = {
+        isColumnValueInsideSeq(column)(dataSeq)((column, data) => column === data)
+      }
+    }
+  }
+
   private implicit def rangeFormat[T: Format]: Format[FilterRange[T]] =
     ((__ \ "from").formatNullable[T] and
       (__ \ "to").formatNullable[T])(FilterRange.apply, unlift(FilterRange.unapply))
@@ -110,6 +154,13 @@ object JsonFilterFields {
   def inField[T: BaseTypedType: Format](typeName: String) =
     new ImplicitlyJsonFilterFiled[T, T](typeName) {
       override def filterOnColumn(column: Rep[T])(data: T): Rep[Option[Boolean]] = column.? === data
+    }
+
+  def inFieldSeq[T: BaseTypedType: Format](typeName: String) =
+    new ImplicitlyJsonFilterFiled[T, Seq[T]](typeName) {
+      override def filterOnColumn(column: Column[T])(dataSeq: Seq[T]): Column[Option[Boolean]] = {
+        isColumnValueInsideSeq(column)(dataSeq)((column, data) => column === data)
+      }
     }
 
   def inRange[T: BaseTypedType: Format](baseType: JsonFilterField[T, T]): JsonFilterField[T, FilterRange[T]] =

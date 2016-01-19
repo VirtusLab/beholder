@@ -2,7 +2,7 @@ organization := "org.virtuslab"
 
 name := "beholder"
 
-version := "0.2.10-SNAPSHOT"
+version := "0.3.1-SNAPSHOT"
 
 scalaVersion := "2.11.7"
 
@@ -77,6 +77,6 @@ ScoverageSbtPlugin.ScoverageKeys.coverageExcludedPackages := Seq(
   "org.virtuslab.beholder.utils.generators.*",
   // only BaseView5 is tested, all are generated, so there is no need to check them all
   "org.virtuslab.beholder.views.FilterableViews.*",
-  "org.virtuslab.beholder.views.FilterableViewsGenerateCode.BaseView[^5].*",
+  "org.virtuslab.beholder.views.FilterableViewsGenerateCode.BaseView[^6].*",
   "org.virtuslab.beholder.filters.FilterFactoryMethods.*"
 ).mkString(";")

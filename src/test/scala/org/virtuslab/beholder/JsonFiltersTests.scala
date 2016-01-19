@@ -2,12 +2,16 @@ package org.virtuslab.beholder
 
 import java.sql.Date
 
-import org.virtuslab.beholder.filters.json.JsonFilterFields.{ inIntField, inOptionRange, inRange, _ }
+import org.virtuslab.beholder.filters.json.JsonFilterFields.inField
+import org.virtuslab.beholder.filters.json.JsonFilterFields.inIntFieldSeq
+import org.virtuslab.beholder.filters.json.JsonFilterFields.inText
+import org.virtuslab.beholder.filters.json.JsonFilterFields.{ inIntField, inOptionRange, inRange, inEnum, inEnumSeq }
 import org.virtuslab.beholder.filters.json.{ JsonFilterFields, JsonFilters, JsonFormatter }
 import org.virtuslab.beholder.filters.{ FilterAPI, FilterDefinition }
-import org.virtuslab.beholder.suites.{ InitialQueryTestSuite, BaseSuite, FiltersTestSuite, RangeFiltersSuite }
+import org.virtuslab.beholder.model.MachineStatus
+import org.virtuslab.beholder.suites._
 import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
-import play.api.libs.json.{ JsSuccess, JsValue, JsObject }
+import play.api.libs.json.{ JsSuccess, JsObject }
 
 trait JsonFiltersTestsBase {
   self: AppTest with BaseSuite[JsonFormatter[UserMachineViewRow]] =>
@@ -33,7 +37,8 @@ class JsonFiltersTests extends AppTest with FiltersTestSuite[JsonFormatter[UserM
       inText,
       inIntField,
       inRange(inField[Date]("date")),
-      JsonFilterFields.ignore[Option[BigDecimal]]
+      JsonFilterFields.ignore[Option[BigDecimal]],
+      inEnum(MachineStatus)
     )
 }
 
@@ -47,6 +52,33 @@ class JsonFiltersRangeTests extends AppTest with RangeFiltersSuite[JsonFormatter
       inText,
       inRange(inIntField),
       inRange(inField[Date]("date")),
-      inOptionRange(inField[BigDecimal]("number"))
+      inOptionRange(inField[BigDecimal]("number")),
+      inEnum(MachineStatus)
+    )
+}
+
+class JsonFiltersEnumTests extends AppTest with EnumFilterTestSuite[JsonFormatter[UserMachineViewRow]] with JsonFiltersTestsBase {
+  def createFilter(data: BaseFilterData): FilterAPI[UserMachineViewRow, JsonFormatter[UserMachineViewRow]] =
+    new JsonFilters[UserMachineViewRow](identity).create(
+      data.view,
+      inText,
+      inText,
+      inIntFieldSeq,
+      inRange(inField[Date]("date")),
+      inOptionRange(inField[BigDecimal]("number")),
+      inEnum(MachineStatus)
+    )
+}
+
+class JsonFiltersSeqTests extends AppTest with SeqFilterTestSuite[JsonFormatter[UserMachineViewRow]] with JsonFiltersTestsBase {
+  def createFilter(data: BaseFilterData): FilterAPI[UserMachineViewRow, JsonFormatter[UserMachineViewRow]] =
+    new JsonFilters[UserMachineViewRow](identity).create(
+      data.view,
+      inText,
+      inText,
+      inIntFieldSeq,
+      inRange(inField[Date]("date")),
+      inOptionRange(inField[BigDecimal]("number")),
+      inEnumSeq(MachineStatus)
     )
 }

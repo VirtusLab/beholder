@@ -3,16 +3,13 @@ package org.virtuslab.beholder.suites
 import java.sql.Date
 
 import org.joda.time.DateTime
-import org.virtuslab.beholder.model.{ Machine, User }
+import org.virtuslab.beholder.model.{ MachineStatus, Machine, User }
 import org.virtuslab.beholder.utils.Slick3Invoker
 import org.virtuslab.beholder.views.FilterableViews
 import org.virtuslab.beholder.{ UserMachineViewRow, AppTest }
 import org.virtuslab.beholder.filters.{ TableFilterAPI, FilterAPI }
 import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
 
-/**
- * Author: Krzysztof Romanowski
- */
 trait InitialQueryTestSuite[Formatter] extends FiltersTestSuite[Formatter] {
   self: AppTest =>
   override protected def baseFilterTest[A](testImplementation: (BaseFilterData) => A): A =
@@ -27,7 +24,7 @@ trait InitialQueryTestSuite[Formatter] extends FiltersTestSuite[Formatter] {
 
   class InitialQueryFilterData(implicit session: Session) extends BaseFilterData {
     override lazy val filter: FilterAPI[UserMachineViewRow, Formatter] = createFilter(this)
-      .asInstanceOf[TableFilterAPI[UserMachineViewRow, Formatter, FilterableViews.BaseView5[_, String, _, _, _, _]]]
+      .asInstanceOf[TableFilterAPI[UserMachineViewRow, Formatter, FilterableViews.BaseView6[_, String, _, _, _, _, _]]]
       .withInitialFilter(table => !(table.c1 === newMail)) //cos !== is not working
 
     val newUser = {
@@ -36,7 +33,7 @@ trait InitialQueryTestSuite[Formatter] extends FiltersTestSuite[Formatter] {
     }
 
     val newMachine = {
-      val m = Machine(None, "b.pl", "Windows", 6, new Date(DateTime.now().getMillis), Some(12))
+      val m = Machine(None, "b.pl", "Windows", 6, new Date(DateTime.now().getMillis), Some(12), MachineStatus.Inactive)
       m.copy(id = Some(machineRepository.save(m)))
     }
 

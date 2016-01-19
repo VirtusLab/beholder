@@ -4,6 +4,8 @@ import java.sql.Date
 
 import org.virtuslab.beholder.filters.FilterDefinition
 import org.virtuslab.beholder.filters.json.JsonFilterFields._
+import org.virtuslab.beholder.filters.json.{ JsonFilterFields, JsonFilters }
+import org.virtuslab.beholder.model.MachineStatus
 import org.virtuslab.beholder.filters.json.{ JsonFormatter, JsonFilterFields, JsonFilters }
 import org.virtuslab.beholder.{ UserMachineViewRow, _ }
 import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
@@ -18,30 +20,23 @@ class JsonFormatterTest extends AppTest with UserMachinesView with ModelIncluded
     new JsonFilters[UserMachineViewRow](labels).create(
       view,
       inText,
-      inText,
-      inIntField,
+      inTextSeq,
+      inIntFieldSeq,
       inRange(inField[Date]("date")),
-      JsonFilterFields.ignore[Option[BigDecimal]]
+      JsonFilterFields.ignore[Option[BigDecimal]],
+      JsonFilterFields.ignore[MachineStatus.Value]
     )
   }
 
   it should "create filter definition from json defining data field" in rollbackWithModel {
     implicit session =>
-      //given
       lazy val filter = createFilter(identity)
-      val jsonFilterData = JsObject(Seq("data" -> JsObject(Seq("email" -> JsString("ala")))))
-      val expectedFilterDefinition = FilterDefinition(
-        take = None,
-        skip = None,
-        orderBy = None,
-        data = Seq(Some("ala"), None, None, None, None))
-      val jsonFormatter: JsonFormatter[UserMachineViewRow] = filter.formatter
 
-      //when
-      val builtFilterDefinition: JsResult[FilterDefinition] = jsonFormatter.filterDefinition(jsonFilterData)
+      val req = JsObject(Seq("data" -> JsObject(Seq("email" -> JsString("ala")))))
 
-      //then
-      builtFilterDefinition shouldEqual JsSuccess(expectedFilterDefinition)
+      val data = FilterDefinition(None, None, None, Seq(Some("ala"), None, None, None, None, None))
+
+      filter.formatter.filterDefinition(req) shouldEqual JsSuccess(data)
   }
 
   it should "create json definition correctly" in rollbackWithModel {
