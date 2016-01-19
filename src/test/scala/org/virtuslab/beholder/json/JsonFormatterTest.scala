@@ -7,7 +7,7 @@ import org.virtuslab.beholder.filters.json.JsonFilterFields._
 import org.virtuslab.beholder.filters.json.{ JsonFilterFields, JsonFilters }
 import org.virtuslab.beholder.{ UserMachineViewRow, _ }
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
-import play.api.libs.json.{ JsArray, JsObject, JsString }
+import play.api.libs.json.{ JsSuccess, JsArray, JsObject, JsString }
 
 class JsonFormatterTest extends AppTest with UserMachinesView with ModelIncluded {
 
@@ -34,7 +34,7 @@ class JsonFormatterTest extends AppTest with UserMachinesView with ModelIncluded
 
       val data = FilterDefinition(None, None, None, Seq(Some("ala"), None, None, None, None))
 
-      filter.formatter.filterDefinition(req) shouldEqual Some(data)
+      filter.formatter.filterDefinition(req) shouldEqual JsSuccess(data)
   }
 
   it should "create json definition correctly" in rollbackWithModel {
@@ -43,8 +43,6 @@ class JsonFormatterTest extends AppTest with UserMachinesView with ModelIncluded
       lazy val filter = createFilter(name => s"Label: $name")
 
       val definition = filter.formatter.jsonDefinition
-
-      println(definition)
 
       def stringValue(on: JsObject, name: String) = on \ name match {
         case JsString(value) => value

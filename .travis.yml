@@ -2,7 +2,6 @@ language: scala
 scala:
   - "2.11.5"
 jdk:
-  - openjdk7
   - oraclejdk8
 
 script: sbt -no-colors ++$TRAVIS_SCALA_VERSION clean coverage test
