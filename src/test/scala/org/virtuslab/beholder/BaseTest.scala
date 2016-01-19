@@ -40,8 +40,8 @@ trait ModelIncluded {
     ).map(user => user.copy(id = Some(UsersRepository.save(user))))
 
     val machines = Seq(
-      Machine(None, "a.a.pl", "Ubuntu", 4, new Date(DateTime.now().minusHours(24).getMillis), Some(1)),
-      Machine(None, "o.a.pl", "Fedora", 1, new Date(DateTime.now().getMillis), Some(3))
+      Machine(None, "a.a.pl", "Ubuntu", 4, new Date(DateTime.now().minusHours(24).getMillis), Some(1), MachineStatus.Inactive),
+      Machine(None, "o.a.pl", "Fedora", 1, new Date(DateTime.now().getMillis), Some(3), MachineStatus.Active)
     ).map(machine => machine.copy(id = Some(MachineRepository.save(machine))))
 
     val Seq(user1, user2) = users

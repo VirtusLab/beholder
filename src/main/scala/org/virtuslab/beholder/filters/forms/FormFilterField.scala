@@ -4,7 +4,7 @@ import org.virtuslab.beholder.filters.{ FilterRange, MappedFilterField }
 import org.virtuslab.beholder.utils.ILikeExtension._
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 import play.api.data.Forms._
-import play.api.data.format.Formatter
+import play.api.data.format.{ Formats, Formatter }
 import play.api.data.validation.Constraint
 import play.api.data.{ FormError, Mapping }
 
@@ -18,6 +18,8 @@ abstract class FormFilterField[A: TypedType, B](mapping: Mapping[B]) extends Map
 }
 
 object FromFilterFields {
+
+  import org.virtuslab.beholder.utils.SeqParametersHelper._
 
   private def ignoreMapping[T] = new Mapping[T] {
     val key = ""
@@ -50,6 +52,15 @@ object FromFilterFields {
   }
 
   /**
+   * check if value is in given sequence
+   */
+  object inIntFieldSeq extends FormFilterField[Int, Seq[Int]](seq(number)) {
+    override protected def filterOnColumn(column: Column[Int])(dataSeq: Seq[Int]): Column[Option[Boolean]] = {
+      isColumnValueInsideSeq(column)(dataSeq)((column, data) => column === data)
+    }
+  }
+
+  /**
    * simple check boolean
    */
   object inBoolean extends FormFilterField[Boolean, Boolean](boolean) {
@@ -64,8 +75,14 @@ object FromFilterFields {
   }
 
   /**
-   * search in text (ilike)
+   * check if text is in given text sequence (ilike)
    */
+  object inTextSeq extends FormFilterField[String, Seq[String]](seq(text)) {
+    override def filterOnColumn(column: Column[String])(dataSeq: Seq[String]): Column[Option[Boolean]] = {
+      isColumnValueInsideSeq(column)(dataSeq)((column, d) => column ilike s"%${escape(d)}%")
+    }
+  }
+
   object inBigDecimal extends FormFilterField[BigDecimal, BigDecimal](bigDecimal) {
     override def filterOnColumn(column: Column[BigDecimal])(data: BigDecimal): Column[Option[Boolean]] = column === data
   }
@@ -82,11 +99,24 @@ object FromFilterFields {
    * @tparam T - enum class (eg. Colors.type)
    */
   def inEnum[T <: Enumeration](implicit tm: BaseTypedType[T#Value], formatter: Formatter[T#Value]): FormFilterField[T#Value, T#Value] =
-    inField[T#Value]
+    new FormFilterField[T#Value, T#Value](of[T#Value]) {
+      override def filterOnColumn(column: Column[T#Value])(data: T#Value): Column[Option[Boolean]] = column === data
+    }
+
+  def inEnumSeq[T <: Enumeration](implicit tm: BaseTypedType[T#Value], formatter: Formatter[T#Value]): FormFilterField[T#Value, Seq[T#Value]] = {
+    inFieldSeq[T#Value]
+  }
 
   def inField[T](implicit tm: BaseTypedType[T], formatter: Formatter[T]): FormFilterField[T, T] =
     new FormFilterField[T, T](of[T]) {
       override def filterOnColumn(column: Column[T])(data: T): Column[Option[Boolean]] = column === data
+    }
+
+  def inFieldSeq[T](implicit tm: BaseTypedType[T], formatter: Formatter[T]): FormFilterField[T, Seq[T]] =
+    new FormFilterField[T, Seq[T]](seq(of[T])) {
+      override def filterOnColumn(column: Column[T])(dataSeq: Seq[T]): Column[Option[Boolean]] = {
+        isColumnValueInsideSeq(column)(dataSeq)((column, data) => column === data)
+      }
     }
 
   def inRange[T](implicit tm: BaseTypedType[T], f: Formatter[T]): FormFilterField[T, FilterRange[T]] =

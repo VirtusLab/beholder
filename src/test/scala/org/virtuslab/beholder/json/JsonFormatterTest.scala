@@ -5,6 +5,7 @@ import java.sql.Date
 import org.virtuslab.beholder.filters.FilterDefinition
 import org.virtuslab.beholder.filters.json.JsonFilterFields._
 import org.virtuslab.beholder.filters.json.{ JsonFilterFields, JsonFilters }
+import org.virtuslab.beholder.model.MachineStatus
 import org.virtuslab.beholder.{ UserMachineViewRow, _ }
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 import play.api.libs.json.{ JsSuccess, JsArray, JsObject, JsString }
@@ -18,10 +19,11 @@ class JsonFormatterTest extends AppTest with UserMachinesView with ModelIncluded
     new JsonFilters[UserMachineViewRow](labels).create(
       view,
       inText,
-      inText,
-      inIntField,
+      inTextSeq,
+      inIntFieldSeq,
       inRange(inField[Date]("date")),
-      JsonFilterFields.ignore[Option[BigDecimal]]
+      JsonFilterFields.ignore[Option[BigDecimal]],
+      JsonFilterFields.ignore[MachineStatus.Value]
     )
   }
 
@@ -32,7 +34,7 @@ class JsonFormatterTest extends AppTest with UserMachinesView with ModelIncluded
 
       val req = JsObject(Seq("data" -> JsObject(Seq("email" -> JsString("ala")))))
 
-      val data = FilterDefinition(None, None, None, Seq(Some("ala"), None, None, None, None))
+      val data = FilterDefinition(None, None, None, Seq(Some("ala"), None, None, None, None, None))
 
       filter.formatter.filterDefinition(req) shouldEqual JsSuccess(data)
   }

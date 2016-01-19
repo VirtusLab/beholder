@@ -2,17 +2,19 @@ package org.virtuslab.beholder
 
 import java.sql.Date
 
-import org.virtuslab.beholder.model.{ Machines, Users }
+import org.virtuslab.beholder.model.{ MachineStatus, Machines, Users }
 import org.virtuslab.beholder.views.FilterableViews
 import org.virtuslab.unicorn.LongUnicornPlay._
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
+import play.api.libs.json._
 
 case class UserMachineViewRow(
   email: String,
   system: String,
   cores: Int,
   created: Date,
-  capacity: Option[BigDecimal]
+  capacity: Option[BigDecimal],
+  status: MachineStatus.Value
 )
 
 trait UserMachinesView extends ModelIncluded {
@@ -28,7 +30,7 @@ trait UserMachinesView extends ModelIncluded {
       } yield (user, machine)
 
       val tableQuery = FilterableViews.createView(
-        name = "USERS_MACHINE_VIEW",
+        name = "USER_MACHINE_VIEW",
         UserMachineViewRow.apply _,
         UserMachineViewRow.unapply _,
         baseQuery = usersMachinesQuery
@@ -39,7 +41,8 @@ trait UserMachinesView extends ModelIncluded {
             "system" -> machine.system,
             "cores" -> machine.cores,
             "created" -> machine.created,
-            "capacity" -> machine.capacity)
+            "capacity" -> machine.capacity,
+            "status" -> machine.status)
       }
 
       tableQuery.viewDDL.create

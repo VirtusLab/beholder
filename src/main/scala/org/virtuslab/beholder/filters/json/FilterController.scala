@@ -21,14 +21,17 @@ trait FilterControllerBase[Context, Entity <: Product] extends Controller {
           request.body.asJson.map(formatter.filterDefinition).map { fd =>
             fd.map {
               filterDefinition =>
-                val filterResult = callFilter(context, mapFilterData(filterDefinition))
-                formatter.results(filterDefinition, filterResult)
+                val filterResult = callFilter(context, mapFilterData(filterDefinition, context))
+                formatter.results(filterDefinition, modifyFilterResults(filterResult, filterDefinition, context))
             }
           }.getOrElse(JsError("json expected"))
     }
 
   //for filter modification such us setting default parameters etc.
-  protected def mapFilterData(data: FilterDefinition) = data
+  protected def mapFilterData(data: FilterDefinition, context: Context) = data
+
+  //for result modification such as sorting or fetching additional data
+  protected def modifyFilterResults(results: FilterResult[Entity], filterDefinition: FilterDefinition, context: Context) = results
 }
 
 abstract class FilterController[Entity <: Product](filter: FilterAPI[Entity, JsonFormatter[Entity]])
