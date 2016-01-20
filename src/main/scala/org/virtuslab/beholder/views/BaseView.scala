@@ -44,7 +44,7 @@ abstract class BaseView[Id, Entity](tag: Tag, val viewName: String) extends Base
 object BaseView {
 
   implicit class WithViewDDL(val query: TableQuery[_ <: BaseView[_, _]]) extends AnyVal {
-    def viewDDL = ViewDDL(query.shaped.value)
+    def viewDDL = ViewDDL(query.baseTableRow)
   }
 
   case class ViewDDL(table: BaseView[_, _]) extends DDL {

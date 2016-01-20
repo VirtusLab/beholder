@@ -15,6 +15,7 @@ Authors:
 * [Krzysztof Romanowski](https://github.com/romanowski)
 * [Jerzy Müller](https://github.com/Kwestor)
 * [Mikołaj Jakubowski](https://github.com/mkljakubowski)
+* [Jan Paw](https://github.com/explicite)
 * [Krzysztof Borowski](https://github.com/liosedhel)
 
 Feel free to use it, test it and to contribute!
