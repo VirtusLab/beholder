@@ -69,7 +69,7 @@ pomExtra := <url>https://github.com/VirtusLab/beholder</url>
 
 // Scoverage setup
 
-ScoverageSbtPlugin.ScoverageKeys.coverageMinimum := 48
+ScoverageSbtPlugin.ScoverageKeys.coverageMinimum := 65
 
 ScoverageSbtPlugin.ScoverageKeys.coverageFailOnMinimum := true
 
