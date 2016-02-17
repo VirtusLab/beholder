@@ -5,7 +5,7 @@ import org.virtuslab.beholder.utils.generators.CodeGenerationUtils._
 private[beholder] object FormFiltersGenerator extends App {
 
   final def generateCode = {
-    (2 to 18).map {
+    (2 to 22).map {
       implicit nr =>
 
         val fieldFilters = fill(nr => s"c${nr}Mapping: FieldType[A$nr, B$nr]", ",\n")

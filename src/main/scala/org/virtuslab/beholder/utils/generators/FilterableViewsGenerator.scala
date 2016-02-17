@@ -9,7 +9,7 @@ private[beholder] object FilterableViewsGenerator extends App {
   /**
    * generate code for [db.FilterableViewsGenerateCode]
    */
-  def generate = (2 to 18).map(generateSingle)
+  def generate = (2 to 22).map(generateSingle)
 
   /** create code for single "create view method" */
   private def generateSingle(nr: Int) = {
