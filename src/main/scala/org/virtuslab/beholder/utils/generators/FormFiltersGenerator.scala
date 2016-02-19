@@ -3,7 +3,7 @@ package org.virtuslab.beholder.utils.generators
 import org.virtuslab.beholder.utils.generators.CodeGenerationUtils._
 
 private[beholder] object FormFiltersGenerator extends App {
-
+  //TODO remove/update this!
   final def generateCode = {
     (3 to 18).map {
       implicit nr =>

@@ -3,12 +3,13 @@ package org.virtuslab.beholder.suites
 import java.sql.Date
 
 import org.joda.time.DateTime
-import org.virtuslab.beholder.AppTest
 import org.virtuslab.beholder.filters._
+import org.virtuslab.beholder.view.UserMachineViewRow
 
-trait FiltersTestSuite[Formatter] extends BaseSuite[Formatter] {
-  self: AppTest =>
+trait FiltersTestSuite extends BaseSuite with RangeFiltersSuite {
 
+  // TODO add enums
+  // TODO add negative tests
   /*
     UserMachineViewRow(a@a.pl,Ubuntu,4,2014-12-05,Some(1.00))
     UserMachineViewRow(o@a.pl,Ubuntu,4,2014-12-05,Some(1.00))
@@ -18,91 +19,76 @@ trait FiltersTestSuite[Formatter] extends BaseSuite[Formatter] {
   it should "query all entities for empty filter" in baseFilterTest {
     data =>
       import data._
-      val all = doFilters(data, baseFilter)
 
-      all should contain theSameElementsAs allFromDb
+      filtering(FilterDefinition.empty) shouldResultIn allUserMachineRows
   }
 
   it should "order by argument asc correctly" in baseFilterTest {
     data =>
       import data._
 
-      val fromDbOrderedByCores = allFromDb.sortBy(view => (view.cores, view.email))
-      val orderByCore = doFilters(data, baseFilter.copy(orderBy = Some(Order("cores", asc = true))))
+      val fromDbOrderedByCores = allUserMachineRows.sortBy(view => (view.cores, view.email))
+      val orderByCore = FilterDefinition.empty.withOrder("cores")
 
-      orderByCore should contain theSameElementsInOrderAs fromDbOrderedByCores
+      filtering(orderByCore) shouldResultIn fromDbOrderedByCores
   }
 
   it should "order by argument desc correctly" in baseFilterTest {
     data =>
       import data._
-      val orderByCoreDesc = doFilters(data, baseFilter.copy(orderBy = Some(Order("cores", asc = false))))
-      val fromDbOrderedByCoresDesc = allFromDb.sortBy(view => (-view.cores, view.email))
+      val orderByCoreDesc =  FilterDefinition.empty.withOrder("cores", asc = false)
+      val fromDbOrderedByCoresDesc = allUserMachineRows.sortBy(view => (-view.cores, view.email))
 
-      orderByCoreDesc should contain theSameElementsInOrderAs fromDbOrderedByCoresDesc
+      filtering(orderByCoreDesc) shouldResultIn fromDbOrderedByCoresDesc
   }
 
   it should "take correctly" in baseFilterTest {
     data =>
       import data._
-      val orderByCoreDesc = doFilters(data, baseFilter.copy(orderBy = Some(Order("cores", asc = false)), take = Some(2)))
-      val fromDbOrderedByCoresDesc = allFromDb.sortBy(view => (-view.cores, view.email))
+      val orderByCoreDesc = FilterDefinition.empty.withOrder("cores", asc = false).copy(take = Some(2))
+      val fromDbOrderedByCoresDesc = allUserMachineRows.sortBy(view => (-view.cores, view.email))
 
-      orderByCoreDesc should contain theSameElementsInOrderAs fromDbOrderedByCoresDesc.take(2)
+      filtering(orderByCoreDesc) shouldResultIn fromDbOrderedByCoresDesc
   }
 
   it should "skip correctly" in baseFilterTest {
     data =>
       import data._
-      val orderByCoreDesc = doFilters(data, baseFilter.copy(orderBy = Some(Order("cores", asc = false)), skip = Some(1)))
-      val fromDbOrderedByCoresDesc = allFromDb.sortBy(view => (-view.cores, view.email))
+      val orderByCoreDesc = FilterDefinition.empty.withOrder("cores", asc = false).copy(skip = Some(1))
+      val fromDbOrderedByCoresDesc = allUserMachineRows.sortBy(view => (-view.cores, view.email))
 
-      orderByCoreDesc should contain theSameElementsInOrderAs fromDbOrderedByCoresDesc.drop(1)
+      filtering(orderByCoreDesc) shouldResultIn fromDbOrderedByCoresDesc
   }
 
   it should "filter by int field" in baseFilterTest {
     data =>
       import data._
-      val orderByCoreDesc = doFilters(data, baseFilter.copy(data = baseFilter.data.updated(2, Some(2))))
-      val fromDbOrderedByCoresDesc = allFromDb.filter(_.cores == 2)
+      val orderByCoreDesc = updatedDefinition("cores", 4)
+      val fromDbOrderedByCoresDesc = allUserMachineRows.filter(_.cores == 4)
 
-      orderByCoreDesc should contain theSameElementsInOrderAs fromDbOrderedByCoresDesc.drop(1)
+      filtering(orderByCoreDesc) shouldResultIn fromDbOrderedByCoresDesc
   }
 
   //h2db does not have ilike operator
   ignore should "filter by string field" in baseFilterTest {
     data =>
       import data._
-      val orderByCoreDesc = doFilters(data, baseFilter.copy(data = baseFilter.data.updated(1, Some("buntu"))))
-      val fromDbOrderedByCoresDesc = allFromDb.filter(_.system.contains("buntu"))
+      val newSystem = "buntu"
+      val orderByCoreDesc = updatedDefinition("system", newSystem)
+      val fromDbOrderedByCoresDesc = allUserMachineRows.filter(_.system.contains(newSystem))
 
-      orderByCoreDesc should contain theSameElementsInOrderAs fromDbOrderedByCoresDesc.drop(1)
+      filtering(orderByCoreDesc) shouldResultIn fromDbOrderedByCoresDesc
   }
 
   it should "not crash for date option" in baseFilterTest {
     data =>
       import data._
-      val a = baseFilter.data
       val toDate = new Date(DateTime.now().minusHours(24).getMillis)
-      val dataRange = Some(FilterRange(None, Some(toDate)))
+      val dataRange = FilterRange(None, Some(toDate))
 
-      val newVersion = baseFilter.copy(data = a.updated(3, dataRange))
-      val fromdbWithCorrectDates = allFromDb.filter(_.created.before(toDate))
+      val newVersion = updatedDefinition("created", dataRange)
+      val fromdbWithCorrectDates = allUserMachineRows.filter(_.created.before(toDate))
 
-      val withCorrectDates = doFilters(data, newVersion)
-      withCorrectDates should contain theSameElementsInOrderAs fromdbWithCorrectDates
-  }
-
-  it should "skip correctly and return correct total amount of entities" in baseFilterTest {
-    data =>
-      import data._
-
-      val filterData = filter.filterWithTotalEntitiesNumber(baseFilter.copy(orderBy = Some(Order("cores", asc = false)), skip = Some(1)))
-      val fromDbOrderedByCoresDesc = allFromDb.sortBy(view => (-view.cores, view.email))
-
-      filterData.content should contain theSameElementsInOrderAs fromDbOrderedByCoresDesc.drop(1)
-
-      filterData.total shouldEqual allFromDb.size
-
+      filtering(newVersion) shouldResultIn fromdbWithCorrectDates
   }
 }

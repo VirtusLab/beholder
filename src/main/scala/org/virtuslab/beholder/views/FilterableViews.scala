@@ -1,12 +1,29 @@
 package org.virtuslab.beholder.views
 
-import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
+import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
+import slick.lifted.{ Shape, RepShape, ShapeLevel }
 
 import scala.reflect.ClassTag
-import scala.slick.ast.TypedType
-import scala.slick.lifted.{ Column, TableQuery, Tag }
+import slick.ast.{ BaseTypedType, TypedType }
 
-object FilterableViews extends FilterableViewsGenerateCode {
+class FilterShape[T](val tt: TypedType[T], val shape: Shape[FlatShapeLevel, Rep[T], T, Rep[T]])
+
+object FilterShape {
+  import scala.language.implicitConversions
+
+  implicit def baseFilter2FilterShape[T](implicit tt: BaseTypedType[T]): FilterShape[T] = new FilterShape[T](tt, implicitly)
+  implicit def baseFilter2FilterOptionShape[T](implicit tt: BaseTypedType[T]): FilterShape[Option[T]] =
+    new FilterShape[Option[T]](implicitly[TypedType[Option[T]]], implicitly)
+}
+
+trait FilterableViewsImplicits {
+  import scala.language.implicitConversions
+
+  protected implicit def fs2S[T: FilterShape] = implicitly[FilterShape[T]].shape
+  protected implicit def fs2TT[T: FilterShape]: TypedType[T] = implicitly[FilterShape[T]].tt
+}
+
+object FilterableViews extends FilterableViewsGenerateCode with FilterableViewsImplicits {
 
   /**
    * create view with 2 fields
@@ -21,12 +38,11 @@ object FilterableViews extends FilterableViewsGenerateCode {
    * @tparam B sec field
    * @return table for this view
    */
-  def createView[T: ClassTag, E, A: TypedType, B: TypedType](
+  def createView[T: ClassTag, E, A: FilterShape, B: FilterShape](
     name: String,
     apply: (A, B) => T,
     unapply: T => Option[(A, B)],
-    baseQuery: Query[E, _, Seq]
-  )(mappings: E => ((String, Column[A]), (String, Column[B]))): TableQuery[BaseView2[T, A, B]] = {
+    baseQuery: Query[E, _, Seq])(mappings: E => ((String, Rep[A]), (String, Rep[B]))): TableQuery[BaseView2[T, A, B]] = {
 
     var columnsNames = Seq[String]()
 
@@ -50,6 +66,7 @@ object FilterableViews extends FilterableViewsGenerateCode {
 
   /**
    * Base view for view with 2 fields
+   *
    * @param name name of view
    * @param columnNames names of view columns - columnsNames(0) -> c1 etc
    * @param apply to create entity
@@ -59,24 +76,25 @@ object FilterableViews extends FilterableViewsGenerateCode {
    * @tparam A first field
    * @tparam B sec field
    */
-  class BaseView2[T: ClassTag, A: TypedType, B: TypedType](
+  class BaseView2[T: ClassTag, A: FilterShape, B: FilterShape](
       tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A, B) => T,
       unapply: T => Option[(A, B)],
-      val query: Query[_, T, Seq]
-  ) extends BaseView[A, T](tag, name) {
+      val query: Query[_, T, Seq]) extends BaseView[T](tag, name) {
     def c1 = column[A](columnNames(0))
 
     def c2 = column[B](columnNames(1))
 
     override def id = c1
 
-    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
+    override protected val columns: Seq[(String, this.type => Rep[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2)
     )
+
+    implicit val shape: Shape[_ <: slick.lifted.FlatShapeLevel, (slick.lifted.Rep[A], slick.lifted.Rep[B]), (A, B), _] = implicitly
 
     def * = (c1, c2) <> (apply.tupled, unapply)
   }

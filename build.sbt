@@ -13,12 +13,12 @@ resolvers += Resolver.sonatypeRepo("releases")
 resolvers += Resolver.sonatypeRepo("snapshots")
 
 libraryDependencies ++= Seq(
-  "com.typesafe.slick" %% "slick" % "2.1.0",
-  "com.typesafe.play" %% "play-slick" % "0.8.1",
-  "org.virtuslab" %% "unicorn" % "0.6.3",
-  "org.scalatest" %% "scalatest" % "2.2.3" % "test",
-  "com.typesafe.play" %% "play-test" % "2.3.9" % "test",
-  "com.h2database" % "h2" % "1.4.184" % "test"
+  "com.typesafe.slick" %% "slick" % "3.0.3",
+  "com.typesafe.play" %% "play-slick" % "1.0.0",
+  "org.virtuslab" %% "unicorn" % "0.7.0",
+  "org.scalatest" %% "scalatest" % "2.2.5" % "test",
+  "com.typesafe.play" %% "play-test" % "2.4.2" % "test",
+  "com.h2database" % "h2" % "1.4.187" % "test"
 )
 
 parallelExecution in Test := false
@@ -29,8 +29,8 @@ scalacOptions ++= Seq(
   "-deprecation",
   "-unchecked",
   "-feature",
-  "-Xlint",
-  "-Xfatal-warnings"
+  "-Xlint"/*,
+  "-Xfatal-warnings"*/
 )
 
 com.typesafe.sbt.SbtScalariform.scalariformSettings

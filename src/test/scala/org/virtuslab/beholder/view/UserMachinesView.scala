@@ -1,22 +1,23 @@
-package org.virtuslab.beholder
+package org.virtuslab.beholder.view
 
 import java.sql.Date
 
-import org.virtuslab.beholder.model.{ Machines, Users }
+import org.virtuslab.beholder.model.{MachineId, Machines, UserId, Users}
 import org.virtuslab.beholder.views.FilterableViews
+import org.virtuslab.beholder.{AppTest, ModelIncluded, TestInvoker}
 import org.virtuslab.unicorn.LongUnicornPlay._
-import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
+import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
 
 case class UserMachineViewRow(
   email: String,
   system: String,
   cores: Int,
   created: Date,
-  capacity: Option[BigDecimal]
-)
+  capacity: Option[BigDecimal],
+  userId: UserId,
+  machineId: MachineId)
 
 trait UserMachinesView extends ModelIncluded {
-  self: AppTest =>
 
   def createUsersMachineView(implicit session: Session) = {
     //query that is a base for view
@@ -33,16 +34,19 @@ trait UserMachinesView extends ModelIncluded {
         UserMachineViewRow.unapply _,
         baseQuery = usersMachinesQuery
       ) {
-        case (user, machine) =>
-          //naming the fields
-          ("email" -> user.email,
-            "system" -> machine.system,
-            "cores" -> machine.cores,
-            "created" -> machine.created,
-            "capacity" -> machine.capacity)
-      }
+          case (user, machine) =>
+            //naming the fields
+            ("email" -> user.email,
+              "system" -> machine.system,
+              "cores" -> machine.cores,
+              "created" -> machine.created,
+              "capacity" -> machine.capacity,
+              "userId" -> user.id,
+              "machineId" -> machine.id
+              )
+        }
 
-      tableQuery.viewDDL.create
+      TestInvoker.invokeAction(tableQuery.viewDDL.create)
     }.tableQuery
   }
 }

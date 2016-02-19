@@ -2,37 +2,35 @@ package org.virtuslab.beholder.views
 
 import org.virtuslab.unicorn.LongUnicornPlay._
 import org.virtuslab.unicorn.LongUnicornPlay.driver.DDL
-import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
+import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
 
 import scala.language.existentials
-import scala.slick.lifted.{ TableQuery, Tag }
+import slick.lifted.{ TableQuery, Tag }
 
-/**
- *
- * @param viewName name of view
- * @tparam Id entity id type
- * @tparam Entity entity type
- */
-abstract class BaseView[Id, Entity](tag: Tag, val viewName: String) extends BaseTable[Entity](tag, viewName) {
+//TODO remove unicorn from view
+abstract class BaseView[Entity](tag: Tag, val viewName: String) extends BaseTable[Entity](tag, viewName) {
 
   /**
    *
    */
-  protected val columns: Seq[(String, this.type => Column[_])]
-  private lazy val columnsMap: Map[String, this.type => Column[_]] = columns.toMap
+  protected val columns: Seq[(String, this.type => Rep[_])]
+  private lazy val columnsMap: Map[String, this.type => Rep[_]] = columns.toMap
 
   final def columnsNames = columns.map(_._1)
 
   /**
    * find column by name
    */
-  def columnByName[A](name: String): Column[_] =
+  def columnByName(name: String): Rep[_] =
     columnsMap(name).apply(this)
+
+  def typedColumnByName[T](name: String): Rep[T] =
+    columnsMap(name).apply(this).asInstanceOf[Rep[T]]
 
   /**
    * column that is tread as view 'id' - it is use eg. for default sort
    */
-  def id: Column[Id]
+  def id: Rep[_]
 
   /**
    * query that build this view
@@ -43,11 +41,11 @@ abstract class BaseView[Id, Entity](tag: Tag, val viewName: String) extends Base
 
 object BaseView {
 
-  implicit class WithViewDDL(val query: TableQuery[_ <: BaseView[_, _]]) extends AnyVal {
-    def viewDDL = ViewDDL(query.baseTableRow)
+  implicit class WithViewDDL(val query: TableQuery[_ <: BaseView[_]]) extends AnyVal {
+    def viewDDL = ViewDDL(query.shaped.value)
   }
 
-  case class ViewDDL(table: BaseView[_, _]) extends DDL {
+  case class ViewDDL(table: BaseView[_]) extends DDL {
     protected def createPhase1: Iterable[String] = {
       val viewName = table.viewName
       val fields = table.columns.map { case (name, _) => '"' + name + '"' }.mkString(", ")
@@ -65,7 +63,7 @@ object BaseView {
     /**
      * util to print select query sql
      */
-    private def selectStatements(query: Query[_, _, Seq]): String = query.selectStatement
+    private def selectStatements(query: Query[_, _, Seq]): String = query.result.statements.mkString
 
   }
 

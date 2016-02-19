@@ -1,9 +1,11 @@
-package org.virtuslab.beholder
+package org.virtuslab.beholder.view
 
-import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
+import org.virtuslab.beholder.AppTest
+import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
 
 class ViewsTest extends AppTest with UserMachinesView {
 
+  //TODO rename this!!
   "view" should "be queryable" in rollbackWithModel {
     implicit session =>
 

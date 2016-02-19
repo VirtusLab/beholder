@@ -1,29 +1,55 @@
 package org.virtuslab.beholder.suites
 
-import org.virtuslab.beholder.filters.{ FilterAPI, FilterDefinition }
-import org.virtuslab.beholder.{ AppTest, UserMachineViewRow, UserMachinesView }
-import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
+import org.virtuslab.beholder.filters._
+import org.virtuslab.beholder.model._
+import org.virtuslab.beholder.view.{UserMachineViewRow, UserMachinesView}
+import org.virtuslab.beholder.{AppTest, BaseTest}
+import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
 
-trait BaseSuite[Formatter] extends UserMachinesView {
-  self: AppTest =>
-  def createFilter(data: BaseFilterData): FilterAPI[UserMachineViewRow, Formatter]
+trait BaseSuite extends UserMachinesView {
+
+  def testResults(data: BaseFilterData, definition: FilterDefinition, expected: Seq[UserMachineViewRow], totalCount: Int)
 
   protected def baseFilterTest[A](testImplementation: BaseFilterData => A) = rollbackWithModel {
     implicit session: Session =>
       testImplementation(new BaseFilterData())
   }
 
+
+
   protected class BaseFilterData(implicit val session: Session) extends PopulatedDatabase {
+
+    case class filtering(query: FilterDefinition) {
+      def shouldResultIn(expected: Seq[UserMachineViewRow]): Unit = {
+        //val result = doFullFilter(BaseFilterData.this, fromFilter)
+
+        val dropedAndSkiped = {
+          val dropped = expected.drop(query.skip.getOrElse(0))
+          query.take.map(dropped.take).getOrElse(dropped)
+        }
+
+        testResults(BaseFilterData.this, query, dropedAndSkiped, expected.size)
+      }
+    }
 
     val view = createUsersMachineView
 
-    lazy val filter = createFilter(this)
+    def updatedDefinition(field: String, value: Any, definition: FilterDefinition = FilterDefinition.empty) =
+      definition.copy(
+        constrains = definition.constrains.copy(
+          fieldConstrains = definition.constrains.fieldConstrains + (field -> value)
+        )
+      )
 
-    lazy val baseFilter = filter.emptyFilterData
-    lazy val baseFilterData = baseFilter.data
+    def addJoin(name: String, constrains: FilterConstrains, definition: FilterDefinition = FilterDefinition.empty) =
+      definition.copy(
+        constrains = definition.constrains.copy(
+          nestedConstrains = definition.constrains.nestedConstrains + (name -> constrains)
+        )
+      )
 
-    lazy val allFromDb: Seq[UserMachineViewRow] = view.list
+    lazy val allUserMachineRows: Seq[UserMachineViewRow] = view.list
+
+    lazy val allProjects: Seq[Project] = TableQuery[Projects].list
   }
-
-  def doFilters(data: BaseFilterData, currentFilter: FilterDefinition): Seq[UserMachineViewRow]
 }

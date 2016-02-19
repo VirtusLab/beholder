@@ -1,6 +1,6 @@
 package org.virtuslab.beholder.repositories
 
-import org.virtuslab.beholder.model.{ Machine, MachineId, Machines }
+import org.virtuslab.beholder.model._
 import org.virtuslab.unicorn.LongUnicornPlay._
 import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
 
@@ -14,4 +14,5 @@ import slick.lifted.TableQuery
  *
  * It's a trait, so you can use your favourite DI method to instantiate/mix it to your application.
  */
-class MachineRepository extends BaseIdRepository[MachineId, Machine, Machines](TableQuery[Machines])
+class MachineParameterRepository
+  extends BaseIdRepository[MachineParameterId, MachineParameter, MachineParameters](TableQuery[MachineParameters])

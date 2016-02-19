@@ -1,9 +1,9 @@
 package org.virtuslab.beholder.model
 
 import org.virtuslab.unicorn.LongUnicornPlay._
-import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
+import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
 
-import scala.slick.lifted.Tag
+import slick.lifted.Tag
 
 /** Id class for type-safe joins and queries. */
 case class UserId(id: Long) extends AnyVal with BaseId
@@ -26,8 +26,7 @@ case class User(
   id: Option[UserId],
   email: String,
   firstName: String,
-  lastName: String
-) extends WithId[UserId]
+  lastName: String) extends WithId[UserId]
 
 /** Table definition for users. */
 class Users(tag: Tag) extends IdTable[UserId, User](tag, "USERS") {

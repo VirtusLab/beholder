@@ -1,30 +1,28 @@
 package org.virtuslab.beholder.views
 
-import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
+import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
 
 import scala.reflect.ClassTag
-import scala.slick.ast.TypedType
-import scala.slick.lifted.{ Column, TableQuery, Tag }
+import slick.lifted.{ TupleShape, Rep, TableQuery, Tag }
 
 /**
  * Generated code for filterable views.
  */
-private[beholder] trait FilterableViewsGenerateCode {
+private[beholder] trait FilterableViewsGenerateCode extends FilterableViewsImplicits {
 
-  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType](
+  def createView[T: ClassTag, E, A1: FilterShape, A2: FilterShape, A3: FilterShape](
     name: String,
     apply: (A1, A2, A3) => T,
     unapply: T => Option[(A1, A2, A3)],
-    baseQuery: Query[E, _, Seq]
-  )(
-    mappings: E => ((String, Column[A1]), (String, Column[A2]), (String, Column[A3]))
-  ): TableQuery[BaseView3[T, A1, A2, A3]] = {
+    baseQuery: Query[E, _, Seq])(
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]))): TableQuery[BaseView3[T, A1, A2, A3]] = {
 
     var columnsNames = Seq[String]()
 
     val preparedQuery: Query[_, T, Seq] = {
       val mappedQuery = baseQuery.map {
         t =>
+
           mappings(t) match {
             case ((name1, c1), (name2, c2), (name3, c3)) =>
               columnsNames = Seq(name1, name2, name3)
@@ -40,21 +38,20 @@ private[beholder] trait FilterableViewsGenerateCode {
 
   }
 
-  class BaseView3[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType](
+  class BaseView3[T: ClassTag, A1: FilterShape, A2: FilterShape, A3: FilterShape](
       tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3) => T,
       unapply: T => Option[(A1, A2, A3)],
-      val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq]) extends BaseView[T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
 
     override def id = c1
 
-    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
+    override protected val columns: Seq[(String, this.type => Rep[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3)
@@ -63,14 +60,12 @@ private[beholder] trait FilterableViewsGenerateCode {
     def * = (c1, c2, c3) <> (apply.tupled, unapply)
   }
 
-  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType](
+  def createView[T: ClassTag, E, A1: FilterShape, A2: FilterShape, A3: FilterShape, A4: FilterShape](
     name: String,
     apply: (A1, A2, A3, A4) => T,
     unapply: T => Option[(A1, A2, A3, A4)],
-    baseQuery: Query[E, _, Seq]
-  )(
-    mappings: E => ((String, Column[A1]), (String, Column[A2]), (String, Column[A3]), (String, Column[A4]))
-  ): TableQuery[BaseView4[T, A1, A2, A3, A4]] = {
+    baseQuery: Query[E, _, Seq])(
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]))): TableQuery[BaseView4[T, A1, A2, A3, A4]] = {
 
     var columnsNames = Seq[String]()
 
@@ -92,14 +87,13 @@ private[beholder] trait FilterableViewsGenerateCode {
 
   }
 
-  class BaseView4[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType](
+  class BaseView4[T: ClassTag, A1: FilterShape, A2: FilterShape, A3: FilterShape, A4: FilterShape](
       tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4) => T,
       unapply: T => Option[(A1, A2, A3, A4)],
-      val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq]) extends BaseView[T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -107,7 +101,7 @@ private[beholder] trait FilterableViewsGenerateCode {
 
     override def id = c1
 
-    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
+    override protected val columns: Seq[(String, this.type => Rep[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
@@ -117,14 +111,12 @@ private[beholder] trait FilterableViewsGenerateCode {
     def * = (c1, c2, c3, c4) <> (apply.tupled, unapply)
   }
 
-  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType](
+  def createView[T: ClassTag, E, A1: FilterShape, A2: FilterShape, A3: FilterShape, A4: FilterShape, A5: FilterShape](
     name: String,
     apply: (A1, A2, A3, A4, A5) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5)],
-    baseQuery: Query[E, _, Seq]
-  )(
-    mappings: E => ((String, Column[A1]), (String, Column[A2]), (String, Column[A3]), (String, Column[A4]), (String, Column[A5]))
-  ): TableQuery[BaseView5[T, A1, A2, A3, A4, A5]] = {
+    baseQuery: Query[E, _, Seq])(
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]))): TableQuery[BaseView5[T, A1, A2, A3, A4, A5]] = {
 
     var columnsNames = Seq[String]()
 
@@ -146,14 +138,13 @@ private[beholder] trait FilterableViewsGenerateCode {
 
   }
 
-  class BaseView5[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType](
+  class BaseView5[T: ClassTag, A1: FilterShape, A2: FilterShape, A3: FilterShape, A4: FilterShape, A5: FilterShape](
       tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5)],
-      val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq]) extends BaseView[T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -162,7 +153,7 @@ private[beholder] trait FilterableViewsGenerateCode {
 
     override def id = c1
 
-    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
+    override protected val columns: Seq[(String, this.type => Rep[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
@@ -173,14 +164,12 @@ private[beholder] trait FilterableViewsGenerateCode {
     def * = (c1, c2, c3, c4, c5) <> (apply.tupled, unapply)
   }
 
-  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType](
+  def createView[T: ClassTag, E, A1: FilterShape, A2: FilterShape, A3: FilterShape, A4: FilterShape, A5: FilterShape, A6: FilterShape](
     name: String,
     apply: (A1, A2, A3, A4, A5, A6) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6)],
-    baseQuery: Query[E, _, Seq]
-  )(
-    mappings: E => ((String, Column[A1]), (String, Column[A2]), (String, Column[A3]), (String, Column[A4]), (String, Column[A5]), (String, Column[A6]))
-  ): TableQuery[BaseView6[T, A1, A2, A3, A4, A5, A6]] = {
+    baseQuery: Query[E, _, Seq])(
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]))): TableQuery[BaseView6[T, A1, A2, A3, A4, A5, A6]] = {
 
     var columnsNames = Seq[String]()
 
@@ -202,14 +191,13 @@ private[beholder] trait FilterableViewsGenerateCode {
 
   }
 
-  class BaseView6[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType](
+  class BaseView6[T: ClassTag, A1: FilterShape, A2: FilterShape, A3: FilterShape, A4: FilterShape, A5: FilterShape, A6: FilterShape](
       tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6)],
-      val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq]) extends BaseView[T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -219,7 +207,7 @@ private[beholder] trait FilterableViewsGenerateCode {
 
     override def id = c1
 
-    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
+    override protected val columns: Seq[(String, this.type => Rep[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
@@ -231,14 +219,12 @@ private[beholder] trait FilterableViewsGenerateCode {
     def * = (c1, c2, c3, c4, c5, c6) <> (apply.tupled, unapply)
   }
 
-  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType](
+  def createView[T: ClassTag, E, A1: FilterShape, A2: FilterShape, A3: FilterShape, A4: FilterShape, A5: FilterShape, A6: FilterShape, A7: FilterShape](
     name: String,
     apply: (A1, A2, A3, A4, A5, A6, A7) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7)],
-    baseQuery: Query[E, _, Seq]
-  )(
-    mappings: E => ((String, Column[A1]), (String, Column[A2]), (String, Column[A3]), (String, Column[A4]), (String, Column[A5]), (String, Column[A6]), (String, Column[A7]))
-  ): TableQuery[BaseView7[T, A1, A2, A3, A4, A5, A6, A7]] = {
+    baseQuery: Query[E, _, Seq])(
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]))): TableQuery[BaseView7[T, A1, A2, A3, A4, A5, A6, A7]] = {
 
     var columnsNames = Seq[String]()
 
@@ -260,14 +246,13 @@ private[beholder] trait FilterableViewsGenerateCode {
 
   }
 
-  class BaseView7[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType](
+  class BaseView7[T: ClassTag, A1: FilterShape, A2: FilterShape, A3: FilterShape, A4: FilterShape, A5: FilterShape, A6: FilterShape, A7: FilterShape](
       tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7)],
-      val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq]) extends BaseView[T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -278,7 +263,7 @@ private[beholder] trait FilterableViewsGenerateCode {
 
     override def id = c1
 
-    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
+    override protected val columns: Seq[(String, this.type => Rep[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
@@ -291,14 +276,12 @@ private[beholder] trait FilterableViewsGenerateCode {
     def * = (c1, c2, c3, c4, c5, c6, c7) <> (apply.tupled, unapply)
   }
 
-  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType](
+  def createView[T: ClassTag, E, A1: FilterShape, A2: FilterShape, A3: FilterShape, A4: FilterShape, A5: FilterShape, A6: FilterShape, A7: FilterShape, A8: FilterShape](
     name: String,
     apply: (A1, A2, A3, A4, A5, A6, A7, A8) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8)],
-    baseQuery: Query[E, _, Seq]
-  )(
-    mappings: E => ((String, Column[A1]), (String, Column[A2]), (String, Column[A3]), (String, Column[A4]), (String, Column[A5]), (String, Column[A6]), (String, Column[A7]), (String, Column[A8]))
-  ): TableQuery[BaseView8[T, A1, A2, A3, A4, A5, A6, A7, A8]] = {
+    baseQuery: Query[E, _, Seq])(
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]))): TableQuery[BaseView8[T, A1, A2, A3, A4, A5, A6, A7, A8]] = {
 
     var columnsNames = Seq[String]()
 
@@ -320,14 +303,13 @@ private[beholder] trait FilterableViewsGenerateCode {
 
   }
 
-  class BaseView8[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType](
+  class BaseView8[T: ClassTag, A1: FilterShape, A2: FilterShape, A3: FilterShape, A4: FilterShape, A5: FilterShape, A6: FilterShape, A7: FilterShape, A8: FilterShape](
       tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8)],
-      val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq]) extends BaseView[T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -339,7 +321,7 @@ private[beholder] trait FilterableViewsGenerateCode {
 
     override def id = c1
 
-    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
+    override protected val columns: Seq[(String, this.type => Rep[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
@@ -353,14 +335,12 @@ private[beholder] trait FilterableViewsGenerateCode {
     def * = (c1, c2, c3, c4, c5, c6, c7, c8) <> (apply.tupled, unapply)
   }
 
-  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType](
+  def createView[T: ClassTag, E, A1: FilterShape, A2: FilterShape, A3: FilterShape, A4: FilterShape, A5: FilterShape, A6: FilterShape, A7: FilterShape, A8: FilterShape, A9: FilterShape](
     name: String,
     apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9)],
-    baseQuery: Query[E, _, Seq]
-  )(
-    mappings: E => ((String, Column[A1]), (String, Column[A2]), (String, Column[A3]), (String, Column[A4]), (String, Column[A5]), (String, Column[A6]), (String, Column[A7]), (String, Column[A8]), (String, Column[A9]))
-  ): TableQuery[BaseView9[T, A1, A2, A3, A4, A5, A6, A7, A8, A9]] = {
+    baseQuery: Query[E, _, Seq])(
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]))): TableQuery[BaseView9[T, A1, A2, A3, A4, A5, A6, A7, A8, A9]] = {
 
     var columnsNames = Seq[String]()
 
@@ -382,14 +362,13 @@ private[beholder] trait FilterableViewsGenerateCode {
 
   }
 
-  class BaseView9[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType](
+  class BaseView9[T: ClassTag, A1: FilterShape, A2: FilterShape, A3: FilterShape, A4: FilterShape, A5: FilterShape, A6: FilterShape, A7: FilterShape, A8: FilterShape, A9: FilterShape](
       tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9)],
-      val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq]) extends BaseView[T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -402,7 +381,7 @@ private[beholder] trait FilterableViewsGenerateCode {
 
     override def id = c1
 
-    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
+    override protected val columns: Seq[(String, this.type => Rep[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
@@ -417,14 +396,12 @@ private[beholder] trait FilterableViewsGenerateCode {
     def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9) <> (apply.tupled, unapply)
   }
 
-  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType](
+  def createView[T: ClassTag, E, A1: FilterShape, A2: FilterShape, A3: FilterShape, A4: FilterShape, A5: FilterShape, A6: FilterShape, A7: FilterShape, A8: FilterShape, A9: FilterShape, A10: FilterShape](
     name: String,
     apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10)],
-    baseQuery: Query[E, _, Seq]
-  )(
-    mappings: E => ((String, Column[A1]), (String, Column[A2]), (String, Column[A3]), (String, Column[A4]), (String, Column[A5]), (String, Column[A6]), (String, Column[A7]), (String, Column[A8]), (String, Column[A9]), (String, Column[A10]))
-  ): TableQuery[BaseView10[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10]] = {
+    baseQuery: Query[E, _, Seq])(
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]))): TableQuery[BaseView10[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10]] = {
 
     var columnsNames = Seq[String]()
 
@@ -446,14 +423,13 @@ private[beholder] trait FilterableViewsGenerateCode {
 
   }
 
-  class BaseView10[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType](
+  class BaseView10[T: ClassTag, A1: FilterShape, A2: FilterShape, A3: FilterShape, A4: FilterShape, A5: FilterShape, A6: FilterShape, A7: FilterShape, A8: FilterShape, A9: FilterShape, A10: FilterShape](
       tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10)],
-      val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq]) extends BaseView[T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -467,7 +443,7 @@ private[beholder] trait FilterableViewsGenerateCode {
 
     override def id = c1
 
-    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
+    override protected val columns: Seq[(String, this.type => Rep[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
@@ -483,14 +459,12 @@ private[beholder] trait FilterableViewsGenerateCode {
     def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10) <> (apply.tupled, unapply)
   }
 
-  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType](
+  def createView[T: ClassTag, E, A1: FilterShape, A2: FilterShape, A3: FilterShape, A4: FilterShape, A5: FilterShape, A6: FilterShape, A7: FilterShape, A8: FilterShape, A9: FilterShape, A10: FilterShape, A11: FilterShape](
     name: String,
     apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11)],
-    baseQuery: Query[E, _, Seq]
-  )(
-    mappings: E => ((String, Column[A1]), (String, Column[A2]), (String, Column[A3]), (String, Column[A4]), (String, Column[A5]), (String, Column[A6]), (String, Column[A7]), (String, Column[A8]), (String, Column[A9]), (String, Column[A10]), (String, Column[A11]))
-  ): TableQuery[BaseView11[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11]] = {
+    baseQuery: Query[E, _, Seq])(
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11]))): TableQuery[BaseView11[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11]] = {
 
     var columnsNames = Seq[String]()
 
@@ -512,14 +486,13 @@ private[beholder] trait FilterableViewsGenerateCode {
 
   }
 
-  class BaseView11[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType](
+  class BaseView11[T: ClassTag, A1: FilterShape, A2: FilterShape, A3: FilterShape, A4: FilterShape, A5: FilterShape, A6: FilterShape, A7: FilterShape, A8: FilterShape, A9: FilterShape, A10: FilterShape, A11: FilterShape](
       tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11)],
-      val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq]) extends BaseView[T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -534,7 +507,7 @@ private[beholder] trait FilterableViewsGenerateCode {
 
     override def id = c1
 
-    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
+    override protected val columns: Seq[(String, this.type => Rep[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
@@ -551,14 +524,12 @@ private[beholder] trait FilterableViewsGenerateCode {
     def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11) <> (apply.tupled, unapply)
   }
 
-  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType](
+  def createView[T: ClassTag, E, A1: FilterShape, A2: FilterShape, A3: FilterShape, A4: FilterShape, A5: FilterShape, A6: FilterShape, A7: FilterShape, A8: FilterShape, A9: FilterShape, A10: FilterShape, A11: FilterShape, A12: FilterShape](
     name: String,
     apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12)],
-    baseQuery: Query[E, _, Seq]
-  )(
-    mappings: E => ((String, Column[A1]), (String, Column[A2]), (String, Column[A3]), (String, Column[A4]), (String, Column[A5]), (String, Column[A6]), (String, Column[A7]), (String, Column[A8]), (String, Column[A9]), (String, Column[A10]), (String, Column[A11]), (String, Column[A12]))
-  ): TableQuery[BaseView12[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12]] = {
+    baseQuery: Query[E, _, Seq])(
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11]), (String, Rep[A12]))): TableQuery[BaseView12[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12]] = {
 
     var columnsNames = Seq[String]()
 
@@ -580,14 +551,13 @@ private[beholder] trait FilterableViewsGenerateCode {
 
   }
 
-  class BaseView12[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType](
+  class BaseView12[T: ClassTag, A1: FilterShape, A2: FilterShape, A3: FilterShape, A4: FilterShape, A5: FilterShape, A6: FilterShape, A7: FilterShape, A8: FilterShape, A9: FilterShape, A10: FilterShape, A11: FilterShape, A12: FilterShape](
       tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12)],
-      val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq]) extends BaseView[T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -603,7 +573,7 @@ private[beholder] trait FilterableViewsGenerateCode {
 
     override def id = c1
 
-    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
+    override protected val columns: Seq[(String, this.type => Rep[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
@@ -621,14 +591,12 @@ private[beholder] trait FilterableViewsGenerateCode {
     def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12) <> (apply.tupled, unapply)
   }
 
-  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType](
+  def createView[T: ClassTag, E, A1: FilterShape, A2: FilterShape, A3: FilterShape, A4: FilterShape, A5: FilterShape, A6: FilterShape, A7: FilterShape, A8: FilterShape, A9: FilterShape, A10: FilterShape, A11: FilterShape, A12: FilterShape, A13: FilterShape](
     name: String,
     apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13)],
-    baseQuery: Query[E, _, Seq]
-  )(
-    mappings: E => ((String, Column[A1]), (String, Column[A2]), (String, Column[A3]), (String, Column[A4]), (String, Column[A5]), (String, Column[A6]), (String, Column[A7]), (String, Column[A8]), (String, Column[A9]), (String, Column[A10]), (String, Column[A11]), (String, Column[A12]), (String, Column[A13]))
-  ): TableQuery[BaseView13[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13]] = {
+    baseQuery: Query[E, _, Seq])(
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11]), (String, Rep[A12]), (String, Rep[A13]))): TableQuery[BaseView13[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13]] = {
 
     var columnsNames = Seq[String]()
 
@@ -650,14 +618,13 @@ private[beholder] trait FilterableViewsGenerateCode {
 
   }
 
-  class BaseView13[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType](
+  class BaseView13[T: ClassTag, A1: FilterShape, A2: FilterShape, A3: FilterShape, A4: FilterShape, A5: FilterShape, A6: FilterShape, A7: FilterShape, A8: FilterShape, A9: FilterShape, A10: FilterShape, A11: FilterShape, A12: FilterShape, A13: FilterShape](
       tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13)],
-      val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq]) extends BaseView[T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -674,7 +641,7 @@ private[beholder] trait FilterableViewsGenerateCode {
 
     override def id = c1
 
-    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
+    override protected val columns: Seq[(String, this.type => Rep[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
@@ -693,14 +660,12 @@ private[beholder] trait FilterableViewsGenerateCode {
     def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13) <> (apply.tupled, unapply)
   }
 
-  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType](
+  def createView[T: ClassTag, E, A1: FilterShape, A2: FilterShape, A3: FilterShape, A4: FilterShape, A5: FilterShape, A6: FilterShape, A7: FilterShape, A8: FilterShape, A9: FilterShape, A10: FilterShape, A11: FilterShape, A12: FilterShape, A13: FilterShape, A14: FilterShape](
     name: String,
     apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14)],
-    baseQuery: Query[E, _, Seq]
-  )(
-    mappings: E => ((String, Column[A1]), (String, Column[A2]), (String, Column[A3]), (String, Column[A4]), (String, Column[A5]), (String, Column[A6]), (String, Column[A7]), (String, Column[A8]), (String, Column[A9]), (String, Column[A10]), (String, Column[A11]), (String, Column[A12]), (String, Column[A13]), (String, Column[A14]))
-  ): TableQuery[BaseView14[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14]] = {
+    baseQuery: Query[E, _, Seq])(
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11]), (String, Rep[A12]), (String, Rep[A13]), (String, Rep[A14]))): TableQuery[BaseView14[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14]] = {
 
     var columnsNames = Seq[String]()
 
@@ -722,14 +687,13 @@ private[beholder] trait FilterableViewsGenerateCode {
 
   }
 
-  class BaseView14[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType](
+  class BaseView14[T: ClassTag, A1: FilterShape, A2: FilterShape, A3: FilterShape, A4: FilterShape, A5: FilterShape, A6: FilterShape, A7: FilterShape, A8: FilterShape, A9: FilterShape, A10: FilterShape, A11: FilterShape, A12: FilterShape, A13: FilterShape, A14: FilterShape](
       tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14)],
-      val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq]) extends BaseView[T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -747,7 +711,7 @@ private[beholder] trait FilterableViewsGenerateCode {
 
     override def id = c1
 
-    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
+    override protected val columns: Seq[(String, this.type => Rep[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
@@ -767,14 +731,12 @@ private[beholder] trait FilterableViewsGenerateCode {
     def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14) <> (apply.tupled, unapply)
   }
 
-  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType](
+  def createView[T: ClassTag, E, A1: FilterShape, A2: FilterShape, A3: FilterShape, A4: FilterShape, A5: FilterShape, A6: FilterShape, A7: FilterShape, A8: FilterShape, A9: FilterShape, A10: FilterShape, A11: FilterShape, A12: FilterShape, A13: FilterShape, A14: FilterShape, A15: FilterShape](
     name: String,
     apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15)],
-    baseQuery: Query[E, _, Seq]
-  )(
-    mappings: E => ((String, Column[A1]), (String, Column[A2]), (String, Column[A3]), (String, Column[A4]), (String, Column[A5]), (String, Column[A6]), (String, Column[A7]), (String, Column[A8]), (String, Column[A9]), (String, Column[A10]), (String, Column[A11]), (String, Column[A12]), (String, Column[A13]), (String, Column[A14]), (String, Column[A15]))
-  ): TableQuery[BaseView15[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15]] = {
+    baseQuery: Query[E, _, Seq])(
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11]), (String, Rep[A12]), (String, Rep[A13]), (String, Rep[A14]), (String, Rep[A15]))): TableQuery[BaseView15[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15]] = {
 
     var columnsNames = Seq[String]()
 
@@ -796,14 +758,13 @@ private[beholder] trait FilterableViewsGenerateCode {
 
   }
 
-  class BaseView15[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType](
+  class BaseView15[T: ClassTag, A1: FilterShape, A2: FilterShape, A3: FilterShape, A4: FilterShape, A5: FilterShape, A6: FilterShape, A7: FilterShape, A8: FilterShape, A9: FilterShape, A10: FilterShape, A11: FilterShape, A12: FilterShape, A13: FilterShape, A14: FilterShape, A15: FilterShape](
       tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15)],
-      val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq]) extends BaseView[T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -822,7 +783,7 @@ private[beholder] trait FilterableViewsGenerateCode {
 
     override def id = c1
 
-    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
+    override protected val columns: Seq[(String, this.type => Rep[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
@@ -843,14 +804,12 @@ private[beholder] trait FilterableViewsGenerateCode {
     def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15) <> (apply.tupled, unapply)
   }
 
-  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType](
+  def createView[T: ClassTag, E, A1: FilterShape, A2: FilterShape, A3: FilterShape, A4: FilterShape, A5: FilterShape, A6: FilterShape, A7: FilterShape, A8: FilterShape, A9: FilterShape, A10: FilterShape, A11: FilterShape, A12: FilterShape, A13: FilterShape, A14: FilterShape, A15: FilterShape, A16: FilterShape](
     name: String,
     apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16)],
-    baseQuery: Query[E, _, Seq]
-  )(
-    mappings: E => ((String, Column[A1]), (String, Column[A2]), (String, Column[A3]), (String, Column[A4]), (String, Column[A5]), (String, Column[A6]), (String, Column[A7]), (String, Column[A8]), (String, Column[A9]), (String, Column[A10]), (String, Column[A11]), (String, Column[A12]), (String, Column[A13]), (String, Column[A14]), (String, Column[A15]), (String, Column[A16]))
-  ): TableQuery[BaseView16[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16]] = {
+    baseQuery: Query[E, _, Seq])(
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11]), (String, Rep[A12]), (String, Rep[A13]), (String, Rep[A14]), (String, Rep[A15]), (String, Rep[A16]))): TableQuery[BaseView16[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16]] = {
 
     var columnsNames = Seq[String]()
 
@@ -872,14 +831,13 @@ private[beholder] trait FilterableViewsGenerateCode {
 
   }
 
-  class BaseView16[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType](
+  class BaseView16[T: ClassTag, A1: FilterShape, A2: FilterShape, A3: FilterShape, A4: FilterShape, A5: FilterShape, A6: FilterShape, A7: FilterShape, A8: FilterShape, A9: FilterShape, A10: FilterShape, A11: FilterShape, A12: FilterShape, A13: FilterShape, A14: FilterShape, A15: FilterShape, A16: FilterShape](
       tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16)],
-      val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq]) extends BaseView[T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -899,7 +857,7 @@ private[beholder] trait FilterableViewsGenerateCode {
 
     override def id = c1
 
-    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
+    override protected val columns: Seq[(String, this.type => Rep[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
@@ -921,14 +879,12 @@ private[beholder] trait FilterableViewsGenerateCode {
     def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16) <> (apply.tupled, unapply)
   }
 
-  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType](
+  def createView[T: ClassTag, E, A1: FilterShape, A2: FilterShape, A3: FilterShape, A4: FilterShape, A5: FilterShape, A6: FilterShape, A7: FilterShape, A8: FilterShape, A9: FilterShape, A10: FilterShape, A11: FilterShape, A12: FilterShape, A13: FilterShape, A14: FilterShape, A15: FilterShape, A16: FilterShape, A17: FilterShape](
     name: String,
     apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17)],
-    baseQuery: Query[E, _, Seq]
-  )(
-    mappings: E => ((String, Column[A1]), (String, Column[A2]), (String, Column[A3]), (String, Column[A4]), (String, Column[A5]), (String, Column[A6]), (String, Column[A7]), (String, Column[A8]), (String, Column[A9]), (String, Column[A10]), (String, Column[A11]), (String, Column[A12]), (String, Column[A13]), (String, Column[A14]), (String, Column[A15]), (String, Column[A16]), (String, Column[A17]))
-  ): TableQuery[BaseView17[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17]] = {
+    baseQuery: Query[E, _, Seq])(
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11]), (String, Rep[A12]), (String, Rep[A13]), (String, Rep[A14]), (String, Rep[A15]), (String, Rep[A16]), (String, Rep[A17]))): TableQuery[BaseView17[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17]] = {
 
     var columnsNames = Seq[String]()
 
@@ -950,14 +906,13 @@ private[beholder] trait FilterableViewsGenerateCode {
 
   }
 
-  class BaseView17[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType](
+  class BaseView17[T: ClassTag, A1: FilterShape, A2: FilterShape, A3: FilterShape, A4: FilterShape, A5: FilterShape, A6: FilterShape, A7: FilterShape, A8: FilterShape, A9: FilterShape, A10: FilterShape, A11: FilterShape, A12: FilterShape, A13: FilterShape, A14: FilterShape, A15: FilterShape, A16: FilterShape, A17: FilterShape](
       tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17)],
-      val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq]) extends BaseView[T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -978,7 +933,7 @@ private[beholder] trait FilterableViewsGenerateCode {
 
     override def id = c1
 
-    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
+    override protected val columns: Seq[(String, this.type => Rep[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
@@ -1001,14 +956,12 @@ private[beholder] trait FilterableViewsGenerateCode {
     def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17) <> (apply.tupled, unapply)
   }
 
-  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType](
+  def createView[T: ClassTag, E, A1: FilterShape, A2: FilterShape, A3: FilterShape, A4: FilterShape, A5: FilterShape, A6: FilterShape, A7: FilterShape, A8: FilterShape, A9: FilterShape, A10: FilterShape, A11: FilterShape, A12: FilterShape, A13: FilterShape, A14: FilterShape, A15: FilterShape, A16: FilterShape, A17: FilterShape, A18: FilterShape](
     name: String,
     apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18)],
-    baseQuery: Query[E, _, Seq]
-  )(
-    mappings: E => ((String, Column[A1]), (String, Column[A2]), (String, Column[A3]), (String, Column[A4]), (String, Column[A5]), (String, Column[A6]), (String, Column[A7]), (String, Column[A8]), (String, Column[A9]), (String, Column[A10]), (String, Column[A11]), (String, Column[A12]), (String, Column[A13]), (String, Column[A14]), (String, Column[A15]), (String, Column[A16]), (String, Column[A17]), (String, Column[A18]))
-  ): TableQuery[BaseView18[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18]] = {
+    baseQuery: Query[E, _, Seq])(
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11]), (String, Rep[A12]), (String, Rep[A13]), (String, Rep[A14]), (String, Rep[A15]), (String, Rep[A16]), (String, Rep[A17]), (String, Rep[A18]))): TableQuery[BaseView18[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18]] = {
 
     var columnsNames = Seq[String]()
 
@@ -1030,14 +983,13 @@ private[beholder] trait FilterableViewsGenerateCode {
 
   }
 
-  class BaseView18[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType](
+  class BaseView18[T: ClassTag, A1: FilterShape, A2: FilterShape, A3: FilterShape, A4: FilterShape, A5: FilterShape, A6: FilterShape, A7: FilterShape, A8: FilterShape, A9: FilterShape, A10: FilterShape, A11: FilterShape, A12: FilterShape, A13: FilterShape, A14: FilterShape, A15: FilterShape, A16: FilterShape, A17: FilterShape, A18: FilterShape](
       tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18)],
-      val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq]) extends BaseView[T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -1059,7 +1011,7 @@ private[beholder] trait FilterableViewsGenerateCode {
 
     override def id = c1
 
-    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
+    override protected val columns: Seq[(String, this.type => Rep[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
@@ -1083,14 +1035,12 @@ private[beholder] trait FilterableViewsGenerateCode {
     def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18) <> (apply.tupled, unapply)
   }
 
-  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType, A19: TypedType](
+  def createView[T: ClassTag, E, A1: FilterShape, A2: FilterShape, A3: FilterShape, A4: FilterShape, A5: FilterShape, A6: FilterShape, A7: FilterShape, A8: FilterShape, A9: FilterShape, A10: FilterShape, A11: FilterShape, A12: FilterShape, A13: FilterShape, A14: FilterShape, A15: FilterShape, A16: FilterShape, A17: FilterShape, A18: FilterShape, A19: FilterShape](
     name: String,
     apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19)],
-    baseQuery: Query[E, _, Seq]
-  )(
-    mappings: E => ((String, Column[A1]), (String, Column[A2]), (String, Column[A3]), (String, Column[A4]), (String, Column[A5]), (String, Column[A6]), (String, Column[A7]), (String, Column[A8]), (String, Column[A9]), (String, Column[A10]), (String, Column[A11]), (String, Column[A12]), (String, Column[A13]), (String, Column[A14]), (String, Column[A15]), (String, Column[A16]), (String, Column[A17]), (String, Column[A18]), (String, Column[A19]))
-  ): TableQuery[BaseView19[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19]] = {
+    baseQuery: Query[E, _, Seq])(
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11]), (String, Rep[A12]), (String, Rep[A13]), (String, Rep[A14]), (String, Rep[A15]), (String, Rep[A16]), (String, Rep[A17]), (String, Rep[A18]), (String, Rep[A19]))): TableQuery[BaseView19[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19]] = {
 
     var columnsNames = Seq[String]()
 
@@ -1112,14 +1062,13 @@ private[beholder] trait FilterableViewsGenerateCode {
 
   }
 
-  class BaseView19[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType, A19: TypedType](
+  class BaseView19[T: ClassTag, A1: FilterShape, A2: FilterShape, A3: FilterShape, A4: FilterShape, A5: FilterShape, A6: FilterShape, A7: FilterShape, A8: FilterShape, A9: FilterShape, A10: FilterShape, A11: FilterShape, A12: FilterShape, A13: FilterShape, A14: FilterShape, A15: FilterShape, A16: FilterShape, A17: FilterShape, A18: FilterShape, A19: FilterShape](
       tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19)],
-      val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq]) extends BaseView[T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -1142,7 +1091,7 @@ private[beholder] trait FilterableViewsGenerateCode {
 
     override def id = c1
 
-    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
+    override protected val columns: Seq[(String, this.type => Rep[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
@@ -1167,14 +1116,12 @@ private[beholder] trait FilterableViewsGenerateCode {
     def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19) <> (apply.tupled, unapply)
   }
 
-  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType, A19: TypedType, A20: TypedType](
+  def createView[T: ClassTag, E, A1: FilterShape, A2: FilterShape, A3: FilterShape, A4: FilterShape, A5: FilterShape, A6: FilterShape, A7: FilterShape, A8: FilterShape, A9: FilterShape, A10: FilterShape, A11: FilterShape, A12: FilterShape, A13: FilterShape, A14: FilterShape, A15: FilterShape, A16: FilterShape, A17: FilterShape, A18: FilterShape, A19: FilterShape, A20: FilterShape](
     name: String,
     apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20)],
-    baseQuery: Query[E, _, Seq]
-  )(
-    mappings: E => ((String, Column[A1]), (String, Column[A2]), (String, Column[A3]), (String, Column[A4]), (String, Column[A5]), (String, Column[A6]), (String, Column[A7]), (String, Column[A8]), (String, Column[A9]), (String, Column[A10]), (String, Column[A11]), (String, Column[A12]), (String, Column[A13]), (String, Column[A14]), (String, Column[A15]), (String, Column[A16]), (String, Column[A17]), (String, Column[A18]), (String, Column[A19]), (String, Column[A20]))
-  ): TableQuery[BaseView20[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20]] = {
+    baseQuery: Query[E, _, Seq])(
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11]), (String, Rep[A12]), (String, Rep[A13]), (String, Rep[A14]), (String, Rep[A15]), (String, Rep[A16]), (String, Rep[A17]), (String, Rep[A18]), (String, Rep[A19]), (String, Rep[A20]))): TableQuery[BaseView20[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20]] = {
 
     var columnsNames = Seq[String]()
 
@@ -1196,14 +1143,13 @@ private[beholder] trait FilterableViewsGenerateCode {
 
   }
 
-  class BaseView20[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType, A19: TypedType, A20: TypedType](
+  class BaseView20[T: ClassTag, A1: FilterShape, A2: FilterShape, A3: FilterShape, A4: FilterShape, A5: FilterShape, A6: FilterShape, A7: FilterShape, A8: FilterShape, A9: FilterShape, A10: FilterShape, A11: FilterShape, A12: FilterShape, A13: FilterShape, A14: FilterShape, A15: FilterShape, A16: FilterShape, A17: FilterShape, A18: FilterShape, A19: FilterShape, A20: FilterShape](
       tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20)],
-      val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq]) extends BaseView[T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -1227,7 +1173,7 @@ private[beholder] trait FilterableViewsGenerateCode {
 
     override def id = c1
 
-    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
+    override protected val columns: Seq[(String, this.type => Rep[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
@@ -1253,14 +1199,12 @@ private[beholder] trait FilterableViewsGenerateCode {
     def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20) <> (apply.tupled, unapply)
   }
 
-  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType, A19: TypedType, A20: TypedType, A21: TypedType](
+  def createView[T: ClassTag, E, A1: FilterShape, A2: FilterShape, A3: FilterShape, A4: FilterShape, A5: FilterShape, A6: FilterShape, A7: FilterShape, A8: FilterShape, A9: FilterShape, A10: FilterShape, A11: FilterShape, A12: FilterShape, A13: FilterShape, A14: FilterShape, A15: FilterShape, A16: FilterShape, A17: FilterShape, A18: FilterShape, A19: FilterShape, A20: FilterShape, A21: FilterShape](
     name: String,
     apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20, A21) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20, A21)],
-    baseQuery: Query[E, _, Seq]
-  )(
-    mappings: E => ((String, Column[A1]), (String, Column[A2]), (String, Column[A3]), (String, Column[A4]), (String, Column[A5]), (String, Column[A6]), (String, Column[A7]), (String, Column[A8]), (String, Column[A9]), (String, Column[A10]), (String, Column[A11]), (String, Column[A12]), (String, Column[A13]), (String, Column[A14]), (String, Column[A15]), (String, Column[A16]), (String, Column[A17]), (String, Column[A18]), (String, Column[A19]), (String, Column[A20]), (String, Column[A21]))
-  ): TableQuery[BaseView21[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20, A21]] = {
+    baseQuery: Query[E, _, Seq])(
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11]), (String, Rep[A12]), (String, Rep[A13]), (String, Rep[A14]), (String, Rep[A15]), (String, Rep[A16]), (String, Rep[A17]), (String, Rep[A18]), (String, Rep[A19]), (String, Rep[A20]), (String, Rep[A21]))): TableQuery[BaseView21[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20, A21]] = {
 
     var columnsNames = Seq[String]()
 
@@ -1282,14 +1226,13 @@ private[beholder] trait FilterableViewsGenerateCode {
 
   }
 
-  class BaseView21[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType, A19: TypedType, A20: TypedType, A21: TypedType](
+  class BaseView21[T: ClassTag, A1: FilterShape, A2: FilterShape, A3: FilterShape, A4: FilterShape, A5: FilterShape, A6: FilterShape, A7: FilterShape, A8: FilterShape, A9: FilterShape, A10: FilterShape, A11: FilterShape, A12: FilterShape, A13: FilterShape, A14: FilterShape, A15: FilterShape, A16: FilterShape, A17: FilterShape, A18: FilterShape, A19: FilterShape, A20: FilterShape, A21: FilterShape](
       tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20, A21) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20, A21)],
-      val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq]) extends BaseView[T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -1314,7 +1257,7 @@ private[beholder] trait FilterableViewsGenerateCode {
 
     override def id = c1
 
-    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
+    override protected val columns: Seq[(String, this.type => Rep[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),
@@ -1341,14 +1284,12 @@ private[beholder] trait FilterableViewsGenerateCode {
     def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21) <> (apply.tupled, unapply)
   }
 
-  def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType, A19: TypedType, A20: TypedType, A21: TypedType, A22: TypedType](
+  def createView[T: ClassTag, E, A1: FilterShape, A2: FilterShape, A3: FilterShape, A4: FilterShape, A5: FilterShape, A6: FilterShape, A7: FilterShape, A8: FilterShape, A9: FilterShape, A10: FilterShape, A11: FilterShape, A12: FilterShape, A13: FilterShape, A14: FilterShape, A15: FilterShape, A16: FilterShape, A17: FilterShape, A18: FilterShape, A19: FilterShape, A20: FilterShape, A21: FilterShape, A22: FilterShape](
     name: String,
     apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20, A21, A22) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20, A21, A22)],
-    baseQuery: Query[E, _, Seq]
-  )(
-    mappings: E => ((String, Column[A1]), (String, Column[A2]), (String, Column[A3]), (String, Column[A4]), (String, Column[A5]), (String, Column[A6]), (String, Column[A7]), (String, Column[A8]), (String, Column[A9]), (String, Column[A10]), (String, Column[A11]), (String, Column[A12]), (String, Column[A13]), (String, Column[A14]), (String, Column[A15]), (String, Column[A16]), (String, Column[A17]), (String, Column[A18]), (String, Column[A19]), (String, Column[A20]), (String, Column[A21]), (String, Column[A22]))
-  ): TableQuery[BaseView22[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20, A21, A22]] = {
+    baseQuery: Query[E, _, Seq])(
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11]), (String, Rep[A12]), (String, Rep[A13]), (String, Rep[A14]), (String, Rep[A15]), (String, Rep[A16]), (String, Rep[A17]), (String, Rep[A18]), (String, Rep[A19]), (String, Rep[A20]), (String, Rep[A21]), (String, Rep[A22]))): TableQuery[BaseView22[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20, A21, A22]] = {
 
     var columnsNames = Seq[String]()
 
@@ -1370,14 +1311,13 @@ private[beholder] trait FilterableViewsGenerateCode {
 
   }
 
-  class BaseView22[T: ClassTag, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType, A19: TypedType, A20: TypedType, A21: TypedType, A22: TypedType](
+  class BaseView22[T: ClassTag, A1: FilterShape, A2: FilterShape, A3: FilterShape, A4: FilterShape, A5: FilterShape, A6: FilterShape, A7: FilterShape, A8: FilterShape, A9: FilterShape, A10: FilterShape, A11: FilterShape, A12: FilterShape, A13: FilterShape, A14: FilterShape, A15: FilterShape, A16: FilterShape, A17: FilterShape, A18: FilterShape, A19: FilterShape, A20: FilterShape, A21: FilterShape, A22: FilterShape](
       tag: Tag,
       name: String,
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20, A21, A22) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20, A21, A22)],
-      val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq]) extends BaseView[T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -1403,7 +1343,7 @@ private[beholder] trait FilterableViewsGenerateCode {
 
     override def id = c1
 
-    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
+    override protected val columns: Seq[(String, this.type => Rep[_])] = Seq(
       columnNames(0) -> (_.c1),
       columnNames(1) -> (_.c2),
       columnNames(2) -> (_.c3),

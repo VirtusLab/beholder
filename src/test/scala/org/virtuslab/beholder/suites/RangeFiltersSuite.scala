@@ -2,22 +2,19 @@ package org.virtuslab.beholder.suites
 
 import org.virtuslab.beholder.AppTest
 import org.virtuslab.beholder.filters.FilterRange
+import org.virtuslab.beholder.view.UserMachineViewRow
 
-trait RangeFiltersSuite[Formatter] extends BaseSuite[Formatter] {
-  self: AppTest =>
-
-  behavior of "range filters"
+trait RangeFiltersSuite extends BaseSuite {
 
   it should "should take int range correctly" in baseFilterTest {
     data =>
       import data._
 
-      val a = baseFilter.data
-      val coreRange = Some(FilterRange(Some(1), Some(4)))
+      val coreRange = FilterRange(Some(1), Some(4))
 
-      val coreRangeData = doFilters(data, baseFilter.copy(data = a.updated(2, coreRange)))
+      val coreRangeData = updatedDefinition("cores", coreRange)
 
-      coreRangeData should contain theSameElementsAs allFromDb
+      filtering(coreRangeData) shouldResultIn allUserMachineRows
   }
 
   it should "should take BigDecimal range correctly" in baseFilterTest {
@@ -34,13 +31,12 @@ trait RangeFiltersSuite[Formatter] extends BaseSuite[Formatter] {
           }
 
           import data._
-          val fromDbFilteredByCapacity = allFromDb.filter(a => isInRange(minCapacity, maxCapacity, a.capacity))
-          val a = baseFilter.data
-          val capacityRange = Some(FilterRange(minCapacity, maxCapacity))
+          val fromDbFilteredByCapacity = allUserMachineRows.filter(a => isInRange(minCapacity, maxCapacity, a.capacity))
+          val capacityRange = FilterRange(minCapacity, maxCapacity)
 
-          val coreRangeData = doFilters(data, baseFilter.copy(data = a.updated(4, capacityRange)))
+          val coreRangeData = updatedDefinition("capacity", capacityRange)
 
-          coreRangeData should contain theSameElementsAs fromDbFilteredByCapacity
+          filtering(coreRangeData) shouldResultIn fromDbFilteredByCapacity
         }
 
         testCapacityRange(Some(1), Some(3))
@@ -51,5 +47,4 @@ trait RangeFiltersSuite[Formatter] extends BaseSuite[Formatter] {
         testCapacityRange(None, None)
       }
   }
-
 }

@@ -16,7 +16,8 @@ private[beholder] object FilterableViewsGenerator extends App {
 
     implicit val _nr = nr
 
-    val columns = fill(nr => s"\n    (String, Column[A$nr])")(nr)
+    val columns = fill(nr => s"\n    (String, Rep[A$nr])")(nr)
+    val justColumns = fill(nr => s"Rep[A$nr]")(nr)
 
     val finalTuple = fill("name" + _)
     val matchParameters = fill(nr => s"(name$nr, c$nr)")
@@ -40,6 +41,11 @@ private[beholder] object FilterableViewsGenerator extends App {
       |         mappings(t) match {
       |            case ($matchParameters) =>
       |              columnsNames = Seq($finalTuple)
+      |
+      |              implicit val shape: Shape[_ <: slick.lifted.FlatShapeLevel,
+      |                 ($justColumns),
+      |                 ($aTypes), _] = implicitly
+      |
       |              ($mapping) <>(apply.tupled, unapply)
       |          }
       |      }
@@ -58,13 +64,17 @@ private[beholder] object FilterableViewsGenerator extends App {
       |                                                           val columnNames: Seq[String],
       |                                                           apply: ($aTypes) => T,
       |                                                           unapply: T => Option[($aTypes)],
-      |                                                           val query: Query[_, T, Seq]) extends BaseView[A1, T](tag, name) {
+      |                                                           val query: Query[_, T, Seq]) extends BaseView[T](tag, name) {
       |$columnsFunctions
       |
       |    override def id = c1
       |
       |    override protected val columns: Seq[(String, this.type => Column[_])] = Seq(
       |      $columnsMap)
+      |
+      |    implicit val shape: Shape[_ <: slick.lifted.FlatShapeLevel,
+      |      ($justColumns),
+      |      ($aTypes), _] = implicitly
       |
       |    def * = ($mapping) <>(apply.tupled, unapply)
       |  }
