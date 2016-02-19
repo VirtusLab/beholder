@@ -13,7 +13,7 @@ import scala.slick.lifted.{ TableQuery, Tag }
  * @tparam Id entity id type
  * @tparam Entity entity type
  */
-abstract class BaseView[Id, Entity](tag: Tag, val viewName: String) extends BaseTable[Entity](tag, viewName) {
+abstract class BaseView[Entity](tag: Tag, val viewName: String) extends BaseTable[Entity](tag, viewName) {
 
   /**
    *
@@ -26,13 +26,18 @@ abstract class BaseView[Id, Entity](tag: Tag, val viewName: String) extends Base
   /**
    * find column by name
    */
-  def columnByName[A](name: String): Column[_] =
+  def columnByName(name: String): Column[_] =
     columnsMap(name).apply(this)
+
+
+  def typedColumnByName[T](name: String): Column[T] =
+    columnsMap(name).apply(this).asInstanceOf[Column[T]]
+
 
   /**
    * column that is tread as view 'id' - it is use eg. for default sort
    */
-  def id: Column[Id]
+  def id: Column[_]
 
   /**
    * query that build this view
@@ -43,11 +48,11 @@ abstract class BaseView[Id, Entity](tag: Tag, val viewName: String) extends Base
 
 object BaseView {
 
-  implicit class WithViewDDL(val query: TableQuery[_ <: BaseView[_, _]]) extends AnyVal {
+  implicit class WithViewDDL(val query: TableQuery[_ <: BaseView[_]]) extends AnyVal {
     def viewDDL = ViewDDL(query.shaped.value)
   }
 
-  case class ViewDDL(table: BaseView[_, _]) extends DDL {
+  case class ViewDDL(table: BaseView[_]) extends DDL {
     protected def createPhase1: Iterable[String] = {
       val viewName = table.viewName
       val fields = table.columns.map { case (name, _) => '"' + name + '"' }.mkString(", ")

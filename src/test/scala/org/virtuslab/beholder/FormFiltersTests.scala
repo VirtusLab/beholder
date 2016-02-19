@@ -8,9 +8,10 @@ import org.virtuslab.beholder.filters.{ FilterAPI, FilterDefinition }
 import org.virtuslab.beholder.suites.{ BaseSuite, FiltersTestSuite, RangeFiltersSuite }
 import org.virtuslab.unicorn.LongUnicornPlay._
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
+/*
 
 trait FormFiltersTestsBase {
-  self: AppTest with BaseSuite[FormFormatter] =>
+  self: AppTest with BaseSuite =>
 
   override def doFilters(data: BaseFilterData, currentFilter: FilterDefinition): Seq[UserMachineViewRow] = {
     val formatter = data.filter.formatter
@@ -54,3 +55,4 @@ class FormRangeFiltersTests extends AppTest with RangeFiltersSuite[FormFormatter
   }.filterGenerator
 
 }
+*/

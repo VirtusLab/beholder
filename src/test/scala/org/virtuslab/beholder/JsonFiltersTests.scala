@@ -2,12 +2,13 @@ package org.virtuslab.beholder
 
 import java.sql.Date
 
-import org.virtuslab.beholder.filters.json.JsonFilterFields.{ inIntField, inOptionRange, inRange, _ }
-import org.virtuslab.beholder.filters.json.{ JsonFilterFields, JsonFilters, JsonFormatter }
+import org.virtuslab.beholder.filters.json2.JsonFilterFields.{ inIntField, inOptionRange, inRange, _ }
+import org.virtuslab.beholder.filters.json2.{ JsonFilterFields, JsonFilters, JsonFormatter }
 import org.virtuslab.beholder.filters.{ FilterAPI, FilterDefinition }
 import org.virtuslab.beholder.suites.{ BaseSuite, FiltersTestSuite, RangeFiltersSuite }
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 import play.api.libs.json.JsObject
+/*
 
 trait JsonFiltersTestsBase {
   self: AppTest with BaseSuite[JsonFormatter[UserMachineViewRow]] =>
@@ -47,4 +48,4 @@ class JsonFiltersRangeTests extends AppTest with RangeFiltersSuite[JsonFormatter
       inRange(inField[Date]("date")),
       inOptionRange(inField[BigDecimal]("number"))
     )
-}
+}*/

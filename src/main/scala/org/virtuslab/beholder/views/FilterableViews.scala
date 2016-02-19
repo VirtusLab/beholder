@@ -66,7 +66,7 @@ object FilterableViews extends FilterableViewsGenerateCode {
       apply: (A, B) => T,
       unapply: T => Option[(A, B)],
       val query: Query[_, T, Seq]
-  ) extends BaseView[A, T](tag, name) {
+  ) extends BaseView[T](tag, name) {
     def c1 = column[A](columnNames(0))
 
     def c2 = column[B](columnNames(1))

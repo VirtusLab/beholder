@@ -6,24 +6,23 @@ import play.api.data.format.Formatter
 import play.api.data.{ Form, FormError, Mapping }
 
 case class FormFormatter(filterFields: Seq[FormFilterField[_, _]], columnsNames: Seq[String]) {
-
+/*
   private def fieldName(key: String)(name: String) = s"$key.$name"
 
-  private val dataFormatter = new Formatter[Seq[Option[Any]]] {
-    override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], Seq[Option[Any]]] = {
+  private val dataFormatter = new Formatter[Map[String, Any]] {
+    override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], Map[String, Any]] = {
 
-      Right((columnsNames zip filterFields).map {
+      Right((columnsNames zip filterFields).flatMap {
         case (name, column) => column.bind(fieldName(key)(name))(data) match {
           case Left(_) => None
-          case Right(value) => Option(value)
+          case Right(value) => Some(name -> value)
         }
-      })
+      }(collection.breakOut))
     }
 
-    override def unbind(key: String, value: Seq[Option[Any]]): Map[String, String] = {
-      value.zip(columnsNames zip filterFields).flatMap {
-        case (Some(value), (name, filterField)) => filterField.unbind(fieldName(key)(name))(value)
-        case (None, _) => Map[String, String]()
+    override def unbind(key: String, value: Map[String, Any]): Map[String, String] = {
+      (value zip filterFields).flatMap {
+        case ((name, value), filterField) => filterField.unbind(fieldName(key)(name))(value)
       }(collection.breakOut)
     }
   }
@@ -63,6 +62,6 @@ case class FormFormatter(filterFields: Seq[FormFilterField[_, _]], columnsNames:
   /**
    * form for this filter
    */
-  final def filterForm = Form(filterMapping)
+  final def filterForm = Form(filterMapping)*/
 }
 

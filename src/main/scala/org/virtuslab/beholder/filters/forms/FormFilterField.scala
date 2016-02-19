@@ -1,6 +1,6 @@
 package org.virtuslab.beholder.filters.forms
 
-import org.virtuslab.beholder.filters.{ FilterRange, MappedFilterField }
+import org.virtuslab.beholder.filters.{MappedFilterField, FilterRange}
 import org.virtuslab.beholder.utils.ILikeExtension._
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple._
 import play.api.data.Forms._
@@ -79,7 +79,8 @@ object FromFilterFields {
 
   /**
    * check enum value
-   * @tparam T - enum class (eg. Colors.type)
+    *
+    * @tparam T - enum class (eg. Colors.type)
    */
   def inEnum[T <: Enumeration](implicit tm: BaseTypedType[T#Value], formatter: Formatter[T#Value]): FormFilterField[T#Value, T#Value] =
     inField[T#Value]

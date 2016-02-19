@@ -1,12 +1,12 @@
-package org.virtuslab.beholder.filters.json
+package org.virtuslab.beholder.filters.json2
 
 import org.virtuslab.beholder.filters.{ FilterAPI, FilterDefinition }
 import org.virtuslab.unicorn.LongUnicornPlay.driver.simple.Session
 import play.api.libs.json.JsValue
 import play.api.mvc._
 
-abstract class FilterController[Entity <: Product](filter: FilterAPI[Entity, JsonFormatter[Entity]]) extends Controller {
-
+abstract class FilterController[Entity <: Product](filter: FilterAPI[Entity/*, JsonFormatter[Entity]*/]) extends Controller {
+/*
   protected def inSession(body: Request[AnyContent] => Session => Option[JsValue]): EssentialAction
 
   final def filterDefinition = inSession { request =>
@@ -26,5 +26,5 @@ abstract class FilterController[Entity <: Product](filter: FilterAPI[Entity, Jso
             filterDefinition <- filter.formatter.filterDefinition(json)
             data = filter.filterWithTotalEntitiesNumber(mapFilterData(filterDefinition))
           } yield filter.formatter.results(filterDefinition, data)
-    }
+    }*/
 }

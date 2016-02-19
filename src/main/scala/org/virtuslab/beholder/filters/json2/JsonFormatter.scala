@@ -1,10 +1,11 @@
-package org.virtuslab.beholder.filters.json
+package org.virtuslab.beholder.filters.json2
 
 import org.virtuslab.beholder.filters.{ FilterDefinition, FilterResult, Order }
 import play.api.data.validation.ValidationError
 import play.api.libs.json.{ JsObject, _ }
 
 class JsonFormatter[Entity <: Product](filterFields: Seq[JsonFilterField[_, _]], columnsNames: Seq[String], label: String => String) {
+/*
 
   private def jsonFieldDefinition(name: String, field: JsonFilterField[_, _]): JsObject = JsObject(Seq(
     "key" -> JsString(name),
@@ -25,20 +26,24 @@ class JsonFormatter[Entity <: Product](filterFields: Seq[JsonFilterField[_, _]],
     (__ \ "asc").format[Boolean]
   )(Order.apply, unlift(Order.unapply))
 
-  private val filterDataFormatter: Format[Seq[Option[Any]]] = new Format[Seq[Option[Any]]] {
-    override def writes(o: Seq[Option[Any]]): JsValue = JsObject(
-      columnsNames.zip(filterFields).zip(o).flatMap {
-        case ((name, filterFiled), value) =>
-          value.map(v => name -> filterFiled.writeFilter(v))
+  private val filterDataFormatter: Format[Map[String, Any]] = new Format[Map[String, Any]] {
+    override def writes(data: Map[String, Any]): JsValue = JsObject(
+      filterFields.zip(data).map {
+        case ( filterField, (name, value)) =>
+            name -> filterField.writeFilter(value)
       }
     )
 
-    override def reads(json: JsValue): JsResult[Seq[Option[Any]]] = json match {
+    override def reads(json: JsValue): JsResult[Map[String, Any]] = json match {
       case jsObject: JsObject =>
         jsObject.keys -- columnsNames.toSet match {
           case badFields if badFields.nonEmpty =>
             JsError((JsPath(Nil), ValidationError("No such fields in filter: " + badFields)))
           case _ =>
+            jsObject.value.zip(filterFields).map{
+              case ((name, value), filterField) =>
+                name -> filterField.readFilter(value)
+            }
             val fieldResults = columnsNames.map(jsObject.value.get).zip(filterFields).map {
               case (Some(value), field) => field.readFilter(value).map(Option.apply)
               case (None, _) => JsSuccess(None)
@@ -83,5 +88,6 @@ class JsonFormatter[Entity <: Product](filterFields: Seq[JsonFilterField[_, _]],
       "total" -> JsNumber(data.total)
     ))
   ))
+*/
 
 }

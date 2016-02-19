@@ -8,7 +8,7 @@ import scala.slick.ast.TypedType
 import scala.slick.lifted.TableQuery
 
 abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField[_, _], Formatter] {
-
+/*
   def createFormatter(table: BaseFilter[_, _, _, FieldType[_, _], Formatter]): Formatter
 
   def create[A1: TypedType, A2: TypedType, A3: TypedType, B1, B2, B3, T <: BaseView3[Entity, A1, A2, A3]](
@@ -16,7 +16,7 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
     c1Mapping: FieldType[A1, B1],
     c2Mapping: FieldType[A2, B2],
     c3Mapping: FieldType[A3, B3]
-  ): FilterAPI[Entity, Formatter] = {
+  ): LightFilter[Entity, Formatter, T] = {
 
     new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
 
@@ -39,7 +39,7 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
     c2Mapping: FieldType[A2, B2],
     c3Mapping: FieldType[A3, B3],
     c4Mapping: FieldType[A4, B4]
-  ): FilterAPI[Entity, Formatter] = {
+  ): LightFilter[Entity, Formatter, T] = {
 
     new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
 
@@ -63,7 +63,7 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
     c3Mapping: FieldType[A3, B3],
     c4Mapping: FieldType[A4, B4],
     c5Mapping: FieldType[A5, B5]
-  ): FilterAPI[Entity, Formatter] = {
+  ): LightFilter[Entity, Formatter, T] = {
 
     new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
 
@@ -88,7 +88,7 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
     c4Mapping: FieldType[A4, B4],
     c5Mapping: FieldType[A5, B5],
     c6Mapping: FieldType[A6, B6]
-  ): FilterAPI[Entity, Formatter] = {
+  ): LightFilter[Entity, Formatter, T] = {
 
     new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
 
@@ -114,7 +114,7 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
     c5Mapping: FieldType[A5, B5],
     c6Mapping: FieldType[A6, B6],
     c7Mapping: FieldType[A7, B7]
-  ): FilterAPI[Entity, Formatter] = {
+  ): LightFilter[Entity, Formatter, T] = {
 
     new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
 
@@ -141,7 +141,7 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
     c6Mapping: FieldType[A6, B6],
     c7Mapping: FieldType[A7, B7],
     c8Mapping: FieldType[A8, B8]
-  ): FilterAPI[Entity, Formatter] = {
+  ): LightFilter[Entity, Formatter, T] = {
 
     new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
 
@@ -169,7 +169,7 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
     c7Mapping: FieldType[A7, B7],
     c8Mapping: FieldType[A8, B8],
     c9Mapping: FieldType[A9, B9]
-  ): FilterAPI[Entity, Formatter] = {
+  ): LightFilter[Entity, Formatter, T] = {
 
     new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
 
@@ -198,7 +198,7 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
     c8Mapping: FieldType[A8, B8],
     c9Mapping: FieldType[A9, B9],
     c10Mapping: FieldType[A10, B10]
-  ): FilterAPI[Entity, Formatter] = {
+  ): LightFilter[Entity, Formatter, T] = {
 
     new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
 
@@ -228,7 +228,7 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
     c9Mapping: FieldType[A9, B9],
     c10Mapping: FieldType[A10, B10],
     c11Mapping: FieldType[A11, B11]
-  ): FilterAPI[Entity, Formatter] = {
+  ): LightFilter[Entity, Formatter, T] = {
 
     new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
 
@@ -259,7 +259,7 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
     c10Mapping: FieldType[A10, B10],
     c11Mapping: FieldType[A11, B11],
     c12Mapping: FieldType[A12, B12]
-  ): FilterAPI[Entity, Formatter] = {
+  ): LightFilter[Entity, Formatter, T] = {
 
     new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
 
@@ -291,7 +291,7 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
     c11Mapping: FieldType[A11, B11],
     c12Mapping: FieldType[A12, B12],
     c13Mapping: FieldType[A13, B13]
-  ): FilterAPI[Entity, Formatter] = {
+  ): LightFilter[Entity, Formatter, T] = {
 
     new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
 
@@ -324,7 +324,7 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
     c12Mapping: FieldType[A12, B12],
     c13Mapping: FieldType[A13, B13],
     c14Mapping: FieldType[A14, B14]
-  ): FilterAPI[Entity, Formatter] = {
+  ): LightFilter[Entity, Formatter, T] = {
 
     new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
 
@@ -358,7 +358,7 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
     c13Mapping: FieldType[A13, B13],
     c14Mapping: FieldType[A14, B14],
     c15Mapping: FieldType[A15, B15]
-  ): FilterAPI[Entity, Formatter] = {
+  ): LightFilter[Entity, Formatter, T] = {
 
     new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
 
@@ -393,7 +393,7 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
     c14Mapping: FieldType[A14, B14],
     c15Mapping: FieldType[A15, B15],
     c16Mapping: FieldType[A16, B16]
-  ): FilterAPI[Entity, Formatter] = {
+  ): LightFilter[Entity, Formatter, T] = {
 
     new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
 
@@ -429,7 +429,7 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
     c15Mapping: FieldType[A15, B15],
     c16Mapping: FieldType[A16, B16],
     c17Mapping: FieldType[A17, B17]
-  ): FilterAPI[Entity, Formatter] = {
+  ): LightFilter[Entity, Formatter, T] = {
 
     new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
 
@@ -466,7 +466,7 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
     c16Mapping: FieldType[A16, B16],
     c17Mapping: FieldType[A17, B17],
     c18Mapping: FieldType[A18, B18]
-  ): FilterAPI[Entity, Formatter] = {
+  ): LightFilter[Entity, Formatter, T] = {
 
     new BaseFilter[A1, Entity, T, FieldType[_, _], Formatter](table) {
 
@@ -481,6 +481,6 @@ abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField
         table.c1, table.c2, table.c3, table.c4, table.c5, table.c6, table.c7, table.c8, table.c9, table.c10, table.c11, table.c12, table.c13, table.c14, table.c15, table.c16, table.c17, table.c18
       )
     }
-  }
+  }*/
 
 }

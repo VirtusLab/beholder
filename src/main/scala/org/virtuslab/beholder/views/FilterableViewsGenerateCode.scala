@@ -47,7 +47,7 @@ private[beholder] trait FilterableViewsGenerateCode {
       apply: (A1, A2, A3) => T,
       unapply: T => Option[(A1, A2, A3)],
       val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+  ) extends BaseView[T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -99,7 +99,7 @@ private[beholder] trait FilterableViewsGenerateCode {
       apply: (A1, A2, A3, A4) => T,
       unapply: T => Option[(A1, A2, A3, A4)],
       val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+  ) extends BaseView[T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -153,7 +153,7 @@ private[beholder] trait FilterableViewsGenerateCode {
       apply: (A1, A2, A3, A4, A5) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5)],
       val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+  ) extends BaseView[T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -209,7 +209,7 @@ private[beholder] trait FilterableViewsGenerateCode {
       apply: (A1, A2, A3, A4, A5, A6) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6)],
       val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+  ) extends BaseView[T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -267,7 +267,7 @@ private[beholder] trait FilterableViewsGenerateCode {
       apply: (A1, A2, A3, A4, A5, A6, A7) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7)],
       val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+  ) extends BaseView[T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -327,7 +327,7 @@ private[beholder] trait FilterableViewsGenerateCode {
       apply: (A1, A2, A3, A4, A5, A6, A7, A8) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8)],
       val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+  ) extends BaseView[T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -389,7 +389,7 @@ private[beholder] trait FilterableViewsGenerateCode {
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9)],
       val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+  ) extends BaseView[T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -453,7 +453,7 @@ private[beholder] trait FilterableViewsGenerateCode {
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10)],
       val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+  ) extends BaseView[T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -519,7 +519,7 @@ private[beholder] trait FilterableViewsGenerateCode {
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11)],
       val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+  ) extends BaseView[T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -587,7 +587,7 @@ private[beholder] trait FilterableViewsGenerateCode {
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12)],
       val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+  ) extends BaseView[T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -657,7 +657,7 @@ private[beholder] trait FilterableViewsGenerateCode {
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13)],
       val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+  ) extends BaseView[T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -729,7 +729,7 @@ private[beholder] trait FilterableViewsGenerateCode {
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14)],
       val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+  ) extends BaseView[T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -803,7 +803,7 @@ private[beholder] trait FilterableViewsGenerateCode {
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15)],
       val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+  ) extends BaseView[T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -879,7 +879,7 @@ private[beholder] trait FilterableViewsGenerateCode {
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16)],
       val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+  ) extends BaseView[T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -957,7 +957,7 @@ private[beholder] trait FilterableViewsGenerateCode {
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17)],
       val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+  ) extends BaseView[T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -1037,7 +1037,7 @@ private[beholder] trait FilterableViewsGenerateCode {
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18)],
       val query: Query[_, T, Seq]
-  ) extends BaseView[A1, T](tag, name) {
+  ) extends BaseView[T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))

@@ -22,13 +22,21 @@ trait ModelIncluded {
 
   lazy val MachineRepository = new MachineRepository {}
 
+  lazy val TeamsRepository = new TeamsRepository {}
+
+  lazy val machineParameterRepository = new MachineParameterRepository{}
+
   lazy val userMachineQuery = TableQuery[UserMachines]
+
 
   final def rollbackWithModel[A](func: Session => A): A = rollback {
     implicit session: Session =>
       UsersRepository.create
       MachineRepository.create
       userMachineQuery.ddl.create
+      machineParameterRepository.create
+      TeamsRepository.create
+
       func(session)
   }
 
@@ -52,6 +60,16 @@ trait ModelIncluded {
       (user2.id.get, machine1.id.get),
       (user2.id.get, machine2.id.get)
     )
+
+    val machineParameters = Seq(
+      MachineParameter(None, "displaysCount", "2", machine1.id.get),
+      MachineParameter(None, "displaysCount", "1", machine2.id.get),
+      MachineParameter(None, "cdDriveSpeed", "x52", machine1.id.get)
+    ).map(mp => mp.copy(id = Some(machineParameterRepository.save(mp))))
+
+    val team = Seq(Team(None, user1.id.get, "core", "Ubuntu"))
+      .map(t => t.copy(id = Some(TeamsRepository.save(t))))
+
   }
 }
 
