@@ -2,7 +2,7 @@ organization := "org.virtuslab"
 
 name := "beholder"
 
-version := "0.2.10-SNAPSHOT"
+version := "0.2.10"
 
 scalaVersion := "2.11.7"
 
@@ -65,7 +65,6 @@ pomExtra := <url>https://github.com/VirtusLab/beholder</url>
     </developer>
   </developers>
 
-//xerial.sbt.Sonatype.sonatypeSettings
 
 // Scoverage setup
 
@@ -80,3 +79,6 @@ ScoverageSbtPlugin.ScoverageKeys.coverageExcludedPackages := Seq(
   "org.virtuslab.beholder.views.FilterableViewsGenerateCode.BaseView[^6].*",
   "org.virtuslab.beholder.filters.FilterFactoryMethods.*"
 ).mkString(";")
+
+xerial.sbt.Sonatype.sonatypeSettings
+
