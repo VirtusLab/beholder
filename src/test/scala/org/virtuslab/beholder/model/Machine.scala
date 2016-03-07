@@ -71,8 +71,7 @@ case class Machine(
   cores: Int,
   created: Date,
   capacity: Option[BigDecimal],
-  status: MachineStatus.Value
-) extends WithId[MachineId]
+  status: MachineStatus.Value) extends WithId[MachineId]
 
 /** Table definition for machines. */
 class Machines(tag: Tag) extends IdTable[MachineId, Machine](tag, "MACHINES") {

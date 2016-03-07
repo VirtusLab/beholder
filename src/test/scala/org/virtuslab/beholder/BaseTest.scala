@@ -53,7 +53,7 @@ trait ModelIncluded {
     val machines = Seq(
       Machine(None, "a.a.pl", "Ubuntu", 4, new Date(DateTime.now().minusHours(24).getMillis), Some(1), MachineStatus.Inactive),
       Machine(None, "o.a.pl", "Fedora", 1, new Date(DateTime.now().getMillis), Some(3), MachineStatus.Active)
-    ).map(machine => machine.copy(id = Some(MachineRepository.save(machine))))
+    ).map(machine => machine.copy(id = Some(machineRepository.save(machine))))
 
     val Seq(user1, user2) = users
     val Seq(machine1, machine2) = machines
