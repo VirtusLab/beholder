@@ -1,6 +1,5 @@
 package org.virtuslab.beholder.filters
 
-import org.virtuslab.beholder.consumers.StandardConsumer
 import slick.driver.JdbcDriver
 import slick.lifted.{Query, Rep}
 
@@ -21,6 +20,6 @@ trait BeholderFilter[E, T] extends (FilterDefinition => Query[T, E, Seq]) {
 
 object BeholderFilter{
   implicit class consumedBeholderFilter[E](filter: BeholderFilter[E, _]){
-    def consumed = new StandardConsumer[E](filter) //TODO better DSL!
+    def consumed = new StandardConsumer[E](filter)
   }
 }

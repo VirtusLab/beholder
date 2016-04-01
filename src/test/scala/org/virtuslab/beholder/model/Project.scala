@@ -11,7 +11,7 @@ object ProjectType extends Enumeration {
 
   implicit val myEnumMapper = MappedColumnType.base[Value, String](
     e => e.toString,
-    s => withName(s) //TODO util for that?
+    s => withName(s) //TODO #38 util for enums
   )
 }
 

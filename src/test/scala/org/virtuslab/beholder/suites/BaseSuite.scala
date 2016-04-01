@@ -30,6 +30,7 @@ trait BaseSuite extends UserMachinesView {
 
         testResults(BaseFilterData.this, query, dropedAndSkiped, expected.size)
       }
+
     }
 
     val view = createUsersMachineView

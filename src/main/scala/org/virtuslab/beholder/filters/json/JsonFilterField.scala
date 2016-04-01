@@ -21,9 +21,11 @@ trait JsonFilterField {
 trait MappedJsonFilterField[B] extends JsonFilterField {
   protected def valueFormat: Format[B]
 
+  protected def ct: ClassTag[B]
+
   protected val rangeFormat: Format[FilterRange[B]] = {
     val defaultFormat: Format[FilterRange[B]] = ((__ \ "from").formatNullable(valueFormat) and
-      (__ \ "to").formatNullable(valueFormat))(FilterRange.apply, unlift(FilterRange.unapply))
+      (__ \ "to").formatNullable(valueFormat)) (FilterRange.apply, unlift(FilterRange.unapply))
 
     new Format[FilterRange[B]] {
       override def writes(o: FilterRange[B]): JsValue = defaultFormat.writes(o)
@@ -53,18 +55,30 @@ trait MappedJsonFilterField[B] extends JsonFilterField {
   override def readFilter(value: JsValue): JsResult[Any] =
     tryAlso(rangeFormat.reads(value), tryAlso(alternativeFormat.reads(value), valueFormat.reads(value)))
 
-  override def writeFilter(value: Any): JsValue = value match {
-    case range: FilterRange[B] => rangeFormat.writes(range)
-    case alternative: FilterAlternative[B] => alternativeFormat.writes(alternative)
-    case value: B => valueFormat.writes(value)
-    case _ => ??? //TODO
+  override def writeFilter(value: Any): JsValue = {
+    implicit val bct = ct
+    value match {
+      case range: FilterRange[B] => rangeFormat.writes(range)
+      case alternative: FilterAlternative[B] => alternativeFormat.writes(alternative)
+      case value: B => valueFormat.writes(value)
+      case other =>
+        throw new IllegalArgumentException( //TODO #28 Beholder exceptions
+          s"$value of class ${value.getClass.getName} is passed to JsonFilterField[${ct.runtimeClass.getName}]")
+    }
   }
+
 }
 
 class IdentityJsonField[A: ClassTag: BaseTypedType: JsonTypedType] extends MappedFilterField[A] with MappedJsonFilterField[A] {
   private def jsonTypeType = implicitly[JsonTypedType[A]]
 
+
+  // TODO report to Jetbrain - when implementing ct ClassManifest is inserted instead of ClassTag
+  //override protected implicit def ct: ClassManifest[A] = ???
+
+  override protected def ct: ClassTag[A] = implicitly[ClassTag[A]]
+
   override protected def valueFormat: Format[A] = jsonTypeType.format
 
-  override def fieldTypeDefinition: JsValue = jsonTypeType.fieldJsonDefinition //TODO - we must change this format!
+  override def fieldTypeDefinition: JsValue = jsonTypeType.fieldJsonDefinition
 }

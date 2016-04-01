@@ -29,7 +29,7 @@ trait JsonFilter {
 }
 
 trait JsonFilterImpl[E, T] extends LightFilter[E, T] with JsonFilter {
-  override def name: String = "ala" // TODO baseQuery.shaped.value.tableName // Can be override
+  override def name: String = "my-filter" // TODO #27 naming filters
 
   private var _nested: Map[String, JsonFilter] = Map()
 

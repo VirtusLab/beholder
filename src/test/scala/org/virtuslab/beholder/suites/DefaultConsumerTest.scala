@@ -2,13 +2,8 @@ package org.virtuslab.beholder.suites
 
 
 import org.virtuslab.beholder.{TestInvoker, BaseTest}
-import org.virtuslab.beholder.consumers.{FilterConsumer, StandardConsumer}
-import org.virtuslab.beholder.filters.{BeholderFilter, FilterResult, FilterDefinition, LightFilter}
+import org.virtuslab.beholder.filters._
 import org.virtuslab.beholder.view.UserMachineViewRow
-import org.virtuslab.beholder.views.BaseView
-import org.virtuslab.unicorn.LongUnicornPlay._
-import slick.dbio.DBIO
-import slick.lifted.{Query, Rep}
 
 trait MappedCollectorTest[E, R] extends BaseTest {
   self: BaseSuite =>
@@ -38,7 +33,7 @@ trait FilterResultTest[E] extends MappedCollectorTest[E, FilterResult[E]]{
 }
 
 
-trait DefaultCollectorTest extends MappedCollectorTest[UserMachineViewRow, FilterResult[UserMachineViewRow]] { //TODO better name
+trait DefaultConsumerTest extends MappedCollectorTest[UserMachineViewRow, FilterResult[UserMachineViewRow]] {
   self: BaseSuite =>
 
 

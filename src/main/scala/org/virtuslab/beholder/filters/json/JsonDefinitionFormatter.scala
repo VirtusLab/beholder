@@ -1,6 +1,5 @@
-package org.virtuslab.beholder.consumers.json
+package org.virtuslab.beholder.filters.json
 
-import org.virtuslab.beholder.filters.json.JsonFilter
 import org.virtuslab.beholder.filters.{FilterConstrains, FilterDefinition, Order}
 import play.api.data.validation.ValidationError
 import play.api.libs.json._

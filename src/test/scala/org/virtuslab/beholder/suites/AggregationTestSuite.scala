@@ -1,4 +1,6 @@
 package org.virtuslab.beholder.suites
+
+//TODO #37 Create aggregation collector tests
 /*
 import org.virtuslab.beholder.AppTest
 import org.virtuslab.beholder.consumers.{Collectors, TableAwareCollectors, Consumer}
@@ -7,13 +9,10 @@ import org.virtuslab.beholder.model.{MachineParameters, MachineParameter, UserId
 import org.virtuslab.beholder.view.UserMachineViewRow
 import slick.lifted.{TableQuery, Query}
 
-//TODO
-
 trait AggregationTestSuite extends FilterResultTest[Aggregated[UserMachineViewRow, MachineParameter]] {
   self: BaseSuite =>
 
 
-    //TODO what with total entities number in aggregation case?
 
  /* private def aggregate(res: Seq[UserMachineViewRow]): Seq[SystemPerUsers] =
     res.groupBy(_.system).map {

@@ -7,7 +7,7 @@ import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
 import scala.language.existentials
 import slick.lifted.{ TableQuery, Tag }
 
-//TODO remove unicorn from view
+//TODO #33 move to 2.0 spirit
 abstract class BaseView[Entity](tag: Tag, val viewName: String) extends BaseTable[Entity](tag, viewName) {
 
   /**

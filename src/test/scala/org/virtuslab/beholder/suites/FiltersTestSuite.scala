@@ -8,8 +8,8 @@ import org.virtuslab.beholder.view.UserMachineViewRow
 
 trait FiltersTestSuite extends BaseSuite with RangeFiltersSuite {
 
-  // TODO add enums
-  // TODO add negative tests
+  // TODO #36 create tests for enums
+  // TODO #36 create negative tests
   /*
     UserMachineViewRow(a@a.pl,Ubuntu,4,2014-12-05,Some(1.00))
     UserMachineViewRow(o@a.pl,Ubuntu,4,2014-12-05,Some(1.00))

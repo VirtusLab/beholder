@@ -1,11 +1,9 @@
-package org.virtuslab.beholder.consumers
+package org.virtuslab.beholder.filters
 
-import org.virtuslab.beholder.filters._
 import slick.dbio.DBIO
 
 import scala.concurrent.ExecutionContext
-import scala.language.implicitConversions
-import scala.language.higherKinds
+import scala.language.{higherKinds, implicitConversions}
 
 
 trait FilterConsumer[E, Filter <: BeholderFilter[E, _], R] {

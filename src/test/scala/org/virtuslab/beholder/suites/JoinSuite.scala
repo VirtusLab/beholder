@@ -1,16 +1,15 @@
 package org.virtuslab.beholder.suites
 
-import org.virtuslab.beholder._
-import org.virtuslab.beholder.filters.{FilterConstrains, FilterAPI, FilterDefinition, LightFilter}
+import org.virtuslab.beholder.filters.{FilterConstrains, LightFilter}
 import org.virtuslab.beholder.model._
 import org.virtuslab.beholder.view.UserMachineViewRow
 import org.virtuslab.beholder.views.BaseView
 import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
 
-trait JoinSuite extends FiltersTestSuite with DefaultCollectorTest {
+trait JoinSuite extends FiltersTestSuite with DefaultConsumerTest {
 
-  //TODO add 3 nested deep TODO negative tests
-  //TODO test range and alternatives
+  //TODO #36 add 3 nested deep
+  //TODO #36 negative tests
 
   def createTeamFilter(data: BaseFilterData): LightFilter[Team, Teams]
 
@@ -28,7 +27,6 @@ trait JoinSuite extends FiltersTestSuite with DefaultCollectorTest {
       (um, t) => t.admin === um.typedColumnByName[UserId]("userId")
     )
   }
-/*
 
   it should "perform simple join" in baseFilterTest {
     data =>
@@ -42,16 +40,15 @@ trait JoinSuite extends FiltersTestSuite with DefaultCollectorTest {
 
         val filterDefinition = addJoin(adminJoinName, FilterConstrains(fieldConstrains = Map("teamName" -> testTeamName)))
 
-        val orderByCore = doFilter(data, filterDefinition)
 
-        orderByCore should contain theSameElementsInOrderAs fromDbOrderedByCores
+        filtering(filterDefinition) shouldResultIn fromDbOrderedByCores
       }
 
       testTeamName("core")
       testTeamName("non-existing")
   }
 
-  it should "perform avoid name clashes" in baseFilterTest {
+  it should "avoid name clashes" in baseFilterTest {
     data =>
       import data._
 
@@ -62,9 +59,8 @@ trait JoinSuite extends FiltersTestSuite with DefaultCollectorTest {
 
       val filterDefinition = addJoin(adminJoinName, FilterConstrains(fieldConstrains = Map("system" -> "Ubuntu")))
 
-      val orderByCore = doFilter(data, filterDefinition)
+      filtering(filterDefinition) shouldResultIn fromDbOrderedByCores
 
-      orderByCore should contain theSameElementsInOrderAs fromDbOrderedByCores
   }
 
   it should "fails on nonexisting join" in baseFilterTest {
@@ -74,8 +70,8 @@ trait JoinSuite extends FiltersTestSuite with DefaultCollectorTest {
       val filterDefinition = addJoin(adminJoinName, FilterConstrains(fieldConstrains = Map("nonExisting" -> "bum")))
 
       intercept[IllegalArgumentException] {
-        doFilter(data, filterDefinition)
+        filtering(filterDefinition) shouldResultIn Nil
       }
-  }*/
+  }
 
 }

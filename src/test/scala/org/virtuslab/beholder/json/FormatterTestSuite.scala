@@ -3,7 +3,6 @@ package org.virtuslab.beholder.json
 import java.sql.Date
 
 import org.joda.time.DateTime
-import org.virtuslab.beholder.consumers.json.JsonDefinitionFormatter
 import org.virtuslab.beholder.view.UserMachinesView
 import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
 import org.virtuslab.beholder.{AppTest, ModelIncluded}
@@ -15,7 +14,7 @@ class FormatterTestSuite extends AppTest with UserMachinesView with ModelInclude
 
   import org.virtuslab.beholder.filters.json.JsonDSL._
 
-  //TODO test ranges, and alternatives for all fields
+  //TODO #35 test ranges, and alternatives for all fields
 
   private def createFilter(labels: String => String)(implicit session: Session) = {
     val view = createUsersMachineView
@@ -161,8 +160,8 @@ class FormatterTestSuite extends AppTest with UserMachinesView with ModelInclude
       testFailure(format)(onNonExisting)
   }
 
-  //TODO test nested filters
+  //TODO #35 test nested filters
 
-  //TODO definition tests
+  //TODO #35 definition tests
 
 }

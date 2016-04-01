@@ -7,7 +7,7 @@ import slick.driver.JdbcDriver
 import scala.language.higherKinds
 import scala.language.implicitConversions
 
-//TODO create function based dsl: case (a, b) => "ala" from a.ala and "ola" from o.ola
+//TODO #30 create function based dsl
 abstract class DSLBase[DSLField <: FilterField, FilterType[E, T] <: LightFilter[E, T], FieldMapper[_]] {
 
   def create[E,  T <: BaseView[E]](viewFilterState: ViewFilterState[E,  T]): FilterType[E, T]

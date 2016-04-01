@@ -116,6 +116,7 @@ trait ModelIncluded extends AppTest {
   }
 }
 
+//TODO #34 migrate tests to slick 3.0 approach
 trait AppTest extends BaseTest with BeforeAndAfterEach {
 
   private val testDb = Map(
@@ -142,7 +143,7 @@ trait AppTest extends BaseTest with BeforeAndAfterEach {
    * @return value returned from `f`
    */
   def rollback[A](func: Session => A): A = withApp { implicit app =>
-    DB.withTransaction { //TODO remove old method
+    DB.withTransaction {
       session: Session =>
         val out = func(session)
         session.rollback()

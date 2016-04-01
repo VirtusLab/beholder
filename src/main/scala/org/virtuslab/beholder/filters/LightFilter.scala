@@ -25,7 +25,8 @@ trait LightFilter[E, T] extends BeholderFilter[E, T] with FilterJoins[E, T] {
   //################ Extension methods ##################
 
   protected def noSuchColumn(name: String): Rep[_] =
-    throw new IllegalArgumentException(s"Filter does not contain clumn $name") // TODO use specific exception
+    // TODO #28 Create beholder specific exceptions
+    throw new IllegalArgumentException(s"Filter does not contain clumn $name")
 
   protected def noSuchField(name: String): FilterField =
     throw new IllegalArgumentException(s"Filter does not contain field $name")

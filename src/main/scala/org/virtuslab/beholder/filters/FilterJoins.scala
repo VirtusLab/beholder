@@ -12,7 +12,7 @@ trait FilterJoins[E, T] {
 
   protected def joins: Map[String, FilterJoin] = _joins
 
-  //TODO - dsl for joins
+  // TODO #29 dsl for joins
   def join[NET, NT](name: String,
     from: LightFilter[NET, NT])(on: (T, NT) => Rep[Boolean])(implicit t1Shape: Shape[FlatShapeLevel, T, E, T]): LightFilter[E, T] = {
     val join: FilterJoin = (data, driver) => query =>

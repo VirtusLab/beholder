@@ -11,8 +11,8 @@ import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
 class LightDSLJoinFiltersTests extends AppTest with JoinSuite {
   import LightDSLFilter._
 
-  //TODO test table based filter
-  //TODO test different DSLs
+  //TODO  #36 test table based filter
+  //TODO  #36 test different DSLs forms
 
   override def createTeamFilter(data: BaseFilterData) = create {
     fromTable(TableQuery[Teams])(_.teamName) and
@@ -30,7 +30,7 @@ class LightDSLJoinFiltersTests extends AppTest with JoinSuite {
   }
 }
 
-class LightDSLFiltersTests extends AppTest with FiltersTestSuite with DefaultCollectorTest {
+class LightDSLFiltersTests extends AppTest with FiltersTestSuite with DefaultConsumerTest {
   override def createFilter(data: BaseFilterData) = {
     import LightDSLFilter._
 
