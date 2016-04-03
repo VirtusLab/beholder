@@ -8,7 +8,7 @@ import slick.lifted._
 import slick.ast.Ordering
 
 
-trait LightFilter[E, T] extends BeholderFilter[E, T] with FilterJoins[E, T] {
+trait ImplementedFilter[E, T] extends BeholderFilter[E, T] with FilterJoins[E, T] {
 
   //################ Public API #####################
 

@@ -1,31 +1,46 @@
 package org.virtuslab.beholder.filters
 
+import org.virtuslab.beholder.utils.AggregationUtil
 import slick.dbio.DBIO
+import slick.driver.JdbcDriver
+import slick.lifted.{Rep, Query}
 
 import scala.concurrent.ExecutionContext
 import scala.language.{higherKinds, implicitConversions}
 
+trait FilterConsumer[R]{
+  def consume(definition: FilterDefinition)(implicit ec: ExecutionContext): DBIO[FilterResult[R]]
 
-trait FilterConsumer[E, Filter <: BeholderFilter[E, _], R] {
-  def filter: Filter
-
-  def consume(definition: FilterDefinition)(implicit ec: ExecutionContext): DBIO[R]
+  def run(definition: FilterDefinition)(implicit ec: ExecutionContext): DBIO[Seq[R]]
 }
 
-case class StandardConsumer[E](override val filter: BeholderFilter[E, _])
-  extends FilterConsumer[E, BeholderFilter[E, _], FilterResult[E]]{
+trait FilterAwareConsumer[R, +F] extends FilterConsumer[R]{
+  def filter: F
+}
 
-  override def consume(filterDefinition: FilterDefinition)(implicit ec: ExecutionContext): DBIO[FilterResult[E]] = {
-    val query = filter.apply(filterDefinition)
+case class ConsumerImpl[E, T, R, Filter <: BeholderFilter[E, T]](val filter: Filter,
+                                                                 val collector: QueryCollector[E, T, R])
+  extends FilterAwareConsumer[R, Filter] {
 
-    val queryAfterSkip = filterDefinition.skip.fold(query)(query.drop)
-    val afterTake = filterDefinition.take.fold(queryAfterSkip)(queryAfterSkip.take)
+
+  override def consume(definition: FilterDefinition)(implicit ec: ExecutionContext): DBIO[FilterResult[R]] = {
+    val query = filter.apply(definition)
+
+    val queryAfterSkip = definition.skip.fold(query)(query.drop)
+    val afterTake = definition.take.fold(queryAfterSkip)(queryAfterSkip.take)
+
 
     import filter.driver.api._
 
+    val results = collector.runQuery(afterTake, filter)
+
     for{
-      list <- afterTake.result
-      size <- query.length.result
-    } yield FilterResult(list, size)
+        list <- results
+        size <- query.length.result
+      } yield FilterResult(list, size)
   }
+
+  override def run(definition: FilterDefinition)(implicit ec: ExecutionContext): DBIO[Seq[R]] = collector.runQuery(filter(definition),filter)
+
 }
+

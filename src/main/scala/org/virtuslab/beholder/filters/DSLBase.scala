@@ -8,7 +8,7 @@ import scala.language.higherKinds
 import scala.language.implicitConversions
 
 //TODO #30 create function based dsl
-abstract class DSLBase[DSLField <: FilterField, FilterType[E, T] <: LightFilter[E, T], FieldMapper[_]] {
+abstract class DSLBase[DSLField <: FilterField, FilterType[E, T] <: ImplementedFilter[E, T], FieldMapper[_]] {
 
   def create[E,  T <: BaseView[E]](viewFilterState: ViewFilterState[E,  T]): FilterType[E, T]
   def create[E,  T](viewFilterState: FilterQueryState[E,  T]): FilterType[E, T]
@@ -19,7 +19,7 @@ abstract class DSLBase[DSLField <: FilterField, FilterType[E, T] <: LightFilter[
   final implicit def state2Filter[E,  T](tableFilterState: FilterQueryState[E,  T]): FilterType[E,  T] =
     create(tableFilterState)
 
-  protected class TableBasedFilter[E,  T](state: FilterQueryState[E,  T]) extends LightFilter[E,  T] {
+  protected class TableBasedFilter[E,  T](state: FilterQueryState[E,  T]) extends ImplementedFilter[E,  T] {
     override def baseQuery: FilterQuery = state.baseQuery
 
     override protected def filterFields: Map[String, FilterField] = state.fields
@@ -31,7 +31,7 @@ abstract class DSLBase[DSLField <: FilterField, FilterType[E, T] <: LightFilter[
     override val driver: JdbcDriver = state.forDriver
   }
 
-  protected class ViewBasedFilter[E,  T <: BaseView[E]](state: ViewFilterState[E,  T]) extends LightFilter[E,  T] {
+  protected class ViewBasedFilter[E,  T <: BaseView[E]](state: ViewFilterState[E,  T]) extends ImplementedFilter[E,  T] {
     override def baseQuery: FilterQuery = state.table
 
     override  def defaultOrder(q: T): Rep[_] = q.id
@@ -47,7 +47,7 @@ abstract class DSLBase[DSLField <: FilterField, FilterType[E, T] <: LightFilter[
 
   protected case class ViewFilterState[E,  T <: BaseView[E]](table: Query[T, E, Seq],
       fields: Map[String, DSLField],
-      val forDriver: JdbcDriver) {
+      val forDriver: JdbcDriver) extends ConsumerDSL[E, T, FilterType]{
 
     def and(name: String): AndDSL = new AndDSL(name)
 
@@ -58,6 +58,8 @@ abstract class DSLBase[DSLField <: FilterField, FilterType[E, T] <: LightFilter[
       def as[A: FieldMapper](field: MappedFilterField[A] with DSLField): ViewFilterState[E,  T] =
         asUntyped(field)
     }
+
+    override protected def createFilter: FilterType[E, T] = create(this)
   }
 
   protected case class FilterQueryState[E,  T](
@@ -65,7 +67,7 @@ abstract class DSLBase[DSLField <: FilterField, FilterType[E, T] <: LightFilter[
       val fields: Map[String, DSLField],
       val columns: Map[String, T => Rep[_]],
       val order: T => Rep[_],
-      val forDriver: JdbcDriver) {
+      val forDriver: JdbcDriver) extends ConsumerDSL[E, T, FilterType]{
 
     def and(name: String): AndDSL = new AndDSL(name)
 
@@ -94,13 +96,23 @@ abstract class DSLBase[DSLField <: FilterField, FilterType[E, T] <: LightFilter[
           )
       }
 
-      def from[A: FieldMapper](col: T => Rep[A]): FilterQueryState[E,  T] =
-        as(in[A]).from(col)
+      def from[A: FieldMapper](column: T => Rep[A]): FilterQueryState[E,  T] =
+        FilterQueryState.this.copy(
+          fields = fields + (name -> in[A]),
+          columns = columns + (name -> column)
+        )
+
+      def fromOpt[A: FieldMapper](column: T => Rep[Option[A]]): FilterQueryState[E,  T] =
+        FilterQueryState.this.copy(
+          fields = fields + (name -> in[A]),
+          columns = columns + (name -> column)
+        )
     }
 
     def orderedBy(newOrder: T => Rep[_]): FilterQueryState[E,  T] =
       copy(order = newOrder)
 
+    override protected def createFilter: FilterType[E, T] = create(this)
   }
 
   def fromTable[E, T](filter: Query[T, E, Seq])(order: T => Rep[_])(implicit jdbcDriver: JdbcDriver) =

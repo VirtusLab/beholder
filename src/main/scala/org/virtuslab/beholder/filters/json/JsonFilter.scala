@@ -5,7 +5,6 @@ import org.virtuslab.unicorn.LongUnicornPlay
 import play.api.libs.json._
 import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
 
-
 trait JsonFilter {
 
   protected def nested: Map[String, JsonFilter]
@@ -28,14 +27,14 @@ trait JsonFilter {
   def nestedFilterFor(name: String): Option[JsonFilter] = nested.get(name)
 }
 
-trait JsonFilterImpl[E, T] extends LightFilter[E, T] with JsonFilter {
+trait JsonFilterImpl[E, T] extends ImplementedFilter[E, T] with JsonFilter {
   override def name: String = "my-filter" // TODO #27 naming filters
 
   private var _nested: Map[String, JsonFilter] = Map()
 
   override protected def nested: Map[String, JsonFilter] = _nested
 
-  override def join[NET, NT](name: String, from: LightFilter[NET, NT])(on: (T, NT) => Rep[Boolean])(implicit t1Shape: Shape[FlatShapeLevel, T, E, T]): LightFilter[E, T] = {
+  override def join[NET, NT](name: String, from: ImplementedFilter[NET, NT])(on: (T, NT) => Rep[Boolean])(implicit t1Shape: Shape[FlatShapeLevel, T, E, T]): ImplementedFilter[E, T] = {
     from match {
       case jsonFilter: JsonFilter =>
         _nested = _nested + (name -> jsonFilter)

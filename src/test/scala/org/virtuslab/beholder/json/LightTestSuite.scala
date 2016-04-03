@@ -27,8 +27,8 @@ class JsonDSLJoinFiltersTests extends AppTest with JoinSuite {
         "capacity" as in[BigDecimal]
 }
 
-class JsonFiltersTests extends AppTest with FiltersTestSuite with DefaultConsumerTest  {
-  def createFilter(data: BaseFilterData) = {
+class JsonFiltersTests extends AppTest with FiltersTestSuite with ConsumerBaseTest[UserMachineViewRow]  {
+  def createConsumer(data: BaseFilterData) = {
     import JsonDSL._
 
     fromView(data.view) and
@@ -36,7 +36,7 @@ class JsonFiltersTests extends AppTest with FiltersTestSuite with DefaultConsume
       "system" as in[String] and
       "cores" as in[Int] and
       "created" as in[Date] and
-      "capacity" as in[BigDecimal]
+      "capacity" as in[BigDecimal] list
 
   }
 }

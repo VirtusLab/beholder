@@ -1,31 +1,31 @@
 package org.virtuslab.beholder.suites
 
-import org.virtuslab.beholder.filters.{FilterConstrains, LightFilter}
+import org.virtuslab.beholder.filters.{FilterConsumer, FilterConstrains, ImplementedFilter}
 import org.virtuslab.beholder.model._
 import org.virtuslab.beholder.view.UserMachineViewRow
 import org.virtuslab.beholder.views.BaseView
 import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
 
-trait JoinSuite extends FiltersTestSuite with DefaultConsumerTest {
+trait JoinSuite extends FiltersTestSuite with ViewBasedTest {
 
   //TODO #36 add 3 nested deep
   //TODO #36 negative tests
 
-  def createTeamFilter(data: BaseFilterData): LightFilter[Team, Teams]
+  def createTeamFilter(data: BaseFilterData): ImplementedFilter[Team, Teams]
 
-  def createBaseFilter(data: BaseFilterData): LightFilter[UserMachineViewRow, _ <: BaseView[UserMachineViewRow]]
+  def createBaseFilter(data: BaseFilterData): ImplementedFilter[UserMachineViewRow, _ <: BaseView[UserMachineViewRow]]
 
 
   private val adminJoinName = "admin"
 
 
-  override def createFilter(data: BaseFilterData) = {
+  override def createConsumer(data: BaseFilterData): FilterConsumer[UserMachineViewRow] = {
     val userMachineFilter = createBaseFilter(data)
     val teamFilter = createTeamFilter(data)
 
     userMachineFilter.join(adminJoinName, teamFilter)(
       (um, t) => t.admin === um.typedColumnByName[UserId]("userId")
-    )
+    ).list
   }
 
   it should "perform simple join" in baseFilterTest {
