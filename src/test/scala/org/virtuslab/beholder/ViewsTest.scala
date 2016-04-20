@@ -1,31 +1,27 @@
 package org.virtuslab.beholder
 
-import org.virtuslab.beholder.utils.Slick3Invoker
 import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
+import scala.concurrent.ExecutionContext.Implicits.global
 
 class ViewsTest extends AppTest with UserMachinesView {
 
-  "view" should "be queryable" in rollbackWithModel {
-    implicit session =>
-
-      val view = createUsersMachineView()
-
-      //      view.schema.create
-
-      new PopulatedDatabase
-
-      val all = view.list
-
-      println(all)
+  "view" should "be queryable" in rollbackActionWithModel {
+    for {
+      _ <- populatedDatabase
+      view <- createUsersMachineView()
+      all <- view.result
+    } yield {
       all.size shouldEqual 3
+    }
   }
 
-  "view" should "be creatable" in rollbackWithModel {
-    implicit session =>
-      val view = createUsersMachineView()
-      Slick3Invoker.invokeAction(view.viewDDL.drop)
-      Slick3Invoker.invokeAction(view.viewDDL.create)
-      Slick3Invoker.invokeAction(view.viewDDL.drop)
+  "view" should "be creatable" in rollbackActionWithModel {
+    for {
+      view <- createUsersMachineView()
+      _ <- view.viewDDL.drop
+      _ <- view.viewDDL.create
+      _ <- view.viewDDL.drop
+    } yield ()
   }
 
 }

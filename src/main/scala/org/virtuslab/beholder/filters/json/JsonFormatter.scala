@@ -2,7 +2,7 @@ package org.virtuslab.beholder.filters.json
 
 import org.virtuslab.beholder.filters.{ FilterDefinition, FilterResult, Order }
 import play.api.data.validation.ValidationError
-import play.api.libs.json.{ JsObject, _ }
+import play.api.libs.json._
 
 class JsonFormatter[Entity <: Product](filterFields: Seq[JsonFilterField[_, _]], columnsNames: Seq[String], label: String => String) {
 

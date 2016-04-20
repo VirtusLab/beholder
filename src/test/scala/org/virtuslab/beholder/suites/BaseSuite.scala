@@ -3,29 +3,29 @@ package org.virtuslab.beholder.suites
 import org.virtuslab.beholder.filters.{ FilterAPI, FilterDefinition }
 import org.virtuslab.beholder.{ AppTest, UserMachineViewRow, UserMachinesView }
 import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
+import scala.concurrent.ExecutionContext.Implicits.global
 
 trait BaseSuite[Formatter] extends UserMachinesView {
   self: AppTest =>
   def createFilter(data: BaseFilterData): FilterAPI[UserMachineViewRow, Formatter]
 
-  protected def baseFilterTest[A](testImplementation: BaseFilterData => A) = rollbackWithModel {
-    implicit session: Session =>
-      testImplementation(new BaseFilterData())
+  protected def baseFilterTest[A](testImplementation: BaseFilterData => DBIO[A]) = rollbackActionWithModel {
+    testImplementation(new BaseFilterData())
   }
 
-  protected class BaseFilterData(implicit val session: Session) extends PopulatedDatabase {
+  protected class BaseFilterData {
 
-    val view = createUsersMachineView
-
-    //Slick3Invoker.invokeAction(view.schema.create)
-
+    val query = viewQuery
     lazy val filter = createFilter(this)
-
     lazy val baseFilter = filter.emptyFilterData
     lazy val baseFilterData = baseFilter.data
-
-    lazy val allFromDb: Seq[UserMachineViewRow] = view.list
+    lazy val allFromDb: DBIO[Seq[UserMachineViewRow]] =
+      for {
+        view <- createUsersMachineView()
+        _ <- populatedDatabase
+        all <- view.result
+      } yield all
   }
 
-  def doFilters(data: BaseFilterData, currentFilter: FilterDefinition): Seq[UserMachineViewRow]
+  def doFilters(data: BaseFilterData, currentFilter: FilterDefinition): DBIO[Seq[UserMachineViewRow]]
 }
