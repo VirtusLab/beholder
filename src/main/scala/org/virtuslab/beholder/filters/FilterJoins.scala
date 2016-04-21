@@ -4,7 +4,7 @@ import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
 import slick.driver.JdbcDriver
 
 trait FilterJoins[E, T] {
-  self: LightFilter[E, T] =>
+  self: ImplementedFilter[E, T] =>
 
   type FilterJoin = (FilterConstrains, JdbcDriver) => FilterQuery => FilterQuery
 
@@ -14,7 +14,7 @@ trait FilterJoins[E, T] {
 
   // TODO #29 dsl for joins
   def join[NET, NT](name: String,
-    from: LightFilter[NET, NT])(on: (T, NT) => Rep[Boolean])(implicit t1Shape: Shape[FlatShapeLevel, T, E, T]): LightFilter[E, T] = {
+    from: ImplementedFilter[NET, NT])(on: (T, NT) => Rep[Boolean])(implicit t1Shape: Shape[FlatShapeLevel, T, E, T]): ImplementedFilter[E, T] = {
     val join: FilterJoin = (data, driver) => query =>
       for {
         ft <- query

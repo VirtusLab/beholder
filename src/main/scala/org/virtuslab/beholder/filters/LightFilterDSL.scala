@@ -14,11 +14,11 @@ object LightDslMapper {
   implicit def create[A: ClassTag: BaseTypedType] = new LightDslMapper[A]
 }
 
-object LightDSLFilter extends DSLBase[FilterField, LightFilter, LightDslMapper] {
-  override def create[E, T <: BaseView[E]](viewFilterState: LightDSLFilter.ViewFilterState[E, T]): LightFilter[E,  T] =
+object LightDSLFilter extends DSLBase[FilterField, ImplementedFilter, LightDslMapper] {
+  override def create[E, T <: BaseView[E]](viewFilterState: LightDSLFilter.ViewFilterState[E, T]): ImplementedFilter[E,  T] =
     new ViewBasedFilter[E, T](viewFilterState)
 
-  override def create[E,  T](viewFilterState: LightDSLFilter.FilterQueryState[E,  T]): LightFilter[E,  T] =
+  override def create[E,  T](viewFilterState: LightDSLFilter.FilterQueryState[E,  T]): ImplementedFilter[E,  T] =
     new TableBasedFilter[E,  T](viewFilterState)
 
   override def in[T: LightDslMapper]: FilterField with MappedFilterField[T] = {

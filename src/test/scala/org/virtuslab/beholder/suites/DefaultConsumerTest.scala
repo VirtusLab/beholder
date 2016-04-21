@@ -1,17 +1,20 @@
 package org.virtuslab.beholder.suites
 
 
+import org.virtuslab.beholder.model.{Machine, User}
 import org.virtuslab.beholder.{TestInvoker, BaseTest}
 import org.virtuslab.beholder.filters._
 import org.virtuslab.beholder.view.UserMachineViewRow
 
-trait MappedCollectorTest[E, R] extends BaseTest {
+trait ConsumerBaseTest[R] extends BaseTest {
   self: BaseSuite =>
 
 
-  def createConsumer(data: BaseFilterData):  FilterConsumer[_, _, R]
+  def createConsumer(data: BaseFilterData):  FilterConsumer[R]
 
-  def compare(data: BaseFilterData, collected: R, expected: Seq[UserMachineViewRow], totalCounnt: Int): Unit
+  def compare(data: BaseFilterData, collected: Seq[R], expected: Seq[UserMachineViewRow]): Unit ={
+    collected should contain theSameElementsInOrderAs expected
+  }
 
   override def testResults(data: BaseFilterData,
                            definition: FilterDefinition,
@@ -24,30 +27,27 @@ trait MappedCollectorTest[E, R] extends BaseTest {
 
     val results = TestInvoker.invokeAction(consumer.consume(definition))
 
-    compare(data, results, expected, totalCount)
+    results.total shouldEqual totalCount
+
+    compare(data, results.content, expected)
   }
 }
 
-trait FilterResultTest[E] extends MappedCollectorTest[E, FilterResult[E]]{
+trait ViewBasedTest extends ConsumerBaseTest[UserMachineViewRow]{
   self: BaseSuite =>
 }
 
 
-trait DefaultConsumerTest extends MappedCollectorTest[UserMachineViewRow, FilterResult[UserMachineViewRow]] {
+trait QueryBasedTest extends ConsumerBaseTest[(User, Machine)]{
   self: BaseSuite =>
 
-
-
-  def createFilter(data: BaseFilterData): LightFilter[UserMachineViewRow, _]
-
-
-  override def createConsumer(data: BaseFilterData) = createFilter(data).consumed
-
   override def compare(data: BaseFilterData,
-                       collected: FilterResult[UserMachineViewRow],
-                       expected: Seq[UserMachineViewRow],
-                       totalCounnt: Int): Unit = {
-    collected.total shouldEqual totalCounnt
-    collected.content should contain theSameElementsAs expected
+                       collected: Seq[(User, Machine)],
+                       expected: Seq[UserMachineViewRow]): Unit = {
+    val expectedIds = expected.map(r => r.machineId -> r.userId)
+    val collectedIds = collected.map{
+      case (user, machine) =>  machine.id.get -> user.id.get
+    }
+    collectedIds should contain theSameElementsInOrderAs expectedIds
   }
 }

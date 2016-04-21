@@ -2,6 +2,7 @@ package org.virtuslab.beholder
 
 import java.sql.Date
 
+import org.virtuslab.beholder.filters.LightDSLFilter._
 import org.virtuslab.beholder.filters._
 import org.virtuslab.beholder.model._
 import org.virtuslab.beholder.suites._
@@ -30,8 +31,8 @@ class LightDSLJoinFiltersTests extends AppTest with JoinSuite {
   }
 }
 
-class LightDSLFiltersTests extends AppTest with FiltersTestSuite with DefaultConsumerTest {
-  override def createFilter(data: BaseFilterData) = {
+class LightDSLFiltersTests extends AppTest with FiltersTestSuite with ViewBasedTest {
+  override def createConsumer(data: BaseFilterData) = {
     import LightDSLFilter._
 
     fromView(data.view) and
@@ -39,55 +40,49 @@ class LightDSLFiltersTests extends AppTest with FiltersTestSuite with DefaultCon
       "system" as in[String] and
       "cores" as in[Int] and
       "created" as in[Date] and
-      "capacity" as in[BigDecimal]
+      "capacity" as in[BigDecimal] list
   }
 }
-/*
 
-class LightDSLQueryFiltersTests extends AppTest with FiltersTestSuite with MappedCollectorTest[(User, Machine)]  {
-  def createFilter(data: BaseFilterData) = {
+
+class LightDSLQueryFiltersTests extends AppTest with FiltersTestSuite with QueryBasedTest {
+
+  override def createConsumer(data: BaseFilterData): FilterConsumer[(User, Machine)] = {
     import LightDSLFilter._
 
-    fromTable(userJoinMachinesQuery)(_._1.email) and
+
+    val filter = fromTable(userJoinMachinesQuery)(_._1.email) and
+      "email" from (_._1.email) and
+      "system" from (_._2.system) and
+      "cores" from (_._2.cores) and
+      "created" from (_._2.created) and
+      "capacity" fromOpt (_._2.capacity)
+
+    val anotherForm = fromTable(userJoinMachinesQuery)(_._1.email) and
       "email" as in[String] from (_._1.email) and
       "system" as in[String] from (_._2.system) and
       "cores" as in[Int] from (_._2.cores) and
       "created" as in[Date] from (_._2.created) and
       "capacity" as in[BigDecimal] fromOpt (_._2.capacity)
+
+    anotherForm.aggregatedAs(
+      _.joinLeft(TableQuery[MachineParameters]).on(_._2.id === _.machine)
+    )
+
+    filter.list
+  }
+}
+
+class LightDSLAggregationFiltersTests extends AppTest with FiltersTestSuite with AggregationBased  {
+  override def createConsumer(data: BaseFilterData) = {
+    fromView(data.view) and
+      "email" as in[String] and
+      "system" as in[String] and
+      "cores" as in[Int] and
+      "created" as in[Date] and
+      "capacity" as in[BigDecimal] aggregatedAs(
+      _.joinLeft(TableQuery[MachineParameters]).on(_.c7 === _.machine)
+    )
   }
 
-  private def toMachineViewRow(data: (User, Machine)): UserMachineViewRow = {
-    val  (user, machine) = data
-
-    UserMachineViewRow(
-        user.email,
-        machine.system,
-        machine.cores,
-        machine.created,
-        machine.capacity,
-        user.id.get,
-        machine.id.get
-      )
-  }
-
-  override def compare(data: BaseFilterData, fromFilter: Seq[(User, Machine)], expected: Seq[UserMachineViewRow]): Unit = {
-    fromFilter.map(toMachineViewRow) should contain theSameElementsAs expected
-  }
-}*/
-/*
-class LightDSLAggregationFiltersTests extends AppTest with AggregationTestSuite {
-  override def createUserMachinesFilter(data: BaseFilterData): FilterAPI[Aggregated[UserMachineViewRow, MachineParameter]] = {
-    import LightDSLFilter._
-
-
-    fromTable(userJoinMachinesQuery)(_._1.email) and
-      "email" as in[String] from (_._1.email) and
-      "system" as in[String] from (_._2.system) and
-      "cores" as in[Int] from (_._2.cores) and
-      "created" as in[Date] from (_._2.created) and
-      "capacity" as in[BigDecimal] fromOpt (_._2.capacity) collector {
-        new InMemoryAggregator(TableQuery[MachineParameters])(_.c ==)
-    }
-
-  }
-}*/
+}
