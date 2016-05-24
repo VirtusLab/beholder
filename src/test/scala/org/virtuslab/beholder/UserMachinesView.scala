@@ -3,11 +3,10 @@ package org.virtuslab.beholder
 import java.sql.Date
 
 import org.virtuslab.beholder.model.{ MachineStatus, Machines, Users }
-import org.virtuslab.beholder.utils.Slick3Invoker
 import org.virtuslab.beholder.views.FilterableViews
 import org.virtuslab.unicorn.LongUnicornPlay._
-import play.api.libs.json._
 import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
+import scala.concurrent.ExecutionContext.Implicits.global
 
 case class UserMachineViewRow(
   email: String,
@@ -20,32 +19,34 @@ case class UserMachineViewRow(
 trait UserMachinesView extends ModelIncluded {
   self: AppTest =>
 
-  def createUsersMachineView()(implicit session: Session) = {
-    //query that is a base for view
-    new CustomTypeMappers {
-      val usersMachinesQuery = for {
-        user <- TableQuery[Users]
-        userMachine <- userMachineQuery if user.id === userMachine.userId
-        machine <- TableQuery[Machines] if machine.id === userMachine.machineId
-      } yield (user, machine)
+  import CustomTypeMappers._
 
-      val tableQuery = FilterableViews.createView(
-        name = "USER_MACHINE_VIEW",
-        UserMachineViewRow.apply _,
-        UserMachineViewRow.unapply _,
-        baseQuery = usersMachinesQuery
-      ) {
-          case (user, machine) =>
-            //naming the fields
-            ("email" -> user.email,
-              "system" -> machine.system,
-              "cores" -> machine.cores,
-              "created" -> machine.created,
-              "capacity" -> machine.capacity,
-              "status" -> machine.status)
-        }
+  //query that is a base for view
+  lazy val usersMachinesQuery = for {
+    user <- TableQuery[Users]
+    userMachine <- userMachineQuery if user.id === userMachine.userId
+    machine <- TableQuery[Machines] if machine.id === userMachine.machineId
+  } yield (user, machine)
 
-      Slick3Invoker.invokeAction(tableQuery.viewDDL.create)
-    }.tableQuery
+  lazy val tableQuery = FilterableViews.createView(
+    name = "USER_MACHINE_VIEW",
+    UserMachineViewRow.apply _,
+    UserMachineViewRow.unapply _,
+    baseQuery = usersMachinesQuery
+  ) {
+      case (user, machine) =>
+        //naming the fields
+        ("email" -> user.email,
+          "system" -> machine.system,
+          "cores" -> machine.cores,
+          "created" -> machine.created,
+          "capacity" -> machine.capacity,
+          "status" -> machine.status)
+    }
+
+  def createUsersMachineView() = {
+    tableQuery.viewDDL.create.map(_ => tableQuery)
   }
+
+  def viewQuery = tableQuery
 }

@@ -1,7 +1,8 @@
 package org.virtuslab.beholder.suites
 
-import org.virtuslab.beholder.AppTest
+import org.virtuslab.beholder.{ UserMachineViewRow, AppTest }
 import org.virtuslab.beholder.filters.FilterRange
+import scala.concurrent.ExecutionContext.Implicits.global
 
 trait RangeFiltersSuite[Formatter] extends BaseSuite[Formatter] {
   self: AppTest =>
@@ -11,20 +12,23 @@ trait RangeFiltersSuite[Formatter] extends BaseSuite[Formatter] {
   it should "should take int range correctly" in baseFilterTest {
     data =>
       import data._
-
-      val a = baseFilter.data
       val coreRange = Some(FilterRange(Some(1), Some(4)))
-
-      val coreRangeData = doFilters(data, baseFilter.copy(data = a.updated(2, coreRange)))
-
-      coreRangeData should contain theSameElementsAs allFromDb
+      for {
+        all <- allFromDb
+        coreRangeData <- doFilters(data, baseFilter.copy(data = baseFilterData.updated(2, coreRange)))
+      } yield {
+        coreRangeData should contain theSameElementsAs all
+      }
   }
 
   it should "should take BigDecimal range correctly" in baseFilterTest {
     data =>
       {
-        def testCapacityRange(minCapacity: Option[BigDecimal], maxCapacity: Option[BigDecimal]) = {
-
+        import data._
+        def testCapacityRange(
+          minCapacity: Option[BigDecimal],
+          maxCapacity: Option[BigDecimal],
+          all: Seq[UserMachineViewRow]) = {
           def isInRange(from: Option[BigDecimal], to: Option[BigDecimal], value: Option[BigDecimal]) = {
             val seq = Seq(from, value, to)
             (seq, seq.tail).zipped.forall {
@@ -32,23 +36,25 @@ trait RangeFiltersSuite[Formatter] extends BaseSuite[Formatter] {
               case (_, _) => true
             }
           }
-
-          import data._
-          val fromDbFilteredByCapacity = allFromDb.filter(a => isInRange(minCapacity, maxCapacity, a.capacity))
-          val a = baseFilter.data
           val capacityRange = Some(FilterRange(minCapacity, maxCapacity))
 
-          val coreRangeData = doFilters(data, baseFilter.copy(data = a.updated(4, capacityRange)))
-
-          coreRangeData should contain theSameElementsAs fromDbFilteredByCapacity
+          for {
+            coreRangeData <- doFilters(data, baseFilter.copy(data = baseFilterData.updated(4, capacityRange)))
+          } yield {
+            val fromDbFilteredByCapacity = all.filter(a => isInRange(minCapacity, maxCapacity, a.capacity))
+            coreRangeData should contain theSameElementsAs fromDbFilteredByCapacity
+          }
         }
 
-        testCapacityRange(Some(1), Some(3))
-        testCapacityRange(Some(1), Some(2))
-        testCapacityRange(Some(2), Some(2))
-        testCapacityRange(None, Some(2))
-        testCapacityRange(Some(3), None)
-        testCapacityRange(None, None)
+        for {
+          all <- allFromDb
+          _ <- testCapacityRange(Some(1), Some(3), all)
+          _ <- testCapacityRange(Some(1), Some(2), all)
+          _ <- testCapacityRange(Some(2), Some(2), all)
+          _ <- testCapacityRange(None, Some(2), all)
+          _ <- testCapacityRange(Some(3), None, all)
+          _ <- testCapacityRange(None, None, all)
+        } yield ()
       }
   }
 

@@ -12,27 +12,29 @@ import org.virtuslab.beholder.model.MachineStatus
 import org.virtuslab.beholder.suites._
 import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
 import play.api.libs.json.{ JsSuccess, JsObject }
+import scala.concurrent.ExecutionContext.Implicits.global
 
 trait JsonFiltersTestsBase {
   self: AppTest with BaseSuite[JsonFormatter[UserMachineViewRow]] =>
 
-  override def doFilters(data: BaseFilterData, currentFilter: FilterDefinition): Seq[UserMachineViewRow] = {
+  override def doFilters(data: BaseFilterData, currentFilter: FilterDefinition): DBIO[Seq[UserMachineViewRow]] = {
     import data._
-    val result = filter.filterWithTotalEntitiesNumber(currentFilter)
-
-    filter.formatter.results(currentFilter, result) match {
-      case JsObject(fields) =>
-        filter.formatter.filterDefinition(fields("filter")) should equal(JsSuccess(currentFilter))
+    val resultAction = filter.filterWithTotalEntitiesNumber(currentFilter)
+    resultAction.map {
+      result =>
+        filter.formatter.results(currentFilter, result) match {
+          case JsObject(fields) =>
+            filter.formatter.filterDefinition(fields("filter")) should equal(JsSuccess(currentFilter))
+        }
+        result.content
     }
-
-    result.content
   }
 }
 
 class JsonFiltersTests extends AppTest with FiltersTestSuite[JsonFormatter[UserMachineViewRow]] with JsonFiltersTestsBase {
   def createFilter(data: BaseFilterData): FilterAPI[UserMachineViewRow, JsonFormatter[UserMachineViewRow]] =
     new JsonFilters[UserMachineViewRow](identity).create(
-      data.view,
+      data.query,
       inText,
       inText,
       inIntField,
@@ -47,7 +49,7 @@ class InitialJsonFiltersTests extends JsonFiltersTests with InitialQueryTestSuit
 class JsonFiltersRangeTests extends AppTest with RangeFiltersSuite[JsonFormatter[UserMachineViewRow]] with JsonFiltersTestsBase {
   def createFilter(data: BaseFilterData): FilterAPI[UserMachineViewRow, JsonFormatter[UserMachineViewRow]] =
     new JsonFilters[UserMachineViewRow](identity).create(
-      data.view,
+      data.query,
       inText,
       inText,
       inRange(inIntField),
@@ -60,7 +62,7 @@ class JsonFiltersRangeTests extends AppTest with RangeFiltersSuite[JsonFormatter
 class JsonFiltersEnumTests extends AppTest with EnumFilterTestSuite[JsonFormatter[UserMachineViewRow]] with JsonFiltersTestsBase {
   def createFilter(data: BaseFilterData): FilterAPI[UserMachineViewRow, JsonFormatter[UserMachineViewRow]] =
     new JsonFilters[UserMachineViewRow](identity).create(
-      data.view,
+      data.query,
       inText,
       inText,
       inIntFieldSeq,
@@ -73,7 +75,7 @@ class JsonFiltersEnumTests extends AppTest with EnumFilterTestSuite[JsonFormatte
 class JsonFiltersSeqTests extends AppTest with SeqFilterTestSuite[JsonFormatter[UserMachineViewRow]] with JsonFiltersTestsBase {
   def createFilter(data: BaseFilterData): FilterAPI[UserMachineViewRow, JsonFormatter[UserMachineViewRow]] =
     new JsonFilters[UserMachineViewRow](identity).create(
-      data.view,
+      data.query,
       inText,
       inText,
       inIntFieldSeq,

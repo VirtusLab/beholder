@@ -13,13 +13,13 @@ import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
 trait FormFiltersTestsBase {
   self: AppTest with BaseSuite[FormFormatter] =>
 
-  override def doFilters(data: BaseFilterData, currentFilter: FilterDefinition): Seq[UserMachineViewRow] = {
+  override def doFilters(data: BaseFilterData, currentFilter: FilterDefinition): DBIO[Seq[UserMachineViewRow]] = {
     val formatter = data.filter.formatter
     val formData = formatter.filterForm.fill(currentFilter)
 
     formatter.filterForm.bind(formData.data).fold(
       errors => fail(s"Form errors ${errors.errors.mkString}"),
-      fromForm => data.filter.filter(fromForm)(data.session)
+      fromForm => data.filter.filter(fromForm)
     )
   }
 }
@@ -30,7 +30,7 @@ class FormFiltersTests extends AppTest with FiltersTestSuite[FormFormatter] with
     import play.api.data.format.Formats._
 
     val filterGenerator = new FormFilters[UserMachineViewRow].create(
-      data.view,
+      data.query,
       inText,
       inText,
       inIntField,
@@ -49,7 +49,7 @@ class FormRangeFiltersTests extends AppTest with RangeFiltersSuite[FormFormatter
     import play.api.data.format.Formats._
 
     val filterGenerator = new FormFilters[UserMachineViewRow].create(
-      data.view,
+      data.query,
       inText,
       inText,
       inRange[Int],
@@ -67,7 +67,7 @@ class FormEnumFiltersTests extends AppTest with EnumFilterTestSuite[FormFormatte
     import play.api.data.format.Formats._
 
     val filterGenerator = new FormFilters[UserMachineViewRow].create(
-      data.view,
+      data.query,
       inText,
       inText,
       inIntField,
@@ -85,7 +85,7 @@ class FormSeqFiltersTests extends AppTest with SeqFilterTestSuite[FormFormatter]
     import play.api.data.format.Formats._
 
     val filterGenerator = new FormFilters[UserMachineViewRow].create(
-      data.view,
+      data.query,
       inText,
       inText,
       inIntFieldSeq,

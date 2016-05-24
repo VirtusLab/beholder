@@ -1,14 +1,12 @@
 package org.virtuslab.beholder.filters
 
 import org.virtuslab.beholder.views.BaseView
-import org.virtuslab.unicorn.LongUnicornPlay._
 import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
 import play.api.libs.json.Json
 import slick.ast.Ordering
 import slick.lifted.{ ColumnOrdered, Ordered }
 
-import scala.concurrent.Await
-import scala.concurrent.duration._
+import scala.concurrent.ExecutionContext
 
 case class Order(column: String, asc: Boolean)
 
@@ -91,23 +89,29 @@ abstract class BaseFilter[Id, Entity, FilterTable <: BaseView[Id, Entity], Field
       }
   }
 
-  private def takeAndSkip(data: FilterDefinition, filter: FilterQuery)(implicit session: Session): Seq[Entity] = {
+  private def takeAndSkip(data: FilterDefinition, filter: FilterQuery): DBIO[Seq[Entity]] = {
     val afterTake = data.take.fold(filter)(filter.take)
     val afterSkip = data.skip.fold(afterTake)(afterTake.drop)
 
-    afterSkip.list
+    afterSkip.result
   }
 
   override protected def doFilter(
     data: FilterDefinition,
-    initialFilter: FilterTable => Rep[Boolean])(implicit session: Session): Seq[Entity] =
+    initialFilter: FilterTable => Rep[Boolean]): DBIO[Seq[Entity]] =
     takeAndSkip(data, createFilter(data, initialFilter))
 
   override protected def doFilterWithTotalEntitiesNumber(
     data: FilterDefinition,
-    initialFilter: FilterTable => Rep[Boolean])(implicit session: Session): FilterResult[Entity] = {
+    initialFilter: FilterTable => Rep[Boolean])(
+      implicit executionContext: ExecutionContext): DBIO[FilterResult[Entity]] = {
+
     val filter = createFilter(data, initialFilter)
-    FilterResult(takeAndSkip(data, filter), filter.length.run)
+    val lengthAction = filter.length.result
+    lengthAction.zip(takeAndSkip(data, filter)).map {
+      case (length, takenAndSkipped) =>
+        FilterResult(takenAndSkipped, length)
+    }
   }
 
   //ordering
@@ -128,12 +132,13 @@ trait TableFilterAPI[Entity, Formatter, QueryBase] extends FilterAPI[Entity, For
 
       override protected def doFilterWithTotalEntitiesNumber(
         data: FilterDefinition,
-        initialFilter: (QueryBase) => Rep[Boolean])(implicit session: Session): FilterResult[Entity] =
+        initialFilter: (QueryBase) => Rep[Boolean])(
+          implicit executionContext: ExecutionContext): DBIO[FilterResult[Entity]] =
         org.doFilterWithTotalEntitiesNumber(data, newInitialFilter)
 
       override protected def doFilter(
         data: FilterDefinition,
-        initialFilter: (QueryBase) => Rep[Boolean])(implicit session: Session): Seq[Entity] =
+        initialFilter: (QueryBase) => Rep[Boolean]): DBIO[Seq[Entity]] =
         org.doFilter(data, newInitialFilter)
 
       override val formatter: Formatter = org.formatter
@@ -155,23 +160,26 @@ trait TableFilterAPI[Entity, Formatter, QueryBase] extends FilterAPI[Entity, For
 
   protected def doFilter(
     data: FilterDefinition,
-    initialFilter: QueryBase => Rep[Boolean])(implicit session: Session): Seq[Entity]
+    initialFilter: QueryBase => Rep[Boolean]): DBIO[Seq[Entity]]
 
   protected def doFilterWithTotalEntitiesNumber(
     data: FilterDefinition,
-    initialFilter: QueryBase => Rep[Boolean])(implicit session: Session): FilterResult[Entity]
+    initialFilter: QueryBase => Rep[Boolean])(
+      implicit executionContext: ExecutionContext): DBIO[FilterResult[Entity]]
 
-  override final def filter(data: FilterDefinition)(implicit session: Session): Seq[Entity] =
+  override final def filter(data: FilterDefinition): DBIO[Seq[Entity]] =
     doFilter(data, _ => LiteralColumn(true))
 
-  override final def filterWithTotalEntitiesNumber(data: FilterDefinition)(implicit session: Session): FilterResult[Entity] =
+  override final def filterWithTotalEntitiesNumber(data: FilterDefinition)(
+    implicit executionContext: ExecutionContext): DBIO[FilterResult[Entity]] =
     doFilterWithTotalEntitiesNumber(data, _ => LiteralColumn(true))
 }
 
 trait FilterAPI[Entity, Formatter] {
-  def filter(data: FilterDefinition)(implicit session: Session): Seq[Entity]
+  def filter(data: FilterDefinition): DBIO[Seq[Entity]]
 
-  def filterWithTotalEntitiesNumber(data: FilterDefinition)(implicit session: Session): FilterResult[Entity]
+  def filterWithTotalEntitiesNumber(data: FilterDefinition)(
+    implicit executionContext: ExecutionContext): DBIO[FilterResult[Entity]]
 
   def emptyFilterData: FilterDefinition
 
