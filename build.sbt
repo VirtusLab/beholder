@@ -2,7 +2,7 @@ organization := "org.virtuslab"
 
 name := "beholder"
 
-version := "1.1.0"
+version := "1.1.1-SNAPSHOT"
 
 scalaVersion := "2.11.7"
 
