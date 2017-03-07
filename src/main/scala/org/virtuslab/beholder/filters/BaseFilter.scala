@@ -79,14 +79,16 @@ abstract class BaseFilter[Id, Entity, FilterTable <: BaseView[Id, Entity], Field
 
   private def createFilter(data: FilterDefinition, initialFilter: FilterTable => Column[Boolean]): FilterQuery = {
     table.filter(filters(data.data, initialFilter))
-      .sortBy {
-        inQueryTable =>
-          val globalColumns =
-            order(data)(inQueryTable).map {
-              case (column, asc) => if (asc) column.asc else column.desc
-            }.toSeq.flatMap(_.columns)
-          new Ordered(globalColumns ++ inQueryTable.id.asc.columns)
-      }
+  }
+
+  private def addOrdering(data: FilterDefinition, query: FilterQuery): FilterQuery = {
+    query.sortBy {
+      inQueryTable =>
+        val globalColumns = order(data)(inQueryTable).map {
+          case (column, asc) => if (asc) column.asc else column.desc
+        }.toSeq.flatMap(_.columns)
+        new Ordered(globalColumns ++ inQueryTable.id.asc.columns)
+    }
   }
 
   private def takeAndSkip(data: FilterDefinition, filter: FilterQuery)(implicit session: Session): Seq[Entity] = {
@@ -107,7 +109,8 @@ abstract class BaseFilter[Id, Entity, FilterTable <: BaseView[Id, Entity], Field
     initialFilter: FilterTable => Column[Boolean]
   )(implicit session: Session): FilterResult[Entity] = {
     val filter = createFilter(data, initialFilter)
-    FilterResult(takeAndSkip(data, filter), filter.length.run)
+    val filterWithOrdering = addOrdering(data, filter)
+    FilterResult(takeAndSkip(data, filterWithOrdering), filter.length.run)
   }
 
   //ordering
