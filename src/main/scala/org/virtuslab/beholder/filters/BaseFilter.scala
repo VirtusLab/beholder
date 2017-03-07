@@ -102,7 +102,7 @@ abstract class BaseFilter[Id, Entity, FilterTable <: BaseView[Id, Entity], Field
     data: FilterDefinition,
     initialFilter: FilterTable => Column[Boolean]
   )(implicit session: Session): Seq[Entity] =
-    takeAndSkip(data, createFilter(data, initialFilter))
+    takeAndSkip(data, addOrdering(data, createFilter(data, initialFilter)))
 
   override protected def doFilterWithTotalEntitiesNumber(
     data: FilterDefinition,
