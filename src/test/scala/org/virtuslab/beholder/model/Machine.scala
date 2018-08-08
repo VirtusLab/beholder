@@ -46,3 +46,7 @@ class Machines(tag: Tag) extends IdTable[MachineId, Machine](tag, "MACHINES") {
 
   override def * = (id.?, url, system, cores, created, capacity) <> (Machine.tupled, Machine.unapply)
 }
+
+object Machines {
+  val query = TableQuery[Machines]
+}

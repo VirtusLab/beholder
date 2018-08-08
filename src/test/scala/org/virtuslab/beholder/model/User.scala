@@ -31,11 +31,15 @@ case class User(
 /** Table definition for users. */
 class Users(tag: Tag) extends IdTable[UserId, User](tag, "USERS") {
 
-  def email = column[String]("email", O.NotNull)
+  def email = column[String]("email")
 
-  def firstName = column[String]("first_name", O.NotNull)
+  def firstName = column[String]("first_name")
 
-  def lastName = column[String]("last_name", O.NotNull)
+  def lastName = column[String]("last_name")
 
   override def * = (id.?, email, firstName, lastName) <> (User.tupled, User.unapply)
+}
+
+object Users {
+  val query = TableQuery[Users]
 }

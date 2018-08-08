@@ -1,7 +1,5 @@
 package org.virtuslab.beholder.model
 
-import java.sql.Date
-
 import org.virtuslab.unicorn.LongUnicornPlay._
 import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
 
@@ -32,11 +30,15 @@ case class MachineParameter(
 /** Table definition for MachineParameters. */
 class MachineParameters(tag: Tag) extends IdTable[MachineParameterId, MachineParameter](tag, "MachineParameterS") {
 
-  def name = column[String]("name", O.NotNull)
+  def name = column[String]("name")
 
-  def value = column[String]("value", O.NotNull)
+  def value = column[String]("value")
 
-  def machine = column[MachineId]("machine", O.NotNull)
+  def machine = column[MachineId]("machine")
 
   override def * = (id.?, name, value, machine) <> (MachineParameter.tupled, MachineParameter.unapply)
+}
+
+object MachineParameters {
+  val query = TableQuery[MachineParameters]
 }

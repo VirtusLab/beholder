@@ -1,7 +1,5 @@
 package org.virtuslab.beholder.model
 
-import java.sql.Date
-
 import org.virtuslab.unicorn.LongUnicornPlay._
 import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
 
@@ -32,11 +30,15 @@ case class Network(
 /** Table definition for Networks. */
 class Networks(tag: Tag) extends IdTable[NetworkId, Network](tag, "NetworkS") {
 
-  def mask = column[String]("mask", O.NotNull)
+  def mask = column[String]("mask")
 
-  def address = column[String]("address", O.NotNull)
+  def address = column[String]("address")
 
-  def admin = column[UserId]("admin", O.NotNull)
+  def admin = column[UserId]("admin")
 
   override def * = (id.?, mask, address, admin) <> (Network.tupled, Network.unapply)
+}
+
+object Networks {
+  val query = TableQuery[Networks]
 }

@@ -26,9 +26,9 @@ class MappedFilterField[A: BaseTypedType: ClassTag] extends FilterField {
 
   protected def filterOnRange(column: Rep[A], value: FilterRange[A]): Rep[Option[Boolean]] =
     value match {
-      case FilterRange(Some(from), Some(to)) => column >= from && column <= to
-      case FilterRange(None, Some(to)) => column <= to
-      case FilterRange(Some(from), None) => column >= from
+      case FilterRange(Some(from), Some(to)) => column.? >= from && column.? <= to
+      case FilterRange(None, Some(to)) => column.? <= to
+      case FilterRange(Some(from), None) => column.? >= from
       case _ => LiteralColumn(Some(true))
     }
 

@@ -15,11 +15,11 @@ object LightDslMapper {
 }
 
 object LightDSLFilter extends DSLBase[FilterField, ImplementedFilter, LightDslMapper] {
-  override def create[E, T <: BaseView[E]](viewFilterState: LightDSLFilter.ViewFilterState[E, T]): ImplementedFilter[E,  T] =
+  override def create[E, T <: BaseView[E]](viewFilterState: LightDSLFilter.ViewFilterState[E, T]): ImplementedFilter[E, T] =
     new ViewBasedFilter[E, T](viewFilterState)
 
-  override def create[E,  T](viewFilterState: LightDSLFilter.FilterQueryState[E,  T]): ImplementedFilter[E,  T] =
-    new TableBasedFilter[E,  T](viewFilterState)
+  override def create[E, T](viewFilterState: LightDSLFilter.FilterQueryState[E, T]): ImplementedFilter[E, T] =
+    new TableBasedFilter[E, T](viewFilterState)
 
   override def in[T: LightDslMapper]: FilterField with MappedFilterField[T] = {
     val formatter: LightDslMapper[T] = implicitly

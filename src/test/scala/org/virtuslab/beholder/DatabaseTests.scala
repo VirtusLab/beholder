@@ -2,20 +2,29 @@ package org.virtuslab.beholder
 
 import org.virtuslab.beholder.model._
 import org.virtuslab.beholder.view.UserMachinesView
-import slick.lifted.TableQuery
+import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
+
+import play.api.libs.concurrent.Execution.Implicits._
 
 class DatabaseTests extends AppTest with UserMachinesView {
   "tables" should "be populated" in rollbackWithModel {
-    implicit session =>
+    val data = new PopulatedDatabase
+    import data._
 
-      val data = new PopulatedDatabase
-      import data._
-
-      userMachineQuery.list should contain theSameElementsAs userMachines
-      TableQuery[Users].list should contain theSameElementsAs users
-      TableQuery[MachineParameters].list should contain theSameElementsAs machineParameters
-      TableQuery[Teams].list should contain theSameElementsAs teams
+    for {
+      d <- data.populate
+      userMachinesFromQuery <- UserMachines.query.result
+      users <- Users.query.result
+      machineParameters <- MachineParameters.query.result
+      teams <- Teams.query.result
+      machines <- Machines.query.result
+    } yield {
+      userMachinesFromQuery should contain theSameElementsAs testUserMachines
+      users should contain theSameElementsAs testUsers
+      machineParameters should contain theSameElementsAs testMachineParameters
+      teams should contain theSameElementsAs testTeams
       // Since big decimal are not easily comparable after return for db we compare only size here
-      TableQuery[Machines].list.size shouldEqual machines.size
+      machines.size shouldEqual testMachines.size
+    }
   }
 }

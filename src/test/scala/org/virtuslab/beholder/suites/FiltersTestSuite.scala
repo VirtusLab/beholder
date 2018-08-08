@@ -4,9 +4,12 @@ import java.sql.Date
 
 import org.joda.time.DateTime
 import org.virtuslab.beholder.filters._
-import org.virtuslab.beholder.view.UserMachineViewRow
+import org.virtuslab.beholder.view.UserMachinesView
+import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
 
-trait FiltersTestSuite extends BaseSuite with RangeFiltersSuite {
+import scala.concurrent.ExecutionContext.Implicits.global
+
+trait FiltersTestSuite extends BaseSuite with RangeFiltersSuite with UserMachinesView {
 
   // TODO #36 create tests for enums
   // TODO #36 create negative tests
@@ -19,54 +22,72 @@ trait FiltersTestSuite extends BaseSuite with RangeFiltersSuite {
   it should "query all entities for empty filter" in baseFilterTest {
     data =>
       import data._
-
-      filtering(FilterDefinition.empty) shouldResultIn allUserMachineRows
+      for {
+        _ <- createUsersMachineView
+        userMachines <- viewQuery.result
+      } yield {
+        filtering(FilterDefinition.empty) shouldResultIn userMachines
+      }
   }
 
   it should "order by argument asc correctly" in baseFilterTest {
     data =>
       import data._
-
-      val fromDbOrderedByCores = allUserMachineRows.sortBy(view => (view.cores, view.email))
-      val orderByCore = FilterDefinition.empty.withOrder("cores")
-
-      filtering(orderByCore) shouldResultIn fromDbOrderedByCores
+      for {
+        _ <- createUsersMachineView
+        fromDbOrderedByCores <- viewQuery.result.map(_.sortBy(view => (view.cores, view.email)))
+        orderByCore = FilterDefinition.empty.withOrder("cores")
+      } yield {
+        filtering(orderByCore) shouldResultIn fromDbOrderedByCores
+      }
   }
 
   it should "order by argument desc correctly" in baseFilterTest {
     data =>
       import data._
-      val orderByCoreDesc =  FilterDefinition.empty.withOrder("cores", asc = false)
-      val fromDbOrderedByCoresDesc = allUserMachineRows.sortBy(view => (-view.cores, view.email))
-
-      filtering(orderByCoreDesc) shouldResultIn fromDbOrderedByCoresDesc
+      for {
+        _ <- createUsersMachineView
+        fromDbOrderedByCoresDesc <- viewQuery.result.map(_.sortBy(view => (-view.cores, view.email)))
+        orderByCoreDesc = FilterDefinition.empty.withOrder("cores", asc = false)
+      } yield {
+        filtering(orderByCoreDesc) shouldResultIn fromDbOrderedByCoresDesc
+      }
   }
 
   it should "take correctly" in baseFilterTest {
     data =>
       import data._
-      val orderByCoreDesc = FilterDefinition.empty.withOrder("cores", asc = false).copy(take = Some(2))
-      val fromDbOrderedByCoresDesc = allUserMachineRows.sortBy(view => (-view.cores, view.email))
-
-      filtering(orderByCoreDesc) shouldResultIn fromDbOrderedByCoresDesc
+      for {
+        _ <- createUsersMachineView
+        fromDbOrderedByCoresDesc <- viewQuery.result.map(_.sortBy(view => (-view.cores, view.email)))
+        orderByCoreDesc = FilterDefinition.empty.withOrder("cores", asc = false).copy(take = Some(2))
+      } yield {
+        filtering(orderByCoreDesc) shouldResultIn fromDbOrderedByCoresDesc
+      }
   }
 
   it should "skip correctly" in baseFilterTest {
     data =>
       import data._
-      val orderByCoreDesc = FilterDefinition.empty.withOrder("cores", asc = false).copy(skip = Some(1))
-      val fromDbOrderedByCoresDesc = allUserMachineRows.sortBy(view => (-view.cores, view.email))
-
-      filtering(orderByCoreDesc) shouldResultIn fromDbOrderedByCoresDesc
+      for {
+        _ <- createUsersMachineView
+        fromDbOrderedByCoresDesc <- viewQuery.result.map(_.sortBy(view => (-view.cores, view.email)))
+        orderByCoreDesc = FilterDefinition.empty.withOrder("cores", asc = false).copy(skip = Some(1))
+      } yield {
+        filtering(orderByCoreDesc) shouldResultIn fromDbOrderedByCoresDesc
+      }
   }
 
   it should "filter by int field" in baseFilterTest {
     data =>
       import data._
-      val orderByCoreDesc = updatedDefinition("cores", 4)
-      val fromDbOrderedByCoresDesc = allUserMachineRows.filter(_.cores == 4)
-
-      filtering(orderByCoreDesc) shouldResultIn fromDbOrderedByCoresDesc
+      for {
+        _ <- createUsersMachineView
+        fromDbOrderedByCoresDesc <- viewQuery.result.map(_.filter(_.cores == 4))
+        orderByCoreDesc = updatedDefinition("cores", 4)
+      } yield {
+        filtering(orderByCoreDesc) shouldResultIn fromDbOrderedByCoresDesc
+      }
   }
 
   //h2db does not have ilike operator
@@ -74,10 +95,13 @@ trait FiltersTestSuite extends BaseSuite with RangeFiltersSuite {
     data =>
       import data._
       val newSystem = "buntu"
-      val orderByCoreDesc = updatedDefinition("system", newSystem)
-      val fromDbOrderedByCoresDesc = allUserMachineRows.filter(_.system.contains(newSystem))
-
-      filtering(orderByCoreDesc) shouldResultIn fromDbOrderedByCoresDesc
+      for {
+        _ <- createUsersMachineView
+        fromDbOrderedByCoresDesc <- viewQuery.result.map(_.filter(_.system.contains(newSystem)))
+        orderByCoreDesc = updatedDefinition("system", newSystem)
+      } yield {
+        filtering(orderByCoreDesc) shouldResultIn fromDbOrderedByCoresDesc
+      }
   }
 
   it should "not crash for date option" in baseFilterTest {
@@ -85,10 +109,12 @@ trait FiltersTestSuite extends BaseSuite with RangeFiltersSuite {
       import data._
       val toDate = new Date(DateTime.now().minusHours(24).getMillis)
       val dataRange = FilterRange(None, Some(toDate))
-
-      val newVersion = updatedDefinition("created", dataRange)
-      val fromdbWithCorrectDates = allUserMachineRows.filter(_.created.before(toDate))
-
-      filtering(newVersion) shouldResultIn fromdbWithCorrectDates
+      for {
+        _ <- createUsersMachineView
+        fromdbWithCorrectDates <- viewQuery.result.map(_.filter(_.created.before(toDate)))
+        newVersion = updatedDefinition("created", dataRange)
+      } yield {
+        filtering(newVersion) shouldResultIn fromdbWithCorrectDates
+      }
   }
 }
