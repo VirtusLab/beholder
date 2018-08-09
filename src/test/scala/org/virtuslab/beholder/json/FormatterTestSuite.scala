@@ -81,6 +81,12 @@ class FormatterTestSuite extends AppTest with UserMachinesView with ModelInclude
     DBIO.successful(())
   }
 
+  it should "fail when tested filter is missing" in rollbackWithModel{
+    val format = createFormat(identity)
+    testFailure(format)(createJson("nested.core" -> JsString("")))
+    DBIO.successful(())
+  }
+
   it should "fail on bad filter field definition" in rollbackWithModel {
     val format = createFormat(identity)
 
