@@ -1,9 +1,7 @@
 package org.virtuslab.beholder.filters
 
 import slick.driver.JdbcDriver
-import slick.lifted.{Query, Rep}
-
-
+import slick.lifted.{ Query, Rep }
 
 trait BaseFilter {
   protected def filterFields: Map[String, FilterField]
@@ -17,9 +15,9 @@ trait BeholderFilter[E, T] extends (FilterDefinition => Query[T, E, Seq]) with B
   protected def defaultOrder(from: T): Rep[_]
 }
 
-import scala.language.{higherKinds, implicitConversions}
+import scala.language.{ higherKinds, implicitConversions }
 
-object BeholderFilter{
+object BeholderFilter {
 
   implicit class ConsumedBeholderFilter[E, T, F[FE, TE] <: BeholderFilter[FE, TE]](val createFilter: F[E, T])
     extends ConsumerDSL[E, T, F]

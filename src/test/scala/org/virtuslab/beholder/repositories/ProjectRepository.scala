@@ -4,8 +4,6 @@ import org.virtuslab.beholder.model._
 import org.virtuslab.unicorn.LongUnicornPlay._
 import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
 
-import slick.lifted.TableQuery
-
 /**
  * Service for projects.
  *
@@ -14,4 +12,4 @@ import slick.lifted.TableQuery
  *
  * It's a trait, so you can use your favourite DI method to instantiate/mix it to your application.
  */
-class ProjectRepository extends BaseIdRepository[ProjectId, Project, Projects](TableQuery[Projects])
+class ProjectRepository extends BaseIdRepository[ProjectId, Project, Projects](Projects.query)

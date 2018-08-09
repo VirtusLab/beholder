@@ -4,8 +4,6 @@ import org.virtuslab.beholder.model._
 import org.virtuslab.unicorn.LongUnicornPlay._
 import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
 
-import slick.lifted.TableQuery
-
 /**
  * Service for machines.
  *
@@ -15,4 +13,4 @@ import slick.lifted.TableQuery
  * It's a trait, so you can use your favourite DI method to instantiate/mix it to your application.
  */
 class MachineParameterRepository
-  extends BaseIdRepository[MachineParameterId, MachineParameter, MachineParameters](TableQuery[MachineParameters])
+  extends BaseIdRepository[MachineParameterId, MachineParameter, MachineParameters](MachineParameters.query)

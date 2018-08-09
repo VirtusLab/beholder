@@ -1,8 +1,7 @@
 package org.virtuslab.beholder.filters.json
 
-import org.virtuslab.beholder.filters.{FilterDefinition, FilterResult}
+import org.virtuslab.beholder.filters.{ FilterDefinition, FilterResult }
 import play.api.libs.json._
-
 
 object ResultWritter {
   import JsonKeys.Results._

@@ -28,10 +28,14 @@ case class Team(
 /** Table definition for Teams. */
 class Teams(tag: Tag) extends IdTable[TeamId, Team](tag, "TeamS") {
 
-  def admin = column[UserId]("admin", O.NotNull)
+  def admin = column[UserId]("admin")
 
-  def teamName = column[String]("teamName", O.NotNull)
-  def system = column[String]("system", O.NotNull)
+  def teamName = column[String]("teamName")
+  def system = column[String]("system")
 
   override def * = (id.?, admin, teamName, system) <> (Team.tupled, Team.unapply)
+}
+
+object Teams {
+  val query = TableQuery[Teams]
 }

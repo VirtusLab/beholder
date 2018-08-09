@@ -2,7 +2,6 @@ package org.virtuslab.beholder.model
 
 import org.virtuslab.unicorn.LongUnicornPlay._
 import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
-import slick.lifted.ProvenShape
 
 object ProjectType extends Enumeration {
   val Inner = Value("inner")
@@ -40,4 +39,8 @@ class Projects(tag: Tag) extends IdTable[ProjectId, Project](tag, "PROJECTS") {
   def projectType = column[ProjectType.Value]("PROJECT_TYPE")
 
   override def * = (id.?, name, team.?, owner, projectType) <> (Project.tupled, Project.unapply)
+}
+
+object Projects {
+  val query = TableQuery[Projects]
 }

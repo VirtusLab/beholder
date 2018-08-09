@@ -6,8 +6,9 @@ import org.virtuslab.beholder.filters.LightDSLFilter._
 import org.virtuslab.beholder.filters._
 import org.virtuslab.beholder.model._
 import org.virtuslab.beholder.suites._
-import org.virtuslab.beholder.view.UserMachineViewRow
 import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
+
+import scala.language.postfixOps
 
 class LightDSLJoinFiltersTests extends AppTest with JoinSuite {
   import LightDSLFilter._
@@ -16,7 +17,7 @@ class LightDSLJoinFiltersTests extends AppTest with JoinSuite {
   //TODO  #36 test different DSLs forms
 
   override def createTeamFilter(data: BaseFilterData) = create {
-    fromTable(TableQuery[Teams])(_.teamName) and
+    fromTable(Teams.query)(_.teamName) and
       "teamName" from (_.teamName) and
       "system" from (_.system)
   }
@@ -44,12 +45,10 @@ class LightDSLFiltersTests extends AppTest with FiltersTestSuite with ViewBasedT
   }
 }
 
-
 class LightDSLQueryFiltersTests extends AppTest with FiltersTestSuite with QueryBasedTest {
 
   override def createConsumer(data: BaseFilterData): FilterConsumer[(User, Machine)] = {
     import LightDSLFilter._
-
 
     val filter = fromTable(userJoinMachinesQuery)(_._1.email) and
       "email" from (_._1.email) and
@@ -66,23 +65,23 @@ class LightDSLQueryFiltersTests extends AppTest with FiltersTestSuite with Query
       "capacity" as in[BigDecimal] fromOpt (_._2.capacity)
 
     anotherForm.aggregatedAs(
-      _.joinLeft(TableQuery[MachineParameters]).on(_._2.id === _.machine)
+      _.joinLeft(MachineParameters.query).on(_._2.id === _.machine)
     )
 
     filter.list
   }
 }
 
-class LightDSLAggregationFiltersTests extends AppTest with FiltersTestSuite with AggregationBased  {
+class LightDSLAggregationFiltersTests extends AppTest with FiltersTestSuite with AggregationBased {
   override def createConsumer(data: BaseFilterData) = {
     fromView(data.view) and
       "email" as in[String] and
       "system" as in[String] and
       "cores" as in[Int] and
       "created" as in[Date] and
-      "capacity" as in[BigDecimal] aggregatedAs(
-      _.joinLeft(TableQuery[MachineParameters]).on(_.c7 === _.machine)
-    )
+      "capacity" as in[BigDecimal] aggregatedAs (
+        _.joinLeft(MachineParameters.query).on(_.c7 === _.machine)
+      )
   }
 
 }

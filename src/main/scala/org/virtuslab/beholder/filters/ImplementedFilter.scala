@@ -2,23 +2,18 @@ package org.virtuslab.beholder.filters
 
 import slick.driver.JdbcDriver
 
-
 import slick.lifted.ColumnOrdered
 import slick.lifted._
 import slick.ast.Ordering
-
 
 trait ImplementedFilter[E, T] extends BeholderFilter[E, T] with FilterJoins[E, T] {
 
   //################ Public API #####################
 
-
   override def apply(definition: FilterDefinition): Query[T, E, Seq] =
     filterOnQuery(definition.constrains).sortBy(ordering(definition))
 
   //################ Abstrat methods ##################
-
-
 
   def baseQuery: FilterQuery
 
@@ -38,19 +33,16 @@ trait ImplementedFilter[E, T] extends BeholderFilter[E, T] with FilterJoins[E, T
 
   type FilterQuery = Query[T, E, Seq]
 
-
   private[filters] def filterOnQuery(constrains: FilterConstrains): FilterQuery = {
     val joined = performJoins(baseQuery, constrains, driver)
 
-    if(constrains.fieldConstrains.isEmpty)
+    if (constrains.fieldConstrains.isEmpty)
       joined
     else
       joined.filter(columnConstraints(constrains.fieldConstrains))
   }
 
-
-
-  protected def columnConstraints(data: Map[String, Any])(liftedEntity: T): Rep[Option[Boolean]]= {
+  protected def columnConstraints(data: Map[String, Any])(liftedEntity: T): Rep[Option[Boolean]] = {
     val columns = filterColumns(liftedEntity)
     val fields = filterFields
 
@@ -64,7 +56,7 @@ trait ImplementedFilter[E, T] extends BeholderFilter[E, T] with FilterJoins[E, T
         field.doFilter(column)(value)
     }
 
-    fieldsReps.toSeq match{
+    fieldsReps.toSeq match {
       case Seq(rep) => rep
       case rep +: tail => tail.foldLeft(rep)(_ && _)
     }

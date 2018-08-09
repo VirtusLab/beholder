@@ -1,12 +1,11 @@
 package org.virtuslab.beholder.filters.json
 
-import org.virtuslab.beholder.filters.{FilterAwareConsumer, FilterConsumer, FilterDefinition}
+import org.virtuslab.beholder.filters.{ FilterAwareConsumer, FilterConsumer, FilterDefinition }
 import play.api.libs.json._
 import play.api.mvc._
 import slick.dbio.DBIO
 
-import scala.concurrent.{ExecutionContext, Future}
-
+import scala.concurrent.{ ExecutionContext, Future }
 
 abstract class JsonFilterController[E: Writes](implicit ec: ExecutionContext) extends Controller {
 
@@ -19,35 +18,33 @@ abstract class JsonFilterController[E: Writes](implicit ec: ExecutionContext) ex
 
   protected def runQuery[A](from: DBIO[A]): Future[A]
 
-
   protected def notJsonBodyMessage = "Expecting json"
 
   protected def definitionParseErrorMessage(failure: JsError) =
     s"Invalid json for this filter: ${JsError.toFlatForm(failure)}."
 
-  private def parseDefinition(from: JsValue): Future[FilterDefinition] ={
+  private def parseDefinition(from: JsValue): Future[FilterDefinition] = {
     JsonDefinitionFormatter.formatFor(consumer.filter).reads(from)
-        .map(v => Future.apply(v)).recoverTotal {
-      case failure => badRequest(definitionParseErrorMessage(failure))
-    }
+      .map(v => Future.apply(v)).recoverTotal {
+        case failure => badRequest(definitionParseErrorMessage(failure))
+      }
   }
 
-  final def doFilter() = Action.async{ request =>
+  final def doFilter() = Action.async { request =>
 
     val json = request.body.asJson match {
       case Some(js) => Future(js)
       case _ => badRequest(notJsonBodyMessage)
     }
 
-    val future = for{
+    val future = for {
       js <- json
       filterDefinition <- parseDefinition(js)
       actions = consumer.consume(filterDefinition)
       result <- runQuery(actions)
     } yield Ok(ResultWritter.formatResults(consumer.filter)(result, filterDefinition))
 
-
-    future.recover{
+    future.recover {
       case JsonFilterControllerFailure(result) => result
     }
   }

@@ -1,26 +1,23 @@
 package org.virtuslab.beholder.suites
 
 import org.virtuslab.beholder.filters._
-import org.virtuslab.beholder.model._
-import org.virtuslab.beholder.view.{UserMachineViewRow, UserMachinesView}
-import org.virtuslab.beholder.{AppTest, BaseTest}
+import org.virtuslab.beholder.view.{ UserMachineViewRow, UserMachinesView }
 import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
+
+import scala.concurrent.ExecutionContext
 
 trait BaseSuite extends UserMachinesView {
 
-  def testResults(data: BaseFilterData, definition: FilterDefinition, expected: Seq[UserMachineViewRow], totalCount: Int)
+  def testResults(data: BaseFilterData, definition: FilterDefinition, expected: Seq[UserMachineViewRow], totalCount: Int): DBIO[Unit]
 
-  protected def baseFilterTest[A](testImplementation: BaseFilterData => A) = rollbackWithModel {
-    implicit session: Session =>
-      testImplementation(new BaseFilterData())
+  protected def baseFilterTest[A](testImplementation: BaseFilterData => DBIO[A])(implicit ec: ExecutionContext) = rollbackWithModel {
+    testImplementation(new BaseFilterData())
   }
 
-
-
-  protected class BaseFilterData(implicit val session: Session) extends PopulatedDatabase {
+  protected class BaseFilterData(implicit ec: ExecutionContext) extends PopulatedDatabase {
 
     case class filtering(query: FilterDefinition) {
-      def shouldResultIn(expected: Seq[UserMachineViewRow]): Unit = {
+      def shouldResultIn(expected: Seq[UserMachineViewRow]): DBIO[Unit] = {
         //val result = doFullFilter(BaseFilterData.this, fromFilter)
 
         val dropedAndSkiped = {
@@ -33,7 +30,7 @@ trait BaseSuite extends UserMachinesView {
 
     }
 
-    val view = createUsersMachineView
+    val view = viewQuery
 
     def updatedDefinition(field: String, value: Any, definition: FilterDefinition = FilterDefinition.empty) =
       definition.copy(
@@ -48,9 +45,5 @@ trait BaseSuite extends UserMachinesView {
           nestedConstrains = definition.constrains.nestedConstrains + (name -> constrains)
         )
       )
-
-    lazy val allUserMachineRows: Seq[UserMachineViewRow] = view.list
-
-    lazy val allProjects: Seq[Project] = TableQuery[Projects].list
   }
 }

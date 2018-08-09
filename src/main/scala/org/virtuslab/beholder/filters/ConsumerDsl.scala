@@ -4,11 +4,10 @@ import slick.lifted.Query
 
 import scala.language.higherKinds
 
-
-trait ConsumerDSL[E, T, FilterType[A, B] <: BeholderFilter[A, B]]{
+trait ConsumerDSL[E, T, FilterType[A, B] <: BeholderFilter[A, B]] {
   protected def createFilter: FilterType[E, T]
 
-  def list: FilterAwareConsumer[E,  FilterType[E, T]] = consumed(QueryCollector.list)
+  def list: FilterAwareConsumer[E, FilterType[E, T]] = consumed(QueryCollector.list)
 
   def consumed[R](filterConsumer: QueryCollector[E, T, R]): FilterAwareConsumer[R, FilterType[E, T]] =
     new ConsumerImpl[E, T, R, FilterType[E, T]](createFilter, filterConsumer)
