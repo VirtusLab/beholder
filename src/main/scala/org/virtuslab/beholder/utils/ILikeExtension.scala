@@ -27,7 +27,7 @@ object ILikeExtension {
 
   implicit def iLikeOptionExtension(c: Rep[Option[String]]) = new ILikeExtension(c)
 
-  implicit def seq2Ordered[T <% Ordered](t: Seq[T]) = new Ordered(t.flatMap(_.columns))
+  implicit def seq2Ordered[T <% Ordered](t: IndexedSeq[T]) = new Ordered(t.flatMap(_.columns))
 }
 
 /**

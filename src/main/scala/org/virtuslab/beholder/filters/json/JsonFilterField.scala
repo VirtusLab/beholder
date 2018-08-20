@@ -50,8 +50,8 @@ object JsonFilterFields {
    * check if value is in given sequence
    */
   object inIntFieldSeq extends ImplicitlyJsonFilterFiled[Int, Seq[Int]]("IntSeq") {
-    override protected def filterOnColumn(column: Column[Int])(dataSeq: Seq[Int]): Column[Option[Boolean]] = {
-      isColumnValueInsideSeq(column)(dataSeq)((column, data) => column === data)
+    override protected def filterOnColumn(column: Rep[Int])(dataSeq: Seq[Int]): Rep[Option[Boolean]] = {
+      isColumnValueInsideSeq(column)(dataSeq)((column, data) => column.? === data)
     }
   }
 
@@ -77,8 +77,8 @@ object JsonFilterFields {
    * check if text is in given text sequence (ilike)
    */
   object inTextSeq extends ImplicitlyJsonFilterFiled[String, Seq[String]]("TextSeq") {
-    override def filterOnColumn(column: Column[String])(data: Seq[String]): Column[Option[Boolean]] = {
-      isColumnValueInsideSeq(column)(data)((column, d) => column ilike s"%${escape(d)}%")
+    override def filterOnColumn(column: Rep[String])(data: Seq[String]): Rep[Option[Boolean]] = {
+      isColumnValueInsideSeq(column)(data)((column, d) => column.? ilike s"%${escape(d)}%")
     }
   }
 
@@ -141,8 +141,8 @@ object JsonFilterFields {
         override def writes(o: Seq[T#Value]): JsValue = JsArray(o.map(Json.toJson(_)))
       }
 
-      override protected def filterOnColumn(column: Column[T#Value])(dataSeq: Seq[T#Value]): Column[Option[Boolean]] = {
-        isColumnValueInsideSeq(column)(dataSeq)((column, data) => column === data)
+      override protected def filterOnColumn(column: Rep[T#Value])(dataSeq: Seq[T#Value]): Rep[Option[Boolean]] = {
+        isColumnValueInsideSeq(column)(dataSeq)((column, data) => column.? === data)
       }
     }
   }
@@ -158,8 +158,8 @@ object JsonFilterFields {
 
   def inFieldSeq[T: BaseTypedType: Format](typeName: String) =
     new ImplicitlyJsonFilterFiled[T, Seq[T]](typeName) {
-      override def filterOnColumn(column: Column[T])(dataSeq: Seq[T]): Column[Option[Boolean]] = {
-        isColumnValueInsideSeq(column)(dataSeq)((column, data) => column === data)
+      override def filterOnColumn(column: Rep[T])(dataSeq: Seq[T]): Rep[Option[Boolean]] = {
+        isColumnValueInsideSeq(column)(dataSeq)((column, data) => column.? === data)
       }
     }
 

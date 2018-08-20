@@ -29,12 +29,12 @@ trait InitialQueryTestSuite[Formatter] extends FiltersTestSuite[Formatter] {
 
     val newUserAction = {
       val user = User(None, newMail, "Bala", "Bma'Kota")
-      usersRepository.saveAction(user)
+      usersRepository.save(user)
     }
 
     val newMachineAction = {
       val machine = Machine(None, "b.pl", "Windows", 6, new Date(DateTime.now().getMillis), Some(12), MachineStatus.Inactive)
-      machineRepository.saveAction(machine)
+      machineRepository.save(machine)
     }
 
     val allAction = newUserAction.zip(newMachineAction).flatMap {

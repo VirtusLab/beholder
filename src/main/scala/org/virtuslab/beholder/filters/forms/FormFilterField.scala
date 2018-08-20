@@ -4,10 +4,9 @@ import org.virtuslab.beholder.filters.{ FilterRange, MappedFilterField }
 import org.virtuslab.beholder.utils.ILikeExtension._
 import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
 import play.api.data.Forms._
-import play.api.data.format.{ Formats, Formatter }
+import play.api.data.format.Formatter
 import play.api.data.validation.Constraint
 import play.api.data.{ FormError, Mapping }
-
 import slick.ast.{ BaseTypedType, TypedType }
 
 abstract class FormFilterField[A: TypedType, B](mapping: Mapping[B]) extends MappedFilterField[A, B] {
@@ -55,8 +54,8 @@ object FromFilterFields {
    * check if value is in given sequence
    */
   object inIntFieldSeq extends FormFilterField[Int, Seq[Int]](seq(number)) {
-    override protected def filterOnColumn(column: Column[Int])(dataSeq: Seq[Int]): Column[Option[Boolean]] = {
-      isColumnValueInsideSeq(column)(dataSeq)((column, data) => column === data)
+    override protected def filterOnColumn(column: Rep[Int])(dataSeq: Seq[Int]): Rep[Option[Boolean]] = {
+      isColumnValueInsideSeq(column)(dataSeq)((column, data) => column.? === data)
     }
   }
 
@@ -78,8 +77,8 @@ object FromFilterFields {
    * check if text is in given text sequence (ilike)
    */
   object inTextSeq extends FormFilterField[String, Seq[String]](seq(text)) {
-    override def filterOnColumn(column: Column[String])(dataSeq: Seq[String]): Column[Option[Boolean]] = {
-      isColumnValueInsideSeq(column)(dataSeq)((column, d) => column ilike s"%${escape(d)}%")
+    override def filterOnColumn(column: Rep[String])(dataSeq: Seq[String]): Rep[Option[Boolean]] = {
+      isColumnValueInsideSeq(column)(dataSeq)((column, d) => column.? ilike s"%${escape(d)}%")
     }
   }
 
@@ -100,7 +99,7 @@ object FromFilterFields {
    */
   def inEnum[T <: Enumeration](implicit tm: BaseTypedType[T#Value], formatter: Formatter[T#Value]): FormFilterField[T#Value, T#Value] =
     new FormFilterField[T#Value, T#Value](of[T#Value]) {
-      override def filterOnColumn(column: Column[T#Value])(data: T#Value): Column[Option[Boolean]] = column === data
+      override def filterOnColumn(column: Rep[T#Value])(data: T#Value): Rep[Option[Boolean]] = column.? === data
     }
 
   def inEnumSeq[T <: Enumeration](implicit tm: BaseTypedType[T#Value], formatter: Formatter[T#Value]): FormFilterField[T#Value, Seq[T#Value]] = {
@@ -114,8 +113,8 @@ object FromFilterFields {
 
   def inFieldSeq[T](implicit tm: BaseTypedType[T], formatter: Formatter[T]): FormFilterField[T, Seq[T]] =
     new FormFilterField[T, Seq[T]](seq(of[T])) {
-      override def filterOnColumn(column: Column[T])(dataSeq: Seq[T]): Column[Option[Boolean]] = {
-        isColumnValueInsideSeq(column)(dataSeq)((column, data) => column === data)
+      override def filterOnColumn(column: Rep[T])(dataSeq: Seq[T]): Rep[Option[Boolean]] = {
+        isColumnValueInsideSeq(column)(dataSeq)((column, data) => column.? === data)
       }
     }
 
