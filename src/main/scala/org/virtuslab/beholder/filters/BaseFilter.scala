@@ -84,7 +84,7 @@ abstract class BaseFilter[Id, Entity, FilterTable <: BaseView[Id, Entity], Field
           val globalColumns =
             order(data)(inQueryTable).map {
               case (column, asc) => if (asc) ColumnOrdered(column, Ordering()).asc else ColumnOrdered(column, Ordering()).desc
-            }.toSeq.flatMap(_.columns)
+            }.toIndexedSeq.flatMap(_.columns)
           new Ordered(globalColumns ++ ColumnOrdered(inQueryTable.id, Ordering()).asc.columns)
       }
   }

@@ -6,18 +6,14 @@ import org.joda.time.DateTime
 import org.scalatest.{ BeforeAndAfterEach, FlatSpecLike, Matchers }
 import org.virtuslab.beholder.model._
 import org.virtuslab.beholder.repositories._
-import org.virtuslab.unicorn.LongUnicornPlay.driver
 import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
 import play.api.Play
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.test.FakeApplication
-import slick.dbio.DBIOAction
-import slick.dbio.Effect.{ All, Write }
-
-import scala.concurrent.ExecutionContext.Implicits.global
 import slick.lifted.TableQuery
 
 import scala.concurrent.Await
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 import scala.util.{ Failure, Try }
 
@@ -43,7 +39,7 @@ trait ModelIncluded {
         User(None, "a@a.pl", "Ala", "maKota"),
         User(None, "o@a.pl", "Ola", "maPsa")
       ).map { user =>
-          val userIdAction = usersRepository.saveAction(user)
+          val userIdAction = usersRepository.save(user)
           userIdAction.map {
             userId =>
               user.copy(id = Some(userId))
@@ -57,7 +53,7 @@ trait ModelIncluded {
         Machine(None, "o.a.pl", "Fedora", 1, new Date(DateTime.now().getMillis), Some(3), MachineStatus.Active)
       ).map {
           machine =>
-            val machineIdAction = machineRepository.saveAction(machine)
+            val machineIdAction = machineRepository.save(machine)
             machineIdAction.map {
               machineId =>
                 machine.copy(id = Some(machineId))
@@ -88,8 +84,8 @@ trait ModelIncluded {
   def rollbackActionWithModel[Result](func: => DBIO[Result]): Unit = withApp { implicit app =>
 
     val createAndRunAction = for {
-      _ <- usersRepository.createAction()
-      _ <- machineRepository.createAction()
+      _ <- usersRepository.create()
+      _ <- machineRepository.create()
       _ <- userMachineQuery.schema.create
     } yield ()
 
@@ -97,7 +93,7 @@ trait ModelIncluded {
       .flatMap(_ => func)
       .flatMap(_ => DBIO.failed(RollbackException)).transactionally
 
-    val DB = DatabaseConfigProvider.get(app).db.asInstanceOf[driver.profile.backend.DatabaseDef]
+    val DB = DatabaseConfigProvider.get(app).db
 
     Try(Await.result(DB.run(out), 10.seconds)) match {
       case Failure(RollbackException) =>
