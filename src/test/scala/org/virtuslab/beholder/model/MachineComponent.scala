@@ -1,23 +1,18 @@
 package org.virtuslab.beholder.model
 
 import java.sql.Date
+import java.util
 
-import org.virtuslab.unicorn.LongUnicornPlay._
-import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
+import org.virtuslab.unicorn.LongUnicornPlayIdentifiers.IdCompanion
+import org.virtuslab.unicorn.{ BaseId, UnicornWrapper, WithId }
 import play.api.data.FormError
 import play.api.libs.json._
 import play.api.data.format.{ Formats, Formatter }
 
-/**
- * commons enum method for use with slick and play
- */
+import scala.language.implicitConversions
+
 trait BaseEnum {
   self: Enumeration =>
-
-  /**
-   * Type mapper placed here is resolved automatically and does not need to be imported anywhere.
-   */
-  implicit val typeMapper: BaseColumnType[Value] = MappedColumnType.base[Value, Int](int => int.id, id => apply(id))
 
   //for play forms
   implicit lazy val mappingFormatter: Formatter[Value] = new Formatter[Value] {
@@ -29,6 +24,7 @@ trait BaseEnum {
 
     override def unbind(key: String, value: Value): Map[String, String] =
       Map(key -> value.id.toString)
+
   }
 
   //for json forms
@@ -36,6 +32,18 @@ trait BaseEnum {
     override def writes(o: Value): JsValue = JsNumber(o.id)
     override def reads(json: JsValue): JsResult[Value] = json.asOpt[Int].map(apply).map(JsSuccess(_)).getOrElse(JsError("format invalid"))
   }
+
+}
+
+trait EnumColumnMapper {
+  self: UnicornWrapper[Long] =>
+  import unicorn.profile.api._
+
+  def enumTypeMapper(e: Enumeration): BaseColumnType[e.Value] =
+    MappedColumnType.base[e.Value, Int](
+      int => int.id,
+      id => e.apply(id)
+    )
 
 }
 
@@ -47,7 +55,7 @@ object MachineStatus extends Enumeration with BaseEnum {
 
 }
 /** Id class for type-safe joins and queries. */
-case class MachineId(id: Long) extends AnyVal with BaseId
+case class MachineId(id: Long) extends BaseId[Long]
 
 /**
  * Companion object for id class, extends IdMapping
@@ -71,22 +79,40 @@ case class Machine(
   cores: Int,
   created: Date,
   capacity: Option[BigDecimal],
-  status: MachineStatus.Value) extends WithId[MachineId]
+  status: MachineStatus.Value) extends WithId[Long, MachineId]
 
-/** Table definition for machines. */
-class Machines(tag: Tag) extends IdTable[MachineId, Machine](tag, "MACHINES") {
+trait MachineComponent extends EnumColumnMapper {
+  self: UnicornWrapper[Long] =>
 
-  def url = column[String]("url")
+  import unicorn._
+  import unicorn.profile.api._
 
-  def system = column[String]("system")
+  implicit val stateTypeMapper = enumTypeMapper(MachineStatus)
 
-  def cores = column[Int]("cores")
+  /**
+   * commons enum method for use with slick and play
+   */
 
-  def created = column[Date]("created")
+  /** Table definition for machines. */
+  class Machines(tag: Tag) extends IdTable[MachineId, Machine](tag, "MACHINES") {
 
-  def capacity = column[Option[BigDecimal]]("capacity")
+    def url = column[String]("url")
 
-  def status = column[MachineStatus.Value]("status")
+    def system = column[String]("system")
 
-  override def * = (id.?, url, system, cores, created, capacity, status) <> (Machine.tupled, Machine.unapply)
+    def cores = column[Int]("cores")
+
+    def created = column[Date]("created")
+
+    def capacity = column[Option[BigDecimal]]("capacity")
+
+    def status = column[MachineStatus.Value]("status")
+
+    override def * = (id.?, url, system, cores, created, capacity, status) <> (Machine.tupled, Machine.unapply)
+
+  }
+
+  class BaseMachineRepository extends BaseIdRepository[MachineId, Machine, Machines](TableQuery[Machines])
+
+  val baseMachineRepository = new BaseMachineRepository()
 }

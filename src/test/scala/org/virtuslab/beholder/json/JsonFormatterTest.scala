@@ -1,38 +1,19 @@
 package org.virtuslab.beholder.json
 
-import java.sql.Date
-
 import org.virtuslab.beholder.filters.FilterDefinition
-import org.virtuslab.beholder.filters.json.JsonFilterFields._
-import org.virtuslab.beholder.model.MachineStatus
-import org.virtuslab.beholder.filters.json.{ JsonFilterFields, JsonFilters }
-import org.virtuslab.beholder.{ UserMachineViewRow, _ }
-import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
+import org.virtuslab.beholder._
 import play.api.libs.json._
+
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class JsonFormatterTest extends AppTest with UserMachinesView with ModelIncluded {
+class JsonFormatterTest
+    extends BaseTest {
 
-  behavior of "JsonFormatter"
-
-  def createFilter(labels: String => String) = {
-    createUsersMachineView().map {
-      view =>
-        new JsonFilters[UserMachineViewRow](labels).create(
-          view,
-          inText,
-          inTextSeq,
-          inIntFieldSeq,
-          inRange(inField[Date]("date")),
-          JsonFilterFields.ignore[Option[BigDecimal]],
-          JsonFilterFields.ignore[MachineStatus.Value]
-        )
-    }
-  }
+  import unicorn.profile.api._
 
   it should "create filter definition from json defining data field" in rollbackActionWithModel {
     for {
-      filter <- createFilter(identity)
+      filter <- userMachinesViewRepository.createFilter(identity)
     } yield {
       val req = JsObject(Seq("data" -> JsObject(Seq("email" -> JsString("ala")))))
       val data = FilterDefinition(None, None, None, Seq(Some("ala"), None, None, None, None, None))
@@ -42,7 +23,7 @@ class JsonFormatterTest extends AppTest with UserMachinesView with ModelIncluded
 
   it should "create json definition correctly" in rollbackActionWithModel {
     for {
-      filter <- createFilter(name => s"Label: $name")
+      filter <- userMachinesViewRepository.createFilter(name => s"Label: $name")
     } yield {
 
       val definition = filter.formatter.jsonDefinition

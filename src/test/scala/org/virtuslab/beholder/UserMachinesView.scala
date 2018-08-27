@@ -2,10 +2,10 @@ package org.virtuslab.beholder
 
 import java.sql.Date
 
-import org.virtuslab.beholder.model.{ MachineStatus, Machines, Users }
-import org.virtuslab.beholder.views.FilterableViews
-import org.virtuslab.unicorn.LongUnicornPlay._
-import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
+import org.virtuslab.beholder.model.{ MachineStatus, UserMachinesComponent }
+import org.virtuslab.beholder.views.FilterableViewsComponent
+import org.virtuslab.unicorn.{ UnicornPlay, UnicornWrapper }
+
 import scala.concurrent.ExecutionContext.Implicits.global
 
 case class UserMachineViewRow(
@@ -16,23 +16,25 @@ case class UserMachineViewRow(
   capacity: Option[BigDecimal],
   status: MachineStatus.Value)
 
-trait UserMachinesView extends ModelIncluded {
-  self: AppTest =>
+trait UserMachinesViewComponent
+    extends FilterableViewsComponent
+    with UserMachinesComponent {
+  self: UnicornWrapper[Long] =>
 
-  import CustomTypeMappers._
+  import unicorn.profile.api._
 
   //query that is a base for view
   lazy val usersMachinesQuery = for {
     user <- TableQuery[Users]
-    userMachine <- userMachineQuery if user.id === userMachine.userId
+    userMachine <- userMachinesTableQuery if user.id === userMachine.userId
     machine <- TableQuery[Machines] if machine.id === userMachine.machineId
   } yield (user, machine)
 
-  lazy val tableQuery = FilterableViews.createView(
-    name = "USER_MACHINE_VIEW",
+  lazy val userMachinesViewTableQuery: Foo = createView(
+    "USER_MACHINE_VIEW",
     UserMachineViewRow.apply _,
     UserMachineViewRow.unapply _,
-    baseQuery = usersMachinesQuery
+    usersMachinesQuery
   ) {
       case (user, machine) =>
         //naming the fields
@@ -44,9 +46,16 @@ trait UserMachinesView extends ModelIncluded {
           "status" -> machine.status)
     }
 
-  def createUsersMachineView() = {
-    tableQuery.viewDDL.create.map(_ => tableQuery)
+  type Foo = unicorn.profile.api.TableQuery[BaseView6[UserMachineViewRow, String, String, Int, Date, Option[scala.BigDecimal], MachineStatus.Value]]
+
+  def createUsersMachineView(): DBIO[Foo] = {
+    userMachinesViewTableQuery.viewDDL.create.map(_ => userMachinesViewTableQuery)
   }
 
-  def viewQuery = tableQuery
+  def create() = userMachinesViewTableQuery.viewDDL.create
+
+  def drop() = userMachinesViewTableQuery.viewDDL.drop
+
+  def viewQuery = userMachinesViewTableQuery
+
 }

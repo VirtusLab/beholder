@@ -1,17 +1,12 @@
 package org.virtuslab.beholder.repositories
 
-import org.virtuslab.beholder.model.{ Machine, MachineId, Machines }
-import org.virtuslab.unicorn.LongUnicornPlay._
-import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
+import org.virtuslab.beholder.model.{ Machine, MachineComponent }
+import org.virtuslab.unicorn.{ UnicornPlay, UnicornWrapper }
 
-import slick.lifted.TableQuery
+import scala.concurrent.ExecutionContext.Implicits.global
 
-/**
- * Service for machines.
- *
- * It brings all base service methods with it from [[org.virtuslab.unicorn.LongUnicornPlay.BaseIdRepository]],
- * but you can add yours as well.
- *
- * It's a trait, so you can use your favourite DI method to instantiate/mix it to your application.
- */
-class MachineRepository extends BaseIdRepository[MachineId, Machine, Machines](TableQuery[Machines])
+class MachineRepository(val unicorn: UnicornPlay[Long]) extends MachineComponent with UnicornWrapper[Long] {
+  def save(elem: Machine) = baseMachineRepository.save(elem)
+
+  def create() = baseMachineRepository.create()
+}
