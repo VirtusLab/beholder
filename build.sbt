@@ -4,7 +4,7 @@ name := "beholder"
 
 version := "1.3.0-SNAPSHOT"
 
-scalaVersion := "2.11.7"
+scalaVersion := "2.11.8"
 
 resolvers += Resolver.typesafeRepo("releases")
 
@@ -13,9 +13,9 @@ resolvers += Resolver.sonatypeRepo("releases")
 resolvers += Resolver.sonatypeRepo("snapshots")
 
 libraryDependencies ++= Seq(
-  "org.virtuslab" %% "unicorn" % "1.0.1",
+  "org.virtuslab" %% "unicorn" % "1.2.0",
   "org.scalatest" %% "scalatest" % "2.2.5" % "test",
-  "com.typesafe.play" %% "play-test" % "2.4.6" % "test",
+  "com.typesafe.play" %% "play-test" % "2.5.19" % "test",
   "com.h2database" % "h2" % "1.4.187" % "test"
 )
 

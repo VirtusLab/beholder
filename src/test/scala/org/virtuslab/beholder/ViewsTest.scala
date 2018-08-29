@@ -1,26 +1,26 @@
 package org.virtuslab.beholder
 
-import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class ViewsTest extends AppTest with UserMachinesView {
+class ViewsTest extends BaseTest {
+  import userMachinesViewRepository._
+  import unicorn.profile.api._
 
   "view" should "be queryable" in rollbackActionWithModel {
     for {
       _ <- populatedDatabase
-      view <- createUsersMachineView()
+      view <- userMachinesViewRepository.createUsersMachineView()
       all <- view.result
-    } yield {
-      all.size shouldEqual 3
-    }
+    } yield all.size shouldEqual 3
   }
 
   "view" should "be creatable" in rollbackActionWithModel {
+
     for {
-      view <- createUsersMachineView()
-      _ <- view.viewDDL.drop
-      _ <- view.viewDDL.create
-      _ <- view.viewDDL.drop
+      _ <- createUsersMachineView()
+      _ <- drop()
+      _ <- create()
+      _ <- drop()
     } yield ()
   }
 

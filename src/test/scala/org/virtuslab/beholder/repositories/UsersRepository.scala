@@ -1,9 +1,12 @@
 package org.virtuslab.beholder.repositories
 
-import org.virtuslab.beholder.model.{ User, _ }
-import org.virtuslab.unicorn.LongUnicornPlay._
-import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
+import org.virtuslab.beholder.model.{ User, UserComponent }
+import org.virtuslab.unicorn.{ UnicornPlay, UnicornWrapper }
+import scala.concurrent.ExecutionContext.Implicits.global
 
-import slick.lifted.TableQuery
+class UsersRepository(val unicorn: UnicornPlay[Long]) extends UserComponent with UnicornWrapper[Long] {
+  def save(elem: User) = baseUserBaseRepository.save(elem)
 
-class UsersRepository extends BaseIdRepository[UserId, User, Users](TableQuery[Users])
+  def create() = baseUserBaseRepository.create
+
+}

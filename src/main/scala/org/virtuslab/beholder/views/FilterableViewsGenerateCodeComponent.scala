@@ -1,20 +1,25 @@
 package org.virtuslab.beholder.views
 
-import org.virtuslab.unicorn.LongUnicornPlay.driver.api._
+import org.virtuslab.unicorn.UnicornWrapper
 import slick.ast.TypedType
-import slick.lifted.{ TupleShape, Rep, TableQuery, Tag }
+import slick.lifted.TupleShape
 
 import scala.reflect.ClassTag
 
 /**
  * Generated code for filterable views.
  */
-private[beholder] trait FilterableViewsGenerateCode {
+
+trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
+  self: UnicornWrapper[Long] =>
+
+  import unicorn.profile.api._
+  import unicorn.profile._
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType](name: String,
     apply: (A1, A2) => T,
     unapply: T => Option[(A1, A2)],
     baseQuery: Query[E, _, Seq])(
-      mappings: E => ((String, Rep[A1]), (String, Rep[A2])))(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _]): TableQuery[BaseView2[T, A1, A2]] = {
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2])))(implicit s1: Shape[_ <: ShapeLevel, Rep[A1], A1, _], s2: Shape[_ <: ShapeLevel, Rep[A2], A2, _]): TableQuery[BaseView2[T, A1, A2]] = {
 
     var columnsNames = Seq[String]()
 
@@ -41,7 +46,7 @@ private[beholder] trait FilterableViewsGenerateCode {
       val columnNames: Seq[String],
       apply: (A1, A2) => T,
       unapply: T => Option[(A1, A2)],
-      val query: Query[_, T, Seq])(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _]) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq])(implicit s1: Shape[_ <: ShapeLevel, Rep[A1], A1, _], s2: Shape[_ <: ShapeLevel, Rep[A2], A2, _]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
 
@@ -61,7 +66,7 @@ private[beholder] trait FilterableViewsGenerateCode {
     apply: (A1, A2, A3) => T,
     unapply: T => Option[(A1, A2, A3)],
     baseQuery: Query[E, _, Seq])(
-      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3])))(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _]): TableQuery[BaseView3[T, A1, A2, A3]] = {
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3])))(implicit s1: Shape[_ <: ShapeLevel, Rep[A1], A1, _], s2: Shape[_ <: ShapeLevel, Rep[A2], A2, _], s3: Shape[_ <: ShapeLevel, Rep[A3], A3, _]): TableQuery[BaseView3[T, A1, A2, A3]] = {
 
     var columnsNames = Seq[String]()
 
@@ -88,7 +93,7 @@ private[beholder] trait FilterableViewsGenerateCode {
       val columnNames: Seq[String],
       apply: (A1, A2, A3) => T,
       unapply: T => Option[(A1, A2, A3)],
-      val query: Query[_, T, Seq])(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _]) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq])(implicit s1: Shape[_ <: ShapeLevel, Rep[A1], A1, _], s2: Shape[_ <: ShapeLevel, Rep[A2], A2, _], s3: Shape[_ <: ShapeLevel, Rep[A3], A3, _]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -110,7 +115,7 @@ private[beholder] trait FilterableViewsGenerateCode {
     apply: (A1, A2, A3, A4) => T,
     unapply: T => Option[(A1, A2, A3, A4)],
     baseQuery: Query[E, _, Seq])(
-      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4])))(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _]): TableQuery[BaseView4[T, A1, A2, A3, A4]] = {
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4])))(implicit s1: Shape[_ <: ShapeLevel, Rep[A1], A1, _], s2: Shape[_ <: ShapeLevel, Rep[A2], A2, _], s3: Shape[_ <: ShapeLevel, Rep[A3], A3, _], s4: Shape[_ <: ShapeLevel, Rep[A4], A4, _]): TableQuery[BaseView4[T, A1, A2, A3, A4]] = {
 
     var columnsNames = Seq[String]()
 
@@ -137,7 +142,7 @@ private[beholder] trait FilterableViewsGenerateCode {
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4) => T,
       unapply: T => Option[(A1, A2, A3, A4)],
-      val query: Query[_, T, Seq])(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _]) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq])(implicit s1: Shape[_ <: ShapeLevel, Rep[A1], A1, _], s2: Shape[_ <: ShapeLevel, Rep[A2], A2, _], s3: Shape[_ <: ShapeLevel, Rep[A3], A3, _], s4: Shape[_ <: ShapeLevel, Rep[A4], A4, _]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -161,7 +166,7 @@ private[beholder] trait FilterableViewsGenerateCode {
     apply: (A1, A2, A3, A4, A5) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5)],
     baseQuery: Query[E, _, Seq])(
-      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5])))(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _]): TableQuery[BaseView5[T, A1, A2, A3, A4, A5]] = {
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5])))(implicit s1: Shape[_ <: ShapeLevel, Rep[A1], A1, _], s2: Shape[_ <: ShapeLevel, Rep[A2], A2, _], s3: Shape[_ <: ShapeLevel, Rep[A3], A3, _], s4: Shape[_ <: ShapeLevel, Rep[A4], A4, _], s5: Shape[_ <: ShapeLevel, Rep[A5], A5, _]): TableQuery[BaseView5[T, A1, A2, A3, A4, A5]] = {
 
     var columnsNames = Seq[String]()
 
@@ -188,7 +193,7 @@ private[beholder] trait FilterableViewsGenerateCode {
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5)],
-      val query: Query[_, T, Seq])(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _]) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq])(implicit s1: Shape[_ <: ShapeLevel, Rep[A1], A1, _], s2: Shape[_ <: ShapeLevel, Rep[A2], A2, _], s3: Shape[_ <: ShapeLevel, Rep[A3], A3, _], s4: Shape[_ <: ShapeLevel, Rep[A4], A4, _], s5: Shape[_ <: ShapeLevel, Rep[A5], A5, _]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -214,7 +219,7 @@ private[beholder] trait FilterableViewsGenerateCode {
     apply: (A1, A2, A3, A4, A5, A6) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6)],
     baseQuery: Query[E, _, Seq])(
-      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6])))(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _]): TableQuery[BaseView6[T, A1, A2, A3, A4, A5, A6]] = {
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6])))(implicit s1: Shape[_ <: ShapeLevel, Rep[A1], A1, _], s2: Shape[_ <: ShapeLevel, Rep[A2], A2, _], s3: Shape[_ <: ShapeLevel, Rep[A3], A3, _], s4: Shape[_ <: ShapeLevel, Rep[A4], A4, _], s5: Shape[_ <: ShapeLevel, Rep[A5], A5, _], s6: Shape[_ <: ShapeLevel, Rep[A6], A6, _]): TableQuery[BaseView6[T, A1, A2, A3, A4, A5, A6]] = {
 
     var columnsNames = Seq[String]()
 
@@ -241,7 +246,7 @@ private[beholder] trait FilterableViewsGenerateCode {
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6)],
-      val query: Query[_, T, Seq])(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _]) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq])(implicit s1: Shape[_ <: ShapeLevel, Rep[A1], A1, _], s2: Shape[_ <: ShapeLevel, Rep[A2], A2, _], s3: Shape[_ <: ShapeLevel, Rep[A3], A3, _], s4: Shape[_ <: ShapeLevel, Rep[A4], A4, _], s5: Shape[_ <: ShapeLevel, Rep[A5], A5, _], s6: Shape[_ <: ShapeLevel, Rep[A6], A6, _]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -269,7 +274,7 @@ private[beholder] trait FilterableViewsGenerateCode {
     apply: (A1, A2, A3, A4, A5, A6, A7) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7)],
     baseQuery: Query[E, _, Seq])(
-      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7])))(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _]): TableQuery[BaseView7[T, A1, A2, A3, A4, A5, A6, A7]] = {
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7])))(implicit s1: Shape[_ <: ShapeLevel, Rep[A1], A1, _], s2: Shape[_ <: ShapeLevel, Rep[A2], A2, _], s3: Shape[_ <: ShapeLevel, Rep[A3], A3, _], s4: Shape[_ <: ShapeLevel, Rep[A4], A4, _], s5: Shape[_ <: ShapeLevel, Rep[A5], A5, _], s6: Shape[_ <: ShapeLevel, Rep[A6], A6, _], s7: Shape[_ <: ShapeLevel, Rep[A7], A7, _]): TableQuery[BaseView7[T, A1, A2, A3, A4, A5, A6, A7]] = {
 
     var columnsNames = Seq[String]()
 
@@ -296,7 +301,7 @@ private[beholder] trait FilterableViewsGenerateCode {
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7)],
-      val query: Query[_, T, Seq])(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _]) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq])(implicit s1: Shape[_ <: ShapeLevel, Rep[A1], A1, _], s2: Shape[_ <: ShapeLevel, Rep[A2], A2, _], s3: Shape[_ <: ShapeLevel, Rep[A3], A3, _], s4: Shape[_ <: ShapeLevel, Rep[A4], A4, _], s5: Shape[_ <: ShapeLevel, Rep[A5], A5, _], s6: Shape[_ <: ShapeLevel, Rep[A6], A6, _], s7: Shape[_ <: ShapeLevel, Rep[A7], A7, _]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -326,7 +331,7 @@ private[beholder] trait FilterableViewsGenerateCode {
     apply: (A1, A2, A3, A4, A5, A6, A7, A8) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8)],
     baseQuery: Query[E, _, Seq])(
-      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8])))(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _]): TableQuery[BaseView8[T, A1, A2, A3, A4, A5, A6, A7, A8]] = {
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8])))(implicit s1: Shape[_ <: ShapeLevel, Rep[A1], A1, _], s2: Shape[_ <: ShapeLevel, Rep[A2], A2, _], s3: Shape[_ <: ShapeLevel, Rep[A3], A3, _], s4: Shape[_ <: ShapeLevel, Rep[A4], A4, _], s5: Shape[_ <: ShapeLevel, Rep[A5], A5, _], s6: Shape[_ <: ShapeLevel, Rep[A6], A6, _], s7: Shape[_ <: ShapeLevel, Rep[A7], A7, _], s8: Shape[_ <: ShapeLevel, Rep[A8], A8, _]): TableQuery[BaseView8[T, A1, A2, A3, A4, A5, A6, A7, A8]] = {
 
     var columnsNames = Seq[String]()
 
@@ -353,7 +358,7 @@ private[beholder] trait FilterableViewsGenerateCode {
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8)],
-      val query: Query[_, T, Seq])(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _]) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq])(implicit s1: Shape[_ <: ShapeLevel, Rep[A1], A1, _], s2: Shape[_ <: ShapeLevel, Rep[A2], A2, _], s3: Shape[_ <: ShapeLevel, Rep[A3], A3, _], s4: Shape[_ <: ShapeLevel, Rep[A4], A4, _], s5: Shape[_ <: ShapeLevel, Rep[A5], A5, _], s6: Shape[_ <: ShapeLevel, Rep[A6], A6, _], s7: Shape[_ <: ShapeLevel, Rep[A7], A7, _], s8: Shape[_ <: ShapeLevel, Rep[A8], A8, _]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -385,7 +390,7 @@ private[beholder] trait FilterableViewsGenerateCode {
     apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9)],
     baseQuery: Query[E, _, Seq])(
-      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9])))(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _]): TableQuery[BaseView9[T, A1, A2, A3, A4, A5, A6, A7, A8, A9]] = {
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9])))(implicit s1: Shape[_ <: ShapeLevel, Rep[A1], A1, _], s2: Shape[_ <: ShapeLevel, Rep[A2], A2, _], s3: Shape[_ <: ShapeLevel, Rep[A3], A3, _], s4: Shape[_ <: ShapeLevel, Rep[A4], A4, _], s5: Shape[_ <: ShapeLevel, Rep[A5], A5, _], s6: Shape[_ <: ShapeLevel, Rep[A6], A6, _], s7: Shape[_ <: ShapeLevel, Rep[A7], A7, _], s8: Shape[_ <: ShapeLevel, Rep[A8], A8, _], s9: Shape[_ <: ShapeLevel, Rep[A9], A9, _]): TableQuery[BaseView9[T, A1, A2, A3, A4, A5, A6, A7, A8, A9]] = {
 
     var columnsNames = Seq[String]()
 
@@ -412,7 +417,7 @@ private[beholder] trait FilterableViewsGenerateCode {
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9)],
-      val query: Query[_, T, Seq])(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _]) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq])(implicit s1: Shape[_ <: ShapeLevel, Rep[A1], A1, _], s2: Shape[_ <: ShapeLevel, Rep[A2], A2, _], s3: Shape[_ <: ShapeLevel, Rep[A3], A3, _], s4: Shape[_ <: ShapeLevel, Rep[A4], A4, _], s5: Shape[_ <: ShapeLevel, Rep[A5], A5, _], s6: Shape[_ <: ShapeLevel, Rep[A6], A6, _], s7: Shape[_ <: ShapeLevel, Rep[A7], A7, _], s8: Shape[_ <: ShapeLevel, Rep[A8], A8, _], s9: Shape[_ <: ShapeLevel, Rep[A9], A9, _]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -446,7 +451,7 @@ private[beholder] trait FilterableViewsGenerateCode {
     apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10)],
     baseQuery: Query[E, _, Seq])(
-      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10])))(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _]): TableQuery[BaseView10[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10]] = {
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10])))(implicit s1: Shape[_ <: ShapeLevel, Rep[A1], A1, _], s2: Shape[_ <: ShapeLevel, Rep[A2], A2, _], s3: Shape[_ <: ShapeLevel, Rep[A3], A3, _], s4: Shape[_ <: ShapeLevel, Rep[A4], A4, _], s5: Shape[_ <: ShapeLevel, Rep[A5], A5, _], s6: Shape[_ <: ShapeLevel, Rep[A6], A6, _], s7: Shape[_ <: ShapeLevel, Rep[A7], A7, _], s8: Shape[_ <: ShapeLevel, Rep[A8], A8, _], s9: Shape[_ <: ShapeLevel, Rep[A9], A9, _], s10: Shape[_ <: ShapeLevel, Rep[A10], A10, _]): TableQuery[BaseView10[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10]] = {
 
     var columnsNames = Seq[String]()
 
@@ -473,7 +478,7 @@ private[beholder] trait FilterableViewsGenerateCode {
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10)],
-      val query: Query[_, T, Seq])(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _]) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq])(implicit s1: Shape[_ <: ShapeLevel, Rep[A1], A1, _], s2: Shape[_ <: ShapeLevel, Rep[A2], A2, _], s3: Shape[_ <: ShapeLevel, Rep[A3], A3, _], s4: Shape[_ <: ShapeLevel, Rep[A4], A4, _], s5: Shape[_ <: ShapeLevel, Rep[A5], A5, _], s6: Shape[_ <: ShapeLevel, Rep[A6], A6, _], s7: Shape[_ <: ShapeLevel, Rep[A7], A7, _], s8: Shape[_ <: ShapeLevel, Rep[A8], A8, _], s9: Shape[_ <: ShapeLevel, Rep[A9], A9, _], s10: Shape[_ <: ShapeLevel, Rep[A10], A10, _]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -509,7 +514,7 @@ private[beholder] trait FilterableViewsGenerateCode {
     apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11)],
     baseQuery: Query[E, _, Seq])(
-      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11])))(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _], s11: Shape[_, Rep[A11], A11, _]): TableQuery[BaseView11[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11]] = {
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11])))(implicit s1: Shape[_ <: ShapeLevel, Rep[A1], A1, _], s2: Shape[_ <: ShapeLevel, Rep[A2], A2, _], s3: Shape[_ <: ShapeLevel, Rep[A3], A3, _], s4: Shape[_ <: ShapeLevel, Rep[A4], A4, _], s5: Shape[_ <: ShapeLevel, Rep[A5], A5, _], s6: Shape[_ <: ShapeLevel, Rep[A6], A6, _], s7: Shape[_ <: ShapeLevel, Rep[A7], A7, _], s8: Shape[_ <: ShapeLevel, Rep[A8], A8, _], s9: Shape[_ <: ShapeLevel, Rep[A9], A9, _], s10: Shape[_ <: ShapeLevel, Rep[A10], A10, _], s11: Shape[_ <: ShapeLevel, Rep[A11], A11, _]): TableQuery[BaseView11[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11]] = {
 
     var columnsNames = Seq[String]()
 
@@ -536,7 +541,7 @@ private[beholder] trait FilterableViewsGenerateCode {
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11)],
-      val query: Query[_, T, Seq])(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _], s11: Shape[_, Rep[A11], A11, _]) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq])(implicit s1: Shape[_ <: ShapeLevel, Rep[A1], A1, _], s2: Shape[_ <: ShapeLevel, Rep[A2], A2, _], s3: Shape[_ <: ShapeLevel, Rep[A3], A3, _], s4: Shape[_ <: ShapeLevel, Rep[A4], A4, _], s5: Shape[_ <: ShapeLevel, Rep[A5], A5, _], s6: Shape[_ <: ShapeLevel, Rep[A6], A6, _], s7: Shape[_ <: ShapeLevel, Rep[A7], A7, _], s8: Shape[_ <: ShapeLevel, Rep[A8], A8, _], s9: Shape[_ <: ShapeLevel, Rep[A9], A9, _], s10: Shape[_ <: ShapeLevel, Rep[A10], A10, _], s11: Shape[_ <: ShapeLevel, Rep[A11], A11, _]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -574,7 +579,7 @@ private[beholder] trait FilterableViewsGenerateCode {
     apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12)],
     baseQuery: Query[E, _, Seq])(
-      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11]), (String, Rep[A12])))(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _], s11: Shape[_, Rep[A11], A11, _], s12: Shape[_, Rep[A12], A12, _]): TableQuery[BaseView12[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12]] = {
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11]), (String, Rep[A12])))(implicit s1: Shape[_ <: ShapeLevel, Rep[A1], A1, _], s2: Shape[_ <: ShapeLevel, Rep[A2], A2, _], s3: Shape[_ <: ShapeLevel, Rep[A3], A3, _], s4: Shape[_ <: ShapeLevel, Rep[A4], A4, _], s5: Shape[_ <: ShapeLevel, Rep[A5], A5, _], s6: Shape[_ <: ShapeLevel, Rep[A6], A6, _], s7: Shape[_ <: ShapeLevel, Rep[A7], A7, _], s8: Shape[_ <: ShapeLevel, Rep[A8], A8, _], s9: Shape[_ <: ShapeLevel, Rep[A9], A9, _], s10: Shape[_ <: ShapeLevel, Rep[A10], A10, _], s11: Shape[_ <: ShapeLevel, Rep[A11], A11, _], s12: Shape[_ <: ShapeLevel, Rep[A12], A12, _]): TableQuery[BaseView12[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12]] = {
 
     var columnsNames = Seq[String]()
 
@@ -601,7 +606,7 @@ private[beholder] trait FilterableViewsGenerateCode {
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12)],
-      val query: Query[_, T, Seq])(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _], s11: Shape[_, Rep[A11], A11, _], s12: Shape[_, Rep[A12], A12, _]) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq])(implicit s1: Shape[_ <: ShapeLevel, Rep[A1], A1, _], s2: Shape[_ <: ShapeLevel, Rep[A2], A2, _], s3: Shape[_ <: ShapeLevel, Rep[A3], A3, _], s4: Shape[_ <: ShapeLevel, Rep[A4], A4, _], s5: Shape[_ <: ShapeLevel, Rep[A5], A5, _], s6: Shape[_ <: ShapeLevel, Rep[A6], A6, _], s7: Shape[_ <: ShapeLevel, Rep[A7], A7, _], s8: Shape[_ <: ShapeLevel, Rep[A8], A8, _], s9: Shape[_ <: ShapeLevel, Rep[A9], A9, _], s10: Shape[_ <: ShapeLevel, Rep[A10], A10, _], s11: Shape[_ <: ShapeLevel, Rep[A11], A11, _], s12: Shape[_ <: ShapeLevel, Rep[A12], A12, _]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -641,7 +646,7 @@ private[beholder] trait FilterableViewsGenerateCode {
     apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13)],
     baseQuery: Query[E, _, Seq])(
-      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11]), (String, Rep[A12]), (String, Rep[A13])))(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _], s11: Shape[_, Rep[A11], A11, _], s12: Shape[_, Rep[A12], A12, _], s13: Shape[_, Rep[A13], A13, _]): TableQuery[BaseView13[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13]] = {
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11]), (String, Rep[A12]), (String, Rep[A13])))(implicit s1: Shape[_ <: ShapeLevel, Rep[A1], A1, _], s2: Shape[_ <: ShapeLevel, Rep[A2], A2, _], s3: Shape[_ <: ShapeLevel, Rep[A3], A3, _], s4: Shape[_ <: ShapeLevel, Rep[A4], A4, _], s5: Shape[_ <: ShapeLevel, Rep[A5], A5, _], s6: Shape[_ <: ShapeLevel, Rep[A6], A6, _], s7: Shape[_ <: ShapeLevel, Rep[A7], A7, _], s8: Shape[_ <: ShapeLevel, Rep[A8], A8, _], s9: Shape[_ <: ShapeLevel, Rep[A9], A9, _], s10: Shape[_ <: ShapeLevel, Rep[A10], A10, _], s11: Shape[_ <: ShapeLevel, Rep[A11], A11, _], s12: Shape[_ <: ShapeLevel, Rep[A12], A12, _], s13: Shape[_ <: ShapeLevel, Rep[A13], A13, _]): TableQuery[BaseView13[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13]] = {
 
     var columnsNames = Seq[String]()
 
@@ -668,7 +673,7 @@ private[beholder] trait FilterableViewsGenerateCode {
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13)],
-      val query: Query[_, T, Seq])(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _], s11: Shape[_, Rep[A11], A11, _], s12: Shape[_, Rep[A12], A12, _], s13: Shape[_, Rep[A13], A13, _]) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq])(implicit s1: Shape[_ <: ShapeLevel, Rep[A1], A1, _], s2: Shape[_ <: ShapeLevel, Rep[A2], A2, _], s3: Shape[_ <: ShapeLevel, Rep[A3], A3, _], s4: Shape[_ <: ShapeLevel, Rep[A4], A4, _], s5: Shape[_ <: ShapeLevel, Rep[A5], A5, _], s6: Shape[_ <: ShapeLevel, Rep[A6], A6, _], s7: Shape[_ <: ShapeLevel, Rep[A7], A7, _], s8: Shape[_ <: ShapeLevel, Rep[A8], A8, _], s9: Shape[_ <: ShapeLevel, Rep[A9], A9, _], s10: Shape[_ <: ShapeLevel, Rep[A10], A10, _], s11: Shape[_ <: ShapeLevel, Rep[A11], A11, _], s12: Shape[_ <: ShapeLevel, Rep[A12], A12, _], s13: Shape[_ <: ShapeLevel, Rep[A13], A13, _]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -710,7 +715,7 @@ private[beholder] trait FilterableViewsGenerateCode {
     apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14)],
     baseQuery: Query[E, _, Seq])(
-      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11]), (String, Rep[A12]), (String, Rep[A13]), (String, Rep[A14])))(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _], s11: Shape[_, Rep[A11], A11, _], s12: Shape[_, Rep[A12], A12, _], s13: Shape[_, Rep[A13], A13, _], s14: Shape[_, Rep[A14], A14, _]): TableQuery[BaseView14[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14]] = {
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11]), (String, Rep[A12]), (String, Rep[A13]), (String, Rep[A14])))(implicit s1: Shape[_ <: ShapeLevel, Rep[A1], A1, _], s2: Shape[_ <: ShapeLevel, Rep[A2], A2, _], s3: Shape[_ <: ShapeLevel, Rep[A3], A3, _], s4: Shape[_ <: ShapeLevel, Rep[A4], A4, _], s5: Shape[_ <: ShapeLevel, Rep[A5], A5, _], s6: Shape[_ <: ShapeLevel, Rep[A6], A6, _], s7: Shape[_ <: ShapeLevel, Rep[A7], A7, _], s8: Shape[_ <: ShapeLevel, Rep[A8], A8, _], s9: Shape[_ <: ShapeLevel, Rep[A9], A9, _], s10: Shape[_ <: ShapeLevel, Rep[A10], A10, _], s11: Shape[_ <: ShapeLevel, Rep[A11], A11, _], s12: Shape[_ <: ShapeLevel, Rep[A12], A12, _], s13: Shape[_ <: ShapeLevel, Rep[A13], A13, _], s14: Shape[_ <: ShapeLevel, Rep[A14], A14, _]): TableQuery[BaseView14[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14]] = {
 
     var columnsNames = Seq[String]()
 
@@ -737,7 +742,7 @@ private[beholder] trait FilterableViewsGenerateCode {
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14)],
-      val query: Query[_, T, Seq])(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _], s11: Shape[_, Rep[A11], A11, _], s12: Shape[_, Rep[A12], A12, _], s13: Shape[_, Rep[A13], A13, _], s14: Shape[_, Rep[A14], A14, _]) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq])(implicit s1: Shape[_ <: ShapeLevel, Rep[A1], A1, _], s2: Shape[_ <: ShapeLevel, Rep[A2], A2, _], s3: Shape[_ <: ShapeLevel, Rep[A3], A3, _], s4: Shape[_ <: ShapeLevel, Rep[A4], A4, _], s5: Shape[_ <: ShapeLevel, Rep[A5], A5, _], s6: Shape[_ <: ShapeLevel, Rep[A6], A6, _], s7: Shape[_ <: ShapeLevel, Rep[A7], A7, _], s8: Shape[_ <: ShapeLevel, Rep[A8], A8, _], s9: Shape[_ <: ShapeLevel, Rep[A9], A9, _], s10: Shape[_ <: ShapeLevel, Rep[A10], A10, _], s11: Shape[_ <: ShapeLevel, Rep[A11], A11, _], s12: Shape[_ <: ShapeLevel, Rep[A12], A12, _], s13: Shape[_ <: ShapeLevel, Rep[A13], A13, _], s14: Shape[_ <: ShapeLevel, Rep[A14], A14, _]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -781,7 +786,7 @@ private[beholder] trait FilterableViewsGenerateCode {
     apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15)],
     baseQuery: Query[E, _, Seq])(
-      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11]), (String, Rep[A12]), (String, Rep[A13]), (String, Rep[A14]), (String, Rep[A15])))(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _], s11: Shape[_, Rep[A11], A11, _], s12: Shape[_, Rep[A12], A12, _], s13: Shape[_, Rep[A13], A13, _], s14: Shape[_, Rep[A14], A14, _], s15: Shape[_, Rep[A15], A15, _]): TableQuery[BaseView15[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15]] = {
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11]), (String, Rep[A12]), (String, Rep[A13]), (String, Rep[A14]), (String, Rep[A15])))(implicit s1: Shape[_ <: ShapeLevel, Rep[A1], A1, _], s2: Shape[_ <: ShapeLevel, Rep[A2], A2, _], s3: Shape[_ <: ShapeLevel, Rep[A3], A3, _], s4: Shape[_ <: ShapeLevel, Rep[A4], A4, _], s5: Shape[_ <: ShapeLevel, Rep[A5], A5, _], s6: Shape[_ <: ShapeLevel, Rep[A6], A6, _], s7: Shape[_ <: ShapeLevel, Rep[A7], A7, _], s8: Shape[_ <: ShapeLevel, Rep[A8], A8, _], s9: Shape[_ <: ShapeLevel, Rep[A9], A9, _], s10: Shape[_ <: ShapeLevel, Rep[A10], A10, _], s11: Shape[_ <: ShapeLevel, Rep[A11], A11, _], s12: Shape[_ <: ShapeLevel, Rep[A12], A12, _], s13: Shape[_ <: ShapeLevel, Rep[A13], A13, _], s14: Shape[_ <: ShapeLevel, Rep[A14], A14, _], s15: Shape[_ <: ShapeLevel, Rep[A15], A15, _]): TableQuery[BaseView15[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15]] = {
 
     var columnsNames = Seq[String]()
 
@@ -808,7 +813,7 @@ private[beholder] trait FilterableViewsGenerateCode {
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15)],
-      val query: Query[_, T, Seq])(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _], s11: Shape[_, Rep[A11], A11, _], s12: Shape[_, Rep[A12], A12, _], s13: Shape[_, Rep[A13], A13, _], s14: Shape[_, Rep[A14], A14, _], s15: Shape[_, Rep[A15], A15, _]) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq])(implicit s1: Shape[_ <: ShapeLevel, Rep[A1], A1, _], s2: Shape[_ <: ShapeLevel, Rep[A2], A2, _], s3: Shape[_ <: ShapeLevel, Rep[A3], A3, _], s4: Shape[_ <: ShapeLevel, Rep[A4], A4, _], s5: Shape[_ <: ShapeLevel, Rep[A5], A5, _], s6: Shape[_ <: ShapeLevel, Rep[A6], A6, _], s7: Shape[_ <: ShapeLevel, Rep[A7], A7, _], s8: Shape[_ <: ShapeLevel, Rep[A8], A8, _], s9: Shape[_ <: ShapeLevel, Rep[A9], A9, _], s10: Shape[_ <: ShapeLevel, Rep[A10], A10, _], s11: Shape[_ <: ShapeLevel, Rep[A11], A11, _], s12: Shape[_ <: ShapeLevel, Rep[A12], A12, _], s13: Shape[_ <: ShapeLevel, Rep[A13], A13, _], s14: Shape[_ <: ShapeLevel, Rep[A14], A14, _], s15: Shape[_ <: ShapeLevel, Rep[A15], A15, _]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -854,7 +859,7 @@ private[beholder] trait FilterableViewsGenerateCode {
     apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16)],
     baseQuery: Query[E, _, Seq])(
-      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11]), (String, Rep[A12]), (String, Rep[A13]), (String, Rep[A14]), (String, Rep[A15]), (String, Rep[A16])))(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _], s11: Shape[_, Rep[A11], A11, _], s12: Shape[_, Rep[A12], A12, _], s13: Shape[_, Rep[A13], A13, _], s14: Shape[_, Rep[A14], A14, _], s15: Shape[_, Rep[A15], A15, _], s16: Shape[_, Rep[A16], A16, _]): TableQuery[BaseView16[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16]] = {
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11]), (String, Rep[A12]), (String, Rep[A13]), (String, Rep[A14]), (String, Rep[A15]), (String, Rep[A16])))(implicit s1: Shape[_ <: ShapeLevel, Rep[A1], A1, _], s2: Shape[_ <: ShapeLevel, Rep[A2], A2, _], s3: Shape[_ <: ShapeLevel, Rep[A3], A3, _], s4: Shape[_ <: ShapeLevel, Rep[A4], A4, _], s5: Shape[_ <: ShapeLevel, Rep[A5], A5, _], s6: Shape[_ <: ShapeLevel, Rep[A6], A6, _], s7: Shape[_ <: ShapeLevel, Rep[A7], A7, _], s8: Shape[_ <: ShapeLevel, Rep[A8], A8, _], s9: Shape[_ <: ShapeLevel, Rep[A9], A9, _], s10: Shape[_ <: ShapeLevel, Rep[A10], A10, _], s11: Shape[_ <: ShapeLevel, Rep[A11], A11, _], s12: Shape[_ <: ShapeLevel, Rep[A12], A12, _], s13: Shape[_ <: ShapeLevel, Rep[A13], A13, _], s14: Shape[_ <: ShapeLevel, Rep[A14], A14, _], s15: Shape[_ <: ShapeLevel, Rep[A15], A15, _], s16: Shape[_ <: ShapeLevel, Rep[A16], A16, _]): TableQuery[BaseView16[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16]] = {
 
     var columnsNames = Seq[String]()
 
@@ -881,7 +886,7 @@ private[beholder] trait FilterableViewsGenerateCode {
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16)],
-      val query: Query[_, T, Seq])(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _], s11: Shape[_, Rep[A11], A11, _], s12: Shape[_, Rep[A12], A12, _], s13: Shape[_, Rep[A13], A13, _], s14: Shape[_, Rep[A14], A14, _], s15: Shape[_, Rep[A15], A15, _], s16: Shape[_, Rep[A16], A16, _]) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq])(implicit s1: Shape[_ <: ShapeLevel, Rep[A1], A1, _], s2: Shape[_ <: ShapeLevel, Rep[A2], A2, _], s3: Shape[_ <: ShapeLevel, Rep[A3], A3, _], s4: Shape[_ <: ShapeLevel, Rep[A4], A4, _], s5: Shape[_ <: ShapeLevel, Rep[A5], A5, _], s6: Shape[_ <: ShapeLevel, Rep[A6], A6, _], s7: Shape[_ <: ShapeLevel, Rep[A7], A7, _], s8: Shape[_ <: ShapeLevel, Rep[A8], A8, _], s9: Shape[_ <: ShapeLevel, Rep[A9], A9, _], s10: Shape[_ <: ShapeLevel, Rep[A10], A10, _], s11: Shape[_ <: ShapeLevel, Rep[A11], A11, _], s12: Shape[_ <: ShapeLevel, Rep[A12], A12, _], s13: Shape[_ <: ShapeLevel, Rep[A13], A13, _], s14: Shape[_ <: ShapeLevel, Rep[A14], A14, _], s15: Shape[_ <: ShapeLevel, Rep[A15], A15, _], s16: Shape[_ <: ShapeLevel, Rep[A16], A16, _]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -929,7 +934,7 @@ private[beholder] trait FilterableViewsGenerateCode {
     apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17)],
     baseQuery: Query[E, _, Seq])(
-      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11]), (String, Rep[A12]), (String, Rep[A13]), (String, Rep[A14]), (String, Rep[A15]), (String, Rep[A16]), (String, Rep[A17])))(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _], s11: Shape[_, Rep[A11], A11, _], s12: Shape[_, Rep[A12], A12, _], s13: Shape[_, Rep[A13], A13, _], s14: Shape[_, Rep[A14], A14, _], s15: Shape[_, Rep[A15], A15, _], s16: Shape[_, Rep[A16], A16, _], s17: Shape[_, Rep[A17], A17, _]): TableQuery[BaseView17[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17]] = {
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11]), (String, Rep[A12]), (String, Rep[A13]), (String, Rep[A14]), (String, Rep[A15]), (String, Rep[A16]), (String, Rep[A17])))(implicit s1: Shape[_ <: ShapeLevel, Rep[A1], A1, _], s2: Shape[_ <: ShapeLevel, Rep[A2], A2, _], s3: Shape[_ <: ShapeLevel, Rep[A3], A3, _], s4: Shape[_ <: ShapeLevel, Rep[A4], A4, _], s5: Shape[_ <: ShapeLevel, Rep[A5], A5, _], s6: Shape[_ <: ShapeLevel, Rep[A6], A6, _], s7: Shape[_ <: ShapeLevel, Rep[A7], A7, _], s8: Shape[_ <: ShapeLevel, Rep[A8], A8, _], s9: Shape[_ <: ShapeLevel, Rep[A9], A9, _], s10: Shape[_ <: ShapeLevel, Rep[A10], A10, _], s11: Shape[_ <: ShapeLevel, Rep[A11], A11, _], s12: Shape[_ <: ShapeLevel, Rep[A12], A12, _], s13: Shape[_ <: ShapeLevel, Rep[A13], A13, _], s14: Shape[_ <: ShapeLevel, Rep[A14], A14, _], s15: Shape[_ <: ShapeLevel, Rep[A15], A15, _], s16: Shape[_ <: ShapeLevel, Rep[A16], A16, _], s17: Shape[_ <: ShapeLevel, Rep[A17], A17, _]): TableQuery[BaseView17[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17]] = {
 
     var columnsNames = Seq[String]()
 
@@ -956,7 +961,7 @@ private[beholder] trait FilterableViewsGenerateCode {
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17)],
-      val query: Query[_, T, Seq])(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _], s11: Shape[_, Rep[A11], A11, _], s12: Shape[_, Rep[A12], A12, _], s13: Shape[_, Rep[A13], A13, _], s14: Shape[_, Rep[A14], A14, _], s15: Shape[_, Rep[A15], A15, _], s16: Shape[_, Rep[A16], A16, _], s17: Shape[_, Rep[A17], A17, _]) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq])(implicit s1: Shape[_ <: ShapeLevel, Rep[A1], A1, _], s2: Shape[_ <: ShapeLevel, Rep[A2], A2, _], s3: Shape[_ <: ShapeLevel, Rep[A3], A3, _], s4: Shape[_ <: ShapeLevel, Rep[A4], A4, _], s5: Shape[_ <: ShapeLevel, Rep[A5], A5, _], s6: Shape[_ <: ShapeLevel, Rep[A6], A6, _], s7: Shape[_ <: ShapeLevel, Rep[A7], A7, _], s8: Shape[_ <: ShapeLevel, Rep[A8], A8, _], s9: Shape[_ <: ShapeLevel, Rep[A9], A9, _], s10: Shape[_ <: ShapeLevel, Rep[A10], A10, _], s11: Shape[_ <: ShapeLevel, Rep[A11], A11, _], s12: Shape[_ <: ShapeLevel, Rep[A12], A12, _], s13: Shape[_ <: ShapeLevel, Rep[A13], A13, _], s14: Shape[_ <: ShapeLevel, Rep[A14], A14, _], s15: Shape[_ <: ShapeLevel, Rep[A15], A15, _], s16: Shape[_ <: ShapeLevel, Rep[A16], A16, _], s17: Shape[_ <: ShapeLevel, Rep[A17], A17, _]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -1006,7 +1011,7 @@ private[beholder] trait FilterableViewsGenerateCode {
     apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18)],
     baseQuery: Query[E, _, Seq])(
-      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11]), (String, Rep[A12]), (String, Rep[A13]), (String, Rep[A14]), (String, Rep[A15]), (String, Rep[A16]), (String, Rep[A17]), (String, Rep[A18])))(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _], s11: Shape[_, Rep[A11], A11, _], s12: Shape[_, Rep[A12], A12, _], s13: Shape[_, Rep[A13], A13, _], s14: Shape[_, Rep[A14], A14, _], s15: Shape[_, Rep[A15], A15, _], s16: Shape[_, Rep[A16], A16, _], s17: Shape[_, Rep[A17], A17, _], s18: Shape[_, Rep[A18], A18, _]): TableQuery[BaseView18[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18]] = {
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11]), (String, Rep[A12]), (String, Rep[A13]), (String, Rep[A14]), (String, Rep[A15]), (String, Rep[A16]), (String, Rep[A17]), (String, Rep[A18])))(implicit s1: Shape[_ <: ShapeLevel, Rep[A1], A1, _], s2: Shape[_ <: ShapeLevel, Rep[A2], A2, _], s3: Shape[_ <: ShapeLevel, Rep[A3], A3, _], s4: Shape[_ <: ShapeLevel, Rep[A4], A4, _], s5: Shape[_ <: ShapeLevel, Rep[A5], A5, _], s6: Shape[_ <: ShapeLevel, Rep[A6], A6, _], s7: Shape[_ <: ShapeLevel, Rep[A7], A7, _], s8: Shape[_ <: ShapeLevel, Rep[A8], A8, _], s9: Shape[_ <: ShapeLevel, Rep[A9], A9, _], s10: Shape[_ <: ShapeLevel, Rep[A10], A10, _], s11: Shape[_ <: ShapeLevel, Rep[A11], A11, _], s12: Shape[_ <: ShapeLevel, Rep[A12], A12, _], s13: Shape[_ <: ShapeLevel, Rep[A13], A13, _], s14: Shape[_ <: ShapeLevel, Rep[A14], A14, _], s15: Shape[_ <: ShapeLevel, Rep[A15], A15, _], s16: Shape[_ <: ShapeLevel, Rep[A16], A16, _], s17: Shape[_ <: ShapeLevel, Rep[A17], A17, _], s18: Shape[_ <: ShapeLevel, Rep[A18], A18, _]): TableQuery[BaseView18[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18]] = {
 
     var columnsNames = Seq[String]()
 
@@ -1033,7 +1038,7 @@ private[beholder] trait FilterableViewsGenerateCode {
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18)],
-      val query: Query[_, T, Seq])(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _], s11: Shape[_, Rep[A11], A11, _], s12: Shape[_, Rep[A12], A12, _], s13: Shape[_, Rep[A13], A13, _], s14: Shape[_, Rep[A14], A14, _], s15: Shape[_, Rep[A15], A15, _], s16: Shape[_, Rep[A16], A16, _], s17: Shape[_, Rep[A17], A17, _], s18: Shape[_, Rep[A18], A18, _]) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq])(implicit s1: Shape[_ <: ShapeLevel, Rep[A1], A1, _], s2: Shape[_ <: ShapeLevel, Rep[A2], A2, _], s3: Shape[_ <: ShapeLevel, Rep[A3], A3, _], s4: Shape[_ <: ShapeLevel, Rep[A4], A4, _], s5: Shape[_ <: ShapeLevel, Rep[A5], A5, _], s6: Shape[_ <: ShapeLevel, Rep[A6], A6, _], s7: Shape[_ <: ShapeLevel, Rep[A7], A7, _], s8: Shape[_ <: ShapeLevel, Rep[A8], A8, _], s9: Shape[_ <: ShapeLevel, Rep[A9], A9, _], s10: Shape[_ <: ShapeLevel, Rep[A10], A10, _], s11: Shape[_ <: ShapeLevel, Rep[A11], A11, _], s12: Shape[_ <: ShapeLevel, Rep[A12], A12, _], s13: Shape[_ <: ShapeLevel, Rep[A13], A13, _], s14: Shape[_ <: ShapeLevel, Rep[A14], A14, _], s15: Shape[_ <: ShapeLevel, Rep[A15], A15, _], s16: Shape[_ <: ShapeLevel, Rep[A16], A16, _], s17: Shape[_ <: ShapeLevel, Rep[A17], A17, _], s18: Shape[_ <: ShapeLevel, Rep[A18], A18, _]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -1085,7 +1090,7 @@ private[beholder] trait FilterableViewsGenerateCode {
     apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19)],
     baseQuery: Query[E, _, Seq])(
-      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11]), (String, Rep[A12]), (String, Rep[A13]), (String, Rep[A14]), (String, Rep[A15]), (String, Rep[A16]), (String, Rep[A17]), (String, Rep[A18]), (String, Rep[A19])))(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _], s11: Shape[_, Rep[A11], A11, _], s12: Shape[_, Rep[A12], A12, _], s13: Shape[_, Rep[A13], A13, _], s14: Shape[_, Rep[A14], A14, _], s15: Shape[_, Rep[A15], A15, _], s16: Shape[_, Rep[A16], A16, _], s17: Shape[_, Rep[A17], A17, _], s18: Shape[_, Rep[A18], A18, _], s19: Shape[_, Rep[A19], A19, _]): TableQuery[BaseView19[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19]] = {
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11]), (String, Rep[A12]), (String, Rep[A13]), (String, Rep[A14]), (String, Rep[A15]), (String, Rep[A16]), (String, Rep[A17]), (String, Rep[A18]), (String, Rep[A19])))(implicit s1: Shape[_ <: ShapeLevel, Rep[A1], A1, _], s2: Shape[_ <: ShapeLevel, Rep[A2], A2, _], s3: Shape[_ <: ShapeLevel, Rep[A3], A3, _], s4: Shape[_ <: ShapeLevel, Rep[A4], A4, _], s5: Shape[_ <: ShapeLevel, Rep[A5], A5, _], s6: Shape[_ <: ShapeLevel, Rep[A6], A6, _], s7: Shape[_ <: ShapeLevel, Rep[A7], A7, _], s8: Shape[_ <: ShapeLevel, Rep[A8], A8, _], s9: Shape[_ <: ShapeLevel, Rep[A9], A9, _], s10: Shape[_ <: ShapeLevel, Rep[A10], A10, _], s11: Shape[_ <: ShapeLevel, Rep[A11], A11, _], s12: Shape[_ <: ShapeLevel, Rep[A12], A12, _], s13: Shape[_ <: ShapeLevel, Rep[A13], A13, _], s14: Shape[_ <: ShapeLevel, Rep[A14], A14, _], s15: Shape[_ <: ShapeLevel, Rep[A15], A15, _], s16: Shape[_ <: ShapeLevel, Rep[A16], A16, _], s17: Shape[_ <: ShapeLevel, Rep[A17], A17, _], s18: Shape[_ <: ShapeLevel, Rep[A18], A18, _], s19: Shape[_ <: ShapeLevel, Rep[A19], A19, _]): TableQuery[BaseView19[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19]] = {
 
     var columnsNames = Seq[String]()
 
@@ -1112,7 +1117,7 @@ private[beholder] trait FilterableViewsGenerateCode {
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19)],
-      val query: Query[_, T, Seq])(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _], s11: Shape[_, Rep[A11], A11, _], s12: Shape[_, Rep[A12], A12, _], s13: Shape[_, Rep[A13], A13, _], s14: Shape[_, Rep[A14], A14, _], s15: Shape[_, Rep[A15], A15, _], s16: Shape[_, Rep[A16], A16, _], s17: Shape[_, Rep[A17], A17, _], s18: Shape[_, Rep[A18], A18, _], s19: Shape[_, Rep[A19], A19, _]) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq])(implicit s1: Shape[_ <: ShapeLevel, Rep[A1], A1, _], s2: Shape[_ <: ShapeLevel, Rep[A2], A2, _], s3: Shape[_ <: ShapeLevel, Rep[A3], A3, _], s4: Shape[_ <: ShapeLevel, Rep[A4], A4, _], s5: Shape[_ <: ShapeLevel, Rep[A5], A5, _], s6: Shape[_ <: ShapeLevel, Rep[A6], A6, _], s7: Shape[_ <: ShapeLevel, Rep[A7], A7, _], s8: Shape[_ <: ShapeLevel, Rep[A8], A8, _], s9: Shape[_ <: ShapeLevel, Rep[A9], A9, _], s10: Shape[_ <: ShapeLevel, Rep[A10], A10, _], s11: Shape[_ <: ShapeLevel, Rep[A11], A11, _], s12: Shape[_ <: ShapeLevel, Rep[A12], A12, _], s13: Shape[_ <: ShapeLevel, Rep[A13], A13, _], s14: Shape[_ <: ShapeLevel, Rep[A14], A14, _], s15: Shape[_ <: ShapeLevel, Rep[A15], A15, _], s16: Shape[_ <: ShapeLevel, Rep[A16], A16, _], s17: Shape[_ <: ShapeLevel, Rep[A17], A17, _], s18: Shape[_ <: ShapeLevel, Rep[A18], A18, _], s19: Shape[_ <: ShapeLevel, Rep[A19], A19, _]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -1166,7 +1171,7 @@ private[beholder] trait FilterableViewsGenerateCode {
     apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20)],
     baseQuery: Query[E, _, Seq])(
-      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11]), (String, Rep[A12]), (String, Rep[A13]), (String, Rep[A14]), (String, Rep[A15]), (String, Rep[A16]), (String, Rep[A17]), (String, Rep[A18]), (String, Rep[A19]), (String, Rep[A20])))(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _], s11: Shape[_, Rep[A11], A11, _], s12: Shape[_, Rep[A12], A12, _], s13: Shape[_, Rep[A13], A13, _], s14: Shape[_, Rep[A14], A14, _], s15: Shape[_, Rep[A15], A15, _], s16: Shape[_, Rep[A16], A16, _], s17: Shape[_, Rep[A17], A17, _], s18: Shape[_, Rep[A18], A18, _], s19: Shape[_, Rep[A19], A19, _], s20: Shape[_, Rep[A20], A20, _]): TableQuery[BaseView20[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20]] = {
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11]), (String, Rep[A12]), (String, Rep[A13]), (String, Rep[A14]), (String, Rep[A15]), (String, Rep[A16]), (String, Rep[A17]), (String, Rep[A18]), (String, Rep[A19]), (String, Rep[A20])))(implicit s1: Shape[_ <: ShapeLevel, Rep[A1], A1, _], s2: Shape[_ <: ShapeLevel, Rep[A2], A2, _], s3: Shape[_ <: ShapeLevel, Rep[A3], A3, _], s4: Shape[_ <: ShapeLevel, Rep[A4], A4, _], s5: Shape[_ <: ShapeLevel, Rep[A5], A5, _], s6: Shape[_ <: ShapeLevel, Rep[A6], A6, _], s7: Shape[_ <: ShapeLevel, Rep[A7], A7, _], s8: Shape[_ <: ShapeLevel, Rep[A8], A8, _], s9: Shape[_ <: ShapeLevel, Rep[A9], A9, _], s10: Shape[_ <: ShapeLevel, Rep[A10], A10, _], s11: Shape[_ <: ShapeLevel, Rep[A11], A11, _], s12: Shape[_ <: ShapeLevel, Rep[A12], A12, _], s13: Shape[_ <: ShapeLevel, Rep[A13], A13, _], s14: Shape[_ <: ShapeLevel, Rep[A14], A14, _], s15: Shape[_ <: ShapeLevel, Rep[A15], A15, _], s16: Shape[_ <: ShapeLevel, Rep[A16], A16, _], s17: Shape[_ <: ShapeLevel, Rep[A17], A17, _], s18: Shape[_ <: ShapeLevel, Rep[A18], A18, _], s19: Shape[_ <: ShapeLevel, Rep[A19], A19, _], s20: Shape[_ <: ShapeLevel, Rep[A20], A20, _]): TableQuery[BaseView20[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20]] = {
 
     var columnsNames = Seq[String]()
 
@@ -1193,7 +1198,7 @@ private[beholder] trait FilterableViewsGenerateCode {
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20)],
-      val query: Query[_, T, Seq])(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _], s11: Shape[_, Rep[A11], A11, _], s12: Shape[_, Rep[A12], A12, _], s13: Shape[_, Rep[A13], A13, _], s14: Shape[_, Rep[A14], A14, _], s15: Shape[_, Rep[A15], A15, _], s16: Shape[_, Rep[A16], A16, _], s17: Shape[_, Rep[A17], A17, _], s18: Shape[_, Rep[A18], A18, _], s19: Shape[_, Rep[A19], A19, _], s20: Shape[_, Rep[A20], A20, _]) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq])(implicit s1: Shape[_ <: ShapeLevel, Rep[A1], A1, _], s2: Shape[_ <: ShapeLevel, Rep[A2], A2, _], s3: Shape[_ <: ShapeLevel, Rep[A3], A3, _], s4: Shape[_ <: ShapeLevel, Rep[A4], A4, _], s5: Shape[_ <: ShapeLevel, Rep[A5], A5, _], s6: Shape[_ <: ShapeLevel, Rep[A6], A6, _], s7: Shape[_ <: ShapeLevel, Rep[A7], A7, _], s8: Shape[_ <: ShapeLevel, Rep[A8], A8, _], s9: Shape[_ <: ShapeLevel, Rep[A9], A9, _], s10: Shape[_ <: ShapeLevel, Rep[A10], A10, _], s11: Shape[_ <: ShapeLevel, Rep[A11], A11, _], s12: Shape[_ <: ShapeLevel, Rep[A12], A12, _], s13: Shape[_ <: ShapeLevel, Rep[A13], A13, _], s14: Shape[_ <: ShapeLevel, Rep[A14], A14, _], s15: Shape[_ <: ShapeLevel, Rep[A15], A15, _], s16: Shape[_ <: ShapeLevel, Rep[A16], A16, _], s17: Shape[_ <: ShapeLevel, Rep[A17], A17, _], s18: Shape[_ <: ShapeLevel, Rep[A18], A18, _], s19: Shape[_ <: ShapeLevel, Rep[A19], A19, _], s20: Shape[_ <: ShapeLevel, Rep[A20], A20, _]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -1249,7 +1254,7 @@ private[beholder] trait FilterableViewsGenerateCode {
     apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20, A21) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20, A21)],
     baseQuery: Query[E, _, Seq])(
-      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11]), (String, Rep[A12]), (String, Rep[A13]), (String, Rep[A14]), (String, Rep[A15]), (String, Rep[A16]), (String, Rep[A17]), (String, Rep[A18]), (String, Rep[A19]), (String, Rep[A20]), (String, Rep[A21])))(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _], s11: Shape[_, Rep[A11], A11, _], s12: Shape[_, Rep[A12], A12, _], s13: Shape[_, Rep[A13], A13, _], s14: Shape[_, Rep[A14], A14, _], s15: Shape[_, Rep[A15], A15, _], s16: Shape[_, Rep[A16], A16, _], s17: Shape[_, Rep[A17], A17, _], s18: Shape[_, Rep[A18], A18, _], s19: Shape[_, Rep[A19], A19, _], s20: Shape[_, Rep[A20], A20, _], s21: Shape[_, Rep[A21], A21, _]): TableQuery[BaseView21[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20, A21]] = {
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11]), (String, Rep[A12]), (String, Rep[A13]), (String, Rep[A14]), (String, Rep[A15]), (String, Rep[A16]), (String, Rep[A17]), (String, Rep[A18]), (String, Rep[A19]), (String, Rep[A20]), (String, Rep[A21])))(implicit s1: Shape[_ <: ShapeLevel, Rep[A1], A1, _], s2: Shape[_ <: ShapeLevel, Rep[A2], A2, _], s3: Shape[_ <: ShapeLevel, Rep[A3], A3, _], s4: Shape[_ <: ShapeLevel, Rep[A4], A4, _], s5: Shape[_ <: ShapeLevel, Rep[A5], A5, _], s6: Shape[_ <: ShapeLevel, Rep[A6], A6, _], s7: Shape[_ <: ShapeLevel, Rep[A7], A7, _], s8: Shape[_ <: ShapeLevel, Rep[A8], A8, _], s9: Shape[_ <: ShapeLevel, Rep[A9], A9, _], s10: Shape[_ <: ShapeLevel, Rep[A10], A10, _], s11: Shape[_ <: ShapeLevel, Rep[A11], A11, _], s12: Shape[_ <: ShapeLevel, Rep[A12], A12, _], s13: Shape[_ <: ShapeLevel, Rep[A13], A13, _], s14: Shape[_ <: ShapeLevel, Rep[A14], A14, _], s15: Shape[_ <: ShapeLevel, Rep[A15], A15, _], s16: Shape[_ <: ShapeLevel, Rep[A16], A16, _], s17: Shape[_ <: ShapeLevel, Rep[A17], A17, _], s18: Shape[_ <: ShapeLevel, Rep[A18], A18, _], s19: Shape[_ <: ShapeLevel, Rep[A19], A19, _], s20: Shape[_ <: ShapeLevel, Rep[A20], A20, _], s21: Shape[_ <: ShapeLevel, Rep[A21], A21, _]): TableQuery[BaseView21[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20, A21]] = {
 
     var columnsNames = Seq[String]()
 
@@ -1276,7 +1281,7 @@ private[beholder] trait FilterableViewsGenerateCode {
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20, A21) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20, A21)],
-      val query: Query[_, T, Seq])(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _], s11: Shape[_, Rep[A11], A11, _], s12: Shape[_, Rep[A12], A12, _], s13: Shape[_, Rep[A13], A13, _], s14: Shape[_, Rep[A14], A14, _], s15: Shape[_, Rep[A15], A15, _], s16: Shape[_, Rep[A16], A16, _], s17: Shape[_, Rep[A17], A17, _], s18: Shape[_, Rep[A18], A18, _], s19: Shape[_, Rep[A19], A19, _], s20: Shape[_, Rep[A20], A20, _], s21: Shape[_, Rep[A21], A21, _]) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq])(implicit s1: Shape[_ <: ShapeLevel, Rep[A1], A1, _], s2: Shape[_ <: ShapeLevel, Rep[A2], A2, _], s3: Shape[_ <: ShapeLevel, Rep[A3], A3, _], s4: Shape[_ <: ShapeLevel, Rep[A4], A4, _], s5: Shape[_ <: ShapeLevel, Rep[A5], A5, _], s6: Shape[_ <: ShapeLevel, Rep[A6], A6, _], s7: Shape[_ <: ShapeLevel, Rep[A7], A7, _], s8: Shape[_ <: ShapeLevel, Rep[A8], A8, _], s9: Shape[_ <: ShapeLevel, Rep[A9], A9, _], s10: Shape[_ <: ShapeLevel, Rep[A10], A10, _], s11: Shape[_ <: ShapeLevel, Rep[A11], A11, _], s12: Shape[_ <: ShapeLevel, Rep[A12], A12, _], s13: Shape[_ <: ShapeLevel, Rep[A13], A13, _], s14: Shape[_ <: ShapeLevel, Rep[A14], A14, _], s15: Shape[_ <: ShapeLevel, Rep[A15], A15, _], s16: Shape[_ <: ShapeLevel, Rep[A16], A16, _], s17: Shape[_ <: ShapeLevel, Rep[A17], A17, _], s18: Shape[_ <: ShapeLevel, Rep[A18], A18, _], s19: Shape[_ <: ShapeLevel, Rep[A19], A19, _], s20: Shape[_ <: ShapeLevel, Rep[A20], A20, _], s21: Shape[_ <: ShapeLevel, Rep[A21], A21, _]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))
@@ -1334,7 +1339,7 @@ private[beholder] trait FilterableViewsGenerateCode {
     apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20, A21, A22) => T,
     unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20, A21, A22)],
     baseQuery: Query[E, _, Seq])(
-      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11]), (String, Rep[A12]), (String, Rep[A13]), (String, Rep[A14]), (String, Rep[A15]), (String, Rep[A16]), (String, Rep[A17]), (String, Rep[A18]), (String, Rep[A19]), (String, Rep[A20]), (String, Rep[A21]), (String, Rep[A22])))(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _], s11: Shape[_, Rep[A11], A11, _], s12: Shape[_, Rep[A12], A12, _], s13: Shape[_, Rep[A13], A13, _], s14: Shape[_, Rep[A14], A14, _], s15: Shape[_, Rep[A15], A15, _], s16: Shape[_, Rep[A16], A16, _], s17: Shape[_, Rep[A17], A17, _], s18: Shape[_, Rep[A18], A18, _], s19: Shape[_, Rep[A19], A19, _], s20: Shape[_, Rep[A20], A20, _], s21: Shape[_, Rep[A21], A21, _], s22: Shape[_, Rep[A22], A22, _]): TableQuery[BaseView22[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20, A21, A22]] = {
+      mappings: E => ((String, Rep[A1]), (String, Rep[A2]), (String, Rep[A3]), (String, Rep[A4]), (String, Rep[A5]), (String, Rep[A6]), (String, Rep[A7]), (String, Rep[A8]), (String, Rep[A9]), (String, Rep[A10]), (String, Rep[A11]), (String, Rep[A12]), (String, Rep[A13]), (String, Rep[A14]), (String, Rep[A15]), (String, Rep[A16]), (String, Rep[A17]), (String, Rep[A18]), (String, Rep[A19]), (String, Rep[A20]), (String, Rep[A21]), (String, Rep[A22])))(implicit s1: Shape[_ <: ShapeLevel, Rep[A1], A1, _], s2: Shape[_ <: ShapeLevel, Rep[A2], A2, _], s3: Shape[_ <: ShapeLevel, Rep[A3], A3, _], s4: Shape[_ <: ShapeLevel, Rep[A4], A4, _], s5: Shape[_ <: ShapeLevel, Rep[A5], A5, _], s6: Shape[_ <: ShapeLevel, Rep[A6], A6, _], s7: Shape[_ <: ShapeLevel, Rep[A7], A7, _], s8: Shape[_ <: ShapeLevel, Rep[A8], A8, _], s9: Shape[_ <: ShapeLevel, Rep[A9], A9, _], s10: Shape[_ <: ShapeLevel, Rep[A10], A10, _], s11: Shape[_ <: ShapeLevel, Rep[A11], A11, _], s12: Shape[_ <: ShapeLevel, Rep[A12], A12, _], s13: Shape[_ <: ShapeLevel, Rep[A13], A13, _], s14: Shape[_ <: ShapeLevel, Rep[A14], A14, _], s15: Shape[_ <: ShapeLevel, Rep[A15], A15, _], s16: Shape[_ <: ShapeLevel, Rep[A16], A16, _], s17: Shape[_ <: ShapeLevel, Rep[A17], A17, _], s18: Shape[_ <: ShapeLevel, Rep[A18], A18, _], s19: Shape[_ <: ShapeLevel, Rep[A19], A19, _], s20: Shape[_ <: ShapeLevel, Rep[A20], A20, _], s21: Shape[_ <: ShapeLevel, Rep[A21], A21, _], s22: Shape[_ <: ShapeLevel, Rep[A22], A22, _]): TableQuery[BaseView22[T, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20, A21, A22]] = {
 
     var columnsNames = Seq[String]()
 
@@ -1361,7 +1366,7 @@ private[beholder] trait FilterableViewsGenerateCode {
       val columnNames: Seq[String],
       apply: (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20, A21, A22) => T,
       unapply: T => Option[(A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20, A21, A22)],
-      val query: Query[_, T, Seq])(implicit s1: Shape[_, Rep[A1], A1, _], s2: Shape[_, Rep[A2], A2, _], s3: Shape[_, Rep[A3], A3, _], s4: Shape[_, Rep[A4], A4, _], s5: Shape[_, Rep[A5], A5, _], s6: Shape[_, Rep[A6], A6, _], s7: Shape[_, Rep[A7], A7, _], s8: Shape[_, Rep[A8], A8, _], s9: Shape[_, Rep[A9], A9, _], s10: Shape[_, Rep[A10], A10, _], s11: Shape[_, Rep[A11], A11, _], s12: Shape[_, Rep[A12], A12, _], s13: Shape[_, Rep[A13], A13, _], s14: Shape[_, Rep[A14], A14, _], s15: Shape[_, Rep[A15], A15, _], s16: Shape[_, Rep[A16], A16, _], s17: Shape[_, Rep[A17], A17, _], s18: Shape[_, Rep[A18], A18, _], s19: Shape[_, Rep[A19], A19, _], s20: Shape[_, Rep[A20], A20, _], s21: Shape[_, Rep[A21], A21, _], s22: Shape[_, Rep[A22], A22, _]) extends BaseView[A1, T](tag, name) {
+      val query: Query[_, T, Seq])(implicit s1: Shape[_ <: ShapeLevel, Rep[A1], A1, _], s2: Shape[_ <: ShapeLevel, Rep[A2], A2, _], s3: Shape[_ <: ShapeLevel, Rep[A3], A3, _], s4: Shape[_ <: ShapeLevel, Rep[A4], A4, _], s5: Shape[_ <: ShapeLevel, Rep[A5], A5, _], s6: Shape[_ <: ShapeLevel, Rep[A6], A6, _], s7: Shape[_ <: ShapeLevel, Rep[A7], A7, _], s8: Shape[_ <: ShapeLevel, Rep[A8], A8, _], s9: Shape[_ <: ShapeLevel, Rep[A9], A9, _], s10: Shape[_ <: ShapeLevel, Rep[A10], A10, _], s11: Shape[_ <: ShapeLevel, Rep[A11], A11, _], s12: Shape[_ <: ShapeLevel, Rep[A12], A12, _], s13: Shape[_ <: ShapeLevel, Rep[A13], A13, _], s14: Shape[_ <: ShapeLevel, Rep[A14], A14, _], s15: Shape[_ <: ShapeLevel, Rep[A15], A15, _], s16: Shape[_ <: ShapeLevel, Rep[A16], A16, _], s17: Shape[_ <: ShapeLevel, Rep[A17], A17, _], s18: Shape[_ <: ShapeLevel, Rep[A18], A18, _], s19: Shape[_ <: ShapeLevel, Rep[A19], A19, _], s20: Shape[_ <: ShapeLevel, Rep[A20], A20, _], s21: Shape[_ <: ShapeLevel, Rep[A21], A21, _], s22: Shape[_ <: ShapeLevel, Rep[A22], A22, _]) extends BaseView[A1, T](tag, name) {
     def c1 = column[A1](columnNames(0))
     def c2 = column[A2](columnNames(1))
     def c3 = column[A3](columnNames(2))

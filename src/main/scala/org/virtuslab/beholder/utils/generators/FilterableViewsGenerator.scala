@@ -23,7 +23,7 @@ private[beholder] object FilterableViewsGenerator extends App {
     val mapping = fill("c" + _)
 
     val sNames = fill("s" + _)
-    val shapes = fill(nr => s"s$nr: Shape[_, Rep[A$nr], A$nr, _]")
+    val shapes = fill(nr => s"s$nr: Shape[_<: ShapeLevel, Rep[A$nr], A$nr, _]")
     val reps = fill(nr => s"Rep[A$nr]")
 
     val columnsMap = fill(nr => s" columnNames(${nr - 1}) -> (_.c$nr)", ",\n")
