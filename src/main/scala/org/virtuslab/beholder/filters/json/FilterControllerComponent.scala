@@ -26,21 +26,19 @@ trait FilterControllerComponent extends BaseFilterComponent with JsonFormatterCo
     final def filterDefinition = inFilterContext { request => context => DBIO.successful(JsSuccess(formatter.jsonDefinition)) }
 
     final def doFilter: EssentialAction =
-      inFilterContext {
-        request =>
-          context =>
-            request.body.asJson.map(formatter.filterDefinition).map {
-              case JsSuccess(filterDefinition, path) =>
-                val filterResultAction = callFilter(context, mapFilterData(filterDefinition, context))
-                filterResultAction.map {
-                  filterResult =>
-                    val formatResults = formatter.results(filterDefinition, modifyFilterResults(filterResult, filterDefinition, context))
-                    JsSuccess(formatResults, path)
-                }
+      inFilterContext { request => context =>
+        request.body.asJson.map(formatter.filterDefinition).map {
+          case JsSuccess(filterDefinition, path) =>
+            val filterResultAction = callFilter(context, mapFilterData(filterDefinition, context))
+            filterResultAction.map {
+              filterResult =>
+                val formatResults = formatter.results(filterDefinition, modifyFilterResults(filterResult, filterDefinition, context))
+                JsSuccess(formatResults, path)
+            }
 
-              case other =>
-                DBIO.successful(JsError("json expected"))
-            }.getOrElse(DBIO.successful(JsError("json expected")))
+          case other =>
+            DBIO.successful(JsError("json expected"))
+        }.getOrElse(DBIO.successful(JsError("json expected")))
       }
 
     //for filter modification such us setting default parameters etc.
@@ -51,7 +49,7 @@ trait FilterControllerComponent extends BaseFilterComponent with JsonFormatterCo
   }
 
   abstract class FilterController[Entity <: Product](filter: FilterAPI[Entity, JsonFormatter[Entity]])
-      extends FilterControllerBase[NoContext, Entity] {
+    extends FilterControllerBase[NoContext, Entity] {
 
     override protected def inFilterContext(body: (Request[AnyContent]) => NoContext => DBIO[JsResult[JsValue]]): EssentialAction
 
@@ -62,7 +60,7 @@ trait FilterControllerComponent extends BaseFilterComponent with JsonFormatterCo
   }
 
   abstract class ContextFilterController[Context, Entity <: Product](contextedFilter: ContextedFilterAPI[Context, Entity, JsonFormatter[Entity]])
-      extends FilterControllerBase[Context, Entity] {
+    extends FilterControllerBase[Context, Entity] {
     override private[beholder] final def formatter: JsonFormatter[Entity] = contextedFilter.filterFormatter
 
     override private[beholder] final def callFilter(context: Context, filterDefinition: FilterDefinition): DBIO[FilterResult[Entity]] = {

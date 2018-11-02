@@ -12,11 +12,11 @@ import org.virtuslab.unicorn.{ UnicornPlay, UnicornWrapper }
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class FormFiltersTestRepository(override val unicorn: UnicornPlay[Long])
-    extends UserMachinesViewComponent
-    with FormFormatterComponent
-    with FormFilterComponent
-    with FromFilterFieldsComponent
-    with UnicornWrapper[Long] {
+  extends UserMachinesViewComponent
+  with FormFormatterComponent
+  with FormFilterComponent
+  with FromFilterFieldsComponent
+  with UnicornWrapper[Long] {
 
   import unicorn._
   import unicorn.profile.api._
@@ -35,8 +35,7 @@ class FormFiltersTestRepository(override val unicorn: UnicornPlay[Long])
       inIntField,
       inRange[Date],
       FromFilterFields.ignore[Option[BigDecimal]],
-      FromFilterFields.ignore[MachineStatus.Value]
-    )
+      FromFilterFields.ignore[MachineStatus.Value])
   }.filterGenerator
 
 }
@@ -66,8 +65,7 @@ class FormFiltersTest extends BaseTest {
 
     formatter.filterForm.bind(formData.data).fold(
       errors => fail(s"Form errors ${errors.errors.mkString}"),
-      fromForm => data.filter.filter(fromForm)
-    )
+      fromForm => data.filter.filter(fromForm))
   }
 
   it should "query all entities for empty filter" in rollbackActionWithModel {

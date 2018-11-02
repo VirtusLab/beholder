@@ -12,11 +12,11 @@ import play.api.libs.json.{ JsObject, JsSuccess }
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class JsonRangeTestRepository(override val unicorn: UnicornPlay[Long])
-    extends UserMachinesViewComponent
-    with JsonFormatterComponent
-    with JsonFiltersComponent
-    with JsonFilterFieldsComponent
-    with UnicornWrapper[Long] {
+  extends UserMachinesViewComponent
+  with JsonFormatterComponent
+  with JsonFiltersComponent
+  with JsonFilterFieldsComponent
+  with UnicornWrapper[Long] {
 
   import unicorn.profile.api._
 
@@ -37,8 +37,7 @@ class JsonRangeTestRepository(override val unicorn: UnicornPlay[Long])
       inRange(inIntField),
       inRange(inField[Date]("date")),
       inOptionRange(inField[BigDecimal]("number")),
-      inEnum(MachineStatus)
-    )
+      inEnum(MachineStatus))
 
 }
 class JsonFiltersRangeTest extends BaseTest {

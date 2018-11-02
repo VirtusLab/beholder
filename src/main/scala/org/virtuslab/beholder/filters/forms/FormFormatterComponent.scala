@@ -56,8 +56,7 @@ trait FormFormatterComponent extends FromFilterFieldsComponent {
       "take" -> optional(number),
       "skip" -> optional(number),
       "ordering" -> optional(of(orderingFormatter)),
-      "data" -> of(dataFormatter)
-    )(FilterDefinition.apply)(FilterDefinition.unapply)
+      "data" -> of(dataFormatter))(FilterDefinition.apply)(FilterDefinition.unapply)
 
     /**
      * from mapping for this filter

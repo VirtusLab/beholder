@@ -17,8 +17,8 @@ case class UserMachineViewRow(
   status: MachineStatus.Value)
 
 trait UserMachinesViewComponent
-    extends FilterableViewsComponent
-    with UserMachinesComponent {
+  extends FilterableViewsComponent
+  with UserMachinesComponent {
   self: UnicornWrapper[Long] =>
 
   import unicorn.profile.api._
@@ -34,8 +34,7 @@ trait UserMachinesViewComponent
     "USER_MACHINE_VIEW",
     UserMachineViewRow.apply _,
     UserMachineViewRow.unapply _,
-    usersMachinesQuery
-  ) {
+    usersMachinesQuery) {
       case (user, machine) =>
         //naming the fields
         ("email" -> user.email,

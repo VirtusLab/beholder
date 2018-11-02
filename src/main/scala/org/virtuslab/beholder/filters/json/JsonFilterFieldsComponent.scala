@@ -8,6 +8,8 @@ import org.virtuslab.unicorn.UnicornWrapper
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import slick.ast.{ BaseTypedType, TypedType }
+import play.api.libs.json.JodaReads._
+import play.api.libs.json.JodaWrites._
 
 trait JsonFilterFieldsComponent extends FilterFieldComponent with SeqParametersHelperComponent {
   self: UnicornWrapper[Long] =>
@@ -33,7 +35,7 @@ trait JsonFilterFieldsComponent extends FilterFieldComponent with SeqParametersH
   }
 
   abstract class ImplicitlyJsonFilterFiled[A: TypedType: Writes, B: Format](dataTypeName: String)
-      extends JsonFilterField[A, B] {
+    extends JsonFilterField[A, B] {
     override def fieldTypeDefinition: JsValue = JsString(dataTypeName)
 
     override protected[json] def valueWrite: Writes[A] = implicitly
@@ -116,8 +118,7 @@ trait JsonFilterFieldsComponent extends FilterFieldComponent with SeqParametersH
     def inEnum[T <: Enumeration](enum: T)(implicit tm: BaseTypedType[T#Value], formatter: Format[T#Value]): JsonFilterField[T#Value, T#Value] = {
       new JsonFilterField[T#Value, T#Value] {
         override def fieldTypeDefinition: JsValue = JsArray(
-          enum.values.toList.map(v => Json.toJson(v.asInstanceOf[T#Value]))
-        )
+          enum.values.toList.map(v => Json.toJson(v.asInstanceOf[T#Value])))
 
         override protected[json] def valueWrite: Writes[T#Value] = formatter
 
@@ -134,8 +135,7 @@ trait JsonFilterFieldsComponent extends FilterFieldComponent with SeqParametersH
     def inEnumSeq[T <: Enumeration](enum: T)(implicit tm: BaseTypedType[T#Value], formatter: Format[T#Value]): JsonFilterField[T#Value, Seq[T#Value]] = {
       new JsonFilterField[T#Value, Seq[T#Value]] {
         override def fieldTypeDefinition: JsValue = JsArray(
-          enum.values.toList.map(v => Json.toJson(v.asInstanceOf[T#Value]))
-        )
+          enum.values.toList.map(v => Json.toJson(v.asInstanceOf[T#Value])))
 
         override protected[json] def valueWrite: Writes[T#Value] = formatter
 
@@ -180,8 +180,7 @@ trait JsonFilterFieldsComponent extends FilterFieldComponent with SeqParametersH
 
         override def fieldTypeDefinition: JsValue = JsObject(Seq(
           "type" -> JsString("range"),
-          "dataType" -> baseType.fieldTypeDefinition
-        ))
+          "dataType" -> baseType.fieldTypeDefinition))
 
         override protected[json] def valueWrite: Writes[T] = baseType.valueWrite
 
@@ -201,8 +200,7 @@ trait JsonFilterFieldsComponent extends FilterFieldComponent with SeqParametersH
 
         override def fieldTypeDefinition: JsValue = JsObject(Seq(
           "type" -> JsString("range"),
-          "dataType" -> baseType.fieldTypeDefinition
-        ))
+          "dataType" -> baseType.fieldTypeDefinition))
 
         override protected[json] def valueWrite: Writes[Option[T]] = new Writes[Option[T]] {
           override def writes(o: Option[T]): JsValue = o.map(baseType.valueWrite.writes).getOrElse(JsNull)

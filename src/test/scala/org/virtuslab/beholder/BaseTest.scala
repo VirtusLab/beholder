@@ -4,32 +4,31 @@ import java.sql.Date
 
 import org.joda.time.DateTime
 import org.scalatest._
-
+import org.scalatestplus.play.guice.GuiceFakeApplicationFactory
 import org.virtuslab.beholder.model.{ Machine, MachineStatus, User }
 import org.virtuslab.beholder.repositories.{ MachineRepository, UserMachinesRepository, UserMachinesViewRepository, UsersRepository }
 import org.virtuslab.unicorn._
-import play.api.Play
 import play.api.db.slick.DatabaseConfigProvider
-import play.api.test.FakeApplication
+import play.api.inject.guice.GuiceApplicationBuilder
+import play.api.{ Configuration, Play }
 import slick.jdbc.JdbcProfile
 
 import scala.concurrent.Await
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 import scala.util.{ Failure, Try }
-import scala.concurrent.ExecutionContext.Implicits.global
 
-trait BaseTest extends FlatSpecLike with Matchers with BeforeAndAfterAll with BeforeAndAfterEach {
+trait BaseTest extends FlatSpecLike with Matchers with BeforeAndAfterAll with BeforeAndAfterEach with GuiceFakeApplicationFactory {
 
-  private val testDb = Map(
+  private val testDb = Configuration(
     "slick.dbs.default.driver" -> "slick.driver.H2Driver$",
     "slick.dbs.default.db.driver" -> "org.h2.Driver",
     "slick.dbs.default.db.url" -> "jdbc:h2:mem:beholder",
     "slick.dbs.default.db.user" -> "sa",
-    "slick.dbs.default.db.password" -> ""
-  )
+    "slick.dbs.default.db.password" -> "")
 
   val app = {
-    val fake = new FakeApplication(additionalConfiguration = testDb)
+    val fake = new GuiceApplicationBuilder(configuration = testDb).build()
     Play.start(fake)
     fake
   }
@@ -88,29 +87,25 @@ trait BaseTest extends FlatSpecLike with Matchers with BeforeAndAfterAll with Be
     val usersAction = DBIO.sequence(
       Seq(
         User(None, "a@a.pl", "Ala", "maKota"),
-        User(None, "o@a.pl", "Ola", "maPsa")
-      ).map { user =>
+        User(None, "o@a.pl", "Ola", "maPsa")).map { user =>
 
           val userIdAction = usersRepository.save(user)
           userIdAction.map {
             userId =>
               user.copy(id = Some(userId))
           }
-        }
-    )
+        })
     val machinesAction = DBIO.sequence(
       Seq(
         Machine(None, "a.a.pl", "Ubuntu", 4, new Date(DateTime.now().minusHours(24).getMillis), Some(1), MachineStatus.Inactive),
-        Machine(None, "o.a.pl", "Fedora", 1, new Date(DateTime.now().getMillis), Some(3), MachineStatus.Active)
-      ).map {
+        Machine(None, "o.a.pl", "Fedora", 1, new Date(DateTime.now().getMillis), Some(3), MachineStatus.Active)).map {
           machine =>
             val machineIdAction = machineRepository.save(machine)
             machineIdAction.map {
               machineId =>
                 machine.copy(id = Some(machineId))
             }
-        }
-    )
+        })
     usersAction.zip(machinesAction).flatMap {
       case (users, machines) =>
         val Seq(user1, user2) = users
@@ -118,8 +113,7 @@ trait BaseTest extends FlatSpecLike with Matchers with BeforeAndAfterAll with Be
         userMachinesTableQuery.tableQuery ++= Seq(
           (user1.id.get, machine1.id.get),
           (user2.id.get, machine1.id.get),
-          (user2.id.get, machine2.id.get)
-        )
+          (user2.id.get, machine2.id.get))
     }
   }
 

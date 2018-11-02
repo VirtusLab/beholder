@@ -11,10 +11,10 @@ import org.virtuslab.unicorn.{ UnicornPlay, UnicornWrapper }
 import scala.concurrent.ExecutionContext
 
 class UserMachinesViewRepository(val unicorn: UnicornPlay[Long]) extends UserMachinesViewComponent
-    with JsonFormatterComponent
-    with JsonFiltersComponent
-    with FromFilterFieldsComponent
-    with UnicornWrapper[Long] {
+  with JsonFormatterComponent
+  with JsonFiltersComponent
+  with FromFilterFieldsComponent
+  with UnicornWrapper[Long] {
 
   import unicorn.profile.api._
 
@@ -40,8 +40,7 @@ class UserMachinesViewRepository(val unicorn: UnicornPlay[Long]) extends UserMac
           inIntFieldSeq,
           inRange(inField[Date]("date")),
           JsonFilterFields.ignore[Option[BigDecimal]],
-          JsonFilterFields.ignore[MachineStatus.Value]
-        )
+          JsonFilterFields.ignore[MachineStatus.Value])
     }
   }
 }

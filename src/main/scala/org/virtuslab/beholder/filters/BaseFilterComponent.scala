@@ -45,7 +45,7 @@ trait BaseFilterComponent extends BaseViewComponent with FilterFieldComponent {
    */
 
   abstract class BaseFilter[Id, Entity, FilterTable <: BaseView[Id, Entity], FieldType <: FilterField, Formatter](val table: TableQuery[FilterTable])
-      extends TableFilterAPI[Entity, Formatter, FilterTable] {
+    extends TableFilterAPI[Entity, Formatter, FilterTable] {
 
     def columnsNames: Seq[String] = table.shaped.value.columnsNames
 
@@ -110,7 +110,8 @@ trait BaseFilterComponent extends BaseViewComponent with FilterFieldComponent {
     override protected def doFilterWithTotalEntitiesNumber(
       data: FilterDefinition,
       initialFilter: FilterTable => Rep[Boolean])(
-        implicit executionContext: ExecutionContext): DBIO[FilterResult[Entity]] = {
+      implicit
+      executionContext: ExecutionContext): DBIO[FilterResult[Entity]] = {
 
       val filter = createFilter(data, initialFilter)
       val lengthAction = filter.length.result
@@ -139,7 +140,8 @@ trait BaseFilterComponent extends BaseViewComponent with FilterFieldComponent {
         override protected def doFilterWithTotalEntitiesNumber(
           data: FilterDefinition,
           initialFilter: (QueryBase) => Rep[Boolean])(
-            implicit executionContext: ExecutionContext): DBIO[FilterResult[Entity]] =
+          implicit
+          executionContext: ExecutionContext): DBIO[FilterResult[Entity]] =
 
           org.doFilterWithTotalEntitiesNumber(data, newInitialFilter)
 
@@ -172,13 +174,15 @@ trait BaseFilterComponent extends BaseViewComponent with FilterFieldComponent {
     protected def doFilterWithTotalEntitiesNumber(
       data: FilterDefinition,
       initialFilter: QueryBase => Rep[Boolean])(
-        implicit executionContext: ExecutionContext): DBIO[FilterResult[Entity]]
+      implicit
+      executionContext: ExecutionContext): DBIO[FilterResult[Entity]]
 
     override final def filter(data: FilterDefinition): DBIO[Seq[Entity]] =
       doFilter(data, _ => LiteralColumn(true))
 
     override final def filterWithTotalEntitiesNumber(data: FilterDefinition)(
-      implicit executionContext: ExecutionContext): DBIO[FilterResult[Entity]] =
+      implicit
+      executionContext: ExecutionContext): DBIO[FilterResult[Entity]] =
       doFilterWithTotalEntitiesNumber(data, _ => LiteralColumn(true))
   }
 
@@ -187,7 +191,8 @@ trait BaseFilterComponent extends BaseViewComponent with FilterFieldComponent {
     def filter(data: FilterDefinition): DBIO[Seq[Entity]]
 
     def filterWithTotalEntitiesNumber(data: FilterDefinition)(
-      implicit executionContext: ExecutionContext): DBIO[FilterResult[Entity]]
+      implicit
+      executionContext: ExecutionContext): DBIO[FilterResult[Entity]]
 
     def emptyFilterData: FilterDefinition
 
@@ -213,8 +218,7 @@ trait BaseFilterComponent extends BaseViewComponent with FilterFieldComponent {
 
     implicit def format[T](implicit f: Format[T]): Format[FilterResult[T]] = (
       (__ \ "data").format[Seq[T]] and
-      (__ \ "total").format[Int]
-    )(FilterResult.apply, unlift(FilterResult.unapply))
+      (__ \ "total").format[Int])(FilterResult.apply, unlift(FilterResult.unapply))
   }
 
 }
