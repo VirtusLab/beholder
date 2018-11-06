@@ -1,10 +1,16 @@
+
 organization := "org.virtuslab"
 
 name := "beholder"
 
 version := "1.4.0-SNAPSHOT"
 
-scalaVersion := "2.11.8"
+val scala_2_11 = "2.11.12"
+val scala_2_12 = "2.12.7"
+
+scalaVersion := scala_2_11
+
+crossScalaVersions := List(scala_2_11, scala_2_12)
 
 resolvers += Resolver.typesafeRepo("releases")
 
@@ -13,9 +19,10 @@ resolvers += Resolver.sonatypeRepo("releases")
 resolvers += Resolver.sonatypeRepo("snapshots")
 
 libraryDependencies ++= Seq(
-  "org.virtuslab" %% "unicorn" % "1.2.0",
-  "org.scalatest" %% "scalatest" % "2.2.5" % "test",
-  "com.typesafe.play" %% "play-test" % "2.5.19" % "test",
+  "org.virtuslab" %% "unicorn" % "1.3.0",
+  "org.scalatestplus.play" %% "scalatestplus-play" % "3.0.0" % Test,
+  "com.typesafe.play" %% "play-test" % "2.6.20" % "test",
+  "com.typesafe.play" %% "play-json-joda" % "2.6.10",
   "com.h2database" % "h2" % "1.4.187" % "test"
 )
 
@@ -67,11 +74,11 @@ pomExtra := <url>https://github.com/VirtusLab/beholder</url>
 
 // Scoverage setup
 
-ScoverageSbtPlugin.ScoverageKeys.coverageMinimum := 48
+scoverage.ScoverageKeys.coverageMinimum := 48
 
-ScoverageSbtPlugin.ScoverageKeys.coverageFailOnMinimum := true
+scoverage.ScoverageKeys.coverageFailOnMinimum := true
 
-ScoverageSbtPlugin.ScoverageKeys.coverageExcludedPackages := Seq(
+scoverage.ScoverageKeys.coverageExcludedPackages := Seq(
   "org.virtuslab.beholder.utils.generators.*",
   // only BaseView5 is tested, all are generated, so there is no need to check them all
   "org.virtuslab.beholder.views.FilterableViews.*",

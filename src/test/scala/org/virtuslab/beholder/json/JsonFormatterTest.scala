@@ -7,7 +7,7 @@ import play.api.libs.json._
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class JsonFormatterTest
-    extends BaseTest {
+  extends BaseTest {
 
   import unicorn.profile.api._
 

@@ -4,10 +4,10 @@ import org.virtuslab.beholder.filters.{ BaseFilterComponent, FilterFactoryMethod
 import org.virtuslab.unicorn.UnicornWrapper
 
 trait FormFilterComponent
-    extends FromFilterFieldsComponent
-    with BaseFilterComponent
-    with FilterFactoryMethodsComponent
-    with FormFormatterComponent {
+  extends FromFilterFieldsComponent
+  with BaseFilterComponent
+  with FilterFactoryMethodsComponent
+  with FormFormatterComponent {
   self: UnicornWrapper[Long] =>
 
   class FormFilters[Entity] extends FilterFactoryMethods[Entity, FormFilterField, FormFormatter] {

@@ -42,8 +42,7 @@ trait EnumColumnMapper {
   def enumTypeMapper(e: Enumeration): BaseColumnType[e.Value] =
     MappedColumnType.base[e.Value, Int](
       int => int.id,
-      id => e.apply(id)
-    )
+      id => e.apply(id))
 
 }
 

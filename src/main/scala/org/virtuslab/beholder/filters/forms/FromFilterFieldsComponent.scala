@@ -43,8 +43,7 @@ trait FromFilterFieldsComponent extends FilterFieldComponent with SeqParametersH
 
     private def rangeMapping[T: Formatter] = mapping(
       "from" -> optional(of[T]),
-      "to" -> optional(of[T])
-    )(FilterRange.apply)(FilterRange.unapply)
+      "to" -> optional(of[T]))(FilterRange.apply)(FilterRange.unapply)
 
     //API
 
