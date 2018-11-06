@@ -70,7 +70,9 @@ pomExtra := <url>https://github.com/VirtusLab/beholder</url>
     </developer>
   </developers>
 
-//xerial.sbt.Sonatype.sonatypeSettings
+xerial.sbt.Sonatype.sonatypeSettings
+
+publishTo := sonatypePublishTo.value
 
 // Scoverage setup
 
