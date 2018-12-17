@@ -25,7 +25,8 @@ trait BaseTest extends FlatSpecLike with Matchers with BeforeAndAfterAll with Be
     "slick.dbs.default.db.driver" -> "org.h2.Driver",
     "slick.dbs.default.db.url" -> "jdbc:h2:mem:beholder",
     "slick.dbs.default.db.user" -> "sa",
-    "slick.dbs.default.db.password" -> "")
+    "slick.dbs.default.db.password" -> "",
+    "slick.dbs.default.db.connectionTimeout" -> "10000")
 
   val app = {
     val fake = new GuiceApplicationBuilder(configuration = testDb).build()
