@@ -36,9 +36,16 @@ trait FilterControllerComponent extends BaseFilterComponent with JsonFormatterCo
                 JsSuccess(formatResults, path)
             }
 
-          case other =>
-            DBIO.successful(JsError("json expected"))
-        }.getOrElse(DBIO.successful(JsError("json expected")))
+          case _ => jsonExpected
+        }.getOrElse(jsonExpected)
+      }
+
+    final def doFilterWithAction(action: FilterResult[Entity] => JsPath => DBIO[JsResult[JsValue]]): EssentialAction =
+      inFilterContext { request => context =>
+        request.body.asJson.map(formatter.filterDefinition).map {
+          case JsSuccess(filterDefinition, path) => callFilter(context, mapFilterData(filterDefinition, context)).flatMap(action(_)(path))
+          case _ => jsonExpected
+        }.getOrElse(jsonExpected)
       }
 
     //for filter modification such us setting default parameters etc.
@@ -46,6 +53,8 @@ trait FilterControllerComponent extends BaseFilterComponent with JsonFormatterCo
 
     //for result modification such as sorting or fetching additional data
     protected def modifyFilterResults(results: FilterResult[Entity], filterDefinition: FilterDefinition, context: Context) = results
+
+    private val jsonExpected = DBIO.successful(JsError("json expected"))
   }
 
   abstract class FilterController[Entity <: Product](filter: FilterAPI[Entity, JsonFormatter[Entity]])
