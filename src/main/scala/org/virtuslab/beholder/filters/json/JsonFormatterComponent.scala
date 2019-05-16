@@ -7,45 +7,31 @@ import play.api.libs.json._
 trait JsonFormatterComponent extends JsonFilterFieldsComponent with BaseFilterComponent {
   self: UnicornWrapper[Long] =>
 
-  class JsonFormatter[Entity <: Product](filterFields: Seq[JsonFilterField[_, _]], columnsNames: Seq[String], label: String => String) {
+  class JsonFormatter[Entity <: Product](filterFields: Seq[JsonFilterField[_, _]], dataColumnsNames: Seq[String], label: String => String) {
 
-    private def jsonFieldDefinition(name: String, field: JsonFilterField[_, _]): JsObject = JsObject(Seq(
-      "key" -> JsString(name),
-      "label" -> JsString(label(name)),
-      "type" -> field.fieldTypeDefinition))
+    private val fieldFormatters = filterFields.zip(dataColumnsNames).map {
+      case (single: SingleFieldJsonFilterField[_, _], name) => single.fieldFormatter(name)
+      case (varLength: VarLengthJsonFilterField[_, _], _) => varLength.fieldFormatter
+    }
 
-    def jsonDefinition: JsValue =
-      JsArray(columnsNames.zip(filterFields)
-        .filterNot(_._2.isIgnored)
-        .map(Function.tupled(jsonFieldDefinition)))
-
-    import play.api.libs.functional.syntax._
-    import play.api.libs.json._
-
-    private implicit val orderingFormatter: Format[Order] = (
-      (__ \ "column").format[String] and
-      (__ \ "asc").format[Boolean])(Order.apply, unlift(Order.unapply))
+    def jsonDefinition: JsValue = JsArray {
+      fieldFormatters.flatMap(_.fieldTypeDefinition(label))
+    }
 
     private val filterDataFormatter: Format[Seq[Option[Any]]] = new Format[Seq[Option[Any]]] {
       override def writes(o: Seq[Option[Any]]): JsValue = {
-        val seq = columnsNames.zip(filterFields).zip(o).flatMap {
-          case ((name, filterFiled), value) =>
-            value.map(v => name -> filterFiled.writeFilter(v))
-        }
-
-        JsObject(seq)
+        (fieldFormatters, o).zipped.map {
+          case (formatter, value) => value.map(formatter.writeFilter).getOrElse(Json.obj())
+        }.foldLeft(Json.obj())(_ ++ _)
       }
 
       override def reads(json: JsValue): JsResult[Seq[Option[Any]]] = json match {
         case jsObject: JsObject =>
-          jsObject.keys -- columnsNames.toSet match {
+          jsObject.keys -- fieldFormatters.flatMap(_.filterColumnNames) match {
             case badFields if badFields.nonEmpty =>
               JsError((JsPath(Nil), JsonValidationError("No such fields in filter: " + badFields)))
             case _ =>
-              val fieldResults = columnsNames.map(jsObject.value.get).zip(filterFields).map {
-                case (Some(value), field) => field.readFilter(value).map(Option.apply)
-                case (None, _) => JsSuccess(None)
-              }
+              val fieldResults = fieldFormatters.map(_.readFilter(jsObject))
               val (successes, errors) = fieldResults.partition(_.isSuccess)
               if (errors.isEmpty) {
                 JsSuccess(successes.map(_.get))
@@ -59,17 +45,24 @@ trait JsonFormatterComponent extends JsonFilterFieldsComponent with BaseFilterCo
       }
     }
 
+    import play.api.libs.functional.syntax._
+    import play.api.libs.json._
+
+    private implicit val orderingFormatter: Format[Order] = (
+      (__ \ "column").format[String] and
+      (__ \ "asc").format[Boolean])(Order.apply, unlift(Order.unapply))
+
     implicit val filterDefinitionFormat: Format[FilterDefinition] =
       ((__ \ "take").formatNullable[Int] and
         (__ \ "skip").formatNullable[Int] and
         (__ \ "ordering").formatNullable[Order] and
         (__ \ "data").format(filterDataFormatter))(FilterDefinition.apply, unlift(FilterDefinition.unapply))
 
-    private def entity2Json(data: Entity): JsValue =
-      JsObject(
-        columnsNames.zip(filterFields).zip(data.productIterator.toIterable).map {
-          case ((name, filterFiled), value) => name -> filterFiled.writeValue(value)
-        })
+    private def entity2Json(data: Entity): JsValue = {
+      fieldFormatters.zip(data.productIterator.toIterable).map {
+        case (formatter, value) => formatter.writeValue(value)
+      }.foldLeft(Json.obj())(_ ++ _)
+    }
 
     final def filterDefinition(from: JsValue): JsResult[FilterDefinition] = filterDefinitionFormat.reads(from)
 
