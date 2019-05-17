@@ -16,7 +16,7 @@ trait JsonFilterFieldsComponent extends FilterFieldComponent with SeqParametersH
   import unicorn.profile.api._
   import CustomTypeMappers._
 
-  object SingleFieldTypeDefinition {
+  private object SingleFieldTypeDefinition {
     def get(name: String, label: String, dataType: String): JsObject = {
       Json.obj(
         "key" -> JsString(name),
