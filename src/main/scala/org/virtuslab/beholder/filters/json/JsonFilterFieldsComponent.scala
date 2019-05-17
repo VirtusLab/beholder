@@ -40,10 +40,12 @@ trait JsonFilterFieldsComponent extends FilterFieldComponent with SeqParametersH
   }
 
   abstract class SingleFieldJsonFilterFieldFromFormat[Data: TypedType: Writes, Filter: Format](dataType: String) extends SingleFieldJsonFilterField[Data, Filter] {
-    def formatterFieldTypeDefinition(name: String, label: String => String): Seq[JsValue] = Seq(SingleFieldTypeDefinition.get(name, label(name), dataType))
+    protected def formatterFieldAppendix(name: String, label: String => String): JsObject = Json.obj()
     def fieldFormatter(name: String): JsonFieldFormatter = {
       new JsonFieldFormatter {
-        override def fieldTypeDefinition(label: String => String): Seq[JsValue] = formatterFieldTypeDefinition(name, label)
+        override def fieldTypeDefinition(label: String => String): Seq[JsValue] = {
+          Seq(SingleFieldTypeDefinition.get(name, label(name), dataType) ++ formatterFieldAppendix(name, label))
+        }
         override def filterColumnNames: Seq[String] = Seq(name)
         override def writeValue(value: Any): JsObject = Json.obj(name -> Json.toJson(value.asInstanceOf[Data]))
         override def readFilter(obj: JsObject): JsResult[Option[Filter]] = {
@@ -146,7 +148,8 @@ trait JsonFilterFieldsComponent extends FilterFieldComponent with SeqParametersH
      */
     def inEnum[T <: Enumeration](enum: T)(implicit tm: BaseTypedType[T#Value], formatter: Format[T#Value]): SingleFieldJsonFilterFieldFromFormat[T#Value, T#Value] = {
       new SingleFieldJsonFilterFieldFromFormat[T#Value, T#Value]("") {
-        override def formatterFieldTypeDefinition(name: String, label: String => String): Seq[JsValue] = Seq(JsArray(enum.values.toList.map(v => Json.toJson(v.asInstanceOf[T#Value]))))
+        override def formatterFieldAppendix(name: String, label: String => String): JsObject = Json.obj(
+          "type" -> JsArray(enum.values.toList.map(v => Json.toJson(v.asInstanceOf[T#Value]))))
         override protected def filterOnColumn(column: Rep[T#Value])(value: T#Value): Rep[Option[Boolean]] = column.? === value
       }
     }
@@ -161,7 +164,8 @@ trait JsonFilterFieldsComponent extends FilterFieldComponent with SeqParametersH
         override def writes(o: Seq[T#Value]): JsValue = JsArray(o.map(Json.toJson(_)))
       }
       new SingleFieldJsonFilterFieldFromFormat[T#Value, Seq[T#Value]]("") {
-        override def formatterFieldTypeDefinition(name: String, label: String => String): Seq[JsValue] = Seq(JsArray(enum.values.toList.map(v => Json.toJson(v.asInstanceOf[T#Value]))))
+        override def formatterFieldAppendix(name: String, label: String => String): JsObject = Json.obj(
+          "type" -> JsArray(enum.values.toList.map(v => Json.toJson(v.asInstanceOf[T#Value]))))
         override protected def filterOnColumn(column: Rep[T#Value])(dataSeq: Seq[T#Value]): Rep[Option[Boolean]] = {
           SeqParametersHelper.isColumnValueInsideSeq(column)(dataSeq)((column, data) => column.? === data)
         }
@@ -194,10 +198,9 @@ trait JsonFilterFieldsComponent extends FilterFieldComponent with SeqParametersH
             case _ => LiteralColumn(Some(true))
           }
         }
-        override def formatterFieldTypeDefinition(name: String, label: String => String): Seq[JsValue] = {
-          super.formatterFieldTypeDefinition(name, label).headOption.map(_.asInstanceOf[JsObject] ++
-            Json.obj("dataType" -> (baseType.fieldFormatter(name).fieldTypeDefinition(label).headOption.getOrElse(JsNull): JsValue))).toSeq
-        }
+
+        override protected def formatterFieldAppendix(name: String, label: String => String): JsObject = Json.obj(
+          "innerType" -> (baseType.fieldFormatter(name).fieldTypeDefinition(label).headOption.getOrElse(JsNull): JsValue))
       }
     }
 
@@ -215,10 +218,8 @@ trait JsonFilterFieldsComponent extends FilterFieldComponent with SeqParametersH
           }
         }
 
-        override def formatterFieldTypeDefinition(name: String, label: String => String): Seq[JsValue] = {
-          super.formatterFieldTypeDefinition(name, label).headOption.map(_.asInstanceOf[JsObject] ++
-            Json.obj("dataType" -> (baseType.fieldFormatter(name).fieldTypeDefinition(label).headOption.getOrElse(JsNull): JsValue))).toSeq
-        }
+        override protected def formatterFieldAppendix(name: String, label: String => String): JsObject = Json.obj(
+          "innerType" -> (baseType.fieldFormatter(name).fieldTypeDefinition(label).headOption.getOrElse(JsNull): JsValue))
       }
     }
 
