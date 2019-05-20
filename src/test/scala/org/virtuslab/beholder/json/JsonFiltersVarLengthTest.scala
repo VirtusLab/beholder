@@ -52,7 +52,7 @@ class JsonFiltersVarLengthRepository(override val unicorn: UnicornPlay[Long])
     }
   }
 
-  def createFilter: FilterAPI[UserMachineViewRow, JsonFormatter[UserMachineViewRow]] =
+  def createFilter: FilterAPI[UserMachineViewRow, JsonFormatter[UserMachineViewRow]] = {
     new JsonFilters[UserMachineViewRow](identity).create(
       viewQuery,
       inText,
@@ -61,7 +61,7 @@ class JsonFiltersVarLengthRepository(override val unicorn: UnicornPlay[Long])
       inRange(inField[Date]("date")),
       inOptionRange(inField[BigDecimal]("number")),
       inEnumSeq(MachineStatus))
-
+  }
 }
 
 class JsonFiltersVarLengthTest extends BaseTest with LoneElement {
