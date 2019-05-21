@@ -3,7 +3,7 @@ organization := "org.virtuslab"
 
 name := "beholder"
 
-version := "1.4.1-SNAPSHOT"
+version := "1.4.2-SNAPSHOT"
 
 val scala_2_11 = "2.11.12"
 val scala_2_12 = "2.12.7"
