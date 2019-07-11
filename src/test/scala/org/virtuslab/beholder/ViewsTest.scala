@@ -28,4 +28,22 @@ class ViewsTest extends BaseTest {
     }
   }
 
+  "view" should "be creatable with createIfNotExists" in rollbackActionWithModel {
+    for {
+      _ <- createUsersMachineView()
+      _ <- drop()
+      _ <- createIfNotExists()
+      _ <- drop()
+    } yield ()
+  }
+
+  "view" should "be droppable with dropIfExists" in rollbackActionWithModel {
+    for {
+      _ <- createUsersMachineView()
+      _ <- dropIfExists()
+      _ <- create()
+      _ <- drop()
+    } yield ()
+  }
+
 }

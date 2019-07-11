@@ -13,7 +13,6 @@ trait FilterFactoryMethodsComponent extends FilterFieldComponent with BaseFilter
   with FilterableViewsGenerateCodeComponent {
   self: UnicornWrapper[Long] =>
 
-  import unicorn._
   import unicorn.profile.api._
 
   abstract class FilterFactoryMethods[Entity, FieldType[_, _] <: MappedFilterField[_, _], Formatter] {

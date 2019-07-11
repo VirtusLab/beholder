@@ -2,9 +2,6 @@ package org.virtuslab.beholder.views
 
 import org.virtuslab.unicorn.UnicornWrapper
 import slick.ast.TypedType
-
-import scala.concurrent.Await
-import scala.concurrent.duration._
 import scala.language.existentials
 
 trait BaseViewComponent {
@@ -54,19 +51,23 @@ trait BaseViewComponent {
     }
 
     case class ViewDDL(table: BaseView[_, _]) extends DDL {
-      protected def createPhase1: Iterable[String] = {
+      override protected def createPhase1: Iterable[String] = {
         val viewName = table.viewName
         val fields = table.columns.map { case (name, _) => '"' + name + '"' }.mkString(", ")
         val query = selectStatements(table.query)
 
-        s"CREATE VIEW $viewName ($fields) \n\t AS $query" :: Nil
+        s"CREATE VIEW $viewName ($fields) AS $query" :: Nil
       }
 
-      protected def createPhase2: Iterable[String] = Nil
+      override protected def createPhase2: Iterable[String] = Nil
 
-      protected def dropPhase1: Iterable[String] = s"DROP VIEW ${table.viewName};" :: Nil
+      override protected def createIfNotExistsPhase: Iterable[String] = createPhase1 ++ createPhase2
 
-      protected def dropPhase2: Iterable[String] = Nil
+      override protected def dropPhase1: Iterable[String] = s"DROP VIEW ${table.viewName};" :: Nil
+
+      override protected def dropPhase2: Iterable[String] = Nil
+
+      override protected def dropIfExistsPhase: Iterable[String] = dropPhase1 ++ dropPhase2
 
       /**
        * util to print select query sql

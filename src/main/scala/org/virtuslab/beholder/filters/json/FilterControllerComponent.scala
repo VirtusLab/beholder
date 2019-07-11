@@ -23,7 +23,7 @@ trait FilterControllerComponent extends BaseFilterComponent with JsonFormatterCo
 
     protected def inFilterContext(body: Request[AnyContent] => Context => DBIO[JsResult[JsValue]]): EssentialAction
 
-    final def filterDefinition = inFilterContext { request => context => DBIO.successful(JsSuccess(formatter.jsonDefinition)) }
+    final def filterDefinition = inFilterContext { _ => _ => DBIO.successful(JsSuccess(formatter.jsonDefinition)) }
 
     final def doFilter: EssentialAction =
       inFilterContext { request => context =>
@@ -60,7 +60,7 @@ trait FilterControllerComponent extends BaseFilterComponent with JsonFormatterCo
   abstract class FilterController[Entity <: Product](filter: FilterAPI[Entity, JsonFormatter[Entity]])
     extends FilterControllerBase[NoContext, Entity] {
 
-    override protected def inFilterContext(body: (Request[AnyContent]) => NoContext => DBIO[JsResult[JsValue]]): EssentialAction
+    override protected def inFilterContext(body: Request[AnyContent] => NoContext => DBIO[JsResult[JsValue]]): EssentialAction
 
     override final private[beholder] def callFilter(context: NoContext, filterDefinition: FilterDefinition): DBIO[FilterResult[Entity]] =
       filter.filterWithTotalEntitiesNumber(filterDefinition)

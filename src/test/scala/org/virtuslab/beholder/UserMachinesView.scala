@@ -57,4 +57,8 @@ trait UserMachinesViewComponent
 
   def viewQuery = userMachinesViewTableQuery
 
+  def createIfNotExists() = userMachinesViewTableQuery.viewDDL.createIfNotExists
+
+  def dropIfExists() = userMachinesViewTableQuery.viewDDL.dropIfExists
+
 }

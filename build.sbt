@@ -6,11 +6,12 @@ name := "beholder"
 version := "1.4.2-SNAPSHOT"
 
 val scala_2_11 = "2.11.12"
-val scala_2_12 = "2.12.7"
+val scala_2_12 = "2.12.8"
+val scala_2_13 = "2.13.0"
 
-scalaVersion := scala_2_11
+scalaVersion := scala_2_13
 
-crossScalaVersions := List(scala_2_11, scala_2_12)
+crossScalaVersions := List(scala_2_11, scala_2_12, scala_2_13)
 
 resolvers += Resolver.typesafeRepo("releases")
 
@@ -19,11 +20,12 @@ resolvers += Resolver.sonatypeRepo("releases")
 resolvers += Resolver.sonatypeRepo("snapshots")
 
 libraryDependencies ++= Seq(
-  "org.virtuslab" %% "unicorn" % "1.3.0",
-  "org.scalatestplus.play" %% "scalatestplus-play" % "3.0.0" % Test,
-  "com.typesafe.play" %% "play-test" % "2.6.20" % "test",
-  "com.typesafe.play" %% "play-json-joda" % "2.6.10",
-  "com.h2database" % "h2" % "1.4.187" % "test"
+  "org.scala-sbt" %% "compiler-bridge" % "1.2.5",
+  "org.virtuslab" %% "unicorn" % "1.3.3-SNAPSHOT",
+  "org.scalatestplus.play" %% "scalatestplus-play" % "4.0.3" % Test,
+  "com.typesafe.play" %% "play-test" % "2.7.3" % "test",
+  "com.typesafe.play" %% "play-json-joda" % "2.7.4",
+  "com.h2database" % "h2" % "1.4.199" % "test"
 )
 
 testOptions in Test ++= Seq(Tests.Argument("-oF"))

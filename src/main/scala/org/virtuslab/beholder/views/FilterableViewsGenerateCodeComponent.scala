@@ -14,7 +14,6 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
   self: UnicornWrapper[Long] =>
 
   import unicorn.profile.api._
-  import unicorn.profile._
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType](
     name: String,
     apply: (A1, A2) => T,
