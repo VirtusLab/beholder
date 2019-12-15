@@ -43,12 +43,11 @@ class JsonEnumTestRepository(override val unicorn: UnicornPlay[Long])
 }
 
 class JsonFiltersEnumTest extends BaseTest {
-  lazy val jsonRangeTestRepository = new JsonRangeTestRepository(unicorn)
-  lazy val baseFilterData = new BaseFilterData
-  import baseFilterData._
-  import unicorn.profile.api._
 
-  class BaseFilterData {
+  class BaseFilterData(implicit val f: BaseTest.Fixture) {
+    import f._
+    import f.unicorn.profile.api._
+    lazy val jsonRangeTestRepository = new JsonRangeTestRepository(unicorn)
     lazy val query = userMachinesViewRepository.viewQuery
     lazy val filter = jsonRangeTestRepository.createFilter
     lazy val baseFilter = filter.emptyFilterData
@@ -61,7 +60,8 @@ class JsonFiltersEnumTest extends BaseTest {
       } yield all
   }
 
-  def doFilters(data: BaseFilterData, currentFilter: FilterDefinition): DBIO[Seq[UserMachineViewRow]] = {
+  def doFilters(data: BaseFilterData, currentFilter: FilterDefinition): slick.dbio.DBIO[Seq[UserMachineViewRow]] = {
+    import data.filter
     val resultAction = filter.filterWithTotalEntitiesNumber(currentFilter)
     resultAction.map {
       result =>
@@ -73,15 +73,19 @@ class JsonFiltersEnumTest extends BaseTest {
     }
   }
 
-  it should "filter all users with inactive machines" in rollbackActionWithModel {
-    val inactive = Some(MachineStatus.Inactive)
-    val usersWithInactiveMachinesAction = doFilters(
-      baseFilterData, baseFilter.copy(data = baseFilterData.baseFilterData.updated(5, inactive)))
-    for {
-      all <- allFromDb
-      usersWithInactiveMachines <- usersWithInactiveMachinesAction
-    } yield {
-      usersWithInactiveMachines should contain theSameElementsAs all.filter(machine => machine.status == MachineStatus.Inactive)
+  it should "filter all users with inactive machines" in { implicit f =>
+    rollbackActionWithModel {
+      val bfd = new BaseFilterData
+      import bfd._
+      val inactive = Some(MachineStatus.Inactive)
+      val usersWithInactiveMachinesAction = doFilters(
+        bfd, baseFilter.copy(data = baseFilterData.updated(5, inactive)))
+      for {
+        all <- allFromDb
+        usersWithInactiveMachines <- usersWithInactiveMachinesAction
+      } yield {
+        usersWithInactiveMachines should contain theSameElementsAs all.filter(machine => machine.status == MachineStatus.Inactive)
+      }
     }
   }
 }
