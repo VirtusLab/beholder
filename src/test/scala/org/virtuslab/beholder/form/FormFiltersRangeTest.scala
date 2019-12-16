@@ -40,13 +40,11 @@ class FormRangeTestRepository(override val unicorn: UnicornPlay[Long])
 }
 
 class FormFiltersRangeTest extends BaseTest {
-  lazy val formRangeTestRepository = new FormRangeTestRepository(unicorn)
-  lazy val baseFilterData = new BaseFilterData
 
-  import baseFilterData._
-  import unicorn.profile.api._
-
-  class BaseFilterData {
+  class BaseFilterData(implicit val f: BaseTest.Fixture) {
+    import f._
+    import f.unicorn.profile.api._
+    lazy val formRangeTestRepository = new FormRangeTestRepository(unicorn)
     lazy val query = userMachinesViewRepository.viewQuery
     lazy val filter = formRangeTestRepository.createFilter
     lazy val baseFilter = filter.emptyFilterData
@@ -59,7 +57,7 @@ class FormFiltersRangeTest extends BaseTest {
       } yield all
   }
 
-  def doFilters(data: BaseFilterData, currentFilter: FilterDefinition): DBIO[Seq[UserMachineViewRow]] = {
+  def doFilters(data: BaseFilterData, currentFilter: FilterDefinition): slick.dbio.DBIO[Seq[UserMachineViewRow]] = {
     val formatter = data.filter.formatter
     val formData = formatter.filterForm.fill(currentFilter)
 
@@ -70,50 +68,58 @@ class FormFiltersRangeTest extends BaseTest {
 
   behavior of "range filters"
 
-  it should "should take int range correctly" in rollbackActionWithModel {
-    val coreRange = Some(FilterRange(Some(1), Some(4)))
-    for {
-      all <- allFromDb
-      coreRangeData <- doFilters(
-        baseFilterData, baseFilter.copy(data = baseFilterData.baseFilterData.updated(2, coreRange)))
-    } yield {
-      coreRangeData should contain theSameElementsAs all
+  it should "should take int range correctly" in { implicit f =>
+    rollbackActionWithModel {
+      val bfd = new BaseFilterData
+      import bfd._
+      val coreRange = Some(FilterRange(Some(1), Some(4)))
+      for {
+        all <- allFromDb
+        coreRangeData <- doFilters(
+          bfd, baseFilter.copy(data = baseFilterData.updated(2, coreRange)))
+      } yield {
+        coreRangeData should contain theSameElementsAs all
+      }
     }
   }
 
-  it should "should take BigDecimal range correctly" in rollbackActionWithModel {
-    def testCapacityRange(
-      minCapacity: Option[BigDecimal],
-      maxCapacity: Option[BigDecimal],
-      all: Seq[UserMachineViewRow]) = {
-      def isInRange(from: Option[BigDecimal], to: Option[BigDecimal], value: Option[BigDecimal]) = {
-        val seq = Seq(from, value, to)
-        (seq, seq.tail).zipped.forall {
-          case (Some(a), Some(b)) => a <= b
-          case (_, _) => true
+  it should "should take BigDecimal range correctly" in { implicit f =>
+    rollbackActionWithModel {
+      val bfd = new BaseFilterData
+      import bfd._
+      def testCapacityRange(
+        minCapacity: Option[BigDecimal],
+        maxCapacity: Option[BigDecimal],
+        all: Seq[UserMachineViewRow]) = {
+        def isInRange(from: Option[BigDecimal], to: Option[BigDecimal], value: Option[BigDecimal]) = {
+          val seq = Seq(from, value, to)
+          (seq, seq.tail).zipped.forall {
+            case (Some(a), Some(b)) => a <= b
+            case (_, _) => true
+          }
+        }
+
+        val capacityRange = Some(FilterRange(minCapacity, maxCapacity))
+
+        for {
+          coreRangeData <- doFilters(
+            bfd, baseFilter.copy(data = baseFilterData.updated(4, capacityRange)))
+        } yield {
+          val fromDbFilteredByCapacity = all.filter(a => isInRange(minCapacity, maxCapacity, a.capacity))
+          coreRangeData should contain theSameElementsAs fromDbFilteredByCapacity
         }
       }
 
-      val capacityRange = Some(FilterRange(minCapacity, maxCapacity))
-
       for {
-        coreRangeData <- doFilters(
-          baseFilterData, baseFilter.copy(data = baseFilterData.baseFilterData.updated(4, capacityRange)))
-      } yield {
-        val fromDbFilteredByCapacity = all.filter(a => isInRange(minCapacity, maxCapacity, a.capacity))
-        coreRangeData should contain theSameElementsAs fromDbFilteredByCapacity
-      }
+        all <- allFromDb
+        _ <- testCapacityRange(Some(1), Some(3), all)
+        _ <- testCapacityRange(Some(1), Some(2), all)
+        _ <- testCapacityRange(Some(2), Some(2), all)
+        _ <- testCapacityRange(None, Some(2), all)
+        _ <- testCapacityRange(Some(3), None, all)
+        _ <- testCapacityRange(None, None, all)
+      } yield ()
     }
-
-    for {
-      all <- allFromDb
-      _ <- testCapacityRange(Some(1), Some(3), all)
-      _ <- testCapacityRange(Some(1), Some(2), all)
-      _ <- testCapacityRange(Some(2), Some(2), all)
-      _ <- testCapacityRange(None, Some(2), all)
-      _ <- testCapacityRange(Some(3), None, all)
-      _ <- testCapacityRange(None, None, all)
-    } yield ()
   }
 
 }

@@ -26,8 +26,6 @@ libraryDependencies ++= Seq(
   "com.h2database" % "h2" % "1.4.187" % "test"
 )
 
-parallelExecution in Test := false
-
 testOptions in Test ++= Seq(Tests.Argument("-oF"))
 
 scalacOptions ++= Seq(

@@ -66,12 +66,10 @@ class JsonFiltersVarLengthRepository(override val unicorn: UnicornPlay[Long])
 
 class JsonFiltersVarLengthTest extends BaseTest with LoneElement {
 
-  val jsonFiltersVarLengthRepository = new JsonFiltersVarLengthRepository(unicorn)
-  val baseFilterData = new BaseFilterData
-  import baseFilterData._
-
-  import unicorn.profile.api._
-  class BaseFilterData {
+  class BaseFilterData(implicit val f: BaseTest.Fixture) {
+    import f._
+    import f.unicorn.profile.api._
+    val jsonFiltersVarLengthRepository = new JsonFiltersVarLengthRepository(unicorn)
     lazy val query = userMachinesViewRepository.viewQuery
     lazy val filter = jsonFiltersVarLengthRepository.createFilter
     lazy val baseFilter = filter.emptyFilterData
@@ -84,7 +82,8 @@ class JsonFiltersVarLengthTest extends BaseTest with LoneElement {
       } yield all
   }
 
-  def doFilter(firstPart: String, secondPart: String): DBIO[Seq[UserMachineViewRow]] = {
+  def doFilter(data: BaseFilterData, firstPart: String, secondPart: String): slick.dbio.DBIO[Seq[UserMachineViewRow]] = {
+    import data.filter
     val filterDefinition = filter.formatter.filterDefinition(
       Json.obj("data" -> Json.obj("firstPart" -> firstPart, "secondPart" -> secondPart))).get
     val resultAction = filter.filterWithTotalEntitiesNumber(filterDefinition)
@@ -98,16 +97,20 @@ class JsonFiltersVarLengthTest extends BaseTest with LoneElement {
     }
   }
 
-  it should "filter by both splits of column" in rollbackActionWithModel {
-    for {
-      _ <- allFromDb
-      ubu_ntu <- doFilter("Ubu", "ntu")
-      ub_unt <- doFilter("Ub", "unt")
-      fed_ntu <- doFilter("Fed", "ntu")
-    } yield {
-      ubu_ntu.map(_.system).distinct.loneElement shouldEqual "Ubuntu"
-      ub_unt should be(empty)
-      fed_ntu.map(_.system).distinct should contain theSameElementsAs Seq("Ubuntu", "Fedora")
+  it should "filter by both splits of column" in { implicit f =>
+    rollbackActionWithModel {
+      val bfd = new BaseFilterData
+      import bfd._
+      for {
+        _ <- allFromDb
+        ubu_ntu <- doFilter(bfd, "Ubu", "ntu")
+        ub_unt <- doFilter(bfd, "Ub", "unt")
+        fed_ntu <- doFilter(bfd, "Fed", "ntu")
+      } yield {
+        ubu_ntu.map(_.system).distinct.loneElement shouldEqual "Ubuntu"
+        ub_unt should be(empty)
+        fed_ntu.map(_.system).distinct should contain theSameElementsAs Seq("Ubuntu", "Fedora")
+      }
     }
   }
 

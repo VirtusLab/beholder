@@ -3,6 +3,6 @@ scala:
   - "2.11.12"
   - "2.12.7"
 jdk:
-  - oraclejdk8
+  - openjdk8
 
 script: sbt -no-colors ++$TRAVIS_SCALA_VERSION clean coverage test

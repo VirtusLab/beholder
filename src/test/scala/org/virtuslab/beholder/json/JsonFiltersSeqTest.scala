@@ -43,12 +43,11 @@ class JsonSeqTestRepository(override val unicorn: UnicornPlay[Long])
 }
 
 class JsonFiltersSeqTest extends BaseTest {
-  lazy val jsonSeqTestRepository = new JsonSeqTestRepository(unicorn)
-  lazy val baseFilterData = new BaseFilterData
-  import baseFilterData._
-  import unicorn.profile.api._
 
-  class BaseFilterData {
+  class BaseFilterData(implicit val f: BaseTest.Fixture) {
+    import f._
+    import f.unicorn.profile.api._
+    lazy val jsonSeqTestRepository = new JsonSeqTestRepository(unicorn)
     lazy val query = userMachinesViewRepository.viewQuery
     lazy val filter = jsonSeqTestRepository.createFilter
     lazy val baseFilter = filter.emptyFilterData
@@ -61,7 +60,8 @@ class JsonFiltersSeqTest extends BaseTest {
       } yield all
   }
 
-  def doFilters(data: BaseFilterData, currentFilter: FilterDefinition): DBIO[Seq[UserMachineViewRow]] = {
+  def doFilters(data: BaseFilterData, currentFilter: FilterDefinition): slick.dbio.DBIO[Seq[UserMachineViewRow]] = {
+    import data.filter
     val resultAction = filter.filterWithTotalEntitiesNumber(currentFilter)
     resultAction.map {
       result =>
@@ -73,34 +73,46 @@ class JsonFiltersSeqTest extends BaseTest {
     }
   }
 
-  it should "filter by seq(int) only users with one and four core machines" in rollbackActionWithModel {
-    val usersWithOneOrFourCore = Some(Seq(1, 4))
-    for {
-      all <- allFromDb
-      usersWithOneOrFourCoreMachines <- doFilters(baseFilterData, baseFilter.copy(data = baseFilterData.baseFilterData.updated(2, usersWithOneOrFourCore)))
-    } yield {
-      usersWithOneOrFourCoreMachines should contain theSameElementsAs all
+  it should "filter by seq(int) only users with one and four core machines" in { implicit f =>
+    rollbackActionWithModel {
+      val bfd = new BaseFilterData
+      import bfd._
+      val usersWithOneOrFourCore = Some(Seq(1, 4))
+      for {
+        all <- allFromDb
+        usersWithOneOrFourCoreMachines <- doFilters(bfd, baseFilter.copy(data = baseFilterData.updated(2, usersWithOneOrFourCore)))
+      } yield {
+        usersWithOneOrFourCoreMachines should contain theSameElementsAs all
+      }
     }
   }
 
-  it should "filter by seq(int) only users with one and three core machine" in rollbackActionWithModel {
-    val oneOrThreeCore = Some(Seq(1, 3))
-    for {
-      all <- allFromDb
-      usersWithOneOrThreeCoreMachines <- doFilters(baseFilterData, baseFilter.copy(data = baseFilterData.baseFilterData.updated(2, oneOrThreeCore)))
-    } yield {
-      usersWithOneOrThreeCoreMachines should contain theSameElementsAs all.filter(machine => machine.cores == 1 || machine.cores == 3)
+  it should "filter by seq(int) only users with one and three core machine" in { implicit f =>
+    rollbackActionWithModel {
+      val bfd = new BaseFilterData
+      import bfd._
+      val oneOrThreeCore = Some(Seq(1, 3))
+      for {
+        all <- allFromDb
+        usersWithOneOrThreeCoreMachines <- doFilters(bfd, baseFilter.copy(data = baseFilterData.updated(2, oneOrThreeCore)))
+      } yield {
+        usersWithOneOrThreeCoreMachines should contain theSameElementsAs all.filter(machine => machine.cores == 1 || machine.cores == 3)
+      }
     }
   }
 
-  it should "filter by seq(enum) all users together with inactive and broken machines" in rollbackActionWithModel {
-    val inactiveAndBroken = Some(Seq(MachineStatus.Inactive, MachineStatus.Broken))
-    for {
-      all <- allFromDb
-      usersWithInactiveAndBrokenMachines <- doFilters(baseFilterData, baseFilter.copy(data = baseFilterData.baseFilterData.updated(5, inactiveAndBroken)))
-    } yield {
-      usersWithInactiveAndBrokenMachines.size should be(2)
-      usersWithInactiveAndBrokenMachines should contain theSameElementsAs all.filter(machine => machine.status == MachineStatus.Inactive)
+  it should "filter by seq(enum) all users together with inactive and broken machines" in { implicit f =>
+    rollbackActionWithModel {
+      val bfd = new BaseFilterData
+      import bfd._
+      val inactiveAndBroken = Some(Seq(MachineStatus.Inactive, MachineStatus.Broken))
+      for {
+        all <- allFromDb
+        usersWithInactiveAndBrokenMachines <- doFilters(bfd, baseFilter.copy(data = baseFilterData.updated(5, inactiveAndBroken)))
+      } yield {
+        usersWithInactiveAndBrokenMachines.size should be(2)
+        usersWithInactiveAndBrokenMachines should contain theSameElementsAs all.filter(machine => machine.status == MachineStatus.Inactive)
+      }
     }
   }
 }

@@ -10,7 +10,8 @@ import org.virtuslab.beholder.repositories.{ MachineRepository, UserMachinesRepo
 import org.virtuslab.unicorn._
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.inject.guice.GuiceApplicationBuilder
-import play.api.{ Configuration, Play }
+import play.api.{ Application, Configuration, Play }
+import slick.dbio.DBIOAction
 import slick.jdbc.JdbcProfile
 
 import scala.concurrent.Await
@@ -18,45 +19,52 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 import scala.util.{ Failure, Try }
 
-trait BaseTest extends FlatSpecLike with Matchers with BeforeAndAfterAll with BeforeAndAfterEach with GuiceFakeApplicationFactory {
+trait BaseTest extends fixture.FlatSpecLike with Matchers with GuiceFakeApplicationFactory {
+  import BaseTest.Fixture
 
-  private val testDb = Configuration(
-    "slick.dbs.default.driver" -> "slick.driver.H2Driver$",
-    "slick.dbs.default.db.driver" -> "org.h2.Driver",
-    "slick.dbs.default.db.url" -> "jdbc:h2:mem:beholder",
-    "slick.dbs.default.db.user" -> "sa",
-    "slick.dbs.default.db.password" -> "",
-    "slick.dbs.default.db.connectionTimeout" -> "10000")
+  override type FixtureParam = Fixture
 
-  val app = {
-    val fake = new GuiceApplicationBuilder(configuration = testDb).build()
-    Play.start(fake)
-    fake
+  private def createFixture(dbSuffix: String): Fixture = {
+    val testDb = Configuration(
+      "slick.dbs.default.driver" -> "slick.driver.H2Driver$",
+      "slick.dbs.default.db.driver" -> "org.h2.Driver",
+      "slick.dbs.default.db.url" -> ("jdbc:h2:mem:beholder-" + dbSuffix),
+      "slick.dbs.default.db.user" -> "sa",
+      "slick.dbs.default.db.password" -> "",
+      "slick.dbs.default.db.connectionTimeout" -> "10000")
+
+    val fakeApp: Application = new GuiceApplicationBuilder(configuration = testDb).build()
+
+    val unicorn: UnicornPlay[Long] with HasJdbcProfile =
+      new LongUnicornPlay(DatabaseConfigProvider.get[JdbcProfile](fakeApp))
+
+    val machineRepository = new MachineRepository(unicorn)
+    val usersRepository = new UsersRepository(unicorn)
+    val userMachinesTableQuery = new UserMachinesRepository(unicorn)
+    val userMachinesViewRepository = new UserMachinesViewRepository(unicorn)
+    Fixture(
+      unicorn, fakeApp, machineRepository, usersRepository, userMachinesTableQuery, userMachinesViewRepository)
   }
-
-  val unicorn: UnicornPlay[Long] with HasJdbcProfile =
-    new LongUnicornPlay(DatabaseConfigProvider.get[JdbcProfile](app))
-
-  import unicorn.profile.api._
-
-  lazy val machineRepository = new MachineRepository(unicorn)
-  lazy val usersRepository = new UsersRepository(unicorn)
-  lazy val userMachinesTableQuery = new UserMachinesRepository(unicorn)
-  lazy val userMachinesViewRepository = new UserMachinesViewRepository(unicorn)
 
   object RollbackException extends Exception
 
-  override protected def beforeEach(): Unit = {
-    val DB = DatabaseConfigProvider.get(app).db
-
-    Await.result(DB.run(sqlu"""DROP ALL OBJECTS"""), Duration.Inf)
-
-    super.beforeEach()
+  def setup(f: Fixture): slick.dbio.DBIO[Unit] = {
+    DBIOAction.successful(())
   }
 
-  override protected def afterAll(): Unit = {
-    Play.stop(app)
-    super.afterEach()
+  def withFixture(test: OneArgTest): Outcome = {
+    val dbSuffix = scala.util.Random.nextInt().toHexString
+    var fakeApp: Option[Application] = None
+    try {
+      val theFixture = createFixture(dbSuffix)
+      import theFixture.unicorn.profile.api._
+      fakeApp = Some(theFixture.app)
+      val DB = theFixture.unicorn.db
+      Await.result(DB.run(sqlu"""DROP ALL OBJECTS"""), Duration.Inf)
+      withFixture(test.toNoArgTest(theFixture))
+    } finally {
+      fakeApp.foreach(Play.stop(_))
+    }
   }
 
   /**
@@ -66,11 +74,14 @@ trait BaseTest extends FlatSpecLike with Matchers with BeforeAndAfterAll with Be
    * @tparam Result type returned by `f`
    * @return value returned from `f`
    */
-  def rollbackActionWithModel[Result](func: => DBIO[Result]): Unit = {
+  def rollbackActionWithModel[Result](func: => slick.dbio.DBIO[Result])(implicit f: Fixture): Unit = {
+    import f._
+    import f.unicorn.profile.api._
     val out = (for {
       _ <- usersRepository.create()
       _ <- machineRepository.create()
       _ <- userMachinesTableQuery.tableQuery.schema.create
+      _ <- setup(f)
       _ <- func
       _ <- DBIO.failed(RollbackException)
     } yield ()).transactionally
@@ -83,8 +94,9 @@ trait BaseTest extends FlatSpecLike with Matchers with BeforeAndAfterAll with Be
     }
   }
 
-  def populatedDatabase: DBIO[Option[Int]] = {
-
+  def populatedDatabase(implicit f: Fixture): slick.dbio.DBIO[Option[Int]] = {
+    import f._
+    import f.unicorn.profile.api._
     val usersAction = DBIO.sequence(
       Seq(
         User(None, "a@a.pl", "Ala", "maKota"),
@@ -118,5 +130,15 @@ trait BaseTest extends FlatSpecLike with Matchers with BeforeAndAfterAll with Be
     }
   }
 
+}
+
+object BaseTest {
+  case class Fixture(
+    unicorn: UnicornPlay[Long] with HasJdbcProfile,
+    app: Application,
+    machineRepository: MachineRepository,
+    usersRepository: UsersRepository,
+    userMachinesTableQuery: UserMachinesRepository,
+    userMachinesViewRepository: UserMachinesViewRepository)
 }
 
