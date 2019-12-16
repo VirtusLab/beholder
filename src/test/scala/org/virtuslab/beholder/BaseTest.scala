@@ -59,7 +59,7 @@ trait BaseTest extends fixture.FlatSpecLike with Matchers with GuiceFakeApplicat
       val theFixture = createFixture(dbSuffix)
       import theFixture.unicorn.profile.api._
       fakeApp = Some(theFixture.app)
-      val DB = DatabaseConfigProvider.get(theFixture.app).db
+      val DB = theFixture.unicorn.db
       Await.result(DB.run(sqlu"""DROP ALL OBJECTS"""), Duration.Inf)
       withFixture(test.toNoArgTest(theFixture))
     } finally {
