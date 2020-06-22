@@ -3,16 +3,14 @@ package org.virtuslab.beholder.views
 import org.virtuslab.unicorn.UnicornWrapper
 import slick.ast.TypedType
 
-import scala.concurrent.Await
-import scala.concurrent.duration._
 import scala.language.existentials
 
 trait BaseViewComponent {
   self: UnicornWrapper[Long] =>
 
   import unicorn._
-  import unicorn.profile.api._
   import unicorn.profile.DDL
+  import unicorn.profile.api._
   /**
    *
    * @param viewName name of view
@@ -74,6 +72,10 @@ trait BaseViewComponent {
       private def selectStatements(query: Query[_, _, Seq]): String = query.result.statements.mkString
 
       override protected def truncatePhase: Iterable[String] = Nil
+
+      override protected def createIfNotExistsPhase: Iterable[String] = createPhase1
+
+      override protected def dropIfExistsPhase: Iterable[String] = dropPhase1
     }
 
   }
