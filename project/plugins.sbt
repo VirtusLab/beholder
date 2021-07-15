@@ -7,3 +7,5 @@ addSbtPlugin("org.xerial.sbt" % "sbt-sonatype" % "2.3")
 resolvers += Classpaths.sbtPluginReleases
 
 addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.5.1")
+
+addSbtPlugin("com.geirsson" % "sbt-ci-release" % "1.5.7")

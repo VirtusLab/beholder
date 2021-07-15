@@ -14,7 +14,7 @@ trait FilterControllerComponent extends BaseFilterComponent with JsonFormatterCo
 
   import unicorn.profile.api._
 
-  trait FilterControllerBase[Context, Entity <: Product] extends Controller {
+  trait FilterControllerBase[Context, Entity <: Product] extends BaseController {
     private[beholder] def formatter: JsonFormatter[Entity]
 
     private[beholder] def callFilter(context: Context, filterDefinition: FilterDefinition): DBIO[FilterResult[Entity]]
