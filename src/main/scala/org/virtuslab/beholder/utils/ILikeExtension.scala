@@ -15,11 +15,13 @@ object ILikeExtension {
   val ILIKE = new SqlOperator("ilike")
 
   /**
-   * escape text so can spoil sql reqexp
-   * @param text
-   * @return
+   * escape underscores, percent signs and backslashes as they have special meaning in PostgreSQL's LIKE function
+   * @see https://www.postgresql.org/docs/current/functions-matching.html#FUNCTIONS-LIKE
    */
-  def escape(text: String) = text.replace("%", "\\%").replace("_", "\\_")
+  def escape(text: String) = text
+    .replace(raw"""\""", raw"\\")
+    .replace("%", raw"\%")
+    .replace("_", raw"\_")
 
   implicit def iLikeExtension(c: Rep[String]) = new ILikeExtension(c)
 
