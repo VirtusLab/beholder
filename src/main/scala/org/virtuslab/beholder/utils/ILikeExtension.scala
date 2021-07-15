@@ -19,7 +19,7 @@ object ILikeExtension {
    * @see https://www.postgresql.org/docs/current/functions-matching.html#FUNCTIONS-LIKE
    */
   def escape(text: String) = text
-    .replace(raw"\", raw"\\")
+    .replace(raw"""\""", raw"\\")
     .replace("%", raw"\%")
     .replace("_", raw"\_")
 

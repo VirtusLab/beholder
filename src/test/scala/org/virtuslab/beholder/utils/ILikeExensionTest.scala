@@ -8,11 +8,11 @@ class ILikeExensionTest extends BaseTest {
     val troublesomeStrings = Seq(
       raw"underscore_",
       raw"percent%",
-      raw"backslash\",
+      raw"""backslash\""",
       raw"double-underscore__",
       raw"double-percent%%",
       raw"double-backslash\\",
-      raw"underscore_percent%backslash\")
+      raw"""underscore_percent%backslash\""")
 
     // WHEN
     val escapeResults = troublesomeStrings.map(ILikeExtension.escape)

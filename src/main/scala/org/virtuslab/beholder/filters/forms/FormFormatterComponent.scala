@@ -28,7 +28,7 @@ trait FormFormatterComponent extends FromFilterFieldsComponent {
         value.zip(columnsNames zip filterFields).flatMap {
           case (Some(value), (name, filterField)) => filterField.unbind(fieldName(key)(name))(value)
           case (None, _) => Map[String, String]()
-        }(collection.breakOut)
+        }.toMap
       }
     }
 
