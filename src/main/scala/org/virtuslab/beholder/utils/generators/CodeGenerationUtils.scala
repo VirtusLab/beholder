@@ -13,12 +13,12 @@ private[beholder] object CodeGenerationUtils {
   /**
    * create A1, A2, etc
    */
-  def aTypes(implicit nr: Int) = fill("A" + _)(nr)
+  def aTypes(implicit nr: Int, sep: String = ", ") = fill("A" + _, sep)(nr)
 
   /**
    * create B1, B2, etc
    */
-  def bTypes(implicit nr: Int) = fill("B" + _)(nr)
+  def bTypes(implicit nr: Int, sep: String = ", ") = fill("B" + _, sep)(nr)
 
   /**
    * create A1:TypeMapper, A2:TypeMapper, etc
