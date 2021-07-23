@@ -5,7 +5,7 @@ import org.virtuslab.beholder.utils.generators.CodeGenerationUtils._
 private[beholder] object FormFiltersGenerator extends App {
 
   final def generateCode = {
-    (2 to 22).map {
+    (2 to 50).map {
       implicit nr =>
 
         val fieldFilters = fill(nr => s"c${nr}Mapping: FieldType[A$nr, B$nr]", ",\n")
@@ -28,7 +28,7 @@ private[beholder] object FormFiltersGenerator extends App {
           |      override def filterFields: Seq[FieldType[_, _]] =
           |       Seq[FieldType[_, _]]($mappings)
           |
-          |      override protected def tableColumns(table: T): Seq[LongUnicornPlay.driver.api.Rep[_]] = Seq(
+          |      override protected def tableColumns(table: T): Seq[Rep[_]] = Seq(
           |       $columnsNames
           |      )
           |    }

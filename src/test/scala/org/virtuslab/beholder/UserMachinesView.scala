@@ -1,7 +1,6 @@
 package org.virtuslab.beholder
 
 import java.sql.Date
-
 import org.virtuslab.beholder.model.{ MachineStatus, UserMachinesComponent }
 import org.virtuslab.beholder.views.FilterableViewsComponent
 import org.virtuslab.unicorn.{ UnicornPlay, UnicornWrapper }
@@ -30,6 +29,8 @@ trait UserMachinesViewComponent
     machine <- TableQuery[Machines] if machine.id === userMachine.machineId
   } yield (user, machine)
 
+  val e: (String, String, Int, Date, Option[BigDecimal], MachineStatus.Value) => UserMachineViewRow = UserMachineViewRow.apply _
+  val f: UserMachineViewRow => Option[(String, String, Int, Date, Option[BigDecimal], MachineStatus.Value)] = UserMachineViewRow.unapply _
   lazy val userMachinesViewTableQuery: Foo = createView(
     "USER_MACHINE_VIEW",
     UserMachineViewRow.apply _,

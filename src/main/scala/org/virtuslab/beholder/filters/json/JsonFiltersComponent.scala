@@ -1,8 +1,6 @@
 package org.virtuslab.beholder.filters.json
 
-import java.sql.Date
-
-import org.virtuslab.beholder.filters.{ FilterFactoryMethodsComponent, FilterRange }
+import org.virtuslab.beholder.filters.FilterFactoryMethodsComponent
 import org.virtuslab.unicorn.UnicornWrapper
 
 trait JsonFiltersComponent extends FilterFactoryMethodsComponent with JsonFormatterComponent {

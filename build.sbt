@@ -35,7 +35,9 @@ libraryDependencies ++= Seq(
   "org.scalatestplus.play" %% "scalatestplus-play" % "5.1.0" % Test,
   "com.typesafe.play" %% "play-test" % "2.8.8" % "test",
   "com.typesafe.play" %% "play-json-joda" % "2.9.2",
-  "com.h2database" % "h2" % "1.4.200" % "test"
+  "com.h2database" % "h2" % "1.4.200" % "test",
+  "com.chuusai"        %% "shapeless" % "2.3.3",
+  "io.underscore"      %% "slickless" % "0.3.6"
 )
 
 testOptions in Test ++= Seq(Tests.Argument("-oF"))

@@ -1,23 +1,22 @@
 package org.virtuslab.beholder
 
-import java.sql.Date
-
 import org.joda.time.DateTime
 import org.scalatest._
 import org.scalatestplus.play.guice.GuiceFakeApplicationFactory
-import org.virtuslab.beholder.model.{ Machine, MachineStatus, User }
-import org.virtuslab.beholder.repositories.{ MachineRepository, UserMachinesRepository, UserMachinesViewRepository, UsersRepository }
+import org.virtuslab.beholder.model.{LargeElement, Machine, MachineStatus, User}
+import org.virtuslab.beholder.repositories._
 import org.virtuslab.unicorn._
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.inject.guice.GuiceApplicationBuilder
-import play.api.{ Application, Configuration, Play }
+import play.api.{Application, Configuration, Play}
 import slick.dbio.DBIOAction
 import slick.jdbc.JdbcProfile
 
+import java.sql.Date
 import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
-import scala.util.{ Failure, Try }
+import scala.util.{Failure, Try}
 
 trait BaseTest extends fixture.FlatSpecLike with Matchers with GuiceFakeApplicationFactory {
   import BaseTest.Fixture
@@ -41,9 +40,10 @@ trait BaseTest extends fixture.FlatSpecLike with Matchers with GuiceFakeApplicat
     val machineRepository = new MachineRepository(unicorn)
     val usersRepository = new UsersRepository(unicorn)
     val userMachinesTableQuery = new UserMachinesRepository(unicorn)
+    val largeElementsRepository = new LargeElementsRepository(unicorn)
     val userMachinesViewRepository = new UserMachinesViewRepository(unicorn)
     Fixture(
-      unicorn, fakeApp, machineRepository, usersRepository, userMachinesTableQuery, userMachinesViewRepository)
+      unicorn, fakeApp, machineRepository, usersRepository, userMachinesTableQuery, userMachinesViewRepository, largeElementsRepository)
   }
 
   object RollbackException extends Exception
@@ -80,6 +80,7 @@ trait BaseTest extends fixture.FlatSpecLike with Matchers with GuiceFakeApplicat
     val out = (for {
       _ <- usersRepository.create()
       _ <- machineRepository.create()
+      _ <- largeElementRepository.create()
       _ <- userMachinesTableQuery.tableQuery.schema.create
       _ <- setup(f)
       _ <- func
@@ -94,7 +95,7 @@ trait BaseTest extends fixture.FlatSpecLike with Matchers with GuiceFakeApplicat
     }
   }
 
-  def populatedDatabase(implicit f: Fixture): slick.dbio.DBIO[Option[Int]] = {
+  def populatedDatabase(implicit f: Fixture): slick.dbio.DBIO[Unit] = {
     import f._
     import f.unicorn.profile.api._
     val usersAction = DBIO.sequence(
@@ -119,6 +120,60 @@ trait BaseTest extends fixture.FlatSpecLike with Matchers with GuiceFakeApplicat
                 machine.copy(id = Some(machineId))
             }
         })
+
+    val largeElementsAction = DBIO.sequence(
+      Seq(
+        LargeElement(
+          None,
+          "f",
+          1,
+          "f",
+          "f",
+          "f",
+          "f",
+          "f",
+          "f",
+          "f",
+          "f",
+          "f",
+          "f",
+          "f",
+          "f",
+          "f",
+          "f",
+          "f",
+          "f",
+          "f",
+          "f",
+          "f",
+          "f"),
+        LargeElement(
+          None,
+          "a",
+          2,
+          "a",
+          "a",
+          "a",
+          "a",
+          "a",
+          "a",
+          "a",
+          "a",
+          "a",
+          "a",
+          "a",
+          "a",
+          "a",
+          "a",
+          "a",
+          "a",
+          "a",
+          "a",
+          "a",
+          "a")).map { largeElement =>
+          largeElementRepository.save(largeElement)
+        })
+
     usersAction.zip(machinesAction).flatMap {
       case (users, machines) =>
         val Seq(user1, user2) = users
@@ -127,7 +182,7 @@ trait BaseTest extends fixture.FlatSpecLike with Matchers with GuiceFakeApplicat
           (user1.id.get, machine1.id.get),
           (user2.id.get, machine1.id.get),
           (user2.id.get, machine2.id.get))
-    }
+    } >> largeElementsAction >> DBIO.successful(())
   }
 
 }
@@ -139,6 +194,8 @@ object BaseTest {
     machineRepository: MachineRepository,
     usersRepository: UsersRepository,
     userMachinesTableQuery: UserMachinesRepository,
-    userMachinesViewRepository: UserMachinesViewRepository)
+    userMachinesViewRepository: UserMachinesViewRepository,
+    largeElementRepository: LargeElementsRepository,
+    )
 }
 
