@@ -10,6 +10,7 @@ import org.virtuslab.unicorn.{ UnicornPlay, UnicornWrapper }
 import play.api.libs.json.{ Format, JsObject, JsString, JsSuccess, Json, Writes, __ }
 
 import scala.concurrent.ExecutionContext.Implicits.global
+import sttp.tapir.SchemaType
 
 class JsonFiltersVarLengthRepository(override val unicorn: UnicornPlay[Long])
   extends UserMachinesViewComponent
@@ -50,6 +51,8 @@ class JsonFiltersVarLengthRepository(override val unicorn: UnicornPlay[Long])
       (column.substring(0, 3).? === first) ||
         (column.substring(3, 6).? === second)
     }
+
+    def filterSchemas(name: String): Seq[SchemaType.SProductField[Seq[Option[Any]]]] = Seq.empty
   }
 
   def createFilter: FilterAPI[UserMachineViewRow, JsonFormatter[UserMachineViewRow]] = {
@@ -93,7 +96,7 @@ class JsonFiltersVarLengthTest extends BaseTest with LoneElement {
           case JsObject(fields) =>
             filter.formatter.filterDefinition(fields("filter")) should equal(JsSuccess(filterDefinition))
         }
-        result.content
+        result.data
     }
   }
 

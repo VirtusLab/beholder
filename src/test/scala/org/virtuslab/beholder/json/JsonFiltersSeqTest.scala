@@ -69,7 +69,7 @@ class JsonFiltersSeqTest extends BaseTest {
           case JsObject(fields) =>
             filter.formatter.filterDefinition(fields("filter")) should equal(JsSuccess(currentFilter))
         }
-        result.content
+        result.data
     }
   }
 

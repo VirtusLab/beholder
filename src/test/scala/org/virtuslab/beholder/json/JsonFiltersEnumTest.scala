@@ -9,6 +9,7 @@ import org.virtuslab.beholder.filters.json.{ JsonFiltersComponent, JsonFormatter
 import org.virtuslab.beholder.model.MachineStatus
 import org.virtuslab.unicorn.{ UnicornPlay, UnicornWrapper }
 import play.api.libs.json.{ JsObject, JsSuccess }
+import sttp.tapir._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -69,7 +70,7 @@ class JsonFiltersEnumTest extends BaseTest {
           case JsObject(fields) =>
             filter.formatter.filterDefinition(fields("filter")) should equal(JsSuccess(currentFilter))
         }
-        result.content
+        result.data
     }
   }
 
