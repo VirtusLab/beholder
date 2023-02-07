@@ -207,7 +207,7 @@ class FormFiltersTest extends BaseTest {
         filterData <- filter.filterWithTotalEntitiesNumber(baseFilter.copy(orderBy = Some(Order("cores", asc = false)), skip = Some(1)))
       } yield {
         val fromDbOrderedByCoresDesc = all.sortBy(view => (-view.cores, view.email))
-        filterData.content should contain theSameElementsInOrderAs fromDbOrderedByCoresDesc.drop(1)
+        filterData.data should contain theSameElementsInOrderAs fromDbOrderedByCoresDesc.drop(1)
         filterData.total shouldEqual all.size
       }
     }

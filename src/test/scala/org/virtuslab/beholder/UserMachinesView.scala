@@ -6,6 +6,7 @@ import org.virtuslab.beholder.views.FilterableViewsComponent
 import org.virtuslab.unicorn.{ UnicornPlay, UnicornWrapper }
 
 import scala.concurrent.ExecutionContext.Implicits.global
+import sttp.tapir.Schema
 
 case class UserMachineViewRow(
   email: String,
@@ -21,6 +22,8 @@ trait UserMachinesViewComponent
   self: UnicornWrapper[Long] =>
 
   import unicorn.profile.api._
+
+  implicit val dateSchema: Schema[Date] = Schema.string[Date].format("yyyy-MM-dd")
 
   //query that is a base for view
   lazy val usersMachinesQuery = for {

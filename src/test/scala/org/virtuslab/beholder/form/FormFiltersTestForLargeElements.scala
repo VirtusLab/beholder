@@ -168,7 +168,7 @@ class FormFiltersTestForLargeElements extends BaseTest {
         filterData <- filter.filterWithTotalEntitiesNumber(baseFilter.copy(orderBy = Some(Order("f1", asc = false)), skip = Some(1)))
       } yield {
         val fromDbOrderedByFirstField = all.sortBy(view => (view.f1)).reverse
-        filterData.content should contain theSameElementsInOrderAs fromDbOrderedByFirstField.drop(1)
+        filterData.data should contain theSameElementsInOrderAs fromDbOrderedByFirstField.drop(1)
         filterData.total shouldEqual all.size
       }
     }

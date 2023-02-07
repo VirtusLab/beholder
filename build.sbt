@@ -37,7 +37,8 @@ libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play-json-joda" % "2.9.2",
   "com.h2database" % "h2" % "1.4.200" % "test",
   "com.chuusai"        %% "shapeless" % "2.3.3",
-  "io.underscore"      %% "slickless" % "0.3.6"
+  "io.underscore"      %% "slickless" % "0.3.6",
+  "com.softwaremill.sttp.tapir" %% "tapir-core" % "1.2.7"
 )
 
 testOptions in Test ++= Seq(Tests.Argument("-oF"))

@@ -23,38 +23,39 @@ trait FilterControllerComponent extends BaseFilterComponent with JsonFormatterCo
 
     protected def inFilterContext(body: Request[AnyContent] => Context => DBIO[JsResult[JsValue]]): EssentialAction
 
-    final def filterDefinition = inFilterContext { request => context => DBIO.successful(JsSuccess(formatter.jsonDefinition)) }
+    final def filterDefinition = inFilterContext { request => context => DBIO.successful(JsSuccess(jsonDefinition)) }
 
-    final def doFilter: EssentialAction =
-      inFilterContext { request => context =>
-        request.body.asJson.map(formatter.filterDefinition).map {
-          case JsSuccess(filterDefinition, path) =>
-            val filterResultAction = callFilter(context, mapFilterData(filterDefinition, context))
-            filterResultAction.map {
-              filterResult =>
-                val formatResults = formatter.results(filterDefinition, modifyFilterResults(filterResult, filterDefinition, context))
-                JsSuccess(formatResults, path)
-            }
+    final def jsonDefinition = formatter.jsonDefinition
 
-          case _ => jsonExpected
-        }.getOrElse(jsonExpected)
+    final def doFilter: EssentialAction = inFilterContext { request => context =>
+      deserialize(request.body, context) match {
+        case err: JsError => DBIO.successful(err)
+        case JsSuccess(definition, path) => filterAndModifyResult(definition, context).map(formatter.results(definition, _)).map(JsSuccess(_))
       }
+    }
 
-    final def doFilterWithAction(action: FilterResult[Entity] => JsPath => DBIO[JsResult[JsValue]]): EssentialAction =
-      inFilterContext { request => context =>
-        request.body.asJson.map(formatter.filterDefinition).map {
-          case JsSuccess(filterDefinition, path) => callFilter(context, mapFilterData(filterDefinition, context)).flatMap(action(_)(path))
-          case _ => jsonExpected
-        }.getOrElse(jsonExpected)
+    final def doFilterWithAction(action: FilterResult[Entity] => JsPath => DBIO[JsResult[JsValue]]): EssentialAction = inFilterContext { request => context =>
+      deserialize(request.body, context) match {
+        case err: JsError => DBIO.successful(err)
+        case JsSuccess(definition, path) => callFilter(context, definition).flatMap(result => action(result)(path))
       }
+    }
+
+    final def filterAndModifyResult(definition: FilterDefinition, context: Context): DBIO[FilterResult[Entity]] = {
+      callFilter(context, definition).map(modifyFilterResults(_, definition, context))
+    }
+
+    private def deserialize(filterDefinitionContent: AnyContent, context: Context): JsResult[FilterDefinition] = {
+      filterDefinitionContent.asJson.map(formatter.filterDefinition)
+        .getOrElse(JsError("json expected"))
+        .map(mapFilterData(_, context))
+    }
 
     //for filter modification such us setting default parameters etc.
-    protected def mapFilterData(data: FilterDefinition, context: Context) = data
+    protected def mapFilterData(data: FilterDefinition, context: Context): FilterDefinition = data
 
     //for result modification such as sorting or fetching additional data
-    protected def modifyFilterResults(results: FilterResult[Entity], filterDefinition: FilterDefinition, context: Context) = results
-
-    private val jsonExpected = DBIO.successful(JsError("json expected"))
+    protected def modifyFilterResults(results: FilterResult[Entity], filterDefinition: FilterDefinition, context: Context): FilterResult[Entity] = results
   }
 
   abstract class FilterController[Entity <: Product](filter: FilterAPI[Entity, JsonFormatter[Entity]])

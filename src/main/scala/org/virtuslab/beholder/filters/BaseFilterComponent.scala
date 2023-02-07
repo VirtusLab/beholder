@@ -7,11 +7,16 @@ import slick.ast.Ordering
 import slick.lifted.{ ColumnOrdered, Ordered }
 
 import scala.concurrent.ExecutionContext
+import sttp.tapir._
+import play.api.libs.json.Format
+import play.api.libs.json.Reads
+import play.api.libs.json.Writes
 
 case class Order(column: String, asc: Boolean)
 
 object Order {
   implicit val format = Json.format[Order]
+  implicit val schema = Schema.derived[Order]
 }
 
 /**
@@ -29,6 +34,17 @@ case class FilterDefinition(
   data: Seq[Option[Any]])
 
 case class FilterRange[T](from: Option[T], to: Option[T])
+
+object FilterRange {
+  import sttp.tapir.Schema
+  import play.api.libs.functional.syntax._
+  import play.api.libs.json._
+  implicit def schema[T: Schema] = Schema.derived[FilterRange[T]]
+  implicit def rangeFormat[T: Format]: Format[FilterRange[T]] =
+    ((__ \ "from").formatNullable[T] and
+      (__ \ "to").formatNullable[T])(FilterRange.apply, unlift(FilterRange.unapply))
+
+}
 
 trait BaseFilterComponent extends BaseViewComponent with FilterFieldComponent {
   self: UnicornWrapper[Long] =>
@@ -203,7 +219,7 @@ trait BaseFilterComponent extends BaseViewComponent with FilterFieldComponent {
     private[beholder] def filterFormatter: Formatter
   }
 
-  case class FilterResult[T](content: Seq[T], total: Int) {
+  case class FilterResult[T](data: Seq[T], total: Int) {
 
     def this(data: Seq[T]) {
       this(data, data.size)
@@ -212,13 +228,29 @@ trait BaseFilterComponent extends BaseViewComponent with FilterFieldComponent {
 
   object FilterResult {
 
-    import play.api.libs.functional.syntax._
-    import play.api.libs.json.Format._
     import play.api.libs.json._
 
-    implicit def format[T](implicit f: Format[T]): Format[FilterResult[T]] = (
-      (__ \ "data").format[Seq[T]] and
-      (__ \ "total").format[Int])(FilterResult.apply, unlift(FilterResult.unapply))
+    implicit def reads[T: Reads]: Reads[FilterResult[T]] = Json.reads[FilterResult[T]]
+    implicit def writes[T: Writes]: Writes[FilterResult[T]] = Json.writes[FilterResult[T]]
+    implicit def schema[T: Schema]: Schema[FilterResult[T]] = Schema.derived[FilterResult[T]]
+  }
+
+  case class CompoundResult[T](filter: FilterDefinition, result: FilterResult[T])
+
+  object CompoundResult {
+    implicit def writes[T: Writes](implicit fdw: Writes[FilterDefinition]): Writes[CompoundResult[T]] = {
+      Json.writes[CompoundResult[T]]
+    }
+    implicit def reads[T: Reads](implicit fdr: Reads[FilterDefinition]): Reads[CompoundResult[T]] = {
+      Json.reads[CompoundResult[T]]
+    }
+    implicit def schema[T: Schema](implicit fds: Schema[FilterDefinition]) = {
+      Schema(
+        SchemaType.SProduct(
+          List(
+            SchemaType.SProductField[CompoundResult[T], FilterDefinition](FieldName("filter"), fds, _ => None),
+            SchemaType.SProductField[CompoundResult[T], FilterResult[T]](FieldName("data"), Schema.derived[FilterResult[T]], _ => None))))
+    }
   }
 
 }
