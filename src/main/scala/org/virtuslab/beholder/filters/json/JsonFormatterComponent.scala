@@ -30,9 +30,9 @@ trait JsonFormatterComponent extends JsonFilterFieldsComponent with BaseFilterCo
       Schema(
         SchemaType.SProduct(
           List(
-            SchemaType.SProductField(FieldName("take"), Schema.derived[Option[Int]], fd => Some(fd.take)),
-            SchemaType.SProductField(FieldName("skip"), Schema.derived[Option[Int]], fd => Some(fd.skip)),
-            SchemaType.SProductField(FieldName("orderBy"), Schema.derived[Option[Order]], fd => Some(fd.orderBy)),
+            SchemaType.SProductField(FieldName("take"), Schema.schemaForOption[Int], fd => Some(fd.take)),
+            SchemaType.SProductField(FieldName("skip"), Schema.schemaForOption[Int], fd => Some(fd.skip)),
+            SchemaType.SProductField(FieldName("orderBy"), Schema.schemaForOption[Order], fd => Some(fd.orderBy)),
             SchemaType.SProductField(FieldName("data"), filterDataSchema, fd => Some(fd.data)),
           )
         )
