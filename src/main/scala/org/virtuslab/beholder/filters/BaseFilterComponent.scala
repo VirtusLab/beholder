@@ -39,7 +39,7 @@ object FilterRange {
   import sttp.tapir.Schema
   import play.api.libs.functional.syntax._
   import play.api.libs.json._
-  implicit def schema[T: Schema] = Schema.derived[FilterRange[T]]
+  def schema[T: Schema](tname: String) = Schema.derived[FilterRange[T]].name(Schema.SName(s"FilterRange_$tname"))
   implicit def rangeFormat[T: Format]: Format[FilterRange[T]] =
     ((__ \ "from").formatNullable[T] and
       (__ \ "to").formatNullable[T])(FilterRange.apply, unlift(FilterRange.unapply))
@@ -232,7 +232,7 @@ trait BaseFilterComponent extends BaseViewComponent with FilterFieldComponent {
 
     implicit def reads[T: Reads]: Reads[FilterResult[T]] = Json.reads[FilterResult[T]]
     implicit def writes[T: Writes]: Writes[FilterResult[T]] = Json.writes[FilterResult[T]]
-    implicit def schema[T: Schema]: Schema[FilterResult[T]] = Schema.derived[FilterResult[T]]
+    def schema[T: Schema](tname: String): Schema[FilterResult[T]] = Schema.derived[FilterResult[T]].name(Schema.SName(s"FilterResult_$tname"))
   }
 
   case class CompoundResult[T](filter: FilterDefinition, result: FilterResult[T])
@@ -244,12 +244,12 @@ trait BaseFilterComponent extends BaseViewComponent with FilterFieldComponent {
     implicit def reads[T: Reads](implicit fdr: Reads[FilterDefinition]): Reads[CompoundResult[T]] = {
       Json.reads[CompoundResult[T]]
     }
-    implicit def schema[T: Schema](implicit fds: Schema[FilterDefinition]) = {
+    def schema[T: Schema](tname: String)(implicit fds: Schema[FilterDefinition]) = {
       Schema(
         SchemaType.SProduct(
           List(
             SchemaType.SProductField[CompoundResult[T], FilterDefinition](FieldName("filter"), fds, _ => None),
-            SchemaType.SProductField[CompoundResult[T], FilterResult[T]](FieldName("data"), Schema.derived[FilterResult[T]], _ => None))))
+            SchemaType.SProductField[CompoundResult[T], FilterResult[T]](FieldName("data"), FilterResult.schema(tname), _ => None))))
     }
   }
 

@@ -217,7 +217,7 @@ trait JsonFilterFieldsComponent extends FilterFieldComponent with SeqParametersH
           "innerType" -> (baseType.fieldFormatter(name).fieldTypeDefinition(label).headOption.getOrElse(JsNull): JsValue))
         def filterSchema: Schema[FilterRange[T]] = {
           implicit val tSchema = baseType.filterSchema
-          FilterRange.schema[T]
+          FilterRange.schema[T](baseType.filterSchema.name.map(_.show).getOrElse("T"))
         }
       }
     }
@@ -240,7 +240,7 @@ trait JsonFilterFieldsComponent extends FilterFieldComponent with SeqParametersH
           "innerType" -> (baseType.fieldFormatter(name).fieldTypeDefinition(label).headOption.getOrElse(JsNull): JsValue))
         def filterSchema: Schema[FilterRange[T]] = {
           implicit val tSchema = baseType.filterSchema
-          FilterRange.schema[T]
+          FilterRange.schema[T](baseType.filterSchema.name.map(_.show).getOrElse("T"))
         }
       }
     }
