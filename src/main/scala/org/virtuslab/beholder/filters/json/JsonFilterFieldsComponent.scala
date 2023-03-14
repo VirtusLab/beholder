@@ -204,7 +204,7 @@ trait JsonFilterFieldsComponent extends FilterFieldComponent with SeqParametersH
         def filterSchema: Schema[Seq[T]] = Schema.schemaForIterable
       }
 
-    def inRange[T: BaseTypedType: Format](baseType: SingleFieldJsonFilterField[T, T]): SingleFieldJsonFilterFieldFromFormat[T, FilterRange[T]] = {
+    def inRange[T: BaseTypedType: Format: ClassTag](baseType: SingleFieldJsonFilterField[T, T]): SingleFieldJsonFilterFieldFromFormat[T, FilterRange[T]] = {
       new SingleFieldJsonFilterFieldFromFormat[T, FilterRange[T]]("range") {
         override def filterOnColumn(column: Rep[T])(value: FilterRange[T]): Rep[Option[Boolean]] = {
           value match {
@@ -219,7 +219,8 @@ trait JsonFilterFieldsComponent extends FilterFieldComponent with SeqParametersH
           "innerType" -> (baseType.fieldFormatter(name).fieldTypeDefinition(label).headOption.getOrElse(JsNull): JsValue))
         def filterSchema: Schema[FilterRange[T]] = {
           implicit val tSchema = baseType.filterSchema
-          FilterRange.schema[T](baseType.filterSchema.name.map(_.show).getOrElse("T"))
+          val tname = implicitly[ClassTag[T]].runtimeClass.getSimpleName
+          FilterRange.schema[T](baseType.filterSchema.name.map(_.show).getOrElse(tname))
         }
       }
     }
