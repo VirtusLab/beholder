@@ -244,12 +244,9 @@ trait BaseFilterComponent extends BaseViewComponent with FilterFieldComponent {
     implicit def reads[T: Reads](implicit fdr: Reads[FilterDefinition]): Reads[CompoundResult[T]] = {
       Json.reads[CompoundResult[T]]
     }
-    def schema[T: Schema](tname: String)(implicit fds: Schema[FilterDefinition]) = {
-      Schema(
-        SchemaType.SProduct(
-          List(
-            SchemaType.SProductField[CompoundResult[T], FilterDefinition](FieldName("filter"), fds, _ => None),
-            SchemaType.SProductField[CompoundResult[T], FilterResult[T]](FieldName("data"), FilterResult.schema(tname), _ => None))))
+    def schema[T: Schema](tname: String)(implicit fds: Schema[FilterDefinition]): Schema[CompoundResult[T]] = {
+      implicit val frs: Schema[FilterResult[T]] = FilterResult.schema(tname)
+      Schema.derived[CompoundResult[T]].name(Schema.SName(s"CompoundResult_$tname"))
     }
   }
 
