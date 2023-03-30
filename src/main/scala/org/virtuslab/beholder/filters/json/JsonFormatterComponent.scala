@@ -32,7 +32,7 @@ trait JsonFormatterComponent extends JsonFilterFieldsComponent with BaseFilterCo
           List(
             SchemaType.SProductField(FieldName("take"), Schema.schemaForOption[Int], fd => Some(fd.take)),
             SchemaType.SProductField(FieldName("skip"), Schema.schemaForOption[Int], fd => Some(fd.skip)),
-            SchemaType.SProductField(FieldName("orderBy"), Schema.schemaForOption[Order], fd => Some(fd.orderBy)),
+            SchemaType.SProductField(FieldName("ordering"), Schema.schemaForOption[Order], fd => Some(fd.orderBy)),
             SchemaType.SProductField(FieldName("data"), filterDataSchema, fd => Some(fd.data)),
           )
         )
@@ -80,7 +80,7 @@ trait JsonFormatterComponent extends JsonFilterFieldsComponent with BaseFilterCo
         (__ \ "ordering").formatNullable[Order] and
         (__ \ "data").format(filterDataFormatter))(FilterDefinition.apply, unlift(FilterDefinition.unapply))
 
-    private implicit val entityWrites: Writes[Entity] = Writes { entity: Entity => 
+    private implicit val entityWrites: Writes[Entity] = Writes { entity: Entity =>
       fieldFormatters.zip(entity.productIterator.toIterable).map {
         case (formatter, value) => formatter.writeValue(value)
       }.foldLeft(Json.obj())(_ ++ _)
