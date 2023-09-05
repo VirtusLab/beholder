@@ -262,7 +262,7 @@ trait JsonFilterFieldsComponent extends FilterFieldComponent with SeqParametersH
           override def readFilter(obj: JsObject): JsResult[Option[T]] = JsSuccess(None)
           override def writeFilter(value: Any): JsObject = Json.obj(name -> implicitly[Writes[T]].writes(value.asInstanceOf[T]))
         }
-        def filterSchema: Schema[T] = Schema.schemaForUnit.as[T]
+        def filterSchema: Schema[T] = Schema.schemaForUnit.as[T].hidden(true)
       }
     }
   }
