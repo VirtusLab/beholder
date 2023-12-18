@@ -30,8 +30,10 @@ resolvers += Resolver.sonatypeRepo("releases")
 
 resolvers += Resolver.sonatypeRepo("snapshots")
 
+dependencyOverrides += "com.typesafe.slick" %% "slick" % "3.4.1"
+
 libraryDependencies ++= Seq(
-  "org.virtuslab" %% "unicorn" % "1.4.1",
+  "org.virtuslab" %% "unicorn" % "1.5.0",
   "org.scalatestplus.play" %% "scalatestplus-play" % "5.1.0" % Test,
   "com.typesafe.play" %% "play-test" % "2.8.8" % "test",
   "com.typesafe.play" %% "play-json-joda" % "2.9.2",
