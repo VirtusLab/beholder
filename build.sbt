@@ -17,8 +17,8 @@ inThisBuild(List(
   )
 ))
 
-val scala_2_12 = "2.12.7"
-val scala_2_13 = "2.13.6"
+val scala_2_12 = "2.12.18"
+val scala_2_13 = "2.13.11"
 
 scalaVersion := scala_2_13
 
@@ -41,7 +41,8 @@ libraryDependencies ++= Seq(
   "com.softwaremill.sttp.tapir" %% "tapir-core" % "1.2.7"
 )
 
-testOptions in Test ++= Seq(Tests.Argument("-oF"))
+Test / testOptions ++= Seq(Tests.Argument("-oF"))
+Test / fork := true
 
 scalacOptions ++= Seq(
   "-deprecation",
