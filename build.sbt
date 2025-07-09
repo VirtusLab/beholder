@@ -43,6 +43,9 @@ libraryDependencies ++= Seq(
 
 Test / testOptions ++= Seq(Tests.Argument("-oF"))
 Test / fork := true
+Test / javaOptions ++= Seq(
+  "--add-opens=java.base/java.lang=ALL-UNNAMED"
+)
 
 scalacOptions ++= Seq(
   "-deprecation",
