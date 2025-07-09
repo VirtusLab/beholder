@@ -5,7 +5,6 @@ import org.virtuslab.beholder.filters._
 import org.virtuslab.beholder.utils.ILikeExtension._
 import org.virtuslab.beholder.utils.SeqParametersHelperComponent
 import org.virtuslab.unicorn.UnicornWrapper
-import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import slick.ast.{ BaseTypedType, TypedType }
 import sttp.tapir._

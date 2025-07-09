@@ -13,7 +13,6 @@ import slick.ast.{ BaseTypedType, TypedType }
 trait FromFilterFieldsComponent extends FilterFieldComponent with SeqParametersHelperComponent {
   self: UnicornWrapper[Long] =>
 
-  import unicorn._
   import unicorn.profile.api._
 
   abstract class FormFilterField[A: TypedType, B](mapping: Mapping[B]) extends MappedFilterField[A, B] {

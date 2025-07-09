@@ -4,7 +4,6 @@ import java.sql.Date
 
 import org.virtuslab.beholder.filters.FilterDefinition
 import org.virtuslab.beholder.{ BaseTest, UserMachineViewRow, UserMachinesViewComponent }
-import org.virtuslab.beholder.filters.forms.FromFilterFieldsComponent
 import org.virtuslab.beholder.filters.json.{ JsonFilterFieldsComponent, JsonFiltersComponent, JsonFormatterComponent }
 import org.virtuslab.beholder.model.MachineStatus
 import org.virtuslab.unicorn.{ UnicornPlay, UnicornWrapper }

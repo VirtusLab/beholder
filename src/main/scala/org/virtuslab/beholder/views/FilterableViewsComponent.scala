@@ -41,7 +41,7 @@ trait FilterableViewsComponent extends FilterableViewsGenerateCodeComponent {
 
     implicit val tupleShape = new TupleShape(s1, s2).asInstanceOf[Shape[_ <: slick.lifted.FlatShapeLevel, (slick.lifted.Rep[A], slick.lifted.Rep[B]), (A, B), _]]
 
-    def * = (c1, c2) <> (apply.tupled, unapply)
+    def * = (c1, c2).<>(apply.tupled, unapply)
   }
   // }
 

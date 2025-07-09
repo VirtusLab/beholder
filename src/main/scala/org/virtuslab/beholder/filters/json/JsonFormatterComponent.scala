@@ -49,7 +49,7 @@ trait JsonFormatterComponent extends JsonFilterFieldsComponent with BaseFilterCo
 
       override def reads(json: JsValue): JsResult[Seq[Option[Any]]] = json match {
         case jsObject: JsObject =>
-          jsObject.keys -- fieldFormatters.flatMap(_.filterColumnNames) match {
+          jsObject.keys.toSet -- fieldFormatters.flatMap(_.filterColumnNames) match {
             case badFields if badFields.nonEmpty =>
               JsError((JsPath(Nil), JsonValidationError("No such fields in filter: " + badFields)))
             case _ =>

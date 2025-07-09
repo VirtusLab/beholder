@@ -3,7 +3,6 @@ package org.virtuslab.beholder.filters
 import org.virtuslab.beholder.views.FilterableViewsGenerateCodeComponent
 import org.virtuslab.unicorn.UnicornWrapper
 
-import scala.language.higherKinds
 import slick.ast.TypedType
 /**
  * Generated code

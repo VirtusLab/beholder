@@ -1,7 +1,6 @@
 package org.virtuslab.beholder.model
 
 import java.sql.Date
-import java.util
 
 import org.virtuslab.unicorn.LongUnicornPlayIdentifiers.IdCompanion
 import org.virtuslab.unicorn.{ BaseId, UnicornWrapper, WithId }
@@ -9,18 +8,16 @@ import play.api.data.FormError
 import play.api.libs.json._
 import play.api.data.format.{ Formats, Formatter }
 
-import scala.language.implicitConversions
-
 trait BaseEnum {
   self: Enumeration =>
 
   //for play forms
   implicit lazy val mappingFormatter: Formatter[Value] = new Formatter[Value] {
 
-    override val format = Some(("format.numeric", Nil))
+    override val format: Option[(String, Seq[Any])] = Some(("format.numeric", Nil))
 
     override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], Value] =
-      Formats.intFormat.bind(key, data).right.map(apply)
+      Formats.intFormat.bind(key, data).map(apply)
 
     override def unbind(key: String, value: Value): Map[String, String] =
       Map(key -> value.id.toString)
@@ -28,7 +25,7 @@ trait BaseEnum {
   }
 
   //for json forms
-  implicit val format = new Format[Value] {
+  implicit val format: Format[Value] = new Format[Value] {
     override def writes(o: Value): JsValue = JsNumber(o.id)
     override def reads(json: JsValue): JsResult[Value] = json.asOpt[Int].map(apply).map(JsSuccess(_)).getOrElse(JsError("format invalid"))
   }
@@ -107,7 +104,7 @@ trait MachineComponent extends EnumColumnMapper {
 
     def status = column[MachineStatus.Value]("status")
 
-    override def * = (id.?, url, system, cores, created, capacity, status) <> (Machine.tupled, Machine.unapply)
+    override def * = (id.?, url, system, cores, created, capacity, status).<>(Machine.tupled, Machine.unapply)
 
   }
 

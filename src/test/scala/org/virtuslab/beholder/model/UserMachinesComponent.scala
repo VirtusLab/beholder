@@ -1,7 +1,6 @@
 package org.virtuslab.beholder.model
 
-import org.virtuslab.unicorn.{ LongUnicornPlayJDBC, UnicornPlay, UnicornWrapper }
-import slick.lifted.ProvenShape
+import org.virtuslab.unicorn.UnicornWrapper
 
 trait UserMachinesComponent extends UserComponent with MachineComponent {
   self: UnicornWrapper[Long] =>

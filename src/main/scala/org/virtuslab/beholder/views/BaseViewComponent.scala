@@ -3,8 +3,6 @@ package org.virtuslab.beholder.views
 import org.virtuslab.unicorn.UnicornWrapper
 import slick.ast.TypedType
 
-import scala.language.existentials
-
 trait BaseViewComponent {
   self: UnicornWrapper[Long] =>
 
@@ -25,7 +23,7 @@ trait BaseViewComponent {
     protected val columns: Seq[(String, this.type => Rep[_])]
     private lazy val columnsMap: Map[String, this.type => Rep[_]] = columns.toMap
 
-    final def columnsNames = columns.map(_._1)
+    final def columnsNames: Seq[String] = columns.map(_._1)
 
     /**
      * find column by name
@@ -48,7 +46,7 @@ trait BaseViewComponent {
   object BaseView {
 
     implicit class WithViewDDL(val query: TableQuery[_ <: BaseView[_, _]]) {
-      def viewDDL = ViewDDL(query.shaped.value)
+      def viewDDL: ViewDDL = ViewDDL(query.shaped.value)
     }
 
     case class ViewDDL(table: BaseView[_, _]) extends DDL {

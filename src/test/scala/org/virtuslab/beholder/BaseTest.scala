@@ -1,7 +1,8 @@
 package org.virtuslab.beholder
 
 import org.joda.time.DateTime
-import org.scalatest._
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.{Matchers => _, _}
 import org.scalatestplus.play.guice.GuiceFakeApplicationFactory
 import org.virtuslab.beholder.model.{LargeElement, Machine, MachineStatus, User}
 import org.virtuslab.beholder.repositories._
@@ -18,7 +19,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 import scala.util.{Failure, Try}
 
-trait BaseTest extends fixture.FlatSpecLike with Matchers with GuiceFakeApplicationFactory {
+trait BaseTest extends flatspec.FixtureAnyFlatSpecLike with Matchers with GuiceFakeApplicationFactory {
   import BaseTest.Fixture
 
   override type FixtureParam = Fixture
@@ -63,7 +64,7 @@ trait BaseTest extends fixture.FlatSpecLike with Matchers with GuiceFakeApplicat
       Await.result(DB.run(sqlu"""DROP ALL OBJECTS"""), Duration.Inf)
       withFixture(test.toNoArgTest(theFixture))
     } finally {
-      fakeApp.foreach(Play.stop(_))
+      fakeApp.foreach(Play.stop)
     }
   }
 
