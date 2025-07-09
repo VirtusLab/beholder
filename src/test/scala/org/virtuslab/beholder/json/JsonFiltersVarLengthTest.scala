@@ -42,8 +42,8 @@ class JsonFiltersVarLengthRepository(override val unicorn: UnicornPlay[Long])
       import play.api.libs.functional.syntax._
       import play.api.libs.json._
       (
-        (__ \ 'firstPart).formatWithDefault("") and
-        (__ \ 'secondPart).formatWithDefault("")).tupled
+        (__ \ "firstPart").formatWithDefault("") and
+        (__ \ "secondPart").formatWithDefault("")).tupled
     }
 
     override protected def filterOnColumn(column: Rep[String])(value: (String, String)): Rep[Option[Boolean]] = {

@@ -41,7 +41,7 @@ trait UserComponent {
 
     def lastName = column[String]("last_name")
 
-    override def * = (id.?, email, firstName, lastName) <> (User.tupled, User.unapply)
+    override def * = (id.?, email, firstName, lastName).<>(User.tupled, User.unapply)
   }
 
   class BaseUsersRepository extends BaseIdRepository[UserId, User, Users](TableQuery[Users])

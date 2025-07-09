@@ -2,7 +2,7 @@ package org.virtuslab.beholder.views
 
 import org.virtuslab.unicorn.UnicornWrapper
 import shapeless.Generic.Aux
-import shapeless.{ ::, Generic, HNil }
+import shapeless.{ ::, HNil }
 import slick.ast.TypedType
 import slick.lifted._
 import slickless._
@@ -36,7 +36,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
               implicit val tupleShape = new TupleShape(s1, s2)
                 .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2]), (A1, A2), _]]
 
-              (c1, c2) <> (apply.tupled, unapply)
+              (c1, c2).<>(apply.tupled, unapply)
           }
       }
     }
@@ -63,7 +63,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
     implicit val tupleShape = new TupleShape(s1, s2)
       .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2]), (A1, A2), _]]
 
-    def * = (c1, c2) <> (apply.tupled, unapply)
+    def * = (c1, c2).<>(apply.tupled, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType](
@@ -85,7 +85,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
               implicit val tupleShape = new TupleShape(s1, s2, s3)
                 .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3]), (A1, A2, A3), _]]
 
-              (c1, c2, c3) <> (apply.tupled, unapply)
+              (c1, c2, c3).<>(apply.tupled, unapply)
           }
       }
     }
@@ -114,7 +114,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
     implicit val tupleShape = new TupleShape(s1, s2, s3)
       .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3]), (A1, A2, A3), _]]
 
-    def * = (c1, c2, c3) <> (apply.tupled, unapply)
+    def * = (c1, c2, c3).<>(apply.tupled, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType](
@@ -136,7 +136,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
               implicit val tupleShape = new TupleShape(s1, s2, s3, s4)
                 .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4]), (A1, A2, A3, A4), _]]
 
-              (c1, c2, c3, c4) <> (apply.tupled, unapply)
+              (c1, c2, c3, c4).<>(apply.tupled, unapply)
           }
       }
     }
@@ -167,7 +167,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
     implicit val tupleShape = new TupleShape(s1, s2, s3, s4)
       .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4]), (A1, A2, A3, A4), _]]
 
-    def * = (c1, c2, c3, c4) <> (apply.tupled, unapply)
+    def * = (c1, c2, c3, c4).<>(apply.tupled, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType](
@@ -189,7 +189,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
               implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5)
                 .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5]), (A1, A2, A3, A4, A5), _]]
 
-              (c1, c2, c3, c4, c5) <> (apply.tupled, unapply)
+              (c1, c2, c3, c4, c5).<>(apply.tupled, unapply)
           }
       }
     }
@@ -222,7 +222,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
     implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5)
       .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5]), (A1, A2, A3, A4, A5), _]]
 
-    def * = (c1, c2, c3, c4, c5) <> (apply.tupled, unapply)
+    def * = (c1, c2, c3, c4, c5).<>(apply.tupled, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType](
@@ -244,7 +244,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
               implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6)
                 .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6]), (A1, A2, A3, A4, A5, A6), _]]
 
-              (c1, c2, c3, c4, c5, c6) <> (apply.tupled, unapply)
+              (c1, c2, c3, c4, c5, c6).<>(apply.tupled, unapply)
           }
       }
     }
@@ -279,7 +279,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
     implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6)
       .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6]), (A1, A2, A3, A4, A5, A6), _]]
 
-    def * = (c1, c2, c3, c4, c5, c6) <> (apply.tupled, unapply)
+    def * = (c1, c2, c3, c4, c5, c6).<>(apply.tupled, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType](
@@ -301,7 +301,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
               implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7)
                 .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7]), (A1, A2, A3, A4, A5, A6, A7), _]]
 
-              (c1, c2, c3, c4, c5, c6, c7) <> (apply.tupled, unapply)
+              (c1, c2, c3, c4, c5, c6, c7).<>(apply.tupled, unapply)
           }
       }
     }
@@ -338,7 +338,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
     implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7)
       .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7]), (A1, A2, A3, A4, A5, A6, A7), _]]
 
-    def * = (c1, c2, c3, c4, c5, c6, c7) <> (apply.tupled, unapply)
+    def * = (c1, c2, c3, c4, c5, c6, c7).<>(apply.tupled, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType](
@@ -360,7 +360,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
               implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8)
                 .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8]), (A1, A2, A3, A4, A5, A6, A7, A8), _]]
 
-              (c1, c2, c3, c4, c5, c6, c7, c8) <> (apply.tupled, unapply)
+              (c1, c2, c3, c4, c5, c6, c7, c8).<>(apply.tupled, unapply)
           }
       }
     }
@@ -399,7 +399,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
     implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8)
       .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8]), (A1, A2, A3, A4, A5, A6, A7, A8), _]]
 
-    def * = (c1, c2, c3, c4, c5, c6, c7, c8) <> (apply.tupled, unapply)
+    def * = (c1, c2, c3, c4, c5, c6, c7, c8).<>(apply.tupled, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType](
@@ -421,7 +421,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
               implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9)
                 .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9]), (A1, A2, A3, A4, A5, A6, A7, A8, A9), _]]
 
-              (c1, c2, c3, c4, c5, c6, c7, c8, c9) <> (apply.tupled, unapply)
+              (c1, c2, c3, c4, c5, c6, c7, c8, c9).<>(apply.tupled, unapply)
           }
       }
     }
@@ -462,7 +462,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
     implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9)
       .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9]), (A1, A2, A3, A4, A5, A6, A7, A8, A9), _]]
 
-    def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9) <> (apply.tupled, unapply)
+    def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9).<>(apply.tupled, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType](
@@ -484,7 +484,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
               implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10)
                 .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10), _]]
 
-              (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10) <> (apply.tupled, unapply)
+              (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10).<>(apply.tupled, unapply)
           }
       }
     }
@@ -527,7 +527,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
     implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10)
       .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10), _]]
 
-    def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10) <> (apply.tupled, unapply)
+    def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10).<>(apply.tupled, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType](
@@ -549,7 +549,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
               implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11)
                 .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10], Rep[A11]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11), _]]
 
-              (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11) <> (apply.tupled, unapply)
+              (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11).<>(apply.tupled, unapply)
           }
       }
     }
@@ -594,7 +594,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
     implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11)
       .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10], Rep[A11]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11), _]]
 
-    def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11) <> (apply.tupled, unapply)
+    def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11).<>(apply.tupled, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType](
@@ -616,7 +616,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
               implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12)
                 .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10], Rep[A11], Rep[A12]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12), _]]
 
-              (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12) <> (apply.tupled, unapply)
+              (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12).<>(apply.tupled, unapply)
           }
       }
     }
@@ -663,7 +663,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
     implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12)
       .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10], Rep[A11], Rep[A12]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12), _]]
 
-    def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12) <> (apply.tupled, unapply)
+    def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12).<>(apply.tupled, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType](
@@ -685,7 +685,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
               implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13)
                 .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10], Rep[A11], Rep[A12], Rep[A13]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13), _]]
 
-              (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13) <> (apply.tupled, unapply)
+              (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13).<>(apply.tupled, unapply)
           }
       }
     }
@@ -734,7 +734,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
     implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13)
       .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10], Rep[A11], Rep[A12], Rep[A13]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13), _]]
 
-    def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13) <> (apply.tupled, unapply)
+    def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13).<>(apply.tupled, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType](
@@ -756,7 +756,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
               implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14)
                 .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10], Rep[A11], Rep[A12], Rep[A13], Rep[A14]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14), _]]
 
-              (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14) <> (apply.tupled, unapply)
+              (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14).<>(apply.tupled, unapply)
           }
       }
     }
@@ -807,7 +807,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
     implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14)
       .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10], Rep[A11], Rep[A12], Rep[A13], Rep[A14]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14), _]]
 
-    def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14) <> (apply.tupled, unapply)
+    def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14).<>(apply.tupled, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType](
@@ -829,7 +829,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
               implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15)
                 .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10], Rep[A11], Rep[A12], Rep[A13], Rep[A14], Rep[A15]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15), _]]
 
-              (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15) <> (apply.tupled, unapply)
+              (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15).<>(apply.tupled, unapply)
           }
       }
     }
@@ -882,7 +882,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
     implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15)
       .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10], Rep[A11], Rep[A12], Rep[A13], Rep[A14], Rep[A15]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15), _]]
 
-    def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15) <> (apply.tupled, unapply)
+    def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15).<>(apply.tupled, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType](
@@ -904,7 +904,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
               implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16)
                 .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10], Rep[A11], Rep[A12], Rep[A13], Rep[A14], Rep[A15], Rep[A16]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16), _]]
 
-              (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16) <> (apply.tupled, unapply)
+              (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16).<>(apply.tupled, unapply)
           }
       }
     }
@@ -959,7 +959,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
     implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16)
       .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10], Rep[A11], Rep[A12], Rep[A13], Rep[A14], Rep[A15], Rep[A16]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16), _]]
 
-    def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16) <> (apply.tupled, unapply)
+    def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16).<>(apply.tupled, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType](
@@ -981,7 +981,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
               implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17)
                 .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10], Rep[A11], Rep[A12], Rep[A13], Rep[A14], Rep[A15], Rep[A16], Rep[A17]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17), _]]
 
-              (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17) <> (apply.tupled, unapply)
+              (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17).<>(apply.tupled, unapply)
           }
       }
     }
@@ -1038,7 +1038,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
     implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17)
       .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10], Rep[A11], Rep[A12], Rep[A13], Rep[A14], Rep[A15], Rep[A16], Rep[A17]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17), _]]
 
-    def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17) <> (apply.tupled, unapply)
+    def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17).<>(apply.tupled, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType](
@@ -1060,7 +1060,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
               implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18)
                 .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10], Rep[A11], Rep[A12], Rep[A13], Rep[A14], Rep[A15], Rep[A16], Rep[A17], Rep[A18]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18), _]]
 
-              (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18) <> (apply.tupled, unapply)
+              (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18).<>(apply.tupled, unapply)
           }
       }
     }
@@ -1119,7 +1119,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
     implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18)
       .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10], Rep[A11], Rep[A12], Rep[A13], Rep[A14], Rep[A15], Rep[A16], Rep[A17], Rep[A18]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18), _]]
 
-    def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18) <> (apply.tupled, unapply)
+    def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18).<>(apply.tupled, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType, A19: TypedType](
@@ -1141,7 +1141,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
               implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19)
                 .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10], Rep[A11], Rep[A12], Rep[A13], Rep[A14], Rep[A15], Rep[A16], Rep[A17], Rep[A18], Rep[A19]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19), _]]
 
-              (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19) <> (apply.tupled, unapply)
+              (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19).<>(apply.tupled, unapply)
           }
       }
     }
@@ -1202,7 +1202,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
     implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19)
       .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10], Rep[A11], Rep[A12], Rep[A13], Rep[A14], Rep[A15], Rep[A16], Rep[A17], Rep[A18], Rep[A19]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19), _]]
 
-    def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19) <> (apply.tupled, unapply)
+    def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19).<>(apply.tupled, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType, A19: TypedType, A20: TypedType](
@@ -1224,7 +1224,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
               implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19, s20)
                 .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10], Rep[A11], Rep[A12], Rep[A13], Rep[A14], Rep[A15], Rep[A16], Rep[A17], Rep[A18], Rep[A19], Rep[A20]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20), _]]
 
-              (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20) <> (apply.tupled, unapply)
+              (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20).<>(apply.tupled, unapply)
           }
       }
     }
@@ -1287,7 +1287,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
     implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19, s20)
       .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10], Rep[A11], Rep[A12], Rep[A13], Rep[A14], Rep[A15], Rep[A16], Rep[A17], Rep[A18], Rep[A19], Rep[A20]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20), _]]
 
-    def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20) <> (apply.tupled, unapply)
+    def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20).<>(apply.tupled, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType, A19: TypedType, A20: TypedType, A21: TypedType](
@@ -1309,7 +1309,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
               implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19, s20, s21)
                 .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10], Rep[A11], Rep[A12], Rep[A13], Rep[A14], Rep[A15], Rep[A16], Rep[A17], Rep[A18], Rep[A19], Rep[A20], Rep[A21]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20, A21), _]]
 
-              (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21) <> (apply.tupled, unapply)
+              (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21).<>(apply.tupled, unapply)
           }
       }
     }
@@ -1374,7 +1374,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
     implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19, s20, s21)
       .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10], Rep[A11], Rep[A12], Rep[A13], Rep[A14], Rep[A15], Rep[A16], Rep[A17], Rep[A18], Rep[A19], Rep[A20], Rep[A21]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20, A21), _]]
 
-    def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21) <> (apply.tupled, unapply)
+    def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21).<>(apply.tupled, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType, A19: TypedType, A20: TypedType, A21: TypedType, A22: TypedType](
@@ -1396,7 +1396,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
               implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19, s20, s21, s22)
                 .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10], Rep[A11], Rep[A12], Rep[A13], Rep[A14], Rep[A15], Rep[A16], Rep[A17], Rep[A18], Rep[A19], Rep[A20], Rep[A21], Rep[A22]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20, A21, A22), _]]
 
-              (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22) <> (apply.tupled, unapply)
+              (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22).<>(apply.tupled, unapply)
           }
       }
     }
@@ -1463,7 +1463,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
     implicit val tupleShape = new TupleShape(s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19, s20, s21, s22)
       .asInstanceOf[Shape[_ <: FlatShapeLevel, (Rep[A1], Rep[A2], Rep[A3], Rep[A4], Rep[A5], Rep[A6], Rep[A7], Rep[A8], Rep[A9], Rep[A10], Rep[A11], Rep[A12], Rep[A13], Rep[A14], Rep[A15], Rep[A16], Rep[A17], Rep[A18], Rep[A19], Rep[A20], Rep[A21], Rep[A22]), (A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12, A13, A14, A15, A16, A17, A18, A19, A20, A21, A22), _]]
 
-    def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22) <> (apply.tupled, unapply)
+    def * = (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22).<>(apply.tupled, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType, A19: TypedType, A20: TypedType, A21: TypedType, A22: TypedType, A23: TypedType](
@@ -1483,7 +1483,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
             case ((name1, c1) :: (name2, c2) :: (name3, c3) :: (name4, c4) :: (name5, c5) :: (name6, c6) :: (name7, c7) :: (name8, c8) :: (name9, c9) :: (name10, c10) :: (name11, c11) :: (name12, c12) :: (name13, c13) :: (name14, c14) :: (name15, c15) :: (name16, c16) :: (name17, c17) :: (name18, c18) :: (name19, c19) :: (name20, c20) :: (name21, c21) :: (name22, c22) :: (name23, c23) :: HNil) =>
               columnsNames = Seq(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10, name11, name12, name13, name14, name15, name16, name17, name18, name19, name20, name21, name22, name23)
 
-              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: HNil) <> (apply, unapply)
+              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: HNil).<>(apply, unapply)
           }
       }
     }
@@ -1549,7 +1549,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
       columnNames(21) -> (_.c22),
       columnNames(22) -> (_.c23))
 
-    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: HNil) <> (apply, unapply)
+    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: HNil).<>(apply, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType, A19: TypedType, A20: TypedType, A21: TypedType, A22: TypedType, A23: TypedType, A24: TypedType](
@@ -1569,7 +1569,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
             case ((name1, c1) :: (name2, c2) :: (name3, c3) :: (name4, c4) :: (name5, c5) :: (name6, c6) :: (name7, c7) :: (name8, c8) :: (name9, c9) :: (name10, c10) :: (name11, c11) :: (name12, c12) :: (name13, c13) :: (name14, c14) :: (name15, c15) :: (name16, c16) :: (name17, c17) :: (name18, c18) :: (name19, c19) :: (name20, c20) :: (name21, c21) :: (name22, c22) :: (name23, c23) :: (name24, c24) :: HNil) =>
               columnsNames = Seq(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10, name11, name12, name13, name14, name15, name16, name17, name18, name19, name20, name21, name22, name23, name24)
 
-              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: HNil) <> (apply, unapply)
+              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: HNil).<>(apply, unapply)
           }
       }
     }
@@ -1637,7 +1637,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
       columnNames(22) -> (_.c23),
       columnNames(23) -> (_.c24))
 
-    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: HNil) <> (apply, unapply)
+    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: HNil).<>(apply, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType, A19: TypedType, A20: TypedType, A21: TypedType, A22: TypedType, A23: TypedType, A24: TypedType, A25: TypedType](
@@ -1657,7 +1657,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
             case ((name1, c1) :: (name2, c2) :: (name3, c3) :: (name4, c4) :: (name5, c5) :: (name6, c6) :: (name7, c7) :: (name8, c8) :: (name9, c9) :: (name10, c10) :: (name11, c11) :: (name12, c12) :: (name13, c13) :: (name14, c14) :: (name15, c15) :: (name16, c16) :: (name17, c17) :: (name18, c18) :: (name19, c19) :: (name20, c20) :: (name21, c21) :: (name22, c22) :: (name23, c23) :: (name24, c24) :: (name25, c25) :: HNil) =>
               columnsNames = Seq(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10, name11, name12, name13, name14, name15, name16, name17, name18, name19, name20, name21, name22, name23, name24, name25)
 
-              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: HNil) <> (apply, unapply)
+              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: HNil).<>(apply, unapply)
           }
       }
     }
@@ -1727,7 +1727,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
       columnNames(23) -> (_.c24),
       columnNames(24) -> (_.c25))
 
-    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: HNil) <> (apply, unapply)
+    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: HNil).<>(apply, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType, A19: TypedType, A20: TypedType, A21: TypedType, A22: TypedType, A23: TypedType, A24: TypedType, A25: TypedType, A26: TypedType](
@@ -1747,7 +1747,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
             case ((name1, c1) :: (name2, c2) :: (name3, c3) :: (name4, c4) :: (name5, c5) :: (name6, c6) :: (name7, c7) :: (name8, c8) :: (name9, c9) :: (name10, c10) :: (name11, c11) :: (name12, c12) :: (name13, c13) :: (name14, c14) :: (name15, c15) :: (name16, c16) :: (name17, c17) :: (name18, c18) :: (name19, c19) :: (name20, c20) :: (name21, c21) :: (name22, c22) :: (name23, c23) :: (name24, c24) :: (name25, c25) :: (name26, c26) :: HNil) =>
               columnsNames = Seq(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10, name11, name12, name13, name14, name15, name16, name17, name18, name19, name20, name21, name22, name23, name24, name25, name26)
 
-              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: HNil) <> (apply, unapply)
+              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: HNil).<>(apply, unapply)
           }
       }
     }
@@ -1819,7 +1819,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
       columnNames(24) -> (_.c25),
       columnNames(25) -> (_.c26))
 
-    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: HNil) <> (apply, unapply)
+    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: HNil).<>(apply, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType, A19: TypedType, A20: TypedType, A21: TypedType, A22: TypedType, A23: TypedType, A24: TypedType, A25: TypedType, A26: TypedType, A27: TypedType](
@@ -1839,7 +1839,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
             case ((name1, c1) :: (name2, c2) :: (name3, c3) :: (name4, c4) :: (name5, c5) :: (name6, c6) :: (name7, c7) :: (name8, c8) :: (name9, c9) :: (name10, c10) :: (name11, c11) :: (name12, c12) :: (name13, c13) :: (name14, c14) :: (name15, c15) :: (name16, c16) :: (name17, c17) :: (name18, c18) :: (name19, c19) :: (name20, c20) :: (name21, c21) :: (name22, c22) :: (name23, c23) :: (name24, c24) :: (name25, c25) :: (name26, c26) :: (name27, c27) :: HNil) =>
               columnsNames = Seq(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10, name11, name12, name13, name14, name15, name16, name17, name18, name19, name20, name21, name22, name23, name24, name25, name26, name27)
 
-              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: HNil) <> (apply, unapply)
+              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: HNil).<>(apply, unapply)
           }
       }
     }
@@ -1913,7 +1913,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
       columnNames(25) -> (_.c26),
       columnNames(26) -> (_.c27))
 
-    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: HNil) <> (apply, unapply)
+    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: HNil).<>(apply, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType, A19: TypedType, A20: TypedType, A21: TypedType, A22: TypedType, A23: TypedType, A24: TypedType, A25: TypedType, A26: TypedType, A27: TypedType, A28: TypedType](
@@ -1933,7 +1933,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
             case ((name1, c1) :: (name2, c2) :: (name3, c3) :: (name4, c4) :: (name5, c5) :: (name6, c6) :: (name7, c7) :: (name8, c8) :: (name9, c9) :: (name10, c10) :: (name11, c11) :: (name12, c12) :: (name13, c13) :: (name14, c14) :: (name15, c15) :: (name16, c16) :: (name17, c17) :: (name18, c18) :: (name19, c19) :: (name20, c20) :: (name21, c21) :: (name22, c22) :: (name23, c23) :: (name24, c24) :: (name25, c25) :: (name26, c26) :: (name27, c27) :: (name28, c28) :: HNil) =>
               columnsNames = Seq(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10, name11, name12, name13, name14, name15, name16, name17, name18, name19, name20, name21, name22, name23, name24, name25, name26, name27, name28)
 
-              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: HNil) <> (apply, unapply)
+              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: HNil).<>(apply, unapply)
           }
       }
     }
@@ -2009,7 +2009,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
       columnNames(26) -> (_.c27),
       columnNames(27) -> (_.c28))
 
-    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: HNil) <> (apply, unapply)
+    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: HNil).<>(apply, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType, A19: TypedType, A20: TypedType, A21: TypedType, A22: TypedType, A23: TypedType, A24: TypedType, A25: TypedType, A26: TypedType, A27: TypedType, A28: TypedType, A29: TypedType](
@@ -2029,7 +2029,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
             case ((name1, c1) :: (name2, c2) :: (name3, c3) :: (name4, c4) :: (name5, c5) :: (name6, c6) :: (name7, c7) :: (name8, c8) :: (name9, c9) :: (name10, c10) :: (name11, c11) :: (name12, c12) :: (name13, c13) :: (name14, c14) :: (name15, c15) :: (name16, c16) :: (name17, c17) :: (name18, c18) :: (name19, c19) :: (name20, c20) :: (name21, c21) :: (name22, c22) :: (name23, c23) :: (name24, c24) :: (name25, c25) :: (name26, c26) :: (name27, c27) :: (name28, c28) :: (name29, c29) :: HNil) =>
               columnsNames = Seq(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10, name11, name12, name13, name14, name15, name16, name17, name18, name19, name20, name21, name22, name23, name24, name25, name26, name27, name28, name29)
 
-              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: HNil) <> (apply, unapply)
+              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: HNil).<>(apply, unapply)
           }
       }
     }
@@ -2107,7 +2107,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
       columnNames(27) -> (_.c28),
       columnNames(28) -> (_.c29))
 
-    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: HNil) <> (apply, unapply)
+    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: HNil).<>(apply, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType, A19: TypedType, A20: TypedType, A21: TypedType, A22: TypedType, A23: TypedType, A24: TypedType, A25: TypedType, A26: TypedType, A27: TypedType, A28: TypedType, A29: TypedType, A30: TypedType](
@@ -2127,7 +2127,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
             case ((name1, c1) :: (name2, c2) :: (name3, c3) :: (name4, c4) :: (name5, c5) :: (name6, c6) :: (name7, c7) :: (name8, c8) :: (name9, c9) :: (name10, c10) :: (name11, c11) :: (name12, c12) :: (name13, c13) :: (name14, c14) :: (name15, c15) :: (name16, c16) :: (name17, c17) :: (name18, c18) :: (name19, c19) :: (name20, c20) :: (name21, c21) :: (name22, c22) :: (name23, c23) :: (name24, c24) :: (name25, c25) :: (name26, c26) :: (name27, c27) :: (name28, c28) :: (name29, c29) :: (name30, c30) :: HNil) =>
               columnsNames = Seq(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10, name11, name12, name13, name14, name15, name16, name17, name18, name19, name20, name21, name22, name23, name24, name25, name26, name27, name28, name29, name30)
 
-              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: HNil) <> (apply, unapply)
+              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: HNil).<>(apply, unapply)
           }
       }
     }
@@ -2207,7 +2207,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
       columnNames(28) -> (_.c29),
       columnNames(29) -> (_.c30))
 
-    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: HNil) <> (apply, unapply)
+    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: HNil).<>(apply, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType, A19: TypedType, A20: TypedType, A21: TypedType, A22: TypedType, A23: TypedType, A24: TypedType, A25: TypedType, A26: TypedType, A27: TypedType, A28: TypedType, A29: TypedType, A30: TypedType, A31: TypedType](
@@ -2227,7 +2227,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
             case ((name1, c1) :: (name2, c2) :: (name3, c3) :: (name4, c4) :: (name5, c5) :: (name6, c6) :: (name7, c7) :: (name8, c8) :: (name9, c9) :: (name10, c10) :: (name11, c11) :: (name12, c12) :: (name13, c13) :: (name14, c14) :: (name15, c15) :: (name16, c16) :: (name17, c17) :: (name18, c18) :: (name19, c19) :: (name20, c20) :: (name21, c21) :: (name22, c22) :: (name23, c23) :: (name24, c24) :: (name25, c25) :: (name26, c26) :: (name27, c27) :: (name28, c28) :: (name29, c29) :: (name30, c30) :: (name31, c31) :: HNil) =>
               columnsNames = Seq(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10, name11, name12, name13, name14, name15, name16, name17, name18, name19, name20, name21, name22, name23, name24, name25, name26, name27, name28, name29, name30, name31)
 
-              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: HNil) <> (apply, unapply)
+              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: HNil).<>(apply, unapply)
           }
       }
     }
@@ -2309,7 +2309,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
       columnNames(29) -> (_.c30),
       columnNames(30) -> (_.c31))
 
-    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: HNil) <> (apply, unapply)
+    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: HNil).<>(apply, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType, A19: TypedType, A20: TypedType, A21: TypedType, A22: TypedType, A23: TypedType, A24: TypedType, A25: TypedType, A26: TypedType, A27: TypedType, A28: TypedType, A29: TypedType, A30: TypedType, A31: TypedType, A32: TypedType](
@@ -2329,7 +2329,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
             case ((name1, c1) :: (name2, c2) :: (name3, c3) :: (name4, c4) :: (name5, c5) :: (name6, c6) :: (name7, c7) :: (name8, c8) :: (name9, c9) :: (name10, c10) :: (name11, c11) :: (name12, c12) :: (name13, c13) :: (name14, c14) :: (name15, c15) :: (name16, c16) :: (name17, c17) :: (name18, c18) :: (name19, c19) :: (name20, c20) :: (name21, c21) :: (name22, c22) :: (name23, c23) :: (name24, c24) :: (name25, c25) :: (name26, c26) :: (name27, c27) :: (name28, c28) :: (name29, c29) :: (name30, c30) :: (name31, c31) :: (name32, c32) :: HNil) =>
               columnsNames = Seq(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10, name11, name12, name13, name14, name15, name16, name17, name18, name19, name20, name21, name22, name23, name24, name25, name26, name27, name28, name29, name30, name31, name32)
 
-              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: HNil) <> (apply, unapply)
+              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: HNil).<>(apply, unapply)
           }
       }
     }
@@ -2413,7 +2413,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
       columnNames(30) -> (_.c31),
       columnNames(31) -> (_.c32))
 
-    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: HNil) <> (apply, unapply)
+    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: HNil).<>(apply, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType, A19: TypedType, A20: TypedType, A21: TypedType, A22: TypedType, A23: TypedType, A24: TypedType, A25: TypedType, A26: TypedType, A27: TypedType, A28: TypedType, A29: TypedType, A30: TypedType, A31: TypedType, A32: TypedType, A33: TypedType](
@@ -2433,7 +2433,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
             case ((name1, c1) :: (name2, c2) :: (name3, c3) :: (name4, c4) :: (name5, c5) :: (name6, c6) :: (name7, c7) :: (name8, c8) :: (name9, c9) :: (name10, c10) :: (name11, c11) :: (name12, c12) :: (name13, c13) :: (name14, c14) :: (name15, c15) :: (name16, c16) :: (name17, c17) :: (name18, c18) :: (name19, c19) :: (name20, c20) :: (name21, c21) :: (name22, c22) :: (name23, c23) :: (name24, c24) :: (name25, c25) :: (name26, c26) :: (name27, c27) :: (name28, c28) :: (name29, c29) :: (name30, c30) :: (name31, c31) :: (name32, c32) :: (name33, c33) :: HNil) =>
               columnsNames = Seq(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10, name11, name12, name13, name14, name15, name16, name17, name18, name19, name20, name21, name22, name23, name24, name25, name26, name27, name28, name29, name30, name31, name32, name33)
 
-              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: HNil) <> (apply, unapply)
+              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: HNil).<>(apply, unapply)
           }
       }
     }
@@ -2519,7 +2519,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
       columnNames(31) -> (_.c32),
       columnNames(32) -> (_.c33))
 
-    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: HNil) <> (apply, unapply)
+    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: HNil).<>(apply, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType, A19: TypedType, A20: TypedType, A21: TypedType, A22: TypedType, A23: TypedType, A24: TypedType, A25: TypedType, A26: TypedType, A27: TypedType, A28: TypedType, A29: TypedType, A30: TypedType, A31: TypedType, A32: TypedType, A33: TypedType, A34: TypedType](
@@ -2539,7 +2539,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
             case ((name1, c1) :: (name2, c2) :: (name3, c3) :: (name4, c4) :: (name5, c5) :: (name6, c6) :: (name7, c7) :: (name8, c8) :: (name9, c9) :: (name10, c10) :: (name11, c11) :: (name12, c12) :: (name13, c13) :: (name14, c14) :: (name15, c15) :: (name16, c16) :: (name17, c17) :: (name18, c18) :: (name19, c19) :: (name20, c20) :: (name21, c21) :: (name22, c22) :: (name23, c23) :: (name24, c24) :: (name25, c25) :: (name26, c26) :: (name27, c27) :: (name28, c28) :: (name29, c29) :: (name30, c30) :: (name31, c31) :: (name32, c32) :: (name33, c33) :: (name34, c34) :: HNil) =>
               columnsNames = Seq(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10, name11, name12, name13, name14, name15, name16, name17, name18, name19, name20, name21, name22, name23, name24, name25, name26, name27, name28, name29, name30, name31, name32, name33, name34)
 
-              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: HNil) <> (apply, unapply)
+              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: HNil).<>(apply, unapply)
           }
       }
     }
@@ -2627,7 +2627,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
       columnNames(32) -> (_.c33),
       columnNames(33) -> (_.c34))
 
-    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: HNil) <> (apply, unapply)
+    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: HNil).<>(apply, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType, A19: TypedType, A20: TypedType, A21: TypedType, A22: TypedType, A23: TypedType, A24: TypedType, A25: TypedType, A26: TypedType, A27: TypedType, A28: TypedType, A29: TypedType, A30: TypedType, A31: TypedType, A32: TypedType, A33: TypedType, A34: TypedType, A35: TypedType](
@@ -2647,7 +2647,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
             case ((name1, c1) :: (name2, c2) :: (name3, c3) :: (name4, c4) :: (name5, c5) :: (name6, c6) :: (name7, c7) :: (name8, c8) :: (name9, c9) :: (name10, c10) :: (name11, c11) :: (name12, c12) :: (name13, c13) :: (name14, c14) :: (name15, c15) :: (name16, c16) :: (name17, c17) :: (name18, c18) :: (name19, c19) :: (name20, c20) :: (name21, c21) :: (name22, c22) :: (name23, c23) :: (name24, c24) :: (name25, c25) :: (name26, c26) :: (name27, c27) :: (name28, c28) :: (name29, c29) :: (name30, c30) :: (name31, c31) :: (name32, c32) :: (name33, c33) :: (name34, c34) :: (name35, c35) :: HNil) =>
               columnsNames = Seq(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10, name11, name12, name13, name14, name15, name16, name17, name18, name19, name20, name21, name22, name23, name24, name25, name26, name27, name28, name29, name30, name31, name32, name33, name34, name35)
 
-              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: HNil) <> (apply, unapply)
+              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: HNil).<>(apply, unapply)
           }
       }
     }
@@ -2737,7 +2737,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
       columnNames(33) -> (_.c34),
       columnNames(34) -> (_.c35))
 
-    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: HNil) <> (apply, unapply)
+    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: HNil).<>(apply, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType, A19: TypedType, A20: TypedType, A21: TypedType, A22: TypedType, A23: TypedType, A24: TypedType, A25: TypedType, A26: TypedType, A27: TypedType, A28: TypedType, A29: TypedType, A30: TypedType, A31: TypedType, A32: TypedType, A33: TypedType, A34: TypedType, A35: TypedType, A36: TypedType](
@@ -2757,7 +2757,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
             case ((name1, c1) :: (name2, c2) :: (name3, c3) :: (name4, c4) :: (name5, c5) :: (name6, c6) :: (name7, c7) :: (name8, c8) :: (name9, c9) :: (name10, c10) :: (name11, c11) :: (name12, c12) :: (name13, c13) :: (name14, c14) :: (name15, c15) :: (name16, c16) :: (name17, c17) :: (name18, c18) :: (name19, c19) :: (name20, c20) :: (name21, c21) :: (name22, c22) :: (name23, c23) :: (name24, c24) :: (name25, c25) :: (name26, c26) :: (name27, c27) :: (name28, c28) :: (name29, c29) :: (name30, c30) :: (name31, c31) :: (name32, c32) :: (name33, c33) :: (name34, c34) :: (name35, c35) :: (name36, c36) :: HNil) =>
               columnsNames = Seq(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10, name11, name12, name13, name14, name15, name16, name17, name18, name19, name20, name21, name22, name23, name24, name25, name26, name27, name28, name29, name30, name31, name32, name33, name34, name35, name36)
 
-              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: HNil) <> (apply, unapply)
+              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: HNil).<>(apply, unapply)
           }
       }
     }
@@ -2849,7 +2849,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
       columnNames(34) -> (_.c35),
       columnNames(35) -> (_.c36))
 
-    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: HNil) <> (apply, unapply)
+    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: HNil).<>(apply, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType, A19: TypedType, A20: TypedType, A21: TypedType, A22: TypedType, A23: TypedType, A24: TypedType, A25: TypedType, A26: TypedType, A27: TypedType, A28: TypedType, A29: TypedType, A30: TypedType, A31: TypedType, A32: TypedType, A33: TypedType, A34: TypedType, A35: TypedType, A36: TypedType, A37: TypedType](
@@ -2869,7 +2869,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
             case ((name1, c1) :: (name2, c2) :: (name3, c3) :: (name4, c4) :: (name5, c5) :: (name6, c6) :: (name7, c7) :: (name8, c8) :: (name9, c9) :: (name10, c10) :: (name11, c11) :: (name12, c12) :: (name13, c13) :: (name14, c14) :: (name15, c15) :: (name16, c16) :: (name17, c17) :: (name18, c18) :: (name19, c19) :: (name20, c20) :: (name21, c21) :: (name22, c22) :: (name23, c23) :: (name24, c24) :: (name25, c25) :: (name26, c26) :: (name27, c27) :: (name28, c28) :: (name29, c29) :: (name30, c30) :: (name31, c31) :: (name32, c32) :: (name33, c33) :: (name34, c34) :: (name35, c35) :: (name36, c36) :: (name37, c37) :: HNil) =>
               columnsNames = Seq(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10, name11, name12, name13, name14, name15, name16, name17, name18, name19, name20, name21, name22, name23, name24, name25, name26, name27, name28, name29, name30, name31, name32, name33, name34, name35, name36, name37)
 
-              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: HNil) <> (apply, unapply)
+              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: HNil).<>(apply, unapply)
           }
       }
     }
@@ -2963,7 +2963,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
       columnNames(35) -> (_.c36),
       columnNames(36) -> (_.c37))
 
-    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: HNil) <> (apply, unapply)
+    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: HNil).<>(apply, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType, A19: TypedType, A20: TypedType, A21: TypedType, A22: TypedType, A23: TypedType, A24: TypedType, A25: TypedType, A26: TypedType, A27: TypedType, A28: TypedType, A29: TypedType, A30: TypedType, A31: TypedType, A32: TypedType, A33: TypedType, A34: TypedType, A35: TypedType, A36: TypedType, A37: TypedType, A38: TypedType](
@@ -2983,7 +2983,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
             case ((name1, c1) :: (name2, c2) :: (name3, c3) :: (name4, c4) :: (name5, c5) :: (name6, c6) :: (name7, c7) :: (name8, c8) :: (name9, c9) :: (name10, c10) :: (name11, c11) :: (name12, c12) :: (name13, c13) :: (name14, c14) :: (name15, c15) :: (name16, c16) :: (name17, c17) :: (name18, c18) :: (name19, c19) :: (name20, c20) :: (name21, c21) :: (name22, c22) :: (name23, c23) :: (name24, c24) :: (name25, c25) :: (name26, c26) :: (name27, c27) :: (name28, c28) :: (name29, c29) :: (name30, c30) :: (name31, c31) :: (name32, c32) :: (name33, c33) :: (name34, c34) :: (name35, c35) :: (name36, c36) :: (name37, c37) :: (name38, c38) :: HNil) =>
               columnsNames = Seq(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10, name11, name12, name13, name14, name15, name16, name17, name18, name19, name20, name21, name22, name23, name24, name25, name26, name27, name28, name29, name30, name31, name32, name33, name34, name35, name36, name37, name38)
 
-              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: HNil) <> (apply, unapply)
+              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: HNil).<>(apply, unapply)
           }
       }
     }
@@ -3079,7 +3079,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
       columnNames(36) -> (_.c37),
       columnNames(37) -> (_.c38))
 
-    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: HNil) <> (apply, unapply)
+    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: HNil).<>(apply, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType, A19: TypedType, A20: TypedType, A21: TypedType, A22: TypedType, A23: TypedType, A24: TypedType, A25: TypedType, A26: TypedType, A27: TypedType, A28: TypedType, A29: TypedType, A30: TypedType, A31: TypedType, A32: TypedType, A33: TypedType, A34: TypedType, A35: TypedType, A36: TypedType, A37: TypedType, A38: TypedType, A39: TypedType](
@@ -3099,7 +3099,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
             case ((name1, c1) :: (name2, c2) :: (name3, c3) :: (name4, c4) :: (name5, c5) :: (name6, c6) :: (name7, c7) :: (name8, c8) :: (name9, c9) :: (name10, c10) :: (name11, c11) :: (name12, c12) :: (name13, c13) :: (name14, c14) :: (name15, c15) :: (name16, c16) :: (name17, c17) :: (name18, c18) :: (name19, c19) :: (name20, c20) :: (name21, c21) :: (name22, c22) :: (name23, c23) :: (name24, c24) :: (name25, c25) :: (name26, c26) :: (name27, c27) :: (name28, c28) :: (name29, c29) :: (name30, c30) :: (name31, c31) :: (name32, c32) :: (name33, c33) :: (name34, c34) :: (name35, c35) :: (name36, c36) :: (name37, c37) :: (name38, c38) :: (name39, c39) :: HNil) =>
               columnsNames = Seq(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10, name11, name12, name13, name14, name15, name16, name17, name18, name19, name20, name21, name22, name23, name24, name25, name26, name27, name28, name29, name30, name31, name32, name33, name34, name35, name36, name37, name38, name39)
 
-              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: HNil) <> (apply, unapply)
+              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: HNil).<>(apply, unapply)
           }
       }
     }
@@ -3197,7 +3197,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
       columnNames(37) -> (_.c38),
       columnNames(38) -> (_.c39))
 
-    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: HNil) <> (apply, unapply)
+    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: HNil).<>(apply, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType, A19: TypedType, A20: TypedType, A21: TypedType, A22: TypedType, A23: TypedType, A24: TypedType, A25: TypedType, A26: TypedType, A27: TypedType, A28: TypedType, A29: TypedType, A30: TypedType, A31: TypedType, A32: TypedType, A33: TypedType, A34: TypedType, A35: TypedType, A36: TypedType, A37: TypedType, A38: TypedType, A39: TypedType, A40: TypedType](
@@ -3217,7 +3217,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
             case ((name1, c1) :: (name2, c2) :: (name3, c3) :: (name4, c4) :: (name5, c5) :: (name6, c6) :: (name7, c7) :: (name8, c8) :: (name9, c9) :: (name10, c10) :: (name11, c11) :: (name12, c12) :: (name13, c13) :: (name14, c14) :: (name15, c15) :: (name16, c16) :: (name17, c17) :: (name18, c18) :: (name19, c19) :: (name20, c20) :: (name21, c21) :: (name22, c22) :: (name23, c23) :: (name24, c24) :: (name25, c25) :: (name26, c26) :: (name27, c27) :: (name28, c28) :: (name29, c29) :: (name30, c30) :: (name31, c31) :: (name32, c32) :: (name33, c33) :: (name34, c34) :: (name35, c35) :: (name36, c36) :: (name37, c37) :: (name38, c38) :: (name39, c39) :: (name40, c40) :: HNil) =>
               columnsNames = Seq(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10, name11, name12, name13, name14, name15, name16, name17, name18, name19, name20, name21, name22, name23, name24, name25, name26, name27, name28, name29, name30, name31, name32, name33, name34, name35, name36, name37, name38, name39, name40)
 
-              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: HNil) <> (apply, unapply)
+              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: HNil).<>(apply, unapply)
           }
       }
     }
@@ -3317,7 +3317,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
       columnNames(38) -> (_.c39),
       columnNames(39) -> (_.c40))
 
-    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: HNil) <> (apply, unapply)
+    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: HNil).<>(apply, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType, A19: TypedType, A20: TypedType, A21: TypedType, A22: TypedType, A23: TypedType, A24: TypedType, A25: TypedType, A26: TypedType, A27: TypedType, A28: TypedType, A29: TypedType, A30: TypedType, A31: TypedType, A32: TypedType, A33: TypedType, A34: TypedType, A35: TypedType, A36: TypedType, A37: TypedType, A38: TypedType, A39: TypedType, A40: TypedType, A41: TypedType](
@@ -3337,7 +3337,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
             case ((name1, c1) :: (name2, c2) :: (name3, c3) :: (name4, c4) :: (name5, c5) :: (name6, c6) :: (name7, c7) :: (name8, c8) :: (name9, c9) :: (name10, c10) :: (name11, c11) :: (name12, c12) :: (name13, c13) :: (name14, c14) :: (name15, c15) :: (name16, c16) :: (name17, c17) :: (name18, c18) :: (name19, c19) :: (name20, c20) :: (name21, c21) :: (name22, c22) :: (name23, c23) :: (name24, c24) :: (name25, c25) :: (name26, c26) :: (name27, c27) :: (name28, c28) :: (name29, c29) :: (name30, c30) :: (name31, c31) :: (name32, c32) :: (name33, c33) :: (name34, c34) :: (name35, c35) :: (name36, c36) :: (name37, c37) :: (name38, c38) :: (name39, c39) :: (name40, c40) :: (name41, c41) :: HNil) =>
               columnsNames = Seq(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10, name11, name12, name13, name14, name15, name16, name17, name18, name19, name20, name21, name22, name23, name24, name25, name26, name27, name28, name29, name30, name31, name32, name33, name34, name35, name36, name37, name38, name39, name40, name41)
 
-              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: c41 :: HNil) <> (apply, unapply)
+              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: c41 :: HNil).<>(apply, unapply)
           }
       }
     }
@@ -3439,7 +3439,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
       columnNames(39) -> (_.c40),
       columnNames(40) -> (_.c41))
 
-    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: c41 :: HNil) <> (apply, unapply)
+    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: c41 :: HNil).<>(apply, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType, A19: TypedType, A20: TypedType, A21: TypedType, A22: TypedType, A23: TypedType, A24: TypedType, A25: TypedType, A26: TypedType, A27: TypedType, A28: TypedType, A29: TypedType, A30: TypedType, A31: TypedType, A32: TypedType, A33: TypedType, A34: TypedType, A35: TypedType, A36: TypedType, A37: TypedType, A38: TypedType, A39: TypedType, A40: TypedType, A41: TypedType, A42: TypedType](
@@ -3459,7 +3459,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
             case ((name1, c1) :: (name2, c2) :: (name3, c3) :: (name4, c4) :: (name5, c5) :: (name6, c6) :: (name7, c7) :: (name8, c8) :: (name9, c9) :: (name10, c10) :: (name11, c11) :: (name12, c12) :: (name13, c13) :: (name14, c14) :: (name15, c15) :: (name16, c16) :: (name17, c17) :: (name18, c18) :: (name19, c19) :: (name20, c20) :: (name21, c21) :: (name22, c22) :: (name23, c23) :: (name24, c24) :: (name25, c25) :: (name26, c26) :: (name27, c27) :: (name28, c28) :: (name29, c29) :: (name30, c30) :: (name31, c31) :: (name32, c32) :: (name33, c33) :: (name34, c34) :: (name35, c35) :: (name36, c36) :: (name37, c37) :: (name38, c38) :: (name39, c39) :: (name40, c40) :: (name41, c41) :: (name42, c42) :: HNil) =>
               columnsNames = Seq(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10, name11, name12, name13, name14, name15, name16, name17, name18, name19, name20, name21, name22, name23, name24, name25, name26, name27, name28, name29, name30, name31, name32, name33, name34, name35, name36, name37, name38, name39, name40, name41, name42)
 
-              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: c41 :: c42 :: HNil) <> (apply, unapply)
+              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: c41 :: c42 :: HNil).<>(apply, unapply)
           }
       }
     }
@@ -3563,7 +3563,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
       columnNames(40) -> (_.c41),
       columnNames(41) -> (_.c42))
 
-    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: c41 :: c42 :: HNil) <> (apply, unapply)
+    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: c41 :: c42 :: HNil).<>(apply, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType, A19: TypedType, A20: TypedType, A21: TypedType, A22: TypedType, A23: TypedType, A24: TypedType, A25: TypedType, A26: TypedType, A27: TypedType, A28: TypedType, A29: TypedType, A30: TypedType, A31: TypedType, A32: TypedType, A33: TypedType, A34: TypedType, A35: TypedType, A36: TypedType, A37: TypedType, A38: TypedType, A39: TypedType, A40: TypedType, A41: TypedType, A42: TypedType, A43: TypedType](
@@ -3583,7 +3583,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
             case ((name1, c1) :: (name2, c2) :: (name3, c3) :: (name4, c4) :: (name5, c5) :: (name6, c6) :: (name7, c7) :: (name8, c8) :: (name9, c9) :: (name10, c10) :: (name11, c11) :: (name12, c12) :: (name13, c13) :: (name14, c14) :: (name15, c15) :: (name16, c16) :: (name17, c17) :: (name18, c18) :: (name19, c19) :: (name20, c20) :: (name21, c21) :: (name22, c22) :: (name23, c23) :: (name24, c24) :: (name25, c25) :: (name26, c26) :: (name27, c27) :: (name28, c28) :: (name29, c29) :: (name30, c30) :: (name31, c31) :: (name32, c32) :: (name33, c33) :: (name34, c34) :: (name35, c35) :: (name36, c36) :: (name37, c37) :: (name38, c38) :: (name39, c39) :: (name40, c40) :: (name41, c41) :: (name42, c42) :: (name43, c43) :: HNil) =>
               columnsNames = Seq(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10, name11, name12, name13, name14, name15, name16, name17, name18, name19, name20, name21, name22, name23, name24, name25, name26, name27, name28, name29, name30, name31, name32, name33, name34, name35, name36, name37, name38, name39, name40, name41, name42, name43)
 
-              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: c41 :: c42 :: c43 :: HNil) <> (apply, unapply)
+              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: c41 :: c42 :: c43 :: HNil).<>(apply, unapply)
           }
       }
     }
@@ -3689,7 +3689,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
       columnNames(41) -> (_.c42),
       columnNames(42) -> (_.c43))
 
-    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: c41 :: c42 :: c43 :: HNil) <> (apply, unapply)
+    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: c41 :: c42 :: c43 :: HNil).<>(apply, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType, A19: TypedType, A20: TypedType, A21: TypedType, A22: TypedType, A23: TypedType, A24: TypedType, A25: TypedType, A26: TypedType, A27: TypedType, A28: TypedType, A29: TypedType, A30: TypedType, A31: TypedType, A32: TypedType, A33: TypedType, A34: TypedType, A35: TypedType, A36: TypedType, A37: TypedType, A38: TypedType, A39: TypedType, A40: TypedType, A41: TypedType, A42: TypedType, A43: TypedType, A44: TypedType](
@@ -3709,7 +3709,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
             case ((name1, c1) :: (name2, c2) :: (name3, c3) :: (name4, c4) :: (name5, c5) :: (name6, c6) :: (name7, c7) :: (name8, c8) :: (name9, c9) :: (name10, c10) :: (name11, c11) :: (name12, c12) :: (name13, c13) :: (name14, c14) :: (name15, c15) :: (name16, c16) :: (name17, c17) :: (name18, c18) :: (name19, c19) :: (name20, c20) :: (name21, c21) :: (name22, c22) :: (name23, c23) :: (name24, c24) :: (name25, c25) :: (name26, c26) :: (name27, c27) :: (name28, c28) :: (name29, c29) :: (name30, c30) :: (name31, c31) :: (name32, c32) :: (name33, c33) :: (name34, c34) :: (name35, c35) :: (name36, c36) :: (name37, c37) :: (name38, c38) :: (name39, c39) :: (name40, c40) :: (name41, c41) :: (name42, c42) :: (name43, c43) :: (name44, c44) :: HNil) =>
               columnsNames = Seq(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10, name11, name12, name13, name14, name15, name16, name17, name18, name19, name20, name21, name22, name23, name24, name25, name26, name27, name28, name29, name30, name31, name32, name33, name34, name35, name36, name37, name38, name39, name40, name41, name42, name43, name44)
 
-              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: c41 :: c42 :: c43 :: c44 :: HNil) <> (apply, unapply)
+              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: c41 :: c42 :: c43 :: c44 :: HNil).<>(apply, unapply)
           }
       }
     }
@@ -3817,7 +3817,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
       columnNames(42) -> (_.c43),
       columnNames(43) -> (_.c44))
 
-    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: c41 :: c42 :: c43 :: c44 :: HNil) <> (apply, unapply)
+    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: c41 :: c42 :: c43 :: c44 :: HNil).<>(apply, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType, A19: TypedType, A20: TypedType, A21: TypedType, A22: TypedType, A23: TypedType, A24: TypedType, A25: TypedType, A26: TypedType, A27: TypedType, A28: TypedType, A29: TypedType, A30: TypedType, A31: TypedType, A32: TypedType, A33: TypedType, A34: TypedType, A35: TypedType, A36: TypedType, A37: TypedType, A38: TypedType, A39: TypedType, A40: TypedType, A41: TypedType, A42: TypedType, A43: TypedType, A44: TypedType, A45: TypedType](
@@ -3837,7 +3837,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
             case ((name1, c1) :: (name2, c2) :: (name3, c3) :: (name4, c4) :: (name5, c5) :: (name6, c6) :: (name7, c7) :: (name8, c8) :: (name9, c9) :: (name10, c10) :: (name11, c11) :: (name12, c12) :: (name13, c13) :: (name14, c14) :: (name15, c15) :: (name16, c16) :: (name17, c17) :: (name18, c18) :: (name19, c19) :: (name20, c20) :: (name21, c21) :: (name22, c22) :: (name23, c23) :: (name24, c24) :: (name25, c25) :: (name26, c26) :: (name27, c27) :: (name28, c28) :: (name29, c29) :: (name30, c30) :: (name31, c31) :: (name32, c32) :: (name33, c33) :: (name34, c34) :: (name35, c35) :: (name36, c36) :: (name37, c37) :: (name38, c38) :: (name39, c39) :: (name40, c40) :: (name41, c41) :: (name42, c42) :: (name43, c43) :: (name44, c44) :: (name45, c45) :: HNil) =>
               columnsNames = Seq(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10, name11, name12, name13, name14, name15, name16, name17, name18, name19, name20, name21, name22, name23, name24, name25, name26, name27, name28, name29, name30, name31, name32, name33, name34, name35, name36, name37, name38, name39, name40, name41, name42, name43, name44, name45)
 
-              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: c41 :: c42 :: c43 :: c44 :: c45 :: HNil) <> (apply, unapply)
+              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: c41 :: c42 :: c43 :: c44 :: c45 :: HNil).<>(apply, unapply)
           }
       }
     }
@@ -3947,7 +3947,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
       columnNames(43) -> (_.c44),
       columnNames(44) -> (_.c45))
 
-    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: c41 :: c42 :: c43 :: c44 :: c45 :: HNil) <> (apply, unapply)
+    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: c41 :: c42 :: c43 :: c44 :: c45 :: HNil).<>(apply, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType, A19: TypedType, A20: TypedType, A21: TypedType, A22: TypedType, A23: TypedType, A24: TypedType, A25: TypedType, A26: TypedType, A27: TypedType, A28: TypedType, A29: TypedType, A30: TypedType, A31: TypedType, A32: TypedType, A33: TypedType, A34: TypedType, A35: TypedType, A36: TypedType, A37: TypedType, A38: TypedType, A39: TypedType, A40: TypedType, A41: TypedType, A42: TypedType, A43: TypedType, A44: TypedType, A45: TypedType, A46: TypedType](
@@ -3967,7 +3967,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
             case ((name1, c1) :: (name2, c2) :: (name3, c3) :: (name4, c4) :: (name5, c5) :: (name6, c6) :: (name7, c7) :: (name8, c8) :: (name9, c9) :: (name10, c10) :: (name11, c11) :: (name12, c12) :: (name13, c13) :: (name14, c14) :: (name15, c15) :: (name16, c16) :: (name17, c17) :: (name18, c18) :: (name19, c19) :: (name20, c20) :: (name21, c21) :: (name22, c22) :: (name23, c23) :: (name24, c24) :: (name25, c25) :: (name26, c26) :: (name27, c27) :: (name28, c28) :: (name29, c29) :: (name30, c30) :: (name31, c31) :: (name32, c32) :: (name33, c33) :: (name34, c34) :: (name35, c35) :: (name36, c36) :: (name37, c37) :: (name38, c38) :: (name39, c39) :: (name40, c40) :: (name41, c41) :: (name42, c42) :: (name43, c43) :: (name44, c44) :: (name45, c45) :: (name46, c46) :: HNil) =>
               columnsNames = Seq(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10, name11, name12, name13, name14, name15, name16, name17, name18, name19, name20, name21, name22, name23, name24, name25, name26, name27, name28, name29, name30, name31, name32, name33, name34, name35, name36, name37, name38, name39, name40, name41, name42, name43, name44, name45, name46)
 
-              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: c41 :: c42 :: c43 :: c44 :: c45 :: c46 :: HNil) <> (apply, unapply)
+              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: c41 :: c42 :: c43 :: c44 :: c45 :: c46 :: HNil).<>(apply, unapply)
           }
       }
     }
@@ -4079,7 +4079,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
       columnNames(44) -> (_.c45),
       columnNames(45) -> (_.c46))
 
-    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: c41 :: c42 :: c43 :: c44 :: c45 :: c46 :: HNil) <> (apply, unapply)
+    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: c41 :: c42 :: c43 :: c44 :: c45 :: c46 :: HNil).<>(apply, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType, A19: TypedType, A20: TypedType, A21: TypedType, A22: TypedType, A23: TypedType, A24: TypedType, A25: TypedType, A26: TypedType, A27: TypedType, A28: TypedType, A29: TypedType, A30: TypedType, A31: TypedType, A32: TypedType, A33: TypedType, A34: TypedType, A35: TypedType, A36: TypedType, A37: TypedType, A38: TypedType, A39: TypedType, A40: TypedType, A41: TypedType, A42: TypedType, A43: TypedType, A44: TypedType, A45: TypedType, A46: TypedType, A47: TypedType](
@@ -4099,7 +4099,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
             case ((name1, c1) :: (name2, c2) :: (name3, c3) :: (name4, c4) :: (name5, c5) :: (name6, c6) :: (name7, c7) :: (name8, c8) :: (name9, c9) :: (name10, c10) :: (name11, c11) :: (name12, c12) :: (name13, c13) :: (name14, c14) :: (name15, c15) :: (name16, c16) :: (name17, c17) :: (name18, c18) :: (name19, c19) :: (name20, c20) :: (name21, c21) :: (name22, c22) :: (name23, c23) :: (name24, c24) :: (name25, c25) :: (name26, c26) :: (name27, c27) :: (name28, c28) :: (name29, c29) :: (name30, c30) :: (name31, c31) :: (name32, c32) :: (name33, c33) :: (name34, c34) :: (name35, c35) :: (name36, c36) :: (name37, c37) :: (name38, c38) :: (name39, c39) :: (name40, c40) :: (name41, c41) :: (name42, c42) :: (name43, c43) :: (name44, c44) :: (name45, c45) :: (name46, c46) :: (name47, c47) :: HNil) =>
               columnsNames = Seq(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10, name11, name12, name13, name14, name15, name16, name17, name18, name19, name20, name21, name22, name23, name24, name25, name26, name27, name28, name29, name30, name31, name32, name33, name34, name35, name36, name37, name38, name39, name40, name41, name42, name43, name44, name45, name46, name47)
 
-              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: c41 :: c42 :: c43 :: c44 :: c45 :: c46 :: c47 :: HNil) <> (apply, unapply)
+              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: c41 :: c42 :: c43 :: c44 :: c45 :: c46 :: c47 :: HNil).<>(apply, unapply)
           }
       }
     }
@@ -4213,7 +4213,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
       columnNames(45) -> (_.c46),
       columnNames(46) -> (_.c47))
 
-    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: c41 :: c42 :: c43 :: c44 :: c45 :: c46 :: c47 :: HNil) <> (apply, unapply)
+    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: c41 :: c42 :: c43 :: c44 :: c45 :: c46 :: c47 :: HNil).<>(apply, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType, A19: TypedType, A20: TypedType, A21: TypedType, A22: TypedType, A23: TypedType, A24: TypedType, A25: TypedType, A26: TypedType, A27: TypedType, A28: TypedType, A29: TypedType, A30: TypedType, A31: TypedType, A32: TypedType, A33: TypedType, A34: TypedType, A35: TypedType, A36: TypedType, A37: TypedType, A38: TypedType, A39: TypedType, A40: TypedType, A41: TypedType, A42: TypedType, A43: TypedType, A44: TypedType, A45: TypedType, A46: TypedType, A47: TypedType, A48: TypedType](
@@ -4233,7 +4233,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
             case ((name1, c1) :: (name2, c2) :: (name3, c3) :: (name4, c4) :: (name5, c5) :: (name6, c6) :: (name7, c7) :: (name8, c8) :: (name9, c9) :: (name10, c10) :: (name11, c11) :: (name12, c12) :: (name13, c13) :: (name14, c14) :: (name15, c15) :: (name16, c16) :: (name17, c17) :: (name18, c18) :: (name19, c19) :: (name20, c20) :: (name21, c21) :: (name22, c22) :: (name23, c23) :: (name24, c24) :: (name25, c25) :: (name26, c26) :: (name27, c27) :: (name28, c28) :: (name29, c29) :: (name30, c30) :: (name31, c31) :: (name32, c32) :: (name33, c33) :: (name34, c34) :: (name35, c35) :: (name36, c36) :: (name37, c37) :: (name38, c38) :: (name39, c39) :: (name40, c40) :: (name41, c41) :: (name42, c42) :: (name43, c43) :: (name44, c44) :: (name45, c45) :: (name46, c46) :: (name47, c47) :: (name48, c48) :: HNil) =>
               columnsNames = Seq(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10, name11, name12, name13, name14, name15, name16, name17, name18, name19, name20, name21, name22, name23, name24, name25, name26, name27, name28, name29, name30, name31, name32, name33, name34, name35, name36, name37, name38, name39, name40, name41, name42, name43, name44, name45, name46, name47, name48)
 
-              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: c41 :: c42 :: c43 :: c44 :: c45 :: c46 :: c47 :: c48 :: HNil) <> (apply, unapply)
+              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: c41 :: c42 :: c43 :: c44 :: c45 :: c46 :: c47 :: c48 :: HNil).<>(apply, unapply)
           }
       }
     }
@@ -4349,7 +4349,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
       columnNames(46) -> (_.c47),
       columnNames(47) -> (_.c48))
 
-    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: c41 :: c42 :: c43 :: c44 :: c45 :: c46 :: c47 :: c48 :: HNil) <> (apply, unapply)
+    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: c41 :: c42 :: c43 :: c44 :: c45 :: c46 :: c47 :: c48 :: HNil).<>(apply, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType, A19: TypedType, A20: TypedType, A21: TypedType, A22: TypedType, A23: TypedType, A24: TypedType, A25: TypedType, A26: TypedType, A27: TypedType, A28: TypedType, A29: TypedType, A30: TypedType, A31: TypedType, A32: TypedType, A33: TypedType, A34: TypedType, A35: TypedType, A36: TypedType, A37: TypedType, A38: TypedType, A39: TypedType, A40: TypedType, A41: TypedType, A42: TypedType, A43: TypedType, A44: TypedType, A45: TypedType, A46: TypedType, A47: TypedType, A48: TypedType, A49: TypedType](
@@ -4369,7 +4369,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
             case ((name1, c1) :: (name2, c2) :: (name3, c3) :: (name4, c4) :: (name5, c5) :: (name6, c6) :: (name7, c7) :: (name8, c8) :: (name9, c9) :: (name10, c10) :: (name11, c11) :: (name12, c12) :: (name13, c13) :: (name14, c14) :: (name15, c15) :: (name16, c16) :: (name17, c17) :: (name18, c18) :: (name19, c19) :: (name20, c20) :: (name21, c21) :: (name22, c22) :: (name23, c23) :: (name24, c24) :: (name25, c25) :: (name26, c26) :: (name27, c27) :: (name28, c28) :: (name29, c29) :: (name30, c30) :: (name31, c31) :: (name32, c32) :: (name33, c33) :: (name34, c34) :: (name35, c35) :: (name36, c36) :: (name37, c37) :: (name38, c38) :: (name39, c39) :: (name40, c40) :: (name41, c41) :: (name42, c42) :: (name43, c43) :: (name44, c44) :: (name45, c45) :: (name46, c46) :: (name47, c47) :: (name48, c48) :: (name49, c49) :: HNil) =>
               columnsNames = Seq(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10, name11, name12, name13, name14, name15, name16, name17, name18, name19, name20, name21, name22, name23, name24, name25, name26, name27, name28, name29, name30, name31, name32, name33, name34, name35, name36, name37, name38, name39, name40, name41, name42, name43, name44, name45, name46, name47, name48, name49)
 
-              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: c41 :: c42 :: c43 :: c44 :: c45 :: c46 :: c47 :: c48 :: c49 :: HNil) <> (apply, unapply)
+              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: c41 :: c42 :: c43 :: c44 :: c45 :: c46 :: c47 :: c48 :: c49 :: HNil).<>(apply, unapply)
           }
       }
     }
@@ -4487,7 +4487,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
       columnNames(47) -> (_.c48),
       columnNames(48) -> (_.c49))
 
-    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: c41 :: c42 :: c43 :: c44 :: c45 :: c46 :: c47 :: c48 :: c49 :: HNil) <> (apply, unapply)
+    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: c41 :: c42 :: c43 :: c44 :: c45 :: c46 :: c47 :: c48 :: c49 :: HNil).<>(apply, unapply)
   }
 
   def createView[T: ClassTag, E, A1: TypedType, A2: TypedType, A3: TypedType, A4: TypedType, A5: TypedType, A6: TypedType, A7: TypedType, A8: TypedType, A9: TypedType, A10: TypedType, A11: TypedType, A12: TypedType, A13: TypedType, A14: TypedType, A15: TypedType, A16: TypedType, A17: TypedType, A18: TypedType, A19: TypedType, A20: TypedType, A21: TypedType, A22: TypedType, A23: TypedType, A24: TypedType, A25: TypedType, A26: TypedType, A27: TypedType, A28: TypedType, A29: TypedType, A30: TypedType, A31: TypedType, A32: TypedType, A33: TypedType, A34: TypedType, A35: TypedType, A36: TypedType, A37: TypedType, A38: TypedType, A39: TypedType, A40: TypedType, A41: TypedType, A42: TypedType, A43: TypedType, A44: TypedType, A45: TypedType, A46: TypedType, A47: TypedType, A48: TypedType, A49: TypedType, A50: TypedType](
@@ -4507,7 +4507,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
             case ((name1, c1) :: (name2, c2) :: (name3, c3) :: (name4, c4) :: (name5, c5) :: (name6, c6) :: (name7, c7) :: (name8, c8) :: (name9, c9) :: (name10, c10) :: (name11, c11) :: (name12, c12) :: (name13, c13) :: (name14, c14) :: (name15, c15) :: (name16, c16) :: (name17, c17) :: (name18, c18) :: (name19, c19) :: (name20, c20) :: (name21, c21) :: (name22, c22) :: (name23, c23) :: (name24, c24) :: (name25, c25) :: (name26, c26) :: (name27, c27) :: (name28, c28) :: (name29, c29) :: (name30, c30) :: (name31, c31) :: (name32, c32) :: (name33, c33) :: (name34, c34) :: (name35, c35) :: (name36, c36) :: (name37, c37) :: (name38, c38) :: (name39, c39) :: (name40, c40) :: (name41, c41) :: (name42, c42) :: (name43, c43) :: (name44, c44) :: (name45, c45) :: (name46, c46) :: (name47, c47) :: (name48, c48) :: (name49, c49) :: (name50, c50) :: HNil) =>
               columnsNames = Seq(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10, name11, name12, name13, name14, name15, name16, name17, name18, name19, name20, name21, name22, name23, name24, name25, name26, name27, name28, name29, name30, name31, name32, name33, name34, name35, name36, name37, name38, name39, name40, name41, name42, name43, name44, name45, name46, name47, name48, name49, name50)
 
-              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: c41 :: c42 :: c43 :: c44 :: c45 :: c46 :: c47 :: c48 :: c49 :: c50 :: HNil) <> (apply, unapply)
+              (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: c41 :: c42 :: c43 :: c44 :: c45 :: c46 :: c47 :: c48 :: c49 :: c50 :: HNil).<>(apply, unapply)
           }
       }
     }
@@ -4627,7 +4627,7 @@ trait FilterableViewsGenerateCodeComponent extends BaseViewComponent {
       columnNames(48) -> (_.c49),
       columnNames(49) -> (_.c50))
 
-    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: c41 :: c42 :: c43 :: c44 :: c45 :: c46 :: c47 :: c48 :: c49 :: c50 :: HNil) <> (apply, unapply)
+    def * = (c1 :: c2 :: c3 :: c4 :: c5 :: c6 :: c7 :: c8 :: c9 :: c10 :: c11 :: c12 :: c13 :: c14 :: c15 :: c16 :: c17 :: c18 :: c19 :: c20 :: c21 :: c22 :: c23 :: c24 :: c25 :: c26 :: c27 :: c28 :: c29 :: c30 :: c31 :: c32 :: c33 :: c34 :: c35 :: c36 :: c37 :: c38 :: c39 :: c40 :: c41 :: c42 :: c43 :: c44 :: c45 :: c46 :: c47 :: c48 :: c49 :: c50 :: HNil).<>(apply, unapply)
   }
 
 }

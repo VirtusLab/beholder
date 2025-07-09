@@ -1,6 +1,5 @@
 package org.virtuslab.beholder.json
 
-import org.joda.time.DateTime
 import org.virtuslab.beholder.filters.json.{ JsonFilterFieldsComponent, JsonFiltersComponent, JsonFormatterComponent }
 import org.virtuslab.beholder.filters.{ FilterDefinition, FilterRange, Order }
 import org.virtuslab.beholder.model.{ LargeElement, LargeElementId }

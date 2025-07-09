@@ -2,21 +2,18 @@ package org.virtuslab.beholder.filters
 
 import org.virtuslab.beholder.views.BaseViewComponent
 import org.virtuslab.unicorn.UnicornWrapper
-import play.api.libs.json.Json
+import play.api.libs.json.{ Json, OFormat, Reads, Writes }
 import slick.ast.Ordering
 import slick.lifted.{ ColumnOrdered, Ordered }
 
 import scala.concurrent.ExecutionContext
 import sttp.tapir._
-import play.api.libs.json.Format
-import play.api.libs.json.Reads
-import play.api.libs.json.Writes
 
 case class Order(column: String, asc: Boolean)
 
 object Order {
-  implicit val format = Json.format[Order]
-  implicit val schema = Schema.derived[Order]
+  implicit val format: OFormat[Order] = Json.format[Order]
+  implicit val schema: Schema[Order] = Schema.derived[Order]
 }
 
 /**
@@ -39,7 +36,7 @@ object FilterRange {
   import sttp.tapir.Schema
   import play.api.libs.functional.syntax._
   import play.api.libs.json._
-  def schema[T: Schema](tname: String) = Schema.derived[FilterRange[T]].name(Schema.SName(s"FilterRange_$tname"))
+  def schema[T: Schema](tname: String): Schema[FilterRange[T]] = Schema.derived[FilterRange[T]].name(Schema.SName(s"FilterRange_$tname"))
   implicit def rangeFormat[T: Format]: Format[FilterRange[T]] =
     ((__ \ "from").formatNullable[T] and
       (__ \ "to").formatNullable[T])(FilterRange.apply, unlift(FilterRange.unapply))
@@ -139,7 +136,7 @@ trait BaseFilterComponent extends BaseViewComponent with FilterFieldComponent {
 
     //ordering
     private def order(data: FilterDefinition)(table: FilterTable): Option[(Rep[_], Boolean)] =
-      data.orderBy.map { case order => (table.columnByName(order.column), order.asc) }
+      data.orderBy.map(order => (table.columnByName(order.column), order.asc))
   }
 
   trait TableFilterAPI[Entity, Formatter, QueryBase] extends FilterAPI[Entity, Formatter] {
@@ -220,10 +217,7 @@ trait BaseFilterComponent extends BaseViewComponent with FilterFieldComponent {
   }
 
   case class FilterResult[T](data: Seq[T], total: Int) {
-
-    def this(data: Seq[T]) {
-      this(data, data.size)
-    }
+    def this(data: Seq[T]) = this(data, data.size)
   }
 
   object FilterResult {

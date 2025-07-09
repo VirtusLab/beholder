@@ -18,18 +18,18 @@ object ILikeExtension {
    * escape underscores, percent signs and backslashes as they have special meaning in PostgreSQL's LIKE function
    * @see https://www.postgresql.org/docs/current/functions-matching.html#FUNCTIONS-LIKE
    */
-  def escape(text: String) = text
+  def escape(text: String): String = text
     .replace(raw"""\""", raw"\\")
     .replace("%", raw"\%")
     .replace("_", raw"\_")
 
-  implicit def iLikeExtension(c: Rep[String]) = new ILikeExtension(c)
+  implicit def iLikeExtension(c: Rep[String]): ILikeExtension[String] = new ILikeExtension(c)
 
-  implicit def iLikeMappedExtension(c: Rep[MappedTo[String]]) = new ILikeExtension(c)
+  implicit def iLikeMappedExtension(c: Rep[MappedTo[String]]): ILikeExtension[MappedTo[String]] = new ILikeExtension(c)
 
-  implicit def iLikeOptionExtension(c: Rep[Option[String]]) = new ILikeExtension(c)
+  implicit def iLikeOptionExtension(c: Rep[Option[String]]): ILikeExtension[Option[String]] = new ILikeExtension(c)
 
-  implicit def seq2Ordered[T <% Ordered](t: IndexedSeq[T]) = new Ordered(t.flatMap(_.columns))
+  implicit def seq2Ordered[T](t: IndexedSeq[T])(implicit ev: T => Ordered): Ordered = new Ordered(t.flatMap(_.columns))
 }
 
 /**
@@ -37,7 +37,7 @@ object ILikeExtension {
  */
 class ILikeExtension[B](val c: Rep[B]) extends AnyVal with ExtensionMethods[String, B] {
 
-  def ilike[R](e: String)(implicit om: o#arg[String, B]#to[Boolean, R]) =
+  def ilike[R](e: String)(implicit om: o#arg[String, B]#to[Boolean, R]): Rep[R] =
     om.column(ILikeExtension.ILIKE, n, LiteralNode(e))
 
   override protected[this] implicit def b1Type: TypedType[String] = ???

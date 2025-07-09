@@ -3,7 +3,7 @@ package org.virtuslab.beholder
 import java.sql.Date
 import org.virtuslab.beholder.model.{ MachineStatus, UserMachinesComponent }
 import org.virtuslab.beholder.views.FilterableViewsComponent
-import org.virtuslab.unicorn.{ UnicornPlay, UnicornWrapper }
+import org.virtuslab.unicorn.UnicornWrapper
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import sttp.tapir.Schema
